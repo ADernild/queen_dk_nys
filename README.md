@@ -3,4 +3,4 @@
 ### Tasks
 
 - [x] Collect speeches
-- [] Clean speech text
+- [ ] Clean speech text
