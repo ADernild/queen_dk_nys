@@ -2,5 +2,5 @@
 
 ### Tasks
 
-- Collect speeches - [x]
-- Clean speech text - []
+- [x] Collect speeches
+- [] Clean speech text
