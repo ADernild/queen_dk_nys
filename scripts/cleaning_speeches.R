@@ -10,11 +10,10 @@ clean_speech <- function(x) {
 }
 
 # Importing data
-df <- read.csv("new_year_speeches_2001-2020.csv")[2:3]
+df <- read.csv("data/new_year_speeches_2001-2020.csv")[2:3]
 
 names(df) <- c("speech", "year") # changing first variable name
 
-df$speech <- clean_speech(df$speech)
-
-
+df$speech <- clean_speech(df$speech) %>% 
+  write.csv("data/nys_2001-2020_cleaned.csv")
 

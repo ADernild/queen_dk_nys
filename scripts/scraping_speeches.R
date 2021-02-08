@@ -31,6 +31,6 @@ speeches <- lapply(speech_year_url$urls, scrape) %>%
 # Coercing to data.frame and adding year variable
 df <- do.call(rbind, speeches) %>% 
   data.frame(year = speech_year_url$year) %>% 
-  write.csv("new_year_speeches_2001-2020.csv") #saving as csv
+  write.csv("data/new_year_speeches_2001-2020.csv") #saving as csv
 
 
