@@ -5,7 +5,8 @@ Just a little hobby project.
 ### Tasks
 
 - [x] Collect speeches.
-- [ ] Clean speech text.
+- [x] Clean speech text.
+- [ ] Preprocessing: Tokenization, stemming, lemmatization etc.
 - [ ] Build Structural Topic Model (STM).
 - [ ] Test out other Topic model.
 - [ ] Calculate Polarity scores (Sentiment Analysis).

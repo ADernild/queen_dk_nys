@@ -1,3 +1,4 @@
+# Libraries
 library(tidyverse)
 
 # Cleaning function
@@ -16,4 +17,3 @@ names(df) <- c("speech", "year") # changing first variable name
 
 df$speech <- clean_speech(df$speech) %>% 
   write.csv("data/nys_2001-2020_cleaned.csv")
-
