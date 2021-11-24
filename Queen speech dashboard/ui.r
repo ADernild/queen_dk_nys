@@ -1,6 +1,6 @@
 ui <- fluidPage(
   tags$head(
-    #tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
+    tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
   ),
   # Application title
   titlePanel("Queen speech central"),
