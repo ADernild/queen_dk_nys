@@ -15,5 +15,6 @@ df <- read.csv("data/new_year_speeches_2001-2020.csv")[2:3]
 
 names(df) <- c("speech", "year") # changing first variable name
 
-df$speech <- clean_speech(df$speech) %>% 
-  write.csv("data/nys_2001-2020_cleaned.csv")
+df$speech <- clean_speech(df$speech)
+
+write.csv(df, "data/nys_2001-2020_cleaned.csv", row.names = F)

@@ -15,4 +15,7 @@ tokens <- tibble(df) %>%
   anti_join(stop_words, by = "word") %>% #removing stopwords 
   count(year, word, sort = T) #frequency count
 
+unique(tokens$word)
+
 tokens$stemmed <- wordStem(tokens$word, language = "danish") #stemming
+

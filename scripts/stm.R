@@ -3,9 +3,9 @@ library(stm)
 
 df <- read.csv("nys_2001-2020_cleaned.csv")
 
-df$x <- clean_speech(df$x)
+# df$x <- clean_speech(df$x)
 
-processed <- textProcessor(df$speech, metadata = df, removestopwords = T)
+processed <- textProcessor(df$speech, metadata = df, removestopwords = T, language='da')
 
 out <- prepDocuments(processed$documents, processed$vocab, processed$meta)
 

@@ -15,7 +15,6 @@ urls <- read_html("https://www.kongehuset.dk/monarkiet-i-danmark/nytarstaler/hen
 speech_year_url <- cbind(year = 2020:2001, urls) %>% 
   as.data.frame()
 
-
 # Scraping function
 scrape <- function(link) {
   speech <- read_html(link) %>% 
@@ -32,5 +31,3 @@ speeches <- lapply(speech_year_url$urls, scrape) %>%
 df <- do.call(rbind, speeches) %>% 
   data.frame(year = speech_year_url$year) %>% 
   write.csv("data/new_year_speeches_2001-2020.csv") #saving as csv
-
-
