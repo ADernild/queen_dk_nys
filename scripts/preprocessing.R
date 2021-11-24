@@ -34,8 +34,8 @@ total_tokens <- tokens %>%
 tokens <- tokens %>% 
   rename(n_in_year = n) %>% 
   rowwise() %>% 
-  mutate(n_total = total_tokens$n[which(total_tokens$word == word)]) %>% 
-  arrange(desc(n_total), word, desc(year), desc(n_in_year))
+  mutate(n_total = total_tokens$n[which(total_tokens$word == word)]) %>% # Add total token usage to each instance of the word in n_total
+  arrange(desc(n_total), word, desc(year), desc(n_in_year)) # arrange by largest n_total, word alphabetically, largest year and lastly largest n_in_year.
 
 #unique(tokens$word)
 
