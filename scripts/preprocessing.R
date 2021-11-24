@@ -18,8 +18,8 @@ names(snowball_stopwords) <- "V1"
 
 costom_stop_words <- read.table("utils/custom_stopwords.txt", encoding = "UTF-8") # Custom stopwords defined by Max F.H. & Alexander I.D.
 
-stop_words <- full_join(berteltorp_stopwords, snowball_stopwords) %>% # Combine lists
-  full_join(costom_stop_words) %>% 
+stop_words <- full_join(berteltorp_stopwords, snowball_stopwords, by = "V1") %>% # Combine lists
+  full_join(costom_stop_words, by = "V1") %>% 
   arrange() %>%  # Sort alphabetically
   rename(word = V1)
 
