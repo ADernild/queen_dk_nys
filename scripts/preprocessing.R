@@ -26,11 +26,10 @@ stop_words <- full_join(berteltorp_stopwords, snowball_stopwords, by = "V1") %>%
 tokens <- tibble(df) %>%
   unnest_tokens(word, speech) %>% #tokenization
   anti_join(stop_words, by = "word") %>% #removing stopwords 
-  count(year, word, sort = T) #frequency count
+  count(year, word, sort = T) # frequency count each year
 
-total_tokens <- tokens %>% 
-  group_by(word) %>% 
-  count(word, sort = T )
+total_tokens <- tokens %>%
+  count(word, sort = T ) # total frequency count
 
 tokens <- tokens %>% 
   rename(n_in_year = n) %>% 
