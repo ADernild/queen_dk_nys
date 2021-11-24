@@ -1,7 +1,10 @@
 library(tidyverse)
 library(stm)
 
-df <- read.csv("data/nys_2001-2020_cleaned.csv")
+setwd("../")
+
+# df$x <- clean_speech(df$x)
+df <- read.csv("data/nys_2001-2020_cleaned.csv", encoding = "UTF-8")
 
 processed <- textProcessor(df$speech, metadata = df, removestopwords = T, language='da')
 
