@@ -4,8 +4,10 @@ library(stopwords)
 library(SnowballC)
 library(tidytext)
 
+setwd("../")
+
 # Importing data
-df <- read.csv("data/nys_2001-2020_cleaned.csv")
+df <- read.csv("data/nys_2001-2020_cleaned.csv", encoding = "UTF-8")
 
 # Tokenization, removing stopwords and stemming
 stop_words <- data.frame(word = stopwords(language = "da", source = "snowball")) # stopwords list

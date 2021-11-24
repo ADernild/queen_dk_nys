@@ -1,7 +1,9 @@
 library(tidyverse)
 library(stm)
 
-df <- read.csv("nys_2001-2020_cleaned.csv")
+setwd("../")
+
+df <- read.csv("nys_2001-2020_cleaned.csv", encoding = "UTF-8")
 
 # df$x <- clean_speech(df$x)
 

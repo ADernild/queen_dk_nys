@@ -1,6 +1,8 @@
 # Libraries
 library(tidyverse)
 
+setwd("../")
+
 # Cleaning function
 clean_speech <- function(x) {
   x %>%
@@ -11,7 +13,7 @@ clean_speech <- function(x) {
 }
 
 # Importing data
-df <- read.csv("data/new_year_speeches_2001-2020.csv")[2:3]
+df <- read.csv("data/new_year_speeches_2001-2020.csv", encoding = "UTF-8")[2:3]
 
 names(df) <- c("speech", "year") # changing first variable name
 
