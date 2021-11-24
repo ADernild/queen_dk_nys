@@ -1,0 +1,51 @@
+/* CSS for the queen speach dashboard! */
+/* Neutralize and formatting */
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+/* Backbround color */
+body{
+  background-color: #E31836 !important; /* dannebrog - Danish flag red */
+}
+
+html:before{
+  content: "";
+  position: fixed;
+  left: 0;
+  top: 32.432%;
+  z-index: 0;
+  width: 100%;
+  height: 10.811%;
+  background-color: #FFF;
+}
+
+body:before{
+  content: "";
+  position: fixed;
+  left: 32.432%;
+  top: 0;
+  z-index: 0;
+  width: 10.811%;
+  height: 100%;
+  background-color: #FFF;
+}
+
+/* Plots */
+.shiny-plot-output{
+  border: solid 1px #000;
+  width: calc(100% - 2px) !important;
+  /*height: calc(100% - 4px) !important;*/
+}
+
+.shiny-plot-output img{
+  float: left;
+  width: 100%;
+  height: 100%;
+}
+
+/* Titles */
+h2{
+  color: #fff;
+}
