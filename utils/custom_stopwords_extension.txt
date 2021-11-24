@@ -22,3 +22,4 @@ sagt
 videre
 ret
 rigt
+ro
