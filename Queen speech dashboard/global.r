@@ -8,3 +8,7 @@ library(plotly) # for interactive plots
 
 # Load data ---------------------------------------------------------------
 # Todo
+
+## Tokens -----------------------------------------------------------------
+tokens <- readRDS("../data/tokens.rds")
+
