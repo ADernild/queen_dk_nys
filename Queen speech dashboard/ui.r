@@ -17,7 +17,10 @@ ui <- fluidPage(
     
     # Show a plot of the generated distribution
     mainPanel(
-      plotOutput("distPlot")
+      plotOutput("distPlot"),
+      plotOutput("distPlot1"),
+      plotOutput("distPlot2"),
+      plotOutput("distPlot3")
     )
   )
 )

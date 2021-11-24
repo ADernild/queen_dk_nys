@@ -9,9 +9,10 @@ html, body {
 body{
   background-color: #E31836 !important; /* dannebrog - Danish flag red */
 }
+
 html:before{
   content: "";
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 32.432%;
   z-index: 0;
@@ -19,9 +20,10 @@ html:before{
   height: 10.811%;
   background-color: #FFF;
 }
+
 body:before{
   content: "";
-  position: absolute;
+  position: fixed;
   left: 32.432%;
   top: 0;
   z-index: 0;
@@ -36,6 +38,7 @@ body:before{
   width: calc(100% - 2px) !important;
   /*height: calc(100% - 4px) !important;*/
 }
+
 .shiny-plot-output img{
   float: left;
   width: 100%;
