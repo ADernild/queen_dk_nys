@@ -28,7 +28,18 @@ tokens <- tibble(df) %>%
   anti_join(stop_words, by = "word") %>% #removing stopwords 
   count(year, word, sort = T) #frequency count
 
-unique(tokens$word)
+total_tokens <- tokens %>% 
+  group_by(word) %>% 
+  count(word, sort = T )
+
+tokens <- tokens %>% 
+  rename(n_in_year = n) %>% 
+  rowwise() %>% 
+  mutate(n_total = total_tokens$n[which(total_tokens$word == word)]) %>% 
+  arrange(desc(n_total), word, desc(year), desc(n_in_year))
+
+#unique(tokens$word)
 
 tokens$stemmed <- wordStem(tokens$word, language = "danish") #stemming
 
+saveRDS(tokens,"data/tokens.rds")
