@@ -3,6 +3,7 @@ library(tidyverse)
 library(stopwords)
 library(SnowballC)
 library(tidytext)
+library(hunspell)
 
 # Importing data
 df <- read.csv("data/nys_2001-2020_cleaned.csv", encoding = "UTF-8")
@@ -27,23 +28,25 @@ tokens <- tibble(df) %>%
   count(year, word, sort = T) # frequency count each year
 
 total_tokens <- tokens %>%
-  count(word, sort = T ) # total frequency count
+  group_by(word) %>%
+  summarise(n_total = sum(n))
 
-tokens <- tokens %>% 
+tokens <- left_join(tokens, total_tokens, by="word") %>% 
   rename(n_in_year = n) %>% 
-  rowwise() %>% 
-  mutate(n_total = total_tokens$n[which(total_tokens$word == word)]) %>% # Add total token usage to each instance of the word in n_total
   arrange(desc(n_total), word, desc(year), desc(n_in_year)) # arrange by largest n_total, word alphabetically, largest year and lastly largest n_in_year.
-
-#unique(tokens$word)
 
 tokens$stemmed <- wordStem(tokens$word, language = "danish") #stemming
 tokens$stemmed_hunspell <- hunspell::hunspell_stem(tokens$word, dict = dictionary('da_DK')) # Dictionary based stemming
 
 # Count total usage of stemmed values
+total_tokens <- tokens %>%
+  group_by(stemmed) %>%
+  summarise(n_stem_total = sum(n_in_year))
 
+tokens <- tokens %>%
+  left_join(total_tokens, by="stemmed") %>% 
+  arrange(desc(n_stem_total), word, desc(n_total), desc(year), desc(n_in_year)) # arrange by largest n_total, word alphabetically, largest year and lastly largest n_in_year.
 
-# Define master word for stemmed tokens
 
 saveRDS(tokens,"data/tokens.rds")
 
