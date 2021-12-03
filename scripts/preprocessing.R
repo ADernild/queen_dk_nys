@@ -43,6 +43,7 @@ tokens$stemmed_rookie <- wordStem(tokens$word, language = "danish") #stemming
 tokens$stemmed_champion <- wordStem(tokens$stemmed_rookie, language = "danish") #stemming, but super
 tokens$stemmed_ulimate <- wordStem(tokens$stemmed_champion, language = "danish") #stemming, but super duper
 tokens$stemmed_mega <- wordStem(tokens$stemmed_ulimate, language = "danish") #stemming, but mega
+tokens$stemmed_hunspell <- hunspell::hunspell_stem(tokens$word, dict = dictionary('da_DK')) # Dictionary based stemming
 tokens <- mutate(tokens, # Check if which values could be stemmed again
                  diff_stemmed_r = ifelse(stemmed_rookie == word, 0, 1),
                  diff_stemmed_c = ifelse(stemmed_rookie == stemmed_champion, 0, 1),
@@ -58,3 +59,5 @@ tokens <- select(tokens, !c("stemmed_mega", "diff_stemmed_m")) # Removed stemmed
 # Todo: Count total usage of stemmed values
 
 saveRDS(tokens,"data/tokens.rds")
+
+hunspell::hunspell_stem(tokens$word, dict = dictionary('da_DK'))
