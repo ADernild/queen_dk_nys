@@ -8,7 +8,6 @@ clean_speech <- function(x) {
   x %>%
     str_replace_all("\\\n", " ") %>% # removes linebreaks
     str_replace_all("[^[:alnum:]]", " ") %>% # removes special characters except .,
-    str_replace_all("[0-9]", "") %>% # remove all numbers
     str_to_lower() %>% # Converts to lower case
     str_squish() # Removes leading, trailing and middle whitespace
 }
