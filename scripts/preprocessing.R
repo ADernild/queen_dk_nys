@@ -38,7 +38,7 @@ tokens <- tokens %>%
 #unique(tokens$word)
 
 tokens$stemmed <- wordStem(tokens$word, language = "danish") #stemming
-
+tokens$stemmed_hunspell <- hunspell::hunspell_stem(tokens$word, dict = dictionary('da_DK')) # Dictionary based stemming
 
 # Count total usage of stemmed values
 
@@ -47,3 +47,4 @@ tokens$stemmed <- wordStem(tokens$word, language = "danish") #stemming
 
 saveRDS(tokens,"data/tokens.rds")
 
+# hunspell::hunspell_stem(tokens$word, dict = dictionary('da_DK'))
