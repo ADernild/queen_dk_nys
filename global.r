@@ -10,5 +10,5 @@ library(plotly) # for interactive plots
 # Todo
 
 ## Tokens -----------------------------------------------------------------
-tokens <- readRDS("../data/tokens.rds")
+tokens <- readRDS("data/tokens.rds")
 
