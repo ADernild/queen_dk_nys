@@ -37,22 +37,13 @@ tokens <- tokens %>%
 
 #unique(tokens$word)
 
-tokens$stemmed_rookie <- wordStem(tokens$word, language = "danish") #stemming
-tokens$stemmed_champion <- wordStem(tokens$stemmed_rookie, language = "danish") #stemming, but super
-tokens$stemmed_ulimate <- wordStem(tokens$stemmed_champion, language = "danish") #stemming, but super duper
-tokens$stemmed_mega <- wordStem(tokens$stemmed_ulimate, language = "danish") #stemming, but mega
-tokens <- mutate(tokens, # Check if which values could be stemmed again
-                 diff_stemmed_r = ifelse(stemmed_rookie == word, 0, 1),
-                 diff_stemmed_c = ifelse(stemmed_rookie == stemmed_champion, 0, 1),
-                 diff_stemmed_u = ifelse(stemmed_champion == stemmed_ulimate, 0, 1),
-                 diff_stemmed_m = ifelse(stemmed_ulimate == stemmed_mega, 0, 1)
-                 ) %>% 
-  arrange(desc(diff_stemmed_m), desc(diff_stemmed_u), desc(diff_stemmed_c), desc(diff_stemmed_r))
+tokens$stemmed <- wordStem(tokens$word, language = "danish") #stemming
 
-tokens <- select(tokens, !c("stemmed_mega", "diff_stemmed_m")) # Removed stemmed_mega, as no further stemming was performed
 
-# Todo: Manual review of "correctness" of stemming, and choice of best stemform
+# Count total usage of stemmed values
 
-# Todo: Count total usage of stemmed values
+
+# Define master word for stemmed tokens
 
 saveRDS(tokens,"data/tokens.rds")
+
