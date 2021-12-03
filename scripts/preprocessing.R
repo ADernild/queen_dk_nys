@@ -4,8 +4,6 @@ library(stopwords)
 library(SnowballC)
 library(tidytext)
 
-setwd("../")
-
 # Importing data
 df <- read.csv("data/nys_2001-2020_cleaned.csv", encoding = "UTF-8")
 
