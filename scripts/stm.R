@@ -1,10 +1,7 @@
 library(tidyverse)
 library(stm)
 
-setwd("../")
-
-# df$x <- clean_speech(df$x)
-df <- read.csv("data/nys_2001-2020_cleaned.csv", encoding = "UTF-8")
+df <- read.csv("data/nys_2001-2020_cleaned.csv")
 
 processed <- textProcessor(df$speech, metadata = df, removestopwords = T, language='da')
 
@@ -18,4 +15,3 @@ x <- topicCorr(q_nys)
 plot.topicCorr(x)
 
 labelTopics(q_nys)
-
