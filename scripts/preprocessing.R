@@ -31,7 +31,8 @@ total_tokens <- tokens %>%
   group_by(word) %>%
   summarise(n_total = sum(n))
 
-tokens <- left_join(tokens, total_tokens, by="word") %>% 
+tokens <- tokens %>% 
+  left_join(total_tokens, by="word") %>% 
   rename(n_in_year = n) %>% 
   arrange(desc(n_total), word, desc(year), desc(n_in_year)) # arrange by largest n_total, word alphabetically, largest year and lastly largest n_in_year.
 
