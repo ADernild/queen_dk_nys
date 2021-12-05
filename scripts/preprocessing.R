@@ -3,8 +3,7 @@ library(tidyverse)
 library(stopwords)
 library(SnowballC)
 library(tidytext)
-
-setwd("../")
+library(hunspell)
 
 # Importing data
 df <- read.csv("data/nys_2001-2020_cleaned.csv", encoding = "UTF-8")
@@ -29,35 +28,27 @@ tokens <- tibble(df) %>%
   count(year, word, sort = T) # frequency count each year
 
 total_tokens <- tokens %>%
-  count(word, sort = T ) # total frequency count
+  group_by(word) %>%
+  summarise(n_total = sum(n))
 
 tokens <- tokens %>% 
+  left_join(total_tokens, by="word") %>% 
   rename(n_in_year = n) %>% 
-  rowwise() %>% 
-  mutate(n_total = total_tokens$n[which(total_tokens$word == word)]) %>% # Add total token usage to each instance of the word in n_total
   arrange(desc(n_total), word, desc(year), desc(n_in_year)) # arrange by largest n_total, word alphabetically, largest year and lastly largest n_in_year.
 
-#unique(tokens$word)
-
-tokens$stemmed_rookie <- wordStem(tokens$word, language = "danish") #stemming
-tokens$stemmed_champion <- wordStem(tokens$stemmed_rookie, language = "danish") #stemming, but super
-tokens$stemmed_ulimate <- wordStem(tokens$stemmed_champion, language = "danish") #stemming, but super duper
-tokens$stemmed_mega <- wordStem(tokens$stemmed_ulimate, language = "danish") #stemming, but mega
+tokens$stemmed <- wordStem(tokens$word, language = "danish") #stemming
 tokens$stemmed_hunspell <- hunspell::hunspell_stem(tokens$word, dict = dictionary('da_DK')) # Dictionary based stemming
-tokens <- mutate(tokens, # Check if which values could be stemmed again
-                 diff_stemmed_r = ifelse(stemmed_rookie == word, 0, 1),
-                 diff_stemmed_c = ifelse(stemmed_rookie == stemmed_champion, 0, 1),
-                 diff_stemmed_u = ifelse(stemmed_champion == stemmed_ulimate, 0, 1),
-                 diff_stemmed_m = ifelse(stemmed_ulimate == stemmed_mega, 0, 1)
-                 ) %>% 
-  arrange(desc(diff_stemmed_m), desc(diff_stemmed_u), desc(diff_stemmed_c), desc(diff_stemmed_r))
 
-tokens <- select(tokens, !c("stemmed_mega", "diff_stemmed_m")) # Removed stemmed_mega, as no further stemming was performed
+# Count total usage of stemmed values
+total_tokens <- tokens %>%
+  group_by(stemmed) %>%
+  summarise(n_stem_total = sum(n_in_year))
 
-# Todo: Manual review of "correctness" of stemming, and choice of best stemform
+tokens <- tokens %>%
+  left_join(total_tokens, by="stemmed") %>% 
+  arrange(desc(n_stem_total), word, desc(n_total), desc(year), desc(n_in_year)) # arrange by largest n_total, word alphabetically, largest year and lastly largest n_in_year.
 
-# Todo: Count total usage of stemmed values
 
 saveRDS(tokens,"data/tokens.rds")
 
-hunspell::hunspell_stem(tokens$word, dict = dictionary('da_DK'))
+# hunspell::hunspell_stem(tokens$word, dict = dictionary('da_DK'))

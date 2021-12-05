@@ -8,7 +8,6 @@ find
 finde
 vort
 går
-måtte
 både
 såvel
 del
@@ -21,8 +20,6 @@ véd
 netop
 ske
 sker
-hurtig
-hurtigt
 dets
 gang
 dag
@@ -95,4 +92,4 @@ gid
 40
 75
 784
-
+c
