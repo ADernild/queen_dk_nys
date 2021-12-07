@@ -1,6 +1,7 @@
 # Library
 library(dplyr)
 library(stringr)
+# devtools::install_github("ADernild/stm")
 library(stm)
 library(stopwords)
 library(SnowballC)
@@ -25,6 +26,7 @@ out <- prepDocuments(processed$documents, processed$vocab, processed$meta)
 
 q_nys <- stm(out$documents, out$vocab, K = 0, prevalence =~ s(year),
              max.em.its = 100, data = out$meta, init.type = "Spectral")
+
 
 stm_model <- list(mod = q_nys,
                   docs = out$documents)
