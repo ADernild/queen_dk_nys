@@ -117,6 +117,16 @@ for (i_word in unique(tokens$word)) {
 # tokens <- tokens %>%
 #   mutate(sentiment = analyzeSentiment(word, removeStopwords = FALSE, language = "danish")[["SentimentGI"]])
 
+## Count total occurrences of headword words ----
+total_tokens <- tokens %>%
+  group_by(headword) %>%
+  summarise(n_hword_total = sum(n_in_year))
+
+tokens <- tokens %>%
+  left_join(total_tokens, by="headword") %>% 
+  arrange(desc(n_hword_total), word, desc(n_lemma_total), desc(n_stem_total), desc(n_total), desc(year), desc(n_in_year)) # arrange by largest n_hword_total
+
+
 ## Add sentiment labels ----
 tokens <- tokens %>%
   mutate(sentiment = ifelse(polarity>= 2, "Positiv",
