@@ -43,17 +43,28 @@ for (i_word in unique(tokens$stemmed)) {
 }
 
 ### ... Through lemma loop ----
+# Note: lemmatized words can contain multiple words and needs to be split
+# Unique instances
 uniqe_lemma <- unique(tokens$lemma)
+# Loop to split
 for(row in uniqe_lemma){
+  # Detect multiple words
   if(grepl(",", row, fixed = TRUE)){
+    # Split strings
     row_strings <- strsplit(row, ",")
+    # Add each string as a new word
     for (string in row_strings) {
       uniqe_lemma <- c(uniqe_lemma, string)
     }
+    # Remove instance of multiple words
     uniqe_lemma <- uniqe_lemma[uniqe_lemma!=row]
   }
 }
+
+# Filter redundant words
 uniqe_lemma <- unique(uniqe_lemma)
+
+# Loop unique lemmatized words
 for (i_word in uniqe_lemma) {
   if(i_word %in% dk_sentiment_headword$headword){
     tokens <- tokens %>%
