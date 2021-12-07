@@ -1,7 +1,7 @@
 library(tidyverse)
 library(SentimentAnalysis) # for sentiment analysis
 
-dk_sentiment <- read.csv("utils/2a_fullform_headword_polarity.csv", encoding = "UTF-8", header = FALSE, sep = "\t")
+dk_sentiment <- read.csv("https://raw.githubusercontent.com/dsldk/danish-sentiment-lexicon/main/2a_fullform_headword_polarity.csv", encoding = "UTF-8", header = FALSE, sep = "\t")
 names(dk_sentiment) <- c("word_form", "headword", "homograph_number", "POS", "DDO_headword_ID", "polarity_label_headword")
 # Source: Det Danske Sprog- og Litteraturselskab (DSL, Society for Danish Language and Literature) and Center for Sprogteknologi, Københavns Universitet (CST, Centre for Language Technology, University of Copenhagen)
 # Source origin: https://github.com/dsldk/danish-sentiment-lexicon
