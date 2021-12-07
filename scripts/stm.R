@@ -1,6 +1,7 @@
 # Library
 library(dplyr)
 library(stringr)
+# devtools::install_github("ADernild/stm")
 library(stm)
 library(stopwords)
 library(SnowballC)
@@ -9,7 +10,7 @@ library(networkD3)
 
 # Reading data
 df <- read.csv("data/nys_2001-2020_cleaned.csv")
-
+df <- readRDS("data/tokens.rds")
 # Making stopwords list
 stop_words <- read.csv("utils/custom_stopwords.txt", header=F) %>% 
   rbind(read.csv("utils/stopord.txt", header=F)) %>% 

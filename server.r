@@ -1,14 +1,16 @@
 server <- function(input, output) {
-  output$topicmodel <- renderVis({
-    if(!is.null(input$nTerms)){
-      ifelse(input$modelVis == "lda_model",
-             with(lda_model,
-                  createJSON(phi, theta, doc.length, vocab, term.frequency,
-                             R = input$nTerms)),
-             with(stm_model,
-                  toLDAvisJson(mod, docs, R = input$nTerms)))
-    }
-  })
+  output$topicVis <- renderVis({
+      ifelse(input$topicmodel == "lda_model",
+             if(!is.null(input$nTerms)){
+              with(lda_model,
+                    createJSON(phi, theta, doc.length, vocab, term.frequency,
+                             R = input$nTerms))
+               },
+             if(!is.null(input$nTerms)){
+              with(stm_model,
+                    toLDAvisJson(mod, docs, R = input$nTerms))}
+      )
+    })
   
   sentiment_of_words_data <- reactive({
     data <- tokens %>%
@@ -23,8 +25,8 @@ server <- function(input, output) {
   output$sentiment_of_words <- renderHighchart({
     data <- sentiment_of_words_data()
     hchart(data,
-            hcaes(x = headword, y = polarity, group = sentiment_true),
-            type="column") %>% 
+           hcaes(x = headword, y = polarity, group = sentiment_true),
+           type="column") %>% 
       hc_chart(
         inverted = FALSE
       ) %>% 
@@ -40,6 +42,11 @@ server <- function(input, output) {
       ) %>% 
       hc_legend(
         reversed = TRUE
+      ) %>% 
+      hc_tooltip(
+        pointFormat = "<span style=\"color: {point.color} \">\u25CF</span> {point.series.name}: {point.y}",
+        headerFormat = "<b>{point.key}</b><br>",
+        shared = TRUE
       ) %>% 
       hc_plotOptions(
         series = list(
