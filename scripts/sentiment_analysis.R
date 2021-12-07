@@ -42,6 +42,20 @@ for (i_word in unique(tokens$stemmed)) {
   }
 }
 
+### ... Through lemma loop ----
+for (i_word in unique(tokens$lemma)) {
+  if(i_word %in% dk_sentiment_headword$headword){
+    tokens <- tokens %>%
+      rowwise() %>% 
+      mutate(polarity = ifelse(lemma == i_word, dk_sentiment_headword[dk_sentiment_headword$headword == i_word,]$polarity[1], polarity))
+  }
+  if(i_word %in% dk_sentiment_word_form$word_from){
+    tokens <- tokens %>%
+      rowwise() %>% 
+      mutate(polarity = ifelse(lemma == i_word, dk_sentiment_word_form[dk_sentiment_word_form$word_from == i_word,]$polarity[1], polarity))
+  }
+}
+
 ### ... Through word loop ----
 for (i_word in unique(tokens$word)) {
   if(i_word %in% dk_sentiment_headword$headword){
@@ -88,4 +102,5 @@ tokens <- tokens %>%
   mutate(sentiment_true = ifelse(polarity > 0, "Positiv",
                                  ifelse(polarity < 0, "Negativ", "Neutral")))
 
+## Save Token ----
 saveRDS(tokens,"data/tokens.rds")
