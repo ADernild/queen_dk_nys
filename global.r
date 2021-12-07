@@ -6,6 +6,7 @@ library(plotly) # for interactive plots
 #library(r2d3) # for advanced interactive plots
 library(LDAvis)
 library(stm)
+library(highcharter)
 
 # Load data ---------------------------------------------------------------
 # Todo
