@@ -15,3 +15,6 @@ library(highcharter)
 tokens <- readRDS("data/tokens.rds")
 lda_model <- readRDS("data/lda_model.rds")
 stm_model <- readRDS("data/stm_model.rds")
+
+# Number of distinct headwords
+n_dist_t_headword <- nrow(distinct(tokens, headword))
