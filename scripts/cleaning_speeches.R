@@ -1,5 +1,6 @@
 # Libraries
-library(tidyverse)
+library(stringr)
+library(dplyr)
 
 setwd("../")
 
@@ -7,16 +8,45 @@ setwd("../")
 clean_speech <- function(x) {
   x %>%
     str_replace_all("\\\n", " ") %>% # removes linebreaks
-    str_replace_all("[^[:alnum:]]", " ") %>% # removes special characters except .,
+    str_replace_all("[^[:alnum:]]", " ") %>% # removes special characters
+    str_to_lower() %>% # Converts to lower case
+    str_squish() # Removes leading, trailing and middle whitespace
+}
+
+clean_sentences <- function(x) {
+  x %>%
+    str_replace_all("\\\n", " ") %>% # removes linebreaks
+    str_replace_all("[^[:alnum:].,]", " ") %>% # removes special characters except .,
     str_to_lower() %>% # Converts to lower case
     str_squish() # Removes leading, trailing and middle whitespace
 }
 
 # Importing data
-df <- read.csv("data/new_year_speeches_2001-2020.csv", encoding = "UTF-8")[2:3]
-
+df <- read.csv("data/new_year_speeches_2001-2020.csv", encoding = "UTF-8")
 names(df) <- c("speech", "year") # changing first variable name
 
-df$speech <- clean_speech(df$speech)
+# Cleaning sentences i.e., leaving in the . (dots) for later separation
+sentences <- data.frame(cbind(df$year, clean_sentences(df$speech)))
 
+# Grouping speaches by year and separating into sentences by . (dots)
+sentences <- sentences %>% 
+  group_by(X1) %>% 
+  summarize(
+    sentence = strsplit(X2, "[.]")
+  )
+
+# function for making long data.frame i.e., a row per sentence
+unnest_sentences <- function(x) {
+  y <- data.frame(years=c(), sentences=c())
+  for (i in 1:length(x$sentence)) {
+    y <- rbind(y, data.frame(years=rep(x$X1[i], length(x$sentence[[i]])), sentences=x$sentence[[i]]))
+  }
+  y
+}
+
+sentences <- unnest_sentences(sentences)
+write.csv(sentences, "data/nys_sentences.csv", row.names = F)
+
+# Cleaning speech of each year
+df$speech <- clean_speech(df$speech)
 write.csv(df, "data/nys_2001-2020_cleaned.csv", row.names = F)

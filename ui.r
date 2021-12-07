@@ -6,7 +6,7 @@ ui <- fluidPage(
   titlePanel("Queen speech central"),
   
   # Sidebar with a slider input for number of bins
-  radioButtons("topicmodel", "Topicmodel", list("LDA" = "lda_model", "STM" = "stm_model")),
+  radioButtons("topicmodel", "Topicmodel", list("STM" = "stm_model", "LDA" = "lda_model")),
   sliderInput("nTerms", "Number of terms to display", min = 10, max = 50, value = 30),
   
   # Show a plot of the generated distribution

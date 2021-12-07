@@ -10,7 +10,7 @@ library(networkD3)
 
 # Reading data
 df <- read.csv("data/nys_2001-2020_cleaned.csv")
-
+df <- readRDS("data/tokens.rds")
 # Making stopwords list
 stop_words <- read.csv("utils/custom_stopwords.txt", header=F) %>% 
   rbind(read.csv("utils/stopord.txt", header=F)) %>% 
@@ -26,7 +26,6 @@ out <- prepDocuments(processed$documents, processed$vocab, processed$meta)
 
 q_nys <- stm(out$documents, out$vocab, K = 0, prevalence =~ s(year),
              max.em.its = 100, data = out$meta, init.type = "Spectral")
-
 
 stm_model <- list(mod = q_nys,
                   docs = out$documents)
