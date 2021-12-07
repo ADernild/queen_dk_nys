@@ -43,16 +43,27 @@ for (i_word in unique(tokens$stemmed)) {
 }
 
 ### ... Through lemma loop ----
-for (i_word in unique(tokens$lemma)) {
+uniqe_lemma <- unique(tokens$lemma)
+for(row in uniqe_lemma){
+  if(grepl(",", row, fixed = TRUE)){
+    row_strings <- strsplit(row, ",")
+    for (string in row_strings) {
+      uniqe_lemma <- c(uniqe_lemma, string)
+    }
+    uniqe_lemma <- uniqe_lemma[uniqe_lemma!=row]
+  }
+}
+uniqe_lemma <- unique(uniqe_lemma)
+for (i_word in uniqe_lemma) {
   if(i_word %in% dk_sentiment_headword$headword){
     tokens <- tokens %>%
       rowwise() %>% 
-      mutate(polarity = ifelse(lemma == i_word, dk_sentiment_headword[dk_sentiment_headword$headword == i_word,]$polarity[1], polarity))
+      mutate(polarity = ifelse(i_word %in% unlist(strsplit(lemma, ",")), dk_sentiment_headword[dk_sentiment_headword$headword == i_word,]$polarity[1], polarity))
   }
   if(i_word %in% dk_sentiment_word_form$word_from){
     tokens <- tokens %>%
       rowwise() %>% 
-      mutate(polarity = ifelse(lemma == i_word, dk_sentiment_word_form[dk_sentiment_word_form$word_from == i_word,]$polarity[1], polarity))
+      mutate(polarity = ifelse(i_word %in% unlist(strsplit(lemma, ",")), dk_sentiment_word_form[dk_sentiment_word_form$word_from == i_word,]$polarity[1], polarity))
   }
 }
 
