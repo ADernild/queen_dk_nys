@@ -50,6 +50,7 @@ tokens <- tokens %>%
 # Stemming ----
 tokens$stemmed <- wordStem(tokens$word, language = "danish") #stemming
 # tokens$stemmed_hunspell <- hunspell::hunspell_stem(tokens$word, dict = dictionary('da_DK')) # Dictionary based stemming
+# hunspell::hunspell_stem(tokens$word, dict = dictionary('da_DK'))
 
 ## Count total occurrences of stemmed words ----
 # Count total usage of stemmed values
@@ -70,7 +71,7 @@ saveRDS(lemmi, "data/whateveryoulikeittookalddenlemminicejegveddetikkelimmitizat
 ## Implement legitimized references into tokens ----
 tokens <- tokens %>%
   rowwise() %>% 
-  mutate(lemma = lemmi[lemmi$token == word,]$lemma[1])
+  mutate(lemma = paste(unique(lemmi[lemmi$token == word,]$lemma), collapse=","))
 
 ## Count total occurrences of limmitized words ----
 total_tokens <- tokens %>%
@@ -86,4 +87,3 @@ tokens <- tokens %>%
 saveRDS(tokens,"data/tokens.rds")
 
 
-# hunspell::hunspell_stem(tokens$word, dict = dictionary('da_DK'))
