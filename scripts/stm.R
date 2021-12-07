@@ -1,3 +1,4 @@
+# Library
 library(dplyr)
 library(stringr)
 library(stm)
@@ -6,21 +7,31 @@ library(SnowballC)
 library(igraph)
 library(networkD3)
 
+# Reading data
 df <- read.csv("data/nys_2001-2020_cleaned.csv")
 
+# Making stopwords list
 stop_words <- read.csv("utils/custom_stopwords.txt", header=F) %>% 
   rbind(read.csv("utils/stopord.txt", header=F)) %>% 
-  rbind(stopwords(language = "da", source = "snowball"))
+  rbind(stopwords::stopwords(language = "da", source = "snowball")) %>% 
+  unique() %>%
+  rbind("danmark", "danske") %>% 
+  rename(word = V1)
 
-names(stop_words) <- "word"
-
+# STM 
 processed <- textProcessor(df$speech, metadata = df, stem=F, customstopwords = stop_words$word)
 
 out <- prepDocuments(processed$documents, processed$vocab, processed$meta)
 
 q_nys <- stm(out$documents, out$vocab, K = 0, prevalence =~ s(year),
-             max.em.its = 75, data = out$meta, init.type = "Spectral",
-             control = list(seed = 1337))
+             max.em.its = 100, data = out$meta, init.type = "Spectral")
+
+stm_model <- list(mod = q_nys,
+                  docs = out$documents)
+
+# Saving model
+saveRDS(stm_model, file = "data/stm_model.rds")
+
 
 # stmCorrViz::stmCorrViz(q_nys, "test.html", documents_raw = df$speech, documents_matrix = processed$documents)
 
@@ -35,6 +46,7 @@ lift <- topic_labels$lift %>%
   group_by(row_number()) %>% 
   summarize(topic = paste(c(V1, V2, V3, V4, V5, V6, V7), collapse="; "))
 
+# Finding speeches and words related to topics
 thoughts <- findThoughts(q_nys, processed$meta$speech)
 
 docs_containing_topics <- thoughts$index
