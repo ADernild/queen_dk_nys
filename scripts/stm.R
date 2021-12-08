@@ -1,7 +1,7 @@
 # Library
 library(dplyr)
 library(stringr)
-# devtools::install_github("ADernild/stm")
+# devtools::install_github("ADernild/stm") # Made some changes to STM package
 library(stm)
 library(stopwords)
 library(SnowballC)
@@ -10,7 +10,16 @@ library(networkD3)
 
 # Reading data
 df <- read.csv("data/nys_2001-2020_cleaned.csv")
-df <- readRDS("data/tokens.rds")
+sentences <- read.csv("data/nys_sentences.csv")
+tokens <- readRDS("data/tokens.rds")
+
+df <- df %>% 
+  left_join(tokens %>% 
+  group_by(year) %>% 
+  summarize(
+    polarity = mean(polarity)
+  ), by = "year")
+
 # Making stopwords list
 stop_words <- read.csv("utils/custom_stopwords.txt", header=F) %>% 
   rbind(read.csv("utils/stopord.txt", header=F)) %>% 
@@ -20,15 +29,34 @@ stop_words <- read.csv("utils/custom_stopwords.txt", header=F) %>%
   rename(word = V1)
 
 # STM 
-processed <- textProcessor(df$speech, metadata = df, stem=F, customstopwords = stop_words$word)
+processed <- textProcessor(df$sentences, metadata = df, stem=T, customstopwords = stop_words$word, language = "danish")
 
 out <- prepDocuments(processed$documents, processed$vocab, processed$meta)
 
-q_nys <- stm(out$documents, out$vocab, K = 0, prevalence =~ s(year),
-             max.em.its = 100, data = out$meta, init.type = "Spectral")
+
+best_model <- searchK(out$documents, out$vocab, K=c(5, 10, 20, 30, 40, 50),
+                      init.type = "Spectral", proportion = 0.1,
+                      prevalence =~ years + polarity, data=out$meta)
+
+plot.searchK(best_model)
+
+
+# STM 
+processed_sent <- textProcessor(sentences$sentences, metadata = sentences, stem=T, customstopwords = stop_words$word, language = "danish")
+
+out_sent <- prepDocuments(processed_sent$documents, processed_sent$vocab, processed_sent$meta)
+set.seed(1337)
+best_model <- searchK(out_sent$documents, out_sent$vocab, K=c(5, 10, 20, 30, 40, 50),
+                      init.type = "Spectral", proportion = 0.1,
+                      prevalence =~s(years), data=out_sent$meta)
+
+plot.searchK(best_model)
+
+q_nys <- stm(out$documents, out$vocab, K = 20, prevalence =~years + polarity,
+             max.em.its = 300, data = out$meta, init.type = "Spectral")
 
 stm_model <- list(mod = q_nys,
-                  docs = out$documents)
+                  docs = out_sent$documents)
 
 # Saving model
 saveRDS(stm_model, file = "data/stm_model.rds")
