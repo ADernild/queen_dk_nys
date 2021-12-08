@@ -54,4 +54,9 @@ server <- function(input, output) {
         )
       )
   })
+
+  # wiki_infobox ------------------------------------------------------------
+  output$wiki_infobox <- renderUI({
+    includeHTML("www/queen_info_table.html")
+  })
 }

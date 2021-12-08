@@ -8,6 +8,16 @@ ui <- fluidPage(
   # Sidebar with a slider input for number of bins
   radioButtons("topicmodel", "Topicmodel", list("STM" = "stm_model", "LDA" = "lda_model")),
   sliderInput("nTerms", "Number of terms to display", min = 10, max = 50, value = 30),
+  column(12,
+         column(9,
+                div(id = "intoduction",
+                  p("Velkommen til. Dette er et dashboard til at se information om Dronning Margretes nytårstaler. Du kan se information hvilke ord hun siger mest, sentimentet i hendes taler, hvilke lande hun snakker om og hvilke emner hun taler mest om. Du kan sevlfølgelig bruge filtrene til at sætte dine specifikationer til hvad du gerne vil se. God fornøjelse. Gud bevare Danmark.")
+                ),
+         ),
+         column(3,
+                htmlOutput("wiki_infobox")
+         )
+  ),
   
   # Show a plot of the generated distribution
   visOutput("topicVis"),
