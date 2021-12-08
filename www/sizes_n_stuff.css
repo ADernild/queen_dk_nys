@@ -5,10 +5,17 @@ html, body {
   height: 100%;
 }
 
-/* columns */
+/* Titles */
+h2, h3{
+  margin: 1vh 0;
+  clear: both;
+}
+
+/* Columns */
 .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7,
-.col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12{
-  padding: 2%;
+.col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
+  padding: 1vh 1.5vw;
+  border: 3px solid #000;
   margin-bottom: 2vh;
 }
 
@@ -16,6 +23,11 @@ div .col-sm-1, div .col-sm-2, div .col-sm-3, div .col-sm-4, div .col-sm-5,
 div .col-sm-6, div .col-sm-7, div .col-sm-8, div .col-sm-9, div .col-sm-10,
 div .col-sm-11 {
   margin-right: 2%;
+  border: 2px solid #CCC;
+}
+
+div .col-sm-12{
+  border: 2px solid #CCC;
 }
 
 div .col-sm-1{
@@ -117,10 +129,15 @@ div .col-sm-11:last-child{
   margin-right: 0;
 }
 
+/* Shiny input */
+.shiny-input-container:not(.shiny-input-container-inline){
+  float: left;
+}
+
 /* Topic Model */
 #topicVis{
   position: relative;
   width: 100%;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
