@@ -12,7 +12,6 @@ tbls <- html_nodes(webpage, ".infobox")
 queen_info_table <- tbls[1]
 queen_info_table <- as.character(queen_info_table)
 
-saveRDS(queen_info_table, "data/queen_info_table.rds")
 fileConn<-file("www/queen_info_table.html", encoding = "UTF-8")
 writeLines(queen_info_table, fileConn)
 close(fileConn)
