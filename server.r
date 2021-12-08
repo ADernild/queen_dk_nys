@@ -1,4 +1,5 @@
 server <- function(input, output) {
+  # topicVis ----------------------------------------------------------------
   output$topicVis <- renderVis({
       ifelse(input$topicmodel == "lda_model",
              if(!is.null(input$nTerms)){
@@ -11,7 +12,8 @@ server <- function(input, output) {
                     toLDAvisJson(mod, docs, R = input$nTerms))}
       )
     })
-  
+
+  # sentiment_of_words_data -------------------------------------------------
   sentiment_of_words_data <- reactive({
     data <- tokens %>%
       filter(polarity != 0) %>% 
@@ -22,6 +24,7 @@ server <- function(input, output) {
       arrange(polarity)
   })
   
+  # sentiment_of_words ------------------------------------------------------
   output$sentiment_of_words <- renderHighchart({
     data <- sentiment_of_words_data()
     hchart(data,
