@@ -7,6 +7,8 @@ library(plotly) # for interactive plots
 library(LDAvis)
 library(stm) # for stm models
 library(highcharter) # for table display
+library(shinydashboard)
+
 
 # Load data ---------------------------------------------------------------
 tokens <- readRDS("data/tokens.rds") # All tokens, filtered

@@ -1,5 +1,17 @@
 server <- function(input, output) {
-  # topicVis ----------------------------------------------------------------
+
+  # Sidebar Menu -------------------------------------------------------------
+  output$menu <- renderMenu({
+    sidebarMenu(
+      menuItem("Welcome and about", tabName = "index", icon = icon("home")),
+      menuItem("Topic model", tabName = "tm", icon = icon("comment-dots")),
+      menuItem("Sentiments", tabName = "sentiment", icon = icon("theater-masks")),
+      menuItem("Map", tabName = "map", icon = icon("globe-europe")),
+      menuItem("Word statistics", tabName = "stats", icon = icon("chart-pie"))
+    )
+  })
+  
+    # topicVis ----------------------------------------------------------------
   output$topicVis <- renderVis({
       ifelse(input$topicmodel == "lda_model",
              if(!is.null(input$nTerms)){
