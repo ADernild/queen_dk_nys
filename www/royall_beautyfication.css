@@ -1,13 +1,11 @@
 /* CSS for the queen speach dashboard! */
-/* Neutralize and formatting */
-html, body {
-  width: 100%;
-  height: 100%;
-}
-
 /* Backbround color */
 body{
   background-color: #E31836 !important; /* dannebrog - Danish flag red */
+}
+
+.container-fluid{
+  padding-bottom: 6vh;
 }
 
 html:before{
@@ -32,6 +30,14 @@ body:before{
   background-color: #FFF;
 }
 
+/* columns */
+.col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7,
+.col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12{
+  background-color: rgba(255,255,255,0.9);
+  border-radius: 20px;
+}
+
+
 /* Plots */
 .shiny-plot-output{
   border: solid 1px #000;
@@ -46,6 +52,17 @@ body:before{
 }
 
 /* Titles */
-h2{
-  color: #fff;
+#main_title{
+  color: #000;
+  text-shadow:
+    -1px -1px 0 rgba(255,255,255,0.4),
+    1px -1px 0 rgba(255,255,255,0.4),
+    -1px 1px 0 rgba(255,255,255,0.4),
+    1px 1px 0 rgba(255,255,255,0.4);
+}
+
+/* Introduction */
+#intoduction {
+  border-bottom: 3px solid #000;
+  margin-bottom: 2vh;
 }
