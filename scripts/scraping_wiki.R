@@ -12,6 +12,11 @@ tbls <- html_nodes(webpage, ".infobox")
 queen_info_table <- tbls[1]
 queen_info_table <- as.character(queen_info_table)
 
+# Replace links ----
+queen_info_table <- gsub("/wiki/", "https://da.wikipedia.org/wiki/", queen_info_table)
+queen_info_table <- gsub("href", "target='_blank' href", queen_info_table)
+
+# Save as html ----
 fileConn<-file("www/queen_info_table.html", encoding = "UTF-8")
 writeLines(queen_info_table, fileConn)
 close(fileConn)
