@@ -12,10 +12,11 @@ library(highcharter)
 # Todo
 
 ## Tokens -----------------------------------------------------------------
-tokens <- readRDS("data/tokens.rds")
+tokens <- readRDS("data/tokens.rds") # All tokens, filtered
 lda_model <- readRDS("data/lda_model.rds")
 stm_model <- readRDS("data/stm_model.rds")
-lemma <- readRDS("lemma.rds")
+lemma <- readRDS("data/lemma.rds") # All lematized values unfiltered
+sentiment <- readRDS("data/sentiments.rds") # Sentiment for year
 
 # Number of distinct headwords
 n_dist_t_headword <- nrow(distinct(tokens, headword))
