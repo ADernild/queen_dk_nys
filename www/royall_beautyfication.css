@@ -4,10 +4,6 @@ body{
   background-color: #E31836 !important; /* dannebrog - Danish flag red */
 }
 
-.container-fluid{
-  padding-bottom: 6vh;
-}
-
 html:before{
   content: "";
   position: fixed;
@@ -30,13 +26,23 @@ body:before{
   background-color: #FFF;
 }
 
-/* columns */
+/* Text */
+.bold{
+  font-weight: bold;
+}
+
+/* Main wrapper */
+.container-fluid{
+  padding-bottom: 6vh;
+}
+
+
+/* Columns */
 .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7,
 .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12{
   background-color: rgba(255,255,255,0.9);
   border-radius: 20px;
 }
-
 
 /* Plots */
 .shiny-plot-output{
@@ -85,5 +91,3 @@ body:before{
 #wiki_infobox > .infobox > tbody > tr:first-child th{
   background-color: #c1c1c1 !important;
 }
-
-

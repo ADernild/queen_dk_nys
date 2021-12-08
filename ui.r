@@ -9,7 +9,8 @@ ui <- fluidPage(
   div(
        column(9,
               div(id = "intoduction",
-                p("Velkommen til. Dette er et dashboard til at se information om Dronning Margretes nytårstaler. Du kan se information hvilke ord hun siger mest, sentimentet i hendes taler, hvilke lande hun snakker om og hvilke emner hun taler mest om. Du kan sevlfølgelig bruge filtrene til at sætte dine specifikationer til hvad du gerne vil se. God fornøjelse. Gud bevare Danmark.")
+                p("Velkommen til. Dette er et dashboard til at se information om Dronning Margretes nytårstaler. Du kan se information hvilke ord hun siger mest, sentimentet i hendes taler, hvilke lande hun snakker om og hvilke emner hun taler mest om. Du kan sevlfølgelig bruge filtrene til at sætte dine specifikationer til hvad du gerne vil se. God fornøjelse."),
+                p(class="bold", "Gud bevare Danmark.")
               ),
               column(12,
                       h2("Topic model"),
