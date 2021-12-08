@@ -66,7 +66,7 @@ tokens <- tokens %>%
 lemmi <- udpipe(df$speech, "danish")
 lemmi <- lemmi[colSums(!is.na(lemmi)) > 0]
 
-saveRDS(lemmi, "data/whateveryoulikeittookalddenlemminicejegveddetikkelimmitizationwhateverjustsomethingsomethingwhatever.rds")
+saveRDS(lemmi, "data/lemma.rds")
 
 ## Implement legitimized references into tokens ----
 tokens <- tokens %>%
