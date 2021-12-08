@@ -134,6 +134,19 @@ div .col-sm-11:last-child{
   float: left;
 }
 
+/* Infobox */
+#wiki_infobox{
+  max-height: 100vh;
+  overflow: auto;
+}
+.infobox{
+  width: 100% !important;
+}
+
+.hlist{
+  display: none;
+}
+
 /* Topic Model */
 #topicVis{
   position: relative;

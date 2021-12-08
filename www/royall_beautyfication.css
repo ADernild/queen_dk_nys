@@ -66,3 +66,24 @@ body:before{
   border-bottom: 3px solid #000;
   margin-bottom: 2vh;
 }
+
+/* Infobox */
+#wiki_infobox .infobox tr{
+  border-top: 1px solid #CCC;
+}
+
+#wiki_infobox .infobox tr:first-child,
+#wiki_infobox .infobox tr:last-child{
+  border-top:0;
+}
+
+#wiki_infobox .infobox tr th,
+#wiki_infobox .infobox tr td{
+  background-color: transparent !important;
+}
+
+#wiki_infobox > .infobox > tbody > tr:first-child th{
+  background-color: #c1c1c1 !important;
+}
+
+

@@ -22,7 +22,13 @@ ui <- fluidPage(
                      )
        ),
        column(3,
-              htmlOutput("wiki_infobox")
+              div(id="wiki_infobox_wrap",
+                  a(href="https://da.wikipedia.org/wiki/Margrethe_2.",
+                    target= "_blank",
+                    "Info indhentet via wikipedia."
+                    ),
+                  htmlOutput("wiki_infobox")
+              )
        )
   ),
   
