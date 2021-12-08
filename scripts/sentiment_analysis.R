@@ -1,5 +1,5 @@
 library(tidyverse)
-library(SentimentAnalysis) # for sentiment analysis
+# library(SentimentAnalysis) # for sentiment analysis
 
 # Get sentiments from a sentiment library ----
 dk_sentiment <- read.csv("https://raw.githubusercontent.com/dsldk/danish-sentiment-lexicon/main/2a_fullform_headword_polarity.csv", encoding = "UTF-8", header = FALSE, sep = "\t")
@@ -117,6 +117,16 @@ for (i_word in unique(tokens$word)) {
 # tokens <- tokens %>%
 #   mutate(sentiment = analyzeSentiment(word, removeStopwords = FALSE, language = "danish")[["SentimentGI"]])
 
+## Count total occurrences of headword words ----
+total_tokens <- tokens %>%
+  group_by(headword) %>%
+  summarise(n_hword_total = sum(n_in_year))
+
+tokens <- tokens %>%
+  left_join(total_tokens, by="headword") %>% 
+  arrange(desc(n_hword_total), word, desc(n_lemma_total), desc(n_stem_total), desc(n_total), desc(year), desc(n_in_year)) # arrange by largest n_hword_total
+
+
 ## Add sentiment labels ----
 tokens <- tokens %>%
   mutate(sentiment = ifelse(polarity>= 2, "Positiv",
@@ -126,3 +136,22 @@ tokens <- tokens %>%
 
 ## Save Token ----
 saveRDS(tokens,"data/tokens.rds")
+
+# Calculate sentiment of each year ----
+sentiments <- tokens %>% 
+  rowwise() %>% 
+  mutate(polarity_pos = as.numeric(ifelse(polarity > 0, polarity, 0)),
+         polarity_neg = as.numeric(ifelse(polarity < 0, polarity, 0))) %>% 
+  group_by(year) %>%
+  summarise(sentiment = sum(n_in_year*polarity),
+            sentiment_pos = sum(n_in_year*polarity_pos),
+            sentiment_neg = sum(n_in_year*polarity_neg),
+            average_sentiment = mean(n_in_year*polarity),
+            n_words = sum(n_in_year)
+  ) %>% 
+  rowwise() %>% 
+  mutate(sentiment_label = ifelse(sentiment>0, "Positive", "Negative"))
+
+## Save sentiments ----
+saveRDS(sentiments, "data/sentiments.rds")
+
