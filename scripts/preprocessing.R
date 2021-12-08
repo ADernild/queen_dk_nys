@@ -86,4 +86,4 @@ tokens <- tokens %>%
 # Save tokens ----
 saveRDS(tokens,"data/tokens.rds")
 
-
+# Extract countries ----
