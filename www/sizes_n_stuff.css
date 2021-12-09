@@ -22,6 +22,7 @@ h2, h3{
 .skin-blue .main-header .logo{
   display: none;
 }
+
 .skin-blue .main-header .navbar .sidebar-toggle,
 .skin-blue .main-header .navbar .sidebar-toggle:hover{
   width: 100%;

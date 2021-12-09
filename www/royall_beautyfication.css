@@ -1,7 +1,7 @@
 /* CSS for the queen speach dashboard! */
 /* Backbround color */
 .content-wrapper{
-  background-color: #E31836 !important; /* dannebrog - Danish flag red */
+  background-color: #E31836 !important; /* dannebrog red - Danish flag red */
 }
 
 .content:before{
@@ -11,7 +11,7 @@
   top: 32.432%;
   width: 100%;
   height: 10.811%;
-  background-color: #FFF;
+  background-color: #F5D9D4; /*Danebrog photo white */
 }
 
 .content-wrapper:before{
@@ -21,7 +21,7 @@
   top: 0;
   width: 10.811%;
   height: 100%;
-  background-color: #FFF;
+  background-color: #F5D9D4; /* Danebrog photo white */
 }
 
 /* Text */
@@ -72,27 +72,47 @@ h1{
 
 .skin-blue .main-header .navbar .sidebar-toggle,
 .skin-blue .main-header .navbar .sidebar-toggle:hover{
-  border-bottom: 2px solid #CCC;
-  border-right: 3px solid #FFF;
+  border-bottom: 2px solid #000;
+  border-right: 3px solid #000;
   color: #000;
-  background-color: #FFF;
+  background-color: #F5D9D4; /*Danebrog photo white */
+}
+
+.skin-blue .main-header .navbar .sidebar-toggle:before{
+  display: inline-block;
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(90deg);
+  -webkit-transition: -webkit-transform .3s ease-in-out,width .3s ease-in-out;
+  -moz-transition: -moz-transform .3s ease-in-out,width .3s ease-in-out;
+  -o-transition: -o-transform .3s ease-in-out,width .3s ease-in-out;
+  transition: transform .3s ease-in-out,width .3s ease-in-out;
+}
+
+.sidebar-collapse.skin-blue .main-header .navbar .sidebar-toggle:before{
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
 }
 
 /* Sidebar */
 #sidebarCollapsed{
   background-color: #E31836;
-  border-right: 3px solid #FFF;
+  border-right: 3px solid #000;
 }
 
 .skin-blue .sidebar a{
   color: #FFF;
 }
-
-.skin-blue .sidebar-menu>li.active>a,
-.skin-blue .sidebar-menu>li:hover>a {
+.skin-blue .sidebar-menu>li:hover>a{
     color: #000;
-    background: #FFF;
-    border-left-color: #FFF;}
+    background: #fff  ; /*Danebrog photo white */
+    border-left-color: #FFF;
+}
+
+.skin-blue .sidebar-menu>li.active>a {
+    color: #000;
+    background: #F5D9D4; /*Danebrog photo white */
+    border-left-color: #FFF;
+}
 
 /* Plots */
 .shiny-plot-output{
