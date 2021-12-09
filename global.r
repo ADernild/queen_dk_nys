@@ -17,6 +17,19 @@ stm_model <- readRDS("data/stm_model.rds")
 lemma <- readRDS("data/lemma.rds") # All lematized values unfiltered
 sentiment <- readRDS("data/sentiments.rds") # Sentiment for year
 
-## Formatting data --------------------------------------------------------
+# Formatting data ---------------------------------------------------------
 # Number of distinct headwords
 n_dist_t_headword <- nrow(distinct(tokens, headword))
+
+# Years
+year_min <-  min(sentiment$year)
+year_max <-  max(sentiment$year)
+year_span <-  year_max-year_min+1
+
+# Languages
+languages <- c("Danish", "English")
+
+# Words
+words_all <-  unique(lemma$token) %>% sort()
+words_tokens_all <- unique(tokens$headword) %>% sort()
+words_count_unique <- length(words_all)

@@ -2,12 +2,32 @@ server <- function(input, output) {
 
   # Sidebar Menu -------------------------------------------------------------
   output$menu <- renderMenu({
-    sidebarMenu(
-      menuItem("Welcome and about", tabName = "index", icon = icon("home")),
-      menuItem("Topic model", tabName = "tm", icon = icon("comment-dots")),
-      menuItem("Sentiments", tabName = "sentiment", icon = icon("theater-masks")),
-      menuItem("Map", tabName = "map", icon = icon("globe-europe")),
-      menuItem("Word statistics", tabName = "stats", icon = icon("chart-pie"))
+      sidebarMenu(
+        menuItem("Welcome and about", tabName = "index", icon = icon("home")),
+        menuItem("Topic model", tabName = "tm", icon = icon("comment-dots")),
+        menuItem("Sentiments", tabName = "sentiment", icon = icon("theater-masks")),
+        menuItem("Map", tabName = "map", icon = icon("globe-europe")),
+        menuItem("Word statistics", tabName = "stats", icon = icon("chart-pie")),
+        div(id="sidebar-input",
+          checkboxGroupInput("re",
+                             label = "Options",
+                             choices = "Allow reactive choises",
+                             selected = "Allow reactive choises"
+          ),
+          radioButtons ("languages",
+                        label = "New years eve speech language analyzed",
+                        choices = languages,
+                        selected = languages[1]
+          ),
+          helpText("Note: English version of speach are translations."),
+          sliderInput("year", "Years range:",
+                      min = year_min, max = year_max,
+                      value = range(year_min,year_max),
+                      step = 1
+          ),
+          selectizeInput("words",
+                         label="Featured words", choices = words_tokens_all, multiple = TRUE)
+        )
     )
   })
   

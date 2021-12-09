@@ -33,7 +33,7 @@ ui <- dashboardPage(
                            div(id="wiki_infobox_wrap",
                                a(href="https://da.wikipedia.org/wiki/Margrethe_2.",
                                  target= "_blank",
-                                 "Info indhentet via wikipedia."
+                                 "Info indhentet via wikipedia (08/12/2021)."
                                ),
                                htmlOutput("wiki_infobox")
                            )
