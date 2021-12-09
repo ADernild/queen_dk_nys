@@ -3,8 +3,10 @@ library(textmineR)
 library(tidytext)
 library(LDAvis)
 library(ggplot2)
+library(ldatuning)
 
-df <- read.csv("data/nys_2001-2020_cleaned.csv")
+# df <- read.csv("data/nys_2001-2020_cleaned.csv")
+df <- read.csv("data/nys_sentences.csv")
 
 stop_words <- read.csv("utils/custom_stopwords.txt", header=F) %>% 
   rbind(read.csv("utils/stopord.txt", header=F)) %>% 
@@ -13,10 +15,14 @@ stop_words <- read.csv("utils/custom_stopwords.txt", header=F) %>%
   rbind("danmark", "danske") %>% 
   rename(word = V1)
 
-dtm <- CreateDtm(doc_vec = df$speech, 
-                 doc_names = df$year,
+df$sent_nr <- 1:1586
+
+dtm <- CreateDtm(doc_vec = df$sentences, 
+                 doc_names = df$sent_nr,
                  ngram_window = c(1,2),
                  stopword_vec = stop_words)
+
+dtm <- dtm[,colSums(dtm) > 2]
 
 queen_lda <- FitLdaModel(dtm = dtm,
                          k = 20, 
