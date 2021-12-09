@@ -6,10 +6,10 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 
 - [x] Collect speeches.
 - [x] Clean speech text.
-- [ ] Create custom stopwords list
-- [ ] Preprocessing: Tokenization, stemming, lemmatization etc.
-- [ ] Build Structural Topic Model (STM).
+- [x] Create custom stopwords list
+- [x] Preprocessing: Tokenization, stemming, lemmatization etc.
+- [x] Build Structural Topic Model (STM).
 - [ ] Test out other Topic model.
 - [ ] Calculate Polarity scores (Sentiment Analysis).
-- [ ] Rebuild Structural Topic Model using Polarity scores as another co-variate.
+- [x] Rebuild Structural Topic Model using Polarity scores as another co-variate.
 
