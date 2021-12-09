@@ -1,42 +1,129 @@
 /* CSS for the queen speach dashboard! */
 /* Backbround color */
-body{
-  background-color: #E31836 !important; /* dannebrog - Danish flag red */
+.content-wrapper{
+  background-color: #E31836 !important; /* dannebrog red - Danish flag red */
 }
 
-.container-fluid{
-  padding-bottom: 6vh;
-}
-
-html:before{
+.content:before{
   content: "";
   position: fixed;
   left: 0;
   top: 32.432%;
-  z-index: 0;
   width: 100%;
   height: 10.811%;
-  background-color: #FFF;
+  background-color: #F5D9D4; /*Danebrog photo white */
 }
 
-body:before{
+.content-wrapper:before{
   content: "";
   position: fixed;
   left: 32.432%;
   top: 0;
-  z-index: 0;
   width: 10.811%;
   height: 100%;
-  background-color: #FFF;
+  background-color: #F5D9D4; /* Danebrog photo white */
 }
 
-/* columns */
-.col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7,
-.col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12{
-  background-color: rgba(255,255,255,0.9);
+/* Text */
+/* > p/span */
+.bold{
+  font-weight: bold;
+}
+
+.help-block{
+  color: #CCC;
+}
+
+/* Titles */
+h1{
+  position: relative;
+  color: #FFF;
+  text-shadow:
+    -1px -1px 0 rgba(0,0,0,0.4),
+    1px -1px 0 rgba(0,0,0,0.4),
+    -1px 1px 0 rgba(0,0,0,0.4),
+    1px 1px 0 rgba(0,0,0,0.4);
+  text-align: center;
+}
+
+.tab-pane > h2{
+  position: relative;
+  color: #FFF;
+  text-shadow:
+    -1px -1px 0 rgba(0,0,0,0.4),
+    1px -1px 0 rgba(0,0,0,0.4),
+    -1px 1px 0 rgba(0,0,0,0.4),
+    1px 1px 0 rgba(0,0,0,0.4);
+}
+
+/* Main wrapper */
+.container-fluid{
+  padding-bottom: 6vh;
+}
+
+/* Columns */
+.box{
+  background-color: rgba(255,255,255,1);
   border-radius: 20px;
 }
 
+/* Navbar */
+.skin-blue .main-header .navbar,
+.skin-blue .main-header .logo,
+.skin-blue .main-header .logo:hover{
+  color: #fff;
+  background-color: #E31836;
+}
+
+.skin-blue .main-header .navbar .sidebar-toggle,
+.skin-blue .main-header .navbar .sidebar-toggle:hover{
+  border-bottom: 2px solid #000;
+  border-right: 3px solid #000;
+  color: #000;
+  background-color: #F5D9D4; /*Danebrog photo white */
+}
+
+.skin-blue .main-header .navbar .sidebar-toggle:before{
+  display: inline-block;
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(90deg);
+  -webkit-transition: -webkit-transform .3s ease-in-out,width .3s ease-in-out;
+  -moz-transition: -moz-transform .3s ease-in-out,width .3s ease-in-out;
+  -o-transition: -o-transform .3s ease-in-out,width .3s ease-in-out;
+  transition: transform .3s ease-in-out,width .3s ease-in-out;
+}
+
+.sidebar-collapse.skin-blue .main-header .navbar .sidebar-toggle:before{
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
+
+/* Sidebar */
+#sidebarCollapsed{
+  background-color: #E31836;
+  border-right: 3px solid #000;
+}
+
+.skin-blue .sidebar-menu .form-group{
+  padding-top: 5px;
+  margin-bottom: 0;
+}
+
+.skin-blue .sidebar a{
+  color: #FFF;
+}
+
+.skin-blue .sidebar-menu>li:hover>a{
+    color: #000;
+    background: #fff  ; /*Danebrog photo white */
+    border-left-color: #FFF;
+}
+
+.skin-blue .sidebar-menu>li.active>a {
+    color: #000;
+    background: #F5D9D4; /*Danebrog photo white */
+    border-left-color: #FFF;
+}
 
 /* Plots */
 .shiny-plot-output{
@@ -51,18 +138,38 @@ body:before{
   height: 100%;
 }
 
-/* Titles */
-#main_title{
-  color: #000;
-  text-shadow:
-    -1px -1px 0 rgba(255,255,255,0.4),
-    1px -1px 0 rgba(255,255,255,0.4),
-    -1px 1px 0 rgba(255,255,255,0.4),
-    1px 1px 0 rgba(255,255,255,0.4);
+/* Infobox */
+#wiki_infobox .infobox tr{
+  border-top: 1px solid #CCC;
 }
 
-/* Introduction */
-#intoduction {
-  border-bottom: 3px solid #000;
-  margin-bottom: 2vh;
+#wiki_infobox .infobox tr:first-child,
+#wiki_infobox .infobox tr:last-child{
+  border-top:0;
+}
+
+#wiki_infobox .infobox tr th,
+#wiki_infobox .infobox tr td{
+  background-color: transparent !important;
+}
+
+#wiki_infobox > .infobox > tbody > tr:first-child th{
+  background-color: #c1c1c1 !important;
+}
+
+/* Highchart */
+.highcharts-tooltip-box {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  fill: #F5D9D4; /*Danebrog photo white */
+  fill-opacity: 0.6;
+  stroke-width: 0;
+  border: 1px solid #E31836; /* dannebrog red - Danish flag red */
+}
+
+
+#sentiment_of_speech_bubles path{
+  fill: #E31836 !important; /* dannebrog red - Danish flag red */
+  stroke: #F5D9D4; /*Danebrog photo white */
 }
