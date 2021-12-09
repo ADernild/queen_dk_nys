@@ -16,14 +16,13 @@ clean_speech <- function(x) {
 clean_sentences <- function(x) {
   x %>%
     str_replace_all("\\\n", " ") %>% # removes linebreaks
-    str_replace_all("[^[:alnum:].,]", " ") %>% # removes special characters except .,
+    str_replace_all("[^[:alnum:].]", " ") %>% # removes special characters except .,
     str_to_lower() %>% # Converts to lower case
     str_squish() # Removes leading, trailing and middle whitespace
 }
 
 # Importing data
-df <- read.csv("data/new_year_speeches_2001-2020.csv", encoding = "UTF-8")
-names(df) <- c("speech", "year") # changing first variable name
+df <- read.csv("data/new_year_speeches_1972-2020.csv", encoding = "UTF-8")
 
 # Cleaning sentences i.e., leaving in the . (dots) for later separation
 sentences <- data.frame(cbind(df$year, clean_sentences(df$speech)))
@@ -49,4 +48,4 @@ write.csv(sentences, "data/nys_sentences.csv", row.names = F)
 
 # Cleaning speech of each year
 df$speech <- clean_speech(df$speech)
-write.csv(df, "data/nys_2001-2020_cleaned.csv", row.names = F)
+write.csv(df, "data/nys_1972-2020_cleaned.csv", row.names = F)
