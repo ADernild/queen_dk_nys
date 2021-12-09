@@ -156,3 +156,20 @@ h1{
 #wiki_infobox > .infobox > tbody > tr:first-child th{
   background-color: #c1c1c1 !important;
 }
+
+/* Highchart */
+.highcharts-tooltip-box {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  fill: #F5D9D4; /*Danebrog photo white */
+  fill-opacity: 0.6;
+  stroke-width: 0;
+  border: 1px solid #E31836; /* dannebrog red - Danish flag red */
+}
+
+
+#sentiment_of_speech_bubles path{
+  fill: #E31836 !important; /* dannebrog red - Danish flag red */
+  stroke: #F5D9D4; /*Danebrog photo white */
+}

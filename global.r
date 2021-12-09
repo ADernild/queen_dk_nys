@@ -8,6 +8,7 @@ library(LDAvis)
 library(stm) # for stm models
 library(highcharter) # for table display
 library(shinydashboard)
+library(plyr)
 
 
 # Load data ---------------------------------------------------------------
@@ -33,3 +34,23 @@ languages <- c("Danish", "English")
 words_all <-  unique(lemma$token) %>% sort()
 words_tokens_all <- unique(tokens$headword) %>% sort()
 words_count_unique <- length(words_all)
+
+
+# Highchart options -------------------------------------------------------
+opts <- getOption("highcharter.options")
+opts$lang$decimalPoint <- "."
+options(highcharter.options = opts)
+
+## Highchart sorting function ----
+hc_norevese <- function(x){
+  x %>% 
+  hc_chart(
+    inverted = F
+  ) %>% 
+  hc_xAxis(
+    reversed = T
+  ) %>% 
+  hc_legend(
+    reversed = T
+  )
+}

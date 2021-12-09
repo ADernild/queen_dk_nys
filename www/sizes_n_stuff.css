@@ -127,9 +127,15 @@ h2, h3{
 
 /* > less */
 .row{
-  margin: 0;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  margin-bottom: 2vh;
 }
 
+.row:last-child{
+  margin-bottom: 0;
+}
 /* > Selectize */
 .selectize-input{
   overflow: auto !important;
@@ -169,6 +175,12 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
 /* Shiny input */
 .shiny-input-container:not(.shiny-input-container-inline){
   float: left;
+}
+
+/* Shiny tabs */
+.nav-tabs-custom>.tab-content{
+  float: left;
+  width: 100%;
 }
 
 /* Infobox */
