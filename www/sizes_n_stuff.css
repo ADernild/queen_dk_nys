@@ -99,6 +99,14 @@ h2, h3{
 #sidebar-input{
   float: left;
   width: calc(100% - 3px);
+  -webkit-transition: -webkit-transform .3s ease-in-out,width 0s ease-in-out;
+  -moz-transition: -moz-transform .3s ease-in-out,width 0s ease-in-out;
+  -o-transition: -o-transform .3s ease-in-out,width 0s ease-in-out;
+  transition: transform .3s ease-in-out,width 0s ease-in-out;
+  -webkit-transform: translate(-0,0);
+  -ms-transform: translate(-0,0);
+  -o-transform: translate(-0,0);
+  transform: translate(-0,0);
 }
 
 .sidebar-collapse #sidebar-input {
@@ -106,11 +114,26 @@ h2, h3{
   width: 0;
   height: 0;
   overflow: hidden;
+  -webkit-transform: translate(-270px,0);
+  -ms-transform: translate(-270px,0);
+  -o-transform: translate(-270px,0);
+  transform: translate(-270px,0);
+}
+
+#sidebar-input h3{
+  padding: 0 15px;
+  margin-bottom: 0;
 }
 
 /* > less */
 .row{
   margin: 0;
+}
+
+/* > Selectize */
+.selectize-input{
+  overflow: auto !important;
+  max-height: 4em;
 }
 
 /* > Columns */

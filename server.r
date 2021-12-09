@@ -9,6 +9,7 @@ server <- function(input, output) {
         menuItem("Map", tabName = "map", icon = icon("globe-europe")),
         menuItem("Word statistics", tabName = "stats", icon = icon("chart-pie")),
         div(id="sidebar-input",
+            h3("Filters"),
           checkboxGroupInput("re",
                              label = "Options",
                              choices = "Allow reactive choises",
@@ -19,7 +20,7 @@ server <- function(input, output) {
                         choices = languages,
                         selected = languages[1]
           ),
-          helpText("Note: English version of speach are translations."),
+          helpText("Note: English version of speach are translations. Not all speeches are translated."),
           sliderInput("year", "Years range:",
                       min = year_min, max = year_max,
                       value = range(year_min,year_max),

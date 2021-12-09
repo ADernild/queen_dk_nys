@@ -105,12 +105,14 @@ h1{
 }
 
 .skin-blue .sidebar-menu .form-group{
+  padding-top: 5px;
   margin-bottom: 0;
 }
 
 .skin-blue .sidebar a{
   color: #FFF;
 }
+
 .skin-blue .sidebar-menu>li:hover>a{
     color: #000;
     background: #fff  ; /*Danebrog photo white */
