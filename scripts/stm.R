@@ -8,6 +8,8 @@ library(SnowballC)
 # library(igraph)
 # library(networkD3)
 
+setwd("../")
+
 # Reading data
 # df <- read.csv("data/nys_2001-2020_cleaned.csv")
 df <- read.csv("data/nys_sentences.csv")
@@ -23,27 +25,28 @@ stop_words <- read.csv("utils/custom_stopwords.txt", header=F) %>%
 # STM 
 make_stm_model <- function(docs, df, covariates, stop_words) {
   # Preprocessing documents for use in STM
-  processed <- textProcessor(docs, metadata = df, stem=F, customstopwords = stop_words, language = "danish")
+  processed <- textProcessor(docs, metadata=df, stem=T, customstopwords=stop_words, language="danish")
   out <- prepDocuments(processed$documents, processed$vocab, processed$meta)
   
   # finding best amount of topics K
   best_model <- searchK(out$documents, out$vocab, K=c(10:35),
-                        init.type="Spectral", proportion = 0.1,
-                        prevalence=covariates, data=out$meta,
-                        cores=parallel::detectCores())
+                        init.type="Spectral", proportion=0.1,
+                        heldout.seed=1337, prevalence=covariates,
+                        data=out$meta, cores=parallel::detectCores())
 
   best_k <- best_model$results$K[which.max(best_model$results$heldout)][[1]]
 
   # Training model
-  model <- stm(out$documents, out$vocab, K = best_k, prevalence =covariates,
-               max.em.its = 300, data = out$meta, init.type = "Spectral")
+  model <- stm(out$documents, out$vocab, K=best_k, prevalence=covariates,
+               max.em.its=300, data=out$meta, init.type="Spectral", verbose=F)
 
   # Saving model results in list
-  stm_model <- list(mod = model,
-                    docs = out$documents)
+  stm_model <- list(mod=model,
+                    docs=out$documents,
+                    best=best_model)
 
   # Saving model as rds
-  saveRDS(stm_model, file = "data/stm_model.rds")
+  saveRDS(stm_model, file="data/stm_model.rds")
   stm_model
 }
 
