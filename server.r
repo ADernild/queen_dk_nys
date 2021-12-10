@@ -3,9 +3,9 @@ server <- function(input, output) {
   # Sidebar Menu -------------------------------------------------------------
   output$menu <- renderMenu({
       sidebarMenu(
-        menuItem("Welcome and about", tabName = "index", icon = icon("home")),
+        menuItem("Welcome and about", tabName = "index", icon = icon("home"), selected = T),
         menuItem("Topic model", tabName = "tm", icon = icon("comment-dots")),
-        menuItem("Sentiments", tabName = "sentiment", icon = icon("theater-masks"), selected = T),
+        menuItem("Sentiments", tabName = "sentiment", icon = icon("theater-masks")),
         menuItem("Map", tabName = "map", icon = icon("globe-europe")),
         menuItem("Word statistics", tabName = "stats", icon = icon("chart-pie")),
         div(id="sidebar-input",
