@@ -59,6 +59,16 @@ hc_norevese <- function(x){
   )
 }
 
+# Sorting ----
+cmatch <- function(left, right){
+  matches <- c()
+  for(item in left){
+    matches <- c(matches, item %in% right)
+  }
+  return(matches)
+  
+}
+
 # Map ----------------------------------------------------------------------
 
 ## Function for sorting geojson ----
