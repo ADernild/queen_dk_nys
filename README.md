@@ -8,7 +8,7 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 - [x] Collect english translated speeches.
 - [ ] Generate file with meta info about speeches (A).
 - [x] Clean speech text.
-- [*] Clean english speech text (A).
+- \* Clean english speech text (A).
 - [x] Create custom stopwords list.
 - [ ] Create custom stopwords list for enlish speeches (A).
 - \* Preprocessing: Tokenization, stemming, lemmatization etc.
