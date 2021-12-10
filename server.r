@@ -1,5 +1,4 @@
-server <- function(input, output) {
-
+server <- function(input, output, session) {
   # Sidebar Menu -------------------------------------------------------------
   output$menu <- renderMenu({
       sidebarMenu(
