@@ -71,7 +71,7 @@ ui <- dashboardPage(
                            highchartOutput("sentiment_of_speech_col_compare", height="50vh")
                   ),
                   tabPanel("Average sentiment columns",
-                           highchartOutput("sentiment_of_speech_col_avg", height="50vh")
+                           highchartOutput("sentiment_of_speech_avg", height="50vh")
                   )
                 )
               ),

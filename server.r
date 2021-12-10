@@ -53,7 +53,7 @@ server <- function(input, output) {
     data <- sentiment %>%
       group_by(year) %>% 
       filter(year %in% input$year[1]:input$year[2]) %>%
-      arrange(desc(year))
+      arrange(year)
   })
 
   ## sentiment of speeches ----------------------------------------------------
@@ -136,12 +136,13 @@ server <- function(input, output) {
     
   })
   
-  output$sentiment_of_speech_col_avg <- renderHighchart({
+  output$sentiment_of_speech_avg <- renderHighchart({
     data <- sentiment_of_speech_data()
     hchart(data,
-           hcaes(x = year, y = average_sentiment),
+           hcaes(x = year, y = round(average_sentiment,2), group = sentiment_label),
            type="column",
-           colorByPoint = T
+           colorByPoint = T,
+           styledMode = T
     ) %>% 
       hc_norevese()
   })
@@ -176,14 +177,17 @@ server <- function(input, output) {
         headerFormat = "<b>{point.key}</b><br>",
         pointFormat = "<span style=\"color: {point.color} \">\u25CF</span> {point.series.name}: {point.y}"
       ) %>% 
-      hc_norevese()
+      hc_norevese() %>% 
+      hc_xAxis(
+        reversed = T
+      )
   })
 
   output$sentiment_of_words_freq <- renderHighchart({
     data <- sentiment_of_words_data() %>% 
       arrange(n_hword_total, polarity)
     hchart(data,
-           hcaes(x = headword, y = n_hword_total),
+           hcaes(x = headword, y = n_hword_total, group = sentiment_true),
            type="column") %>% 
       hc_yAxis(
         startOnTick = T,
@@ -196,7 +200,10 @@ server <- function(input, output) {
         headerFormat = "<b>{point.key}</b><br>",
         pointFormat = "<span style=\"color: {point.color} \">\u25CF</span> {point.series.name}: {point.y}"
       ) %>% 
-      hc_norevese()
+      hc_norevese() %>% 
+      hc_xAxis(
+        reversed = T
+      )
   })
 
   # wiki_infobox ------------------------------------------------------------

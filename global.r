@@ -48,7 +48,7 @@ hc_norevese <- function(x){
     inverted = F
   ) %>% 
   hc_xAxis(
-    reversed = T
+    reversed = F
   ) %>% 
   hc_legend(
     reversed = T
