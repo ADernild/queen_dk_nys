@@ -2,6 +2,10 @@
 
 A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 
+|█████░░░░░░░|
+
+42% complete.
+
 ### Tasks
 
 - [x] Collect speeches.
