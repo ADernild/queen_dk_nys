@@ -26,8 +26,9 @@ server <- function(input, output, session) {
                           selected = "Range"
             ),
             uiOutput("year"),
-            selectizeInput("words",
-                           label="Featured words", choices = words_tokens_all, multiple = TRUE)
+            selectizeInput("words", label="Featured words", choices = NULL,
+                           multiple = TRUE)
+            
           )
         )
   })
@@ -42,10 +43,14 @@ server <- function(input, output, session) {
         )
         
       } else{
-        selectizeInput("year_si",
-                       label="Years", choices = years, selected = years, multiple = TRUE)
+        selectizeInput("year_si", label="Years", choices = years, selected = years,
+                       multiple = TRUE)
       }
   })
+  
+  updateSelectizeInput(
+    session, 'words', choices = words_tokens_all, server = TRUE
+    )
 
   # topicVis ----------------------------------------------------------------
   output$topicVis <- renderVis({
