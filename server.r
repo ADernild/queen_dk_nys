@@ -21,18 +21,34 @@ server <- function(input, output) {
                           selected = languages[1]
             ),
             helpText("Note: English version of speach are translations. Not all speeches are translated."),
-            sliderInput("year", "Years range:",
-                        min = year_min, max = year_max,
-                        value = range(year_min,year_max),
-                        step = 1
+            radioButtons ("yearopt",
+                          label = "Year input",
+                          choices = c("Range", "Select inputs"),
+                          selected = "Range"
             ),
+            uiOutput("year"),
             selectizeInput("words",
                            label="Featured words", choices = words_tokens_all, multiple = TRUE)
           )
         )
   })
   
-    # topicVis ----------------------------------------------------------------
+  output$year <- renderUI({
+      req(input$yearopt)
+      if(input$yearopt == "Range"){
+        sliderInput("year_r", "Years range:",
+                    min = year_min, max = year_max,
+                    value = range(year_min,year_max),
+                    step = 1
+        )
+        
+      } else{
+        selectizeInput("year_si",
+                       label="Years", choices = years, selected = years, multiple = TRUE)
+      }
+  })
+
+  # topicVis ----------------------------------------------------------------
   output$topicVis <- renderVis({
       ifelse(input$topicmodel == "lda_model",
              if(!is.null(input$nTerms)){
@@ -50,10 +66,17 @@ server <- function(input, output) {
   # Sentiment ---------------------------------------------------------------
   ## sentiment_of_speech_data -----------------------------------------------
   sentiment_of_speech_data <- reactive({
+    req(input$yearopt)
     data <- sentiment %>%
       group_by(year) %>% 
-      filter(year %in% input$year[1]:input$year[2]) %>%
       arrange(year)
+    if(input$yearopt == "Range"){
+      req(input$year_r)
+      filter(data, year %in% input$year_r[1]:input$year_r[2])
+    } else{
+      req(input$year_si)
+      filter(data, year %in% input$year_si)
+    }
   })
 
   ## sentiment of speeches ----------------------------------------------------
@@ -165,14 +188,24 @@ server <- function(input, output) {
   
   ## sentiment_of_words_data -------------------------------------------------
   sentiment_of_words_data <- reactive({
+    req(input$yearopt)
+    req(input$slider_sentiment_of_words_n_words)
     data <- tokens %>%
       filter(polarity != 0) %>% 
       group_by(headword) %>% 
-      distinct(headword, .keep_all = TRUE) %>%
+      distinct(headword, .keep_all = TRUE)
+    if(input$yearopt == "Range"){
+      req(input$year_r)
+      data %>% filter(year %in% input$year_r[1]:input$year_r[2])
+    } else{
+      req(input$year_si)
+      data %>% filter(year %in% input$year_si)
+    }
+    data %>% 
       arrange(desc(n_hword_total)) %>% 
-      filter(year %in% input$year[1]:input$year[2]) %>%
       head(input$slider_sentiment_of_words_n_words) %>% 
-      arrange(polarity, n_hword_total)
+      arrange(polarity, n_hword_total) %>% 
+      return()
   })
   
   ## sentiment_of_words ------------------------------------------------------
