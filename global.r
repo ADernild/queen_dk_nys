@@ -9,7 +9,7 @@ library(stm) # for stm models
 library(highcharter) # for table display
 library(shinydashboard)
 library(plyr)
-
+library(leaflet)
 
 # Load data ---------------------------------------------------------------
 tokens <- readRDS("data/tokens.rds") # All tokens, filtered
@@ -17,6 +17,8 @@ lda_model <- readRDS("data/lda_model.rds")
 stm_model <- readRDS("data/stm_model.rds")
 lemma <- readRDS("data/lemma.rds") # All lematized values unfiltered
 sentiment <- readRDS("data/sentiments.rds") # Sentiment for year
+geojson <- rgdal::readOGR("data/countries.geojson")
+countries <- read.csv("data/country_speech.csv")
 
 # Formatting data ---------------------------------------------------------
 # Number of distinct headwords
@@ -55,3 +57,25 @@ hc_norevese <- function(x){
     reversed = T
   )
 }
+
+# Map ----------------------------------------------------------------------
+
+## Function for sorting geojson ----
+poly_prep <- function(polygons, countries, years) {
+  countries <- countries %>% 
+    dplyr::filter(year %in% years) %>% 
+    dplyr::select(year, n, code, countries) %>% 
+    dplyr::group_by(code) %>% 
+    dplyr::summarise(
+      countries = str_to_title(unique(countries)),
+      n = sum(n)
+    )
+  countries
+  poly <- subset(polygons, ISO_A2 %in% unique(countries$code))
+  poly@data <- poly@data %>%
+    dplyr::left_join(countries, by = c("ISO_A2" = "code"))
+  poly
+}
+
+pal <- colorNumeric("viridis", NULL)
+
