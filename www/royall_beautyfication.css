@@ -109,6 +109,11 @@ h1{
   background-color: #9e1025;
   border-right: 3px solid #000;
 }
+.sidebar-menu,
+.sidebar-menu:hover,
+.sidebar-menu:active{
+  overflow: auto;
+}
 
 .skin-blue .sidebar-menu .form-group{
   padding-top: 5px;

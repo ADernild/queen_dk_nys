@@ -86,10 +86,6 @@ h2, h3{
   width: 100%;
 }
 
-.sidebar-menu:hover {
-    overflow: hidden;
-}
-
 .skin-blue .sidebar-menu>li>a{
   padding: 10px;
 }
