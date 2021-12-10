@@ -267,7 +267,7 @@ server <- function(input, output) {
   
   # Map ---------------------------------------------------------------------
   output$map <- renderLeaflet({
-    leaflet(poly_prep(geojson, countries, input$year_r[1]:input$year_r[2]), height="2000px") %>% 
+    leaflet(poly_prep(geojson, countries, input$year_r[1]:input$year_r[2])) %>% 
       addTiles() %>% 
       addPolygons(stroke = F, smoothFactor = 0.3, fillOpacity = 1,
                   fillColor=~pal(n), label = ~ paste(ADMIN, "was said:", n, "times")) %>% 
