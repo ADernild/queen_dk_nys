@@ -29,16 +29,16 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 - \* Write introduction to dahsboard and implement on git and index tab in dashboard.
 - [ ] Create consistent colorpalette for data.
 - \* Add filtering by year and words - and implement in visualization data (M).
-- [R] Create list of data sources in dashboard (M).
+- [ ] Create list of data sources in dashboard (M).
 - [ ] Implement language option for dahsboard (M).
 - [ ] Finalize design of dashboard (M)
 - [ ] Remove unfinished implementations from dashboard.
 - [ ] Write 4 page report.
 
-[ ] = To do
-x = Done
-\* = In progress
-r = Ready to review
+[ ] = To do\n
+x = Done\n
+\* = In progress\n
+[R] = Ready to review\n
 
 ### Task... Maybe
 - [*] Use CRON script to automize datacollection (A).
