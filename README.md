@@ -35,10 +35,13 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 - [ ] Remove unfinished implementations from dashboard.
 - [ ] Write 4 page report.
 
-[ ] = To do\n
-x = Done\n
-\* = In progress\n
-[R] = Ready to review\n
+[ ] = To do
+
+x = Done
+
+\* = In progress
+
+[R] = Ready to review
 
 ### Task... Maybe
 - [*] Use CRON script to automize datacollection (A).
