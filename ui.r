@@ -70,7 +70,7 @@ ui <- dashboardPage(
                   tabPanel("Sentiment (Columns)",
                            highchartOutput("sentiment_of_speech_col_compare", height="50vh")
                   ),
-                  tabPanel("Average sentiment columns",
+                  tabPanel("Average sentiment",
                            highchartOutput("sentiment_of_speech_avg", height="50vh")
                   )
                 )
@@ -84,10 +84,10 @@ ui <- dashboardPage(
                                     "Number of words (by frequency)",
                                     min=1, max=n_dist_t_headword, value = 100 )
                     ),
-                    box(width=6, title = "Sentiment of words",
+                    box(width=6, title = "Sentiment of words (-3:3)",
                         highchartOutput("sentiment_of_words", height="25vh")
                     ),
-                    box(width=6, title = "Frequency used",
+                    box(width=6, title = "Frequency used (n uses in total)",
                         highchartOutput("sentiment_of_words_freq", height="25vh"),
                     )
                 )
