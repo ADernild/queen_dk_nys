@@ -10,6 +10,7 @@ library(highcharter) # for table display
 library(shinydashboard)
 library(plyr)
 library(leaflet)
+library(stringr)
 
 # Load data ---------------------------------------------------------------
 tokens <- readRDS("data/tokens.rds") # All tokens, filtered
