@@ -44,9 +44,9 @@ x = Done
 [R] = Ready to review
 
 ### Task... Maybe
-- [*] Use CRON script to automize datacollection (A).
+- \* Use CRON script to automize datacollection (A).
 - [ ] Add logic to update filter inputs by data clicked in models.
-- [*] Implement checkbox to ignore filter updates by clicked data in models (M).
+- \* Implement checkbox to ignore filter updates by clicked data in models (M).
 - [ ] Generate speeches in the style of the Queen.
 - [ ] Translate dashboard to Danish, and give option to use Danish/English.
 - [ ] Remove unsatasfactory models.
