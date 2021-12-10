@@ -61,11 +61,13 @@ hc_norevese <- function(x){
 
 # Sorting ----
 cmatch <- function(left, right){
-  matches <- c()
   for(item in left){
-    matches <- c(matches, item %in% right)
+    if(item %in% right){
+      return(T)
+    }
+    
   }
-  return(matches)
+  return(F)
   
 }
 
