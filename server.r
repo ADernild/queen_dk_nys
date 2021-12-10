@@ -52,7 +52,7 @@ server <- function(input, output) {
   sentiment_of_speech_data <- reactive({
     data <- sentiment %>%
       group_by(year) %>% 
-      # filter(year == input$"year") %>% 
+      filter(year %in% input$year[1]:input$year[2]) %>%
       arrange(desc(year))
   })
 
@@ -154,6 +154,7 @@ server <- function(input, output) {
       group_by(headword) %>% 
       distinct(headword, .keep_all = TRUE) %>%
       arrange(desc(n_hword_total)) %>% 
+      filter(year %in% input$year[1]:input$year[2]) %>%
       head(input$slider_sentiment_of_words_n_words) %>% 
       arrange(polarity, n_hword_total)
   })
