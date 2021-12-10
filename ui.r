@@ -98,7 +98,7 @@ ui <- dashboardPage(
               h2("A map of the countries mentioned in the new year eve speeches of Queen Margret"),
               fluidRow(
                 box(width=12,  
-                    p("todo")
+                    leafletOutput("map")
                 )
               )
       ),

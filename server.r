@@ -225,4 +225,15 @@ server <- function(input, output) {
   output$wiki_infobox <- renderUI({
     includeHTML("www/queen_info_table.html")
   })
+  
+  # Map ---------------------------------------------------------------------
+  output$map <- renderLeaflet({
+    leaflet(poly_prep(geojson, countries, input$year[1]:input$year[2]), height="2000px") %>% 
+      addTiles() %>% 
+      addPolygons(stroke = F, smoothFactor = 0.3, fillOpacity = 1,
+                  fillColor=~pal(n), label = ~ paste(ADMIN, "was said:", n, "times")) %>% 
+      addLegend(pal = pal, values = ~n)
+  })
 }
+
+
