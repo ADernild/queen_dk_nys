@@ -61,23 +61,22 @@ server <- function(input, output) {
     data <- sentiment_of_speech_data()
     hchart(data,
            type="bubble",
-           hcaes(x = sentiment_pos, y = sentiment_neg, z = n_words, name = year, group = year),
-           color = "#ffff00",
+           hcaes(x = sentiment_pos, y = sentiment_neg, z = n_words, s = sentiment, l = sentiment_label, name = year, group = year),
            showInLegend = F,
+           stickyTracking = F,
            styledMode = T
     ) %>%
       hc_plotOptions(
         series = list(
-          allowPointSelect = T,
-          color = c("#00FFFF"),
+          animation = list(
+            duration = 500
+          ),
           dataLabels = list(
             enabled= T,
-            format = '{point.name}',
-            color="FFF"
+            format = '{point.name}'
           ),
           marker = list(
             enabled = T,
-            fillColor = '#00FFFF',
             enabledThreshold = F,
             states = "normal",
             symbol = "cirkle"
@@ -91,6 +90,22 @@ server <- function(input, output) {
       ) %>% 
       hc_xAxis(
         startOnTick = T
+      ) %>%
+      hc_tooltip(
+        useHTML = T,
+        headerFormat = '<table>',
+        pointFormat = paste('<tr><th colspan="2"><h3>{point.name}</h3></th></tr>',
+          '<tr><th>Overall sentiment:</th><td>{point.l}</td></tr>',
+          '<tr><th>Positive sentiment (x):</th><td>{point.x}</td></tr>',
+          '<tr><th>Negative sentiment (y):</th><td>{point.y}</td></tr>',
+          '<tr><th>Summed sentiment:</th><td>{point.s}</td></tr>',
+          '<tr><th>Words with polarity (size):</th><td>{point.z}</td></tr>',
+          sep = ""),
+        footerFormat = '</table>',
+        followPointer = F,
+        followTouchMove = F,
+        snap = 100,
+        hideDelay = 500
       )
   })
   

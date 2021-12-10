@@ -169,11 +169,6 @@ h1{
 }
 
 
-#sentiment_of_speech_bubles path{
-  fill: #E31836 !important; /* dannebrog red - Danish flag red */
-  stroke: #F5D9D4; /*Danebrog photo white */
-}
-
 /* topicVis */
 #topicVis path {
   fill: none;
