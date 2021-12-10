@@ -11,11 +11,11 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 - [*] Clean english speech text (A).
 - [x] Create custom stopwords list.
 - [ ] Create custom stopwords list for enlish speeches (A).
-- [*] Preprocessing: Tokenization, stemming, lemmatization etc.
+- \* Preprocessing: Tokenization, stemming, lemmatization etc.
 - [ ] Preprocessing: Tokenization, stemming, lemmatization etc. for english speeches (A).
 - [x] Build Structural Topic Model (STM).
 - [ ] Resarch STM filtering posibility options on finished model (A).
-- [*] Test out other Topic models - optimize LDA or use HPD (A).
+- \* Test out other Topic models - optimize LDA or use HPD (A).
 - [ ] Add sentiment scores to Topic Models (A).
 - [x] Calculate Polarity scores (Sentiment Analysis).
 - [x] Rebuild Structural Topic Model using Polarity scores as another co-variate.
@@ -26,10 +26,10 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 - [ ] Format data for display (M).
 - [x] Create interactive dashboard to interact with findings.
 - [ ] Add meaningfull titles to tabs.
-- [*] Write introduction to dahsboard and implement on git and index tab in dashboard.
+- \* Write introduction to dahsboard and implement on git and index tab in dashboard.
 - [ ] Create consistent colorpalette for data.
-- [*] Add filtering by year and words - and implement in visualization data (M).
-- [ ] Create list of data sources in dashboard (M).
+- \* Add filtering by year and words - and implement in visualization data (M).
+- [R] Create list of data sources in dashboard (M).
 - [ ] Implement language option for dahsboard (M).
 - [ ] Finalize design of dashboard (M)
 - [ ] Remove unfinished implementations from dashboard.
