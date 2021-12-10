@@ -23,6 +23,7 @@ sentiment <- readRDS("data/sentiments.rds") # Sentiment for year
 n_dist_t_headword <- nrow(distinct(tokens, headword))
 
 ## Years ----
+years <- unique(tokens$year) %>% sort()
 year_min <-  min(sentiment$year)
 year_max <-  max(sentiment$year)
 year_span <-  year_max-year_min+1
