@@ -61,12 +61,6 @@ h1{
   padding-bottom: 6vh;
 }
 
-/* Columns */
-.box{
-  background-color: rgba(255,255,255,1);
-  border-radius: 20px;
-}
-
 /* Navbar */
 .skin-blue .main-header .navbar,
 .skin-blue .main-header .logo,
@@ -80,8 +74,20 @@ h1{
   border-bottom: 2px solid #000;
   border-right: 3px solid #000;
   color: #000;
+}
+
+.skin-blue .main-header .navbar .sidebar-toggle{
   background-color: #F5D9D4; /*Danebrog photo white */
 }
+
+.skin-blue .main-header .navbar .sidebar-toggle:hover{
+  background-color: #c4ada9;
+}
+
+.skin-blue .main-header .navbar .sidebar-toggle:active{
+  background-color: #ab9794;
+}
+
 
 .skin-blue .main-header .navbar .sidebar-toggle:before{
   display: inline-block;
@@ -100,8 +106,13 @@ h1{
 
 /* Sidebar */
 #sidebarCollapsed{
-  background-color: #E31836;
+  background-color: #9e1025;
   border-right: 3px solid #000;
+}
+.sidebar-menu,
+.sidebar-menu:hover,
+.sidebar-menu:active{
+  overflow: auto;
 }
 
 .skin-blue .sidebar-menu .form-group{
@@ -111,6 +122,15 @@ h1{
 
 .skin-blue .sidebar a{
   color: #FFF;
+  background-color: #b5132b;
+  border-top: 1px solid #9e1025;
+  border-bottom: 1px solid #e52f4a;
+}
+.skin-blue .sidebar li:first-child a{
+  border-top: 0;
+}
+.skin-blue .sidebar li:last-of-type a{
+  border-bottom: 0;
 }
 
 .skin-blue .sidebar-menu>li:hover>a{
@@ -137,6 +157,54 @@ h1{
   width: 100%;
   height: 100%;
 }
+
+/* Columns */
+.box{
+  background-color: rgba(255,255,255,1);
+  border-radius: 20px;
+}
+
+/* Tabs */
+.nav-tabs-custom {
+  float: left;
+  width: 100%;
+  border-radius: 20px;
+  border: 3px inset #000;
+  overflow: hidden;
+}
+
+.nav-tabs-custom>.nav-tabs{
+  background-color: #c4ada9;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.nav-tabs-custom>.nav-tabs>li{
+  margin: 0;
+}
+
+.nav-tabs-custom>.nav-tabs>li:hover{
+  border-top-color: #9e1025;
+}
+
+.nav-tabs-custom>.nav-tabs>li.active{
+  border-top-color: #9e1025;
+}
+
+.nav-tabs-custom>.nav-tabs>li:hover>a{
+  background-color: #F5D9D4;
+}
+
+.nav-tabs-custom>.nav-tabs>li.active:hover>a,
+.nav-tabs-custom>.nav-tabs>li.active>a{
+  font-weight: bold;
+}
+
+.nav-tabs-custom>.tab-content{
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
 
 /* Infobox */
 #wiki_infobox .infobox tr{
