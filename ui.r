@@ -63,7 +63,7 @@ ui <- dashboardPage(
               h2("Sentiment of new year eve speeches of Queen Margret, and the words used within"),
               fluidRow(
                 tabBox(width=12, id = "speeches",
-                       title="Sentiment of speaches", height = "150px",
+                       title="Sentiment of speaches",
                   tabPanel("Sentiment (Bubles)",
                            highchartOutput("sentiment_of_speech_bubles", height="50vh")
                   ),
