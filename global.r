@@ -19,7 +19,7 @@ stm_model <- readRDS("data/stm_model.rds")
 lemma <- readRDS("data/lemma.rds") # All lematized values unfiltered
 sentiment <- readRDS("data/sentiments.rds") # Sentiment for year
 geojson <- rgdal::readOGR("data/countries.geojson")
-countries <- read.csv("data/country_speech.csv")
+countries <- readRDS("data/country_speech.rds")
 source_year <- readRDS("data/source_year.rds")
 
 # Formatting data ---------------------------------------------------------
