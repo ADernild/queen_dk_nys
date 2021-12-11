@@ -91,5 +91,5 @@ poly_prep <- function(polygons, countries, years) {
   poly
 }
 
-pal <- colorNumeric("viridis", NULL)
+pal <- colorNumeric(c("#99c0ff", "#0062ff"), NULL)
 
