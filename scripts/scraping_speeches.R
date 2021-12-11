@@ -16,8 +16,6 @@ local_urls <- is.na(str_match(urls, "^https://www.kongehuset.dk")) # Checking if
 urls[local_urls] <- lapply(urls[local_urls], function(x) paste0("https://www.kongehuset.dk", x)) %>%  # making local urls global
   unlist()
 
-kongehuset_urls <- urls
-
 # Binding column urls to years kongehuset
 last_year <- as.integer(format(Sys.Date(), "%Y")) - 1 # Last year i.e., the year of the lastest speech
 kongehuset <- data.frame(year = last_year:2001, urls)
@@ -63,6 +61,6 @@ df <- data.frame(speech = c(speeches_kongehuset, speeches_dansketaler), year = c
   write.csv("data/new_year_speeches_1972-2020.csv", row.names = F, fileEncoding = "UTF-8") #saving as csv
 
 # Saving meta file with year and url
-source_year <- data.frame(Source = c(kongehuset_urls, urls), year = c(kongehuset$year, dansketaler$year)) %>% 
-  map_df(rev)
-saveRDS(source_year, "data/soure_year.rds")
+source_year <- data.frame(Source = c(kongehuset$urls, dansketaler$urls), year = c(kongehuset$year, dansketaler$year)) %>% 
+  arrange(year)
+saveRDS(source_year, "data/source_year.rds")

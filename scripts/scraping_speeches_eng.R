@@ -30,3 +30,8 @@ speeches_kongehuset <- lapply(kongehuset$urls, scrape_kongehuset) %>%
 
 df <- data.frame(speech = speeches_kongehuset, year = kongehuset$year) %>% 
   write.csv("data/new_year_speeches_eng_2010-2020.csv", row.names = F)
+
+# Saving link and year for english speeches
+kongehuset[2:1] %>% 
+  arrange(year) %>% 
+  saveRDS("data/source_year_eng.rds")
