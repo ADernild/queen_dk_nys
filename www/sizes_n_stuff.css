@@ -27,6 +27,13 @@ h2, h3{
 }
 
 /* Shiny dashboard */
+/* Main header */
+.main-header{
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 230px;
+}
 /* > Wrapper */
 .sidebar-collapse .content-wrapper, .sidebar-collapse .main-footer,
 .sidebar-collapse .right-side{
@@ -130,6 +137,12 @@ h2, h3{
 #sidebar-input h3{
   padding: 0 15px;
   margin-bottom: 0;
+}
+
+/* Content */
+.content{
+  float: left;
+  padding-top: 0;
 }
 
 /* > less */

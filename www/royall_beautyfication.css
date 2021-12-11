@@ -1,6 +1,6 @@
 /* CSS for the queen speach dashboard! */
 /* Backbround color */
-.content-wrapper{
+.content-wrapper, .skin-blue .wrapper{
   background-color: #E31836 !important; /* dannebrog red - Danish flag red */
 }
 
