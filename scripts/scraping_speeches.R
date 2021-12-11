@@ -57,5 +57,5 @@ speeches_dansketaler <- lapply(dansketaler$urls, scrape_dansketaler) %>%
 
 # Coercing to data.frame and adding year variable
 df <- data.frame(speech = c(speeches_kongehuset, speeches_dansketaler), year = c(kongehuset$year, dansketaler$year)) %>% 
-  write.csv("data/new_year_speeches_1972-2020.csv", row.names = F) #saving as csv
+  write.csv("data/new_year_speeches_1972-2020.csv", row.names = F, fileEncoding = "UTF-8") #saving as csv
 
