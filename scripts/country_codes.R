@@ -25,8 +25,10 @@ coords <- coords %>%
 names(coords) <- c("land", "lat", "long", "code")
 coords$land <- tolower(coords$land)
 
+last_year <- as.integer(format(Sys.Date(), "%Y")) - 1 # Last year i.e., the year of the lastest speech
+
 # Reading in speeches
-df <- read.csv("data/nys_1972-2020_cleaned.csv")
+df <- read.csv(paste0("data/nys_1972-", last_year, "_cleaned.csv"))
 
 # Matching country names with speeches
 matched_countries <- lapply(df$speech, function(x) str_match_all(x, coords$land))
