@@ -6,8 +6,10 @@ library(tidytext)
 library(udpipe)
 # library(hunspell)
 
+
 # Importing cleanned speaches ----
-df <- read.csv("data/nys_2001-2020_cleaned.csv", encoding = "UTF-8")
+last_year <- as.integer(format(Sys.Date(), "%Y")) - 1 # Last year i.e., the year of the lastest speech
+df <- read.csv(paste0("data/nys_1972-", last_year, "_cleaned.csv"), encoding = "UTF-8")
 
 # Tokenization ----
 # Removing stopwords and stemming
@@ -22,12 +24,12 @@ snowball_stopwords <- stopwords(language = "da", source = "snowball") %>%  # Sto
 names(snowball_stopwords) <- "V1"
 
 ### ... from stopwords defined by Max Festersen Hansen & Alexander Ibsen Dernild ----
-costom_stop_words <- read.table("utils/custom_stopwords.txt", encoding = "UTF-8") # Custom stopwords defined by Max F.H. & Alexander I.D.
+custom_stop_words <- read.table("utils/custom_stopwords.txt", encoding = "UTF-8") # Custom stopwords defined by Max F.H. & Alexander I.D.
 
 ## Combining stopwords ----
 stop_words <- full_join(berteltorp_stopwords, snowball_stopwords, by = "V1") %>% # Combine lists
-  full_join(costom_stop_words, by = "V1") %>% 
-  arrange() %>%  # Sort alphabetically
+  full_join(custom_stop_words, by = "V1") %>% 
+  arrange(V1) %>%  # Sort alphabetically
   rename(word = V1)
 
 ## Filter stopwords ----
