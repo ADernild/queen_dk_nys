@@ -76,6 +76,9 @@ ui <- dashboardPage(
                   tabPanel("Sentiment (Columns)",
                            highchartOutput("sentiment_of_speech_col_compare", height="50vh")
                   ),
+                  tabPanel("Sentiment range (Shankey)",
+                           highchartOutput("sentiment_of_speech_sha_compare", height="50vh")
+                  ),
                   tabPanel("Average sentiment",
                            highchartOutput("sentiment_of_speech_avg", height="50vh")
                   ),

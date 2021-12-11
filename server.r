@@ -305,6 +305,38 @@ server <- function(input, output, session) {
     return(hc)
   })
   
+  output$sentiment_of_speech_sha_compare <- renderHighchart({
+    data <- sentiment_of_speech_data()
+    hc <- highchart() %>% 
+      hc_add_series(
+        type = "arearange",
+        stack = 1,
+        data = data,
+        hcaes(x = year, low = sentiment, high = sentiment_pos, neg = sentiment_neg),
+        dataGrouping = list(
+          enabled = F
+        )
+      ) %>% 
+      hc_norevese() %>% 
+      hc_tooltip(
+        shared = T,
+        headerFormat = "<b>{point.x}</b><br>",
+        pointFormat = "Positive (high): {point.high}<br>Negative (difference): {point.neg}<br>Sentiment (low): {point.low}<br>"
+      ) %>% 
+      hc_plotOptions(
+        series = list(
+          dataGrouping = list(
+            enabled = F
+          )
+        )
+      ) %>% 
+      hc_yAxis(
+        softMin = 0,
+        startOnTick = T
+      )
+    return(hc)
+  })
+  
   output$sentiment_of_speech_avg <- renderHighchart({
     data <- sentiment_of_speech_data()
     hchart(data,
