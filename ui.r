@@ -127,9 +127,6 @@ ui <- dashboardPage(
                     ),
                     fluidRow(
                       valueBoxOutput("mean_num_wor")
-                    ),
-                    fluidRow(
-                      helpText("sentiment statistics are influenced by year range.")
                     )
                 )
               ),

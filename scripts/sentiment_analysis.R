@@ -129,10 +129,10 @@ tokens <- tokens %>%
 
 ## Add sentiment labels ----
 tokens <- tokens %>%
-  mutate(sentiment = ifelse(polarity>= 2, "Positiv",
-                                 ifelse(polarity <= -2, "Negativ", "Neutral"))) %>%
-  mutate(sentiment_true = ifelse(polarity > 0, "Positiv",
-                                 ifelse(polarity < 0, "Negativ", "Neutral")))
+  mutate(sentiment = ifelse(polarity>= 2, "Positive",
+                                 ifelse(polarity <= -2, "Negative", "Neutral"))) %>%
+  mutate(sentiment_true = ifelse(polarity > 0, "Positive",
+                                 ifelse(polarity < 0, "Negative", "Neutral")))
 
 ## Save Token ----
 saveRDS(tokens,"data/tokens.rds")
