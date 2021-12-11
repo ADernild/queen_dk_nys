@@ -27,6 +27,7 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 - [ ] Add metadata to mentioned countries (A).
 - [ ] Implement visualizations of the most used words (M).
 - [x] Analyse sentiment by year.
+- [R] Sentiment statistics by year and preiod (M).
 - [ ] Format data for display (M).
 - [x] Create interactive dashboard to interact with findings.
 - [ ] Add meaningfull titles to tabs.
