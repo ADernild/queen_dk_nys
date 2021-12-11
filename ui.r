@@ -97,7 +97,29 @@ ui <- dashboardPage(
                         highchartOutput("sentiment_of_words_freq", height="25vh"),
                     )
                 )
-              )
+              ),
+              fluidRow(
+                box(width = 12, title = "Sentiment statistics",
+                    fluidRow(
+                      valueBoxOutput("total_sum_sen"),
+                      valueBoxOutput("total_pos_sen"),
+                      valueBoxOutput("total_neg_sen")
+                    ),
+                    fluidRow(
+                      valueBoxOutput("total_num_wor"),
+                      valueBoxOutput("num_pos_sen"),
+                      valueBoxOutput("num_neg_sen")
+                    ),
+                    fluidRow(
+                      valueBoxOutput("mean_sum_sen"),
+                      valueBoxOutput("mean_pos_sen"),
+                      valueBoxOutput("mean_neg_sen")
+                    ),
+                    fluidRow(
+                      valueBoxOutput("mean_num_wor")
+                    )
+                )
+              ),
       ),
       # Map ----
       tabItem(tabName = "map",

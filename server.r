@@ -1,5 +1,7 @@
 server <- function(input, output, session) {
-  # Sidebar Menu -------------------------------------------------------------
+
+  # UI output -----------------------------------------------------------------
+  ## Sidebar Menu -------------------------------------------------------------
   output$menu <- renderMenu({
       sidebarMenu(
         menuItem("Welcome and about", tabName = "index", icon = icon("home"), selected = T),
@@ -325,6 +327,98 @@ server <- function(input, output, session) {
       hc_xAxis(
         reversed = T
       )
+  })
+  
+
+  ## Sentiment valuebox's ---------------------------------------------------
+  output$total_sum_sen <- renderValueBox({
+    data <- sentiment_of_speech_data()
+    total_sum_sen <- sum(data$sentiment)
+    valueBox(
+      total_sum_sen, "Total sentiment", icon = icon("equals"),
+      color = "purple"
+    )
+  })
+  
+  output$total_pos_sen <- renderValueBox({
+    data <- sentiment_of_speech_data()
+    total_pos_sen <- sum(data$sentiment_pos)
+    valueBox(
+      total_pos_sen, "Total positive sentiment", icon = icon("plus"),
+      color = "green"
+    )
+  })
+  
+  output$total_neg_sen <- renderValueBox({
+    data <- sentiment_of_speech_data()
+    total_neg_sen <- sum(data$sentiment_neg)
+    valueBox(
+      total_neg_sen, "Total negative sentiment", icon = icon("minus"),
+      color = "red"
+    )
+  })
+  
+  output$total_num_wor <- renderValueBox({
+    data <- sentiment_of_speech_data()
+    total_num_wor <- sum(data$n_words)
+    valueBox(
+      total_num_wor, "Total number of words that had sentiment", icon = icon("hashtag"),
+      color = "blue"
+    )
+  })
+  
+  output$num_pos_sen <- renderValueBox({
+    data <- sentiment_of_words_data()
+    num_pos_sen <- sum(data[data$polarity > 0,]$n_hword_total)
+    valueBox(
+      num_pos_sen, "Number of words that had positive sentiment", icon = icon("plus-circle"),
+      color = "green"
+    )
+  })
+  
+  output$num_neg_sen <- renderValueBox({
+    data <- sentiment_of_words_data()
+    num_neg_sen <- sum(data[data$polarity < 0,]$n_hword_total)
+    valueBox(
+      num_neg_sen, "Number of words that had negative sentiment", icon = icon("minus-circle"),
+      color = "red"
+    )
+  })
+  
+  output$mean_sum_sen <- renderValueBox({
+    data <- sentiment_of_speech_data()
+    mean_sum_sen <- round(mean(data$sentiment),2)
+    valueBox(
+      mean_sum_sen, "Mean sentiment", icon = icon("equals"),
+      color = "purple"
+    )
+  })
+  
+  output$mean_pos_sen <- renderValueBox({
+    data <- sentiment_of_speech_data()
+    mean_pos_sen <- round(mean(data$sentiment_pos),2)
+    valueBox(
+      mean_pos_sen, "Mean positive sentiment", icon = icon("plus"),
+      color = "green"
+    )
+  })
+  
+  output$mean_neg_sen <- renderValueBox({
+    data <- sentiment_of_speech_data()
+    mean_neg_sen <- round(mean(data$sentiment_neg),2)
+    valueBox(
+      mean_neg_sen, "Mean negative sentiment", icon = icon("minus"),
+      color = "red"
+    )
+  })
+  
+  output$mean_num_wor <- renderValueBox({
+    data <- sentiment_of_speech_data()
+    mean_num_wor <- round(mean(data$n_words),2)
+    valueBox(
+      mean_num_wor, "Mean number of words that had sentiment", icon = icon("hashtag"),
+      color = "blue"
+    )
   })
 
   # wiki_infobox ------------------------------------------------------------
