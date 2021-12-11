@@ -309,13 +309,11 @@ server <- function(input, output, session) {
     data <- sentiment_of_speech_data()
     hc <- highchart() %>% 
       hc_add_series(
+        name = "Total sentiment",
         type = "arearange",
         stack = 1,
         data = data,
-        hcaes(x = year, low = sentiment, high = sentiment_pos, neg = sentiment_neg),
-        dataGrouping = list(
-          enabled = F
-        )
+        hcaes(x = year, low = sentiment, high = sentiment_pos, neg = sentiment_neg)
       ) %>% 
       hc_norevese() %>% 
       hc_tooltip(
@@ -323,17 +321,20 @@ server <- function(input, output, session) {
         headerFormat = "<b>{point.x}</b><br>",
         pointFormat = "Positive (high): {point.high}<br>Negative (difference): {point.neg}<br>Sentiment (low): {point.low}<br>"
       ) %>% 
-      hc_plotOptions(
-        series = list(
-          dataGrouping = list(
-            enabled = F
-          )
-        )
-      ) %>% 
       hc_yAxis(
         softMin = 0,
         startOnTick = T
       )
+    # if(length(input$words)){
+    #   selection <- sentiment_of_speech_data_filtered()
+    #   hc <- hc %>% 
+    #     hc_add_series(
+    #       type = "arearange",
+    #       name= "Selection",
+    #       data = selection,
+    #       hcaes(x = year, low = sentiment, high = sentiment_pos, neg = sentiment_neg)
+    #     ) 
+    # }
     return(hc)
   })
   
