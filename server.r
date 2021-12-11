@@ -70,7 +70,7 @@ server <- function(input, output, session) {
   
 
   # Sentiment ---------------------------------------------------------------
-  ## sentiment_of_speech_data -----------------------------------------------
+  ## sentiment data ---------------------------------------------------------
   sentiment_of_speech_data <- reactive({
     req(input$yearopt)
     data <- sentiment %>%
@@ -86,6 +86,78 @@ server <- function(input, output, session) {
         rowwise() %>% 
         mutate(fwords = ifelse(year %in% token_data, "Yes", "No"))
     }
+    if(input$yearopt == "Range"){
+      req(input$year_r)
+      filter(data, year %in% input$year_r[1]:input$year_r[2])
+    } else{
+      req(input$year_si)
+      filter(data, year %in% input$year_si)
+    }
+  })
+  
+  sentiment_of_words_data <- reactive({
+    req(input$yearopt)
+    req(input$slider_sentiment_of_words_n_words)
+    data <- tokens %>%
+      filter(polarity != 0) %>% 
+      group_by(headword) %>% 
+      distinct(headword, .keep_all = TRUE)
+    
+    if(length(input$words) > 0 && cmatch(data$headword, input$words)){
+      data <- data %>%
+        # filter(headword %in% input$words) %>% 
+        mutate(fwords = ifelse(headword %in% input$words, "featured word: Yes", "featured word: No")) %>% 
+        mutate(sentiment_true = paste(sentiment_true, fwords, sep=": "))
+    }
+    
+    if(input$yearopt == "Range"){
+      data <- data %>% filter(year %in% input$year_r[1]:input$year_r[2])
+    } else{
+      req(input$year_si)
+      data <- data %>% filter(year %in% input$year_si)
+    }
+    
+    if("fwords" %in% colnames(data)){
+      data <- data %>% 
+        arrange(desc(fwords), desc(n_hword_total))
+    } else{
+      data <- data %>% 
+        arrange(desc(n_hword_total))
+    }
+    data <- data %>% head(input$slider_sentiment_of_words_n_words) 
+    if("fwords" %in% colnames(data)){
+      data %>% arrange(fwords, polarity, n_hword_total) %>% 
+        return()
+    } else{
+      data %>% arrange(polarity, n_hword_total) %>% 
+        return()
+    }
+  })
+  
+  sentiment_of_speech_data_filtered <- reactive({
+    req(input$yearopt)
+    req(input$words)
+    
+    data <- sentiment_of_words_data() %>%
+      rowwise() %>% 
+      mutate(polarity_pos = as.numeric(ifelse(polarity > 0, polarity, 0)),
+             polarity_neg = as.numeric(ifelse(polarity < 0, polarity, 0))) %>% 
+      group_by(year) %>%
+      filter(headword %in% input$words) %>% 
+      mutate(n_pos = as.numeric(ifelse(polarity>0, n_in_year, 0)),
+             n_neg = as.numeric(ifelse(polarity<0, n_in_year, 0))) %>% 
+      mutate(sentiment = sum(n_in_year*polarity),
+             sentiment_pos = sum(n_in_year*polarity_pos),
+             sentiment_neg = sum(n_in_year*polarity_neg),
+             average_sentiment = mean(n_in_year*polarity),
+             n_words = sum(n_in_year),
+             n_words_pos = sum(n_pos),
+             n_words_neg = sum(n_neg)
+             
+      ) %>% 
+      group_by(year) %>% 
+      arrange(year)
+    
     if(input$yearopt == "Range"){
       req(input$year_r)
       filter(data, year %in% input$year_r[1]:input$year_r[2])
@@ -235,47 +307,6 @@ server <- function(input, output, session) {
       hc_norevese()
   })
 
-  
-  ## sentiment_of_words_data -------------------------------------------------
-  sentiment_of_words_data <- reactive({
-    req(input$yearopt)
-    req(input$slider_sentiment_of_words_n_words)
-    data <- tokens %>%
-      filter(polarity != 0) %>% 
-      group_by(headword) %>% 
-      distinct(headword, .keep_all = TRUE)
-    
-    if(length(input$words) > 0 && cmatch(data$headword, input$words)){
-      data <- data %>%
-        # filter(headword %in% input$words) %>% 
-        mutate(fwords = ifelse(headword %in% input$words, "featured word: Yes", "featured word: No")) %>% 
-        mutate(sentiment_true = paste(sentiment_true, fwords, sep=": "))
-    }
-    
-    if(input$yearopt == "Range"){
-      data <- data %>% filter(year %in% input$year_r[1]:input$year_r[2])
-    } else{
-      req(input$year_si)
-      data <- data %>% filter(year %in% input$year_si)
-    }
-    
-    if("fwords" %in% colnames(data)){
-      data <- data %>% 
-        arrange(desc(fwords), desc(n_hword_total))
-    } else{
-      data <- data %>% 
-        arrange(desc(n_hword_total))
-    }
-    data <- data %>% head(input$slider_sentiment_of_words_n_words) 
-    if("fwords" %in% colnames(data)){
-      data %>% arrange(fwords, polarity, n_hword_total) %>% 
-        return()
-    } else{
-      data %>% arrange(polarity, n_hword_total) %>% 
-      return()
-    }
-  })
-  
   ## sentiment_of_words ------------------------------------------------------
   output$sentiment_of_words <- renderHighchart({
     data <- sentiment_of_words_data()
@@ -332,7 +363,11 @@ server <- function(input, output, session) {
 
   ## Sentiment valuebox's ---------------------------------------------------
   output$total_sum_sen <- renderValueBox({
-    data <- sentiment_of_speech_data()
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
     total_sum_sen <- sum(data$sentiment)
     valueBox(
       total_sum_sen, "Total sentiment", icon = icon("equals"),
@@ -341,7 +376,11 @@ server <- function(input, output, session) {
   })
   
   output$total_pos_sen <- renderValueBox({
-    data <- sentiment_of_speech_data()
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
     total_pos_sen <- sum(data$sentiment_pos)
     valueBox(
       total_pos_sen, "Total positive sentiment", icon = icon("plus"),
@@ -350,7 +389,11 @@ server <- function(input, output, session) {
   })
   
   output$total_neg_sen <- renderValueBox({
-    data <- sentiment_of_speech_data()
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
     total_neg_sen <- sum(data$sentiment_neg)
     valueBox(
       total_neg_sen, "Total negative sentiment", icon = icon("minus"),
@@ -359,7 +402,11 @@ server <- function(input, output, session) {
   })
   
   output$total_num_wor <- renderValueBox({
-    data <- sentiment_of_speech_data()
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
     total_num_wor <- sum(data$n_words)
     valueBox(
       total_num_wor, "Total number of words that had sentiment", icon = icon("hashtag"),
@@ -368,8 +415,13 @@ server <- function(input, output, session) {
   })
   
   output$num_pos_sen <- renderValueBox({
-    data <- sentiment_of_words_data()
-    num_pos_sen <- sum(data[data$polarity > 0,]$n_hword_total)
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+      num_pos_sen <- round(sum(data$n_words_pos),2)
+    } else{
+      data <- sentiment_of_words_data()
+      num_pos_sen <- sum(data[data$polarity > 0,]$n_hword_total)
+    }
     valueBox(
       num_pos_sen, "Number of words that had positive sentiment", icon = icon("plus-circle"),
       color = "green"
@@ -377,8 +429,13 @@ server <- function(input, output, session) {
   })
   
   output$num_neg_sen <- renderValueBox({
-    data <- sentiment_of_words_data()
-    num_neg_sen <- sum(data[data$polarity < 0,]$n_hword_total)
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+      num_neg_sen <- round(sum(data$n_words_neg),2)
+    } else{
+      data <- sentiment_of_words_data()
+      num_neg_sen <- sum(data[data$polarity < 0,]$n_hword_total)
+    }
     valueBox(
       num_neg_sen, "Number of words that had negative sentiment", icon = icon("minus-circle"),
       color = "red"
@@ -386,7 +443,11 @@ server <- function(input, output, session) {
   })
   
   output$mean_sum_sen <- renderValueBox({
-    data <- sentiment_of_speech_data()
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
     mean_sum_sen <- round(mean(data$sentiment),2)
     valueBox(
       mean_sum_sen, "Mean sentiment", icon = icon("equals"),
@@ -395,7 +456,11 @@ server <- function(input, output, session) {
   })
   
   output$mean_pos_sen <- renderValueBox({
-    data <- sentiment_of_speech_data()
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
     mean_pos_sen <- round(mean(data$sentiment_pos),2)
     valueBox(
       mean_pos_sen, "Mean positive sentiment", icon = icon("plus"),
@@ -404,7 +469,11 @@ server <- function(input, output, session) {
   })
   
   output$mean_neg_sen <- renderValueBox({
-    data <- sentiment_of_speech_data()
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
     mean_neg_sen <- round(mean(data$sentiment_neg),2)
     valueBox(
       mean_neg_sen, "Mean negative sentiment", icon = icon("minus"),
@@ -413,7 +482,11 @@ server <- function(input, output, session) {
   })
   
   output$mean_num_wor <- renderValueBox({
-    data <- sentiment_of_speech_data()
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
     mean_num_wor <- round(mean(data$n_words),2)
     valueBox(
       mean_num_wor, "Mean number of words that had sentiment", icon = icon("hashtag"),
