@@ -53,7 +53,7 @@ server <- function(input, output, session) {
   updateSelectizeInput(
     session, 'words', choices = words_tokens_all, server = TRUE
     )
-
+  
   # topicVis ----------------------------------------------------------------
   output$topicVis <- renderVis({
       ifelse(input$topicmodel == "lda_model",

@@ -20,6 +20,7 @@ lemma <- readRDS("data/lemma.rds") # All lematized values unfiltered
 sentiment <- readRDS("data/sentiments.rds") # Sentiment for year
 geojson <- rgdal::readOGR("data/countries.geojson")
 countries <- read.csv("data/country_speech.csv")
+source_year <- readRDS("data/soure_year.rds")
 
 # Formatting data ---------------------------------------------------------
 # Number of distinct headwords
