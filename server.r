@@ -204,13 +204,18 @@ server <- function(input, output, session) {
       filter(polarity != 0) %>% 
       group_by(headword) %>% 
       distinct(headword, .keep_all = TRUE)
+    
+    if(length(input$words) > 0 && cmatch(data$headword, input$words)){
+      data <- data %>% filter(headword %in% input$words)
+    }
+    
     if(input$yearopt == "Range"){
-      req(input$year_r)
-      data %>% filter(year %in% input$year_r[1]:input$year_r[2])
+      data <- data %>% filter(year %in% input$year_r[1]:input$year_r[2])
     } else{
       req(input$year_si)
-      data %>% filter(year %in% input$year_si)
+      data <- data %>% filter(year %in% input$year_si)
     }
+    
     data %>% 
       arrange(desc(n_hword_total)) %>% 
       head(input$slider_sentiment_of_words_n_words) %>% 

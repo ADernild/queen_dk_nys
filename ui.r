@@ -79,7 +79,10 @@ ui <- dashboardPage(
                 # Show a plot of the generated distribution
                 box(width=12, title = "Word sentiment and frequency in speeches",
                     column(12,
-                           helpText("Theese are the words that have impacted the sentiment of speaches. Some words have a larger sentiment than oters. Larger numbers are more positive, and negative numbers are more negative. In the moddel the most positive words have a polarity of 3. The most negative words have a polarity of -3. A sentiment of 0 would be true neutral. True neutral words do not impact the sentiment."),
+                           helpText("Theese are the words that have impacted the sentiment of speaches."),
+                           helpText("Some words have a larger sentiment than others. Larger numbers are more positive, and negative numbers are more negative. In the moddel the most positive words have a polarity of 3. The most negative words have a polarity of -3."),
+                           helpText("A sentiment of 0 would be true neutral. True neutral words do not impact the sentiment."),
+                           helpText("The word slider only updates the plots, if the word has any ploarity and was features in the set year-range."),
                            sliderInput("slider_sentiment_of_words_n_words",
                                     "Number of words (by frequency)",
                                     min=1, max=n_dist_t_headword, value = 100 )

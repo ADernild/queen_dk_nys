@@ -205,10 +205,6 @@ h1{
     border-bottom-left-radius: 0;
 }
 
-.nav-tabs-custom>.nav-tabs>li.header:hover{
-  border-top: 0;
-}
-
 /* Infobox */
 #wiki_infobox .infobox tr{
   border-top: 1px solid #CCC;
