@@ -142,6 +142,7 @@ h2, h3{
 /* Content */
 .content{
   float: left;
+  width: 100%;
   padding-top: 0;
 }
 
@@ -198,7 +199,8 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
 }
 
 /* > Shiny tabs */
-.nav-tabs-custom>.tab-content{
+.nav-tabs-custom>.tab-content,
+.tab-content, .tab-pane{
   float: left;
   width: 100%;
 }
