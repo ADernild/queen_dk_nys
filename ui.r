@@ -72,10 +72,10 @@ ui <- dashboardPage(
                   ),
                   tabPanel("Average sentiment",
                            highchartOutput("sentiment_of_speech_avg", height="50vh")
-                  )
-                ),
-                helpText("Press tab titles for different visualizatons."),
-                helpText("Using the filter in sidepanel will affect which years are featured, and categorize for if wors appear in a given year.")
+                  ),
+                  helpText("Press tab titles for different visualizatons."),
+                  helpText("Using the filter in sidepanel will affect which years are featured, and categorize for if wors appear in a given year.")
+                )
               ),
               fluidRow(
                 # Show a plot of the generated distribution
