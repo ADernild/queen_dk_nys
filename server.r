@@ -153,7 +153,6 @@ server <- function(input, output, session) {
              n_words = sum(n_in_year),
              n_words_pos = sum(n_pos),
              n_words_neg = sum(n_neg)
-             
       ) %>% 
       group_by(year) %>% 
       arrange(year)
@@ -256,7 +255,7 @@ server <- function(input, output, session) {
   
   output$sentiment_of_speech_col_compare <- renderHighchart({
     data <- sentiment_of_speech_data() 
-    highchart() %>% 
+    hc <- highchart() %>% 
       hc_add_series(
         type = "bar",
         stack = 1,
@@ -293,7 +292,17 @@ server <- function(input, output, session) {
       hc_tooltip(
         shared = T
       )
-    
+    if(length(input$words)){
+      selection <- sentiment_of_speech_data_filtered()
+      hc <- hc %>% 
+        hc_add_series(
+          type = "bar",
+          stack = 3,
+          name= "Selection",
+          data = selection$sentiment
+        ) 
+    }
+    return(hc)
   })
   
   output$sentiment_of_speech_avg <- renderHighchart({
