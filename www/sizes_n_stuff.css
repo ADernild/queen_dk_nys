@@ -190,6 +190,11 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
   width: 100%;
 }
 
+.nav-tabs-custom>.nav-tabs>li.header{
+  border-top:0;
+  margin-top: 3px;
+}
+
 /* Infobox */
 #wiki_infobox{
   max-height: 100vh;
