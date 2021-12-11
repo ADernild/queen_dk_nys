@@ -180,7 +180,7 @@ server <- function(input, output, session) {
         hc_tooltip(
           useHTML = T,
           headerFormat = '<table>',
-          pointFormat = paste('<tr><th colspan="2"><h3>{point.name}</h3></th></tr>',
+          pointFormat = paste('<tr><th colspan="2"><b>{point.name}</b></th></tr>',
                               '<tr><th>Featured words in year :</th><td>{point.fwords}</td></tr>',
                               '<tr><th>Overall sentiment:</th><td>{point.l}</td></tr>',
                               '<tr><th>Positive sentiment (x):</th><td>{point.x}</td></tr>',
@@ -205,7 +205,7 @@ server <- function(input, output, session) {
         hc_tooltip(
           useHTML = T,
           headerFormat = '<table>',
-          pointFormat = paste('<tr><th colspan="2"><h3>{point.name}</h3></th></tr>',
+          pointFormat = paste('<tr><th colspan="2"><b>{point.name}</b></th></tr>',
                               '<tr><th>Overall sentiment:</th><td>{point.l}</td></tr>',
                               '<tr><th>Positive sentiment (x):</th><td>{point.x}</td></tr>',
                               '<tr><th>Negative sentiment (y):</th><td>{point.y}</td></tr>',
