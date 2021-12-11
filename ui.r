@@ -73,7 +73,9 @@ ui <- dashboardPage(
                   tabPanel("Average sentiment",
                            highchartOutput("sentiment_of_speech_avg", height="50vh")
                   )
-                )
+                ),
+                helpText("Press tab titles for different visualizatons."),
+                helpText("Using the filter in sidepanel will affect which years are featured, and categorize for if wors appear in a given year.")
               ),
               fluidRow(
                 # Show a plot of the generated distribution
@@ -83,6 +85,7 @@ ui <- dashboardPage(
                            helpText("Some words have a larger sentiment than others. Larger numbers are more positive, and negative numbers are more negative. In the moddel the most positive words have a polarity of 3. The most negative words have a polarity of -3."),
                            helpText("A sentiment of 0 would be true neutral. True neutral words do not impact the sentiment."),
                            helpText("The word slider only updates the plots, if the word has any ploarity and was features in the set year-range."),
+                           helpText("Using the word filter will recategorize results when relevant."),
                            sliderInput("slider_sentiment_of_words_n_words",
                                     "Number of words (by frequency)",
                                     min=1, max=n_dist_t_headword, value = 100 )

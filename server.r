@@ -74,6 +74,16 @@ server <- function(input, output, session) {
     data <- sentiment %>%
       group_by(year) %>% 
       arrange(year)
+    if(length(input$words) > 0){
+      token_data <- tokens %>% 
+        filter(headword %in% input$words) %>% 
+        .$year %>% 
+        unique() %>% 
+        sort()
+      data <- data %>% 
+        rowwise() %>% 
+        mutate(fwords = ifelse(year %in% token_data, "Yes", "No"))
+    }
     if(input$yearopt == "Range"){
       req(input$year_r)
       filter(data, year %in% input$year_r[1]:input$year_r[2])
@@ -86,13 +96,57 @@ server <- function(input, output, session) {
   ## sentiment of speeches ----------------------------------------------------
   output$sentiment_of_speech_bubles <- renderHighchart({
     data <- sentiment_of_speech_data()
-    hchart(data,
-           type="bubble",
-           hcaes(x = sentiment_pos, y = sentiment_neg, z = (n_words/max(n_words)), size = n_words, s = sentiment, l = sentiment_label, name = year, group = year),
-           showInLegend = F,
-           stickyTracking = F,
-           styledMode = T
-    ) %>%
+    if("fwords" %in% colnames(data)){
+      hc <- hchart(data,
+                   type="bubble",
+                   hcaes(x = sentiment_pos, y = sentiment_neg, z = (n_words/max(n_words)), size = n_words, s = sentiment, l = sentiment_label, name = year, group = fwords, fwords = fwords),
+                   showInLegend = F,
+                   stickyTracking = F,
+                   styledMode = T
+      ) %>% 
+        hc_tooltip(
+          useHTML = T,
+          headerFormat = '<table>',
+          pointFormat = paste('<tr><th colspan="2"><h3>{point.name}</h3></th></tr>',
+                              '<tr><th>Featured words in year :</th><td>{point.fwords}</td></tr>',
+                              '<tr><th>Overall sentiment:</th><td>{point.l}</td></tr>',
+                              '<tr><th>Positive sentiment (x):</th><td>{point.x}</td></tr>',
+                              '<tr><th>Negative sentiment (y):</th><td>{point.y}</td></tr>',
+                              '<tr><th>Summed sentiment:</th><td>{point.s}</td></tr>',
+                              '<tr><th>Words with polarity (size):</th><td>{point.size}</td></tr>',
+                              sep = ""),
+          footerFormat = '</table>',
+          followPointer = F,
+          followTouchMove = F,
+          snap = 100,
+          hideDelay = 500
+        )
+    } else{
+      hc <- hchart(data,
+             type="bubble",
+             hcaes(x = sentiment_pos, y = sentiment_neg, z = (n_words/max(n_words)), size = n_words, s = sentiment, l = sentiment_label, name = year, group = year),
+             showInLegend = F,
+             stickyTracking = F,
+             styledMode = T
+      ) %>% 
+        hc_tooltip(
+          useHTML = T,
+          headerFormat = '<table>',
+          pointFormat = paste('<tr><th colspan="2"><h3>{point.name}</h3></th></tr>',
+                              '<tr><th>Overall sentiment:</th><td>{point.l}</td></tr>',
+                              '<tr><th>Positive sentiment (x):</th><td>{point.x}</td></tr>',
+                              '<tr><th>Negative sentiment (y):</th><td>{point.y}</td></tr>',
+                              '<tr><th>Summed sentiment:</th><td>{point.s}</td></tr>',
+                              '<tr><th>Words with polarity (size):</th><td>{point.size}</td></tr>',
+                              sep = ""),
+          footerFormat = '</table>',
+          followPointer = F,
+          followTouchMove = F,
+          snap = 100,
+          hideDelay = 500
+        )
+    }
+    hc %>%
       hc_plotOptions(
         bubble = list(
           minSize = paste(15, "%", sep=""),
@@ -123,22 +177,6 @@ server <- function(input, output, session) {
       hc_xAxis(
         startOnTick = T,
         gridLineWidth = T
-      ) %>%
-      hc_tooltip(
-        useHTML = T,
-        headerFormat = '<table>',
-        pointFormat = paste('<tr><th colspan="2"><h3>{point.name}</h3></th></tr>',
-          '<tr><th>Overall sentiment:</th><td>{point.l}</td></tr>',
-          '<tr><th>Positive sentiment (x):</th><td>{point.x}</td></tr>',
-          '<tr><th>Negative sentiment (y):</th><td>{point.y}</td></tr>',
-          '<tr><th>Summed sentiment:</th><td>{point.s}</td></tr>',
-          '<tr><th>Words with polarity (size):</th><td>{point.size}</td></tr>',
-          sep = ""),
-        footerFormat = '</table>',
-        followPointer = F,
-        followTouchMove = F,
-        snap = 100,
-        hideDelay = 500
       )
   })
   
@@ -206,7 +244,10 @@ server <- function(input, output, session) {
       distinct(headword, .keep_all = TRUE)
     
     if(length(input$words) > 0 && cmatch(data$headword, input$words)){
-      data <- data %>% filter(headword %in% input$words)
+      data <- data %>%
+        # filter(headword %in% input$words) %>% 
+        mutate(fwords = ifelse(headword %in% input$words, "featured word: Yes", "featured word: No")) %>% 
+        mutate(sentiment_true = paste(sentiment_true, fwords, sep=": "))
     }
     
     if(input$yearopt == "Range"){
@@ -216,11 +257,21 @@ server <- function(input, output, session) {
       data <- data %>% filter(year %in% input$year_si)
     }
     
-    data %>% 
-      arrange(desc(n_hword_total)) %>% 
-      head(input$slider_sentiment_of_words_n_words) %>% 
-      arrange(polarity, n_hword_total) %>% 
+    if("fwords" %in% colnames(data)){
+      data <- data %>% 
+        arrange(desc(fwords), desc(n_hword_total))
+    } else{
+      data <- data %>% 
+        arrange(desc(n_hword_total))
+    }
+    data <- data %>% head(input$slider_sentiment_of_words_n_words) 
+    if("fwords" %in% colnames(data)){
+      data %>% arrange(fwords, polarity, n_hword_total) %>% 
+        return()
+    } else{
+      data %>% arrange(polarity, n_hword_total) %>% 
       return()
+    }
   })
   
   ## sentiment_of_words ------------------------------------------------------
@@ -247,8 +298,15 @@ server <- function(input, output, session) {
   })
 
   output$sentiment_of_words_freq <- renderHighchart({
-    data <- sentiment_of_words_data() %>% 
-      arrange(n_hword_total, polarity)
+    data <- sentiment_of_words_data()
+    if("fwords" %in% colnames(data)){
+      data <- data %>% 
+        arrange(fwords, n_hword_total, polarity)
+    } else{
+      data <- data %>% 
+        arrange(n_hword_total, polarity)
+    }
+    
     hchart(data,
            hcaes(x = headword, y = n_hword_total, group = sentiment_true),
            type="column") %>% 
