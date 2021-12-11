@@ -221,3 +221,12 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
   clear: left;
 }
 
+/* Sentiment */
+#sentiment_of_speech_bubles, #sentiment_of_speech_col_compare,
+#sentiment_of_speech_sha_compare, #sentiment_of_speech_avg{
+  min-height: 550px;
+}
+
+#sentiment_of_words_freq, #sentiment_of_words{
+  min-height: 215px;
+}
