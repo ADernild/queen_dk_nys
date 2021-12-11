@@ -34,7 +34,8 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 - \* Write introduction to dahsboard and implement on git and index tab in dashboard.
 - [ ] Create consistent colorpalette for data.
 - \* Add filtering by year and words - and implement in visualization data (M).
-- [ ] Create list of data sources in dashboard (M).
+- [R] Create list of data sources in dashboard (M).
+- \* Feature information about the queen, scraped from wikipedia, also in english (M)
 - [ ] Implement language option for dahsboard (M).
 - [ ] Finalize design of dashboard (M)
 - [ ] Remove unfinished implementations from dashboard.
