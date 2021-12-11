@@ -2,8 +2,6 @@
 library(stringr)
 library(dplyr)
 
-setwd("../")
-
 # Cleaning function
 clean_speech <- function(x) {
   x %>%
