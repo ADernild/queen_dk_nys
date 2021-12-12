@@ -663,6 +663,17 @@ server <- function(input, output, session) {
       req(input$year_si)
       data <- filter(data, year %in% input$year_si)
     }
+    
+    common_opt <- unique(arrange(data, desc(n_hword_total))$n_hword_total)[input$slider_word_ussage]
+    
+    data <- filter(data, n_hword_total >= common_opt)
+    
+    total <- data %>% 
+      summarise(n_sel = sum(n_hword_year))
+    
+    data <- data %>% 
+      left_join(total, by= c("year", "headword"))
+    
     return(data)
   })
 
