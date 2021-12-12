@@ -1,6 +1,7 @@
 # Scraping new speech from kongehuset.dk
 library(dplyr)
 library(rvest)
+library(stringr)
 
 # Extracting urls of speeches
 link <- "https://www.kongehuset.dk/monarkiet-i-danmark/nytarstaler/#laes-de-seneste-nytaarstaler"
