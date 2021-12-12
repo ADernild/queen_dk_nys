@@ -11,13 +11,13 @@ server <- function(input, output, session) {
         menuItem("Word statistics", tabName = "stats", icon = icon("chart-pie")),
         div(id="sidebar-input",
             h3("Filters"),
-            checkboxGroupInput("re",
-                               label = "Options",
-                               choices = "Allow reactive choises",
-                               selected = "Allow reactive choises"
-            ),
+            # checkboxGroupInput("re",
+            #                    label = "Options",
+            #                    choices = "Allow reactive choises",
+            #                    selected = "Allow reactive choises"
+            # ),
             radioButtons ("l",
-                          label = "New years eve speech language analyzed",
+                          label = "Language",
                           selected = languages[1],
                           choiceNames = c("Danish", "English"),
                           choiceValues = languages
@@ -52,14 +52,14 @@ server <- function(input, output, session) {
       return(p("Filter could not load due to invallid country setting."))
     }
     if(input$yearopt == "Range"){
-      sliderInput("year_r", "Years range:",
+      sliderInput("year_r", "Years range",
                   min = year_min, max = year_max,
                   value = range(year_min,year_max),
                   step = 1
       )
       
     } else{
-      selectizeInput("year_si", label="Years", choices = years, selected = years,
+      selectizeInput("year_si", label="Years selections", choices = years, selected = years,
                      multiple = TRUE)
     }
   })
@@ -73,9 +73,11 @@ server <- function(input, output, session) {
   output$Covered_speech <- renderUI({
     req(input$l)
     if(input$l == "DK"){
+      title <- "Hendes Majestæt Dronningens nytårstale"
       source <- source_year
     } else if(input$l == "EN"){
       source <- source_year_en
+      title <- "Her Majesty The Queen’s New Year Address"
     } else{
       warning("Invallid country setting")
       return(p("Content could not load due to invallid country setting."))
@@ -96,7 +98,7 @@ server <- function(input, output, session) {
       lapply(1:nrow(source), function(i) {
         tags$li(a(href=source$urls[i],
                   target = "_blank",
-                  paste("Her Majesty the Queen of Denmark's New Year's speech", source$year[i])))
+                  paste(title, source$year[i])))
       })
     )
     return(content)
