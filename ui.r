@@ -148,6 +148,47 @@ ui <- dashboardPage(
                    helpText("Words have been stemmed, to get better data for topics. This does remove information about word forms."),
                    helpText("Words have been lemmatized (replacing words with identical meaning with a headword), to improve topic analysis.")
                 )
+              ),
+              fluidRow(
+                tabBox(width=6, id = "word_ussage", title="Most used words",
+                       tabPanel("Piechart",
+                                highchartOutput("word_ussage_pie", height="50vh")
+                       ),
+                       tabPanel("Stream graph",
+                                highchartOutput("word_ussage_streamgraph", height="50vh")
+                       ),
+                       tabPanel("Columns",
+                                highchartOutput("word_ussage_col", height="50vh")
+                       ),
+                       tabPanel("Scatterplot",
+                                highchartOutput("word_ussage_scatter", height="50vh")
+                       ),
+                       tabPanel("Table",
+                                DTOutput("word_ussage_tbl")
+                       ),
+                       fluidRow(
+                          sliderInput("slider_word_ussage",
+                                      "Top frequent numbers",
+                                      min=1, max=number_of_rarity, value = 3,
+                                      step = 1),
+                          helpText("We recommend not going above a frequency of 15. It will take a long time to load with values above that threshold. Plots might also become too clustered to comprehend."),
+                          helpText("Bug: Stream graph cannot render together with wordcloud. Or it will do so very slowly. Use a different tab when applying filters, then visit the tab to update it.")
+                       )
+                ),
+                tabBox(width=6, id = "word_ussage", title="Speech length by words used",
+                       tabPanel("Spline",
+                                highchartOutput("speech_length_spline", height="50vh")
+                        ),
+                        tabPanel("Columns",
+                                 highchartOutput("speech_length_col", height="50vh")
+                        ),
+                        tabPanel("Piechart",
+                                 highchartOutput("speech_length_pie", height="50vh")
+                        ),
+                        fluidRow(
+                          helpText("Todo.")
+                       )
+                )
               )
       )
     )

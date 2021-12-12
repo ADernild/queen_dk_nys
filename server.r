@@ -687,4 +687,120 @@ server <- function(input, output, session) {
       rename(word = headword, freq = n_hword_total)
     wordcloud2(data=data, size=1.6, color='random-dark')
   })
+  
+  ## Stream Graph ----------------------------------------------------------
+  output$word_ussage_streamgraph <- renderHighchart({
+    data <-  speech_data()
+    
+    hchart(data, "streamgraph", hcaes(year, n_hword_year, group = headword)) %>% 
+        hc_yAxis(
+          visible = F
+        ) %>% 
+        hc_norevese() %>% 
+        hc_tooltip(
+          shared = T
+        )
+  })
+  
+  ## Columns ---------------------------------------------------------------
+  output$word_ussage_col <- renderHighchart({
+    data <-  speech_data()
+    
+    hc <- hchart(data, "column",
+                 hcaes(x=year, y=n_hword_year,group = headword)) %>% 
+      hc_plotOptions(
+        series = list (
+          stacking = 'normal'
+        )
+      ) %>% 
+      hc_norevese() %>% 
+      hc_tooltip(
+        shared = T
+      )
+    return(hc)
+  })
+  
+  ## Pie ------------------------------------------------------------------
+  output$word_ussage_pie <- renderHighchart({
+    data <-  speech_data() %>% 
+      ungroup() %>%
+      select(headword, n_hword_total) %>%
+      distinct() %>% 
+      arrange(desc(n_hword_total))
+
+    hc <- hchart(data, "pie", name="Frequency",
+                 hcaes(y=n_hword_total, name = headword)) %>% 
+      hc_plotOptions(
+        series = list(
+          colorByPoint = T
+        ),
+        pie = list(
+          allowPointSelect = T,
+          cursor = 'pointer',
+          dataLabels = list(
+            enabled = T,
+            format = '<b>{point.name}</b>: {point.percentage:.1f} %'
+          )
+        )
+      ) %>% 
+      hc_norevese() %>% 
+      hc_tooltip(
+        shared = T,
+        headerFormat = "<span style=\"color: {point.color} \">\u25CF</span> <b>{point.series.name}</b><br>",
+        pointFormat = "Year: {point.x}<br>Frequency: {point.y}<br>Total frequency: {point.total}"
+      )
+      return(hc)
+  })
+  
+  ## Scatter --------------------------------------------------------------
+  output$word_ussage_scatter <- renderHighchart({
+    data <-  speech_data()
+    
+    hc <- hchart(data, "scatter",
+                 hcaes(x=year, y=n_hword_year, total = n_hword_total, group = headword)) %>% 
+      hc_norevese() %>% 
+      hc_plotOptions(
+        scatter = list(
+          marker = list(
+            radius = 3,
+            states = list(
+              hover = list(
+                enabled = T
+              )
+            )
+          )
+        ),
+        states = list(
+          hover = list(
+            marker = list(
+              enabled = F
+            )
+          )
+        )
+      ) %>% 
+      hc_xAxis(
+        startOnTick = T,
+        endOnTick = T,
+        showLastLabel = T
+      ) %>% 
+      hc_tooltip(
+        shared = T,
+        headerFormat = "<span style=\"color: {point.color} \">\u25CF</span> <b>{point.series.name}</b><br>",
+        pointFormat = "Year: {point.x}<br>Frequency: {point.y}<br>Total frequency: {point.total}"
+      )
+    return(hc)
+  })
+  
+  ## Table ----------------------------------------------------------------
+  output$word_ussage_tbl <- renderDT({
+    speech_data() %>%
+      ungroup() %>% 
+      rename(`Year` = year, `Word` = headword, `Total frequency` = n_hword_total,
+                `Frequency in year` = n_hword_year,
+                `Frequency in selection in year` = n_sel)
+  }#,
+  # options = list(
+  #   
+  # )
+  )
 }
