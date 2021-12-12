@@ -11,6 +11,9 @@ library(stm) # for stm models
 library(highcharter) # for plot display
 library(leaflet)
 library(stringr)
+# library(RColorBrewer) # To color worldclouds. Requirement of wordlclouds
+# library(wordcloud) # To create wordclouds
+library(wordcloud2) # Two create wordclouds
 
 # Load data ---------------------------------------------------------------
 tokens <- readRDS("data/tokens.rds") # All tokens, filtered

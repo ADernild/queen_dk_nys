@@ -139,8 +139,14 @@ ui <- dashboardPage(
       tabItem(tabName = "stats",
               h2("Sentiment of new year eve speeches of Queen Margret, and the words used within"),
               fluidRow(
-                box(width=12,  
-                    p("todo")
+                box(width = 10, title="Wordcloud",
+                    wordcloud2Output("wordcloud"),
+                    helpText("Words in wordcloud is randomly sellected from aviable words. It is influenced by filter.")
+                ),
+                box(width=2, title = "Disclaimers",
+                   helpText("Stopwords are filtered. This is done to avoid the most common words (like \"the\") to dominate the statistics."),
+                   helpText("Words have been stemmed, to get better data for topics. This does remove information about word forms."),
+                   helpText("Words have been lemmatized (replacing words with identical meaning with a headword), to improve topic analysis."),
                 )
               )
       )
