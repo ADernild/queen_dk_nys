@@ -130,7 +130,7 @@ ui <- dashboardPage(
       tabItem(tabName = "map",
               h2("A map of the countries mentioned in the new year eve speeches of Queen Margret"),
               fluidRow(
-                box(width=12,  
+                box(width=10,  
                     leafletOutput("map", height = 740)
                 )
               )
