@@ -101,10 +101,5 @@ poly_prep <- function(polygons, countries, years) {
   poly
 }
 
-# test <- poly_prep(geojson, countries, c(1999, 2001, 2005))
-# sapply(1:length(test$n_year), function(x){paste(paste(test$n_year[[x]], "times in:", test$year[[x]]), sep="<br/>")}, simplify = T)
-# 
-htmltools::HTML(paste(test$n_year[[2]], "times in:", test$year[[2]], collapse="<br/>"))
-
 pal <- colorNumeric(c("#a3dcff", "#007bff"), NULL)
 
