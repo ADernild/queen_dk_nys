@@ -25,7 +25,8 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 - [x] Rebuild Structural Topic Model using Polarity scores as another co-variate.
 - [x] Implement worldmap and map placese the queens mentions (A).
 - [ ] Add metadata to mentioned countries (A).
-- [ ] Implement visualizations of the most used words (M).
+- [R] Implement visualizations of the most used words (M).
+- [ ] Implement visualizations speech length.
 - [x] Analyse sentiment by year.
 - [R] Sentiment statistics by year and preiod (M).
 - [ ] Format data for display (M).
