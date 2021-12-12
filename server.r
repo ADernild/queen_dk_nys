@@ -246,7 +246,8 @@ server <- function(input, output, session) {
     }
   })
 
-  ## sentiment of speeches ----------------------------------------------------
+  ## sentiment of speeches -------------------------------------------------
+  ### Bubles ---------------------------------------------------------------
   output$sentiment_of_speech_bubles <- renderHighchart({
     data <- sentiment_of_speech_data()
     if("fwords" %in% colnames(data)){
@@ -333,6 +334,7 @@ server <- function(input, output, session) {
       )
   })
   
+  ### Column compare -------------------------------------------------------
   output$sentiment_of_speech_col_compare <- renderHighchart({
     data <- sentiment_of_speech_data() 
     hc <- highchart() %>% 
@@ -385,6 +387,7 @@ server <- function(input, output, session) {
     return(hc)
   })
   
+  ### Column compare -------------------------------------------------------
   output$sentiment_of_speech_sha_compare <- renderHighchart({
     data <- sentiment_of_speech_data()
     hc <- highchart() %>% 
@@ -418,6 +421,7 @@ server <- function(input, output, session) {
     return(hc)
   })
   
+  ### Column average -------------------------------------------------------
   output$sentiment_of_speech_avg <- renderHighchart({
     data <- sentiment_of_speech_data()
     hchart(data,
@@ -429,7 +433,8 @@ server <- function(input, output, session) {
       hc_norevese()
   })
 
-  ## sentiment_of_words ------------------------------------------------------
+  ## sentiment_of_words ----------------------------------------------------
+  ### Sentiment comparison -------------------------------------------------
   output$sentiment_of_words <- renderHighchart({
     data <- sentiment_of_words_data()
     hchart(data,
@@ -452,6 +457,7 @@ server <- function(input, output, session) {
       )
   })
 
+  ### Word comparison ------------------------------------------------------
   output$sentiment_of_words_freq <- renderHighchart({
     data <- sentiment_of_words_data()
     if("fwords" %in% colnames(data)){
@@ -651,8 +657,8 @@ server <- function(input, output, session) {
     }
     return(data)
   })
-  
-  ### Word cloud -----------------------------------------------------------
+
+  ## Word cloud ------------------------------------------------------------
   output$wordcloud <- renderWordcloud2({
     data <-  speech_data() %>% 
       ungroup() %>% 
