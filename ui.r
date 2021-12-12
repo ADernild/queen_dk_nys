@@ -20,7 +20,7 @@ ui <- dashboardPage(
                            title = "All about the new years eve speeches of Queen Margret the 2. of Denmark",
                            div(id = "intoduction",
                                p("You are hearby invited to a look into the speaches of the royal majesty herself. This is a interactive dashboard, that alows you to select a category in the navigation menu on the left. You could look up the sentiment of her speaches, see a model of the topics she uses, look at a map, showing what countries she has spoken of through the years, or just see which words she uses the most. Enjoy your data ride."),
-                               p(class="bold", "Gud bevare Danmark.")
+                               p(class="bold", "GUD BEVARE DANMARK.")
                            )
                        ),
                        box(width=5,
