@@ -10,6 +10,9 @@ ui <- dashboardPage(
       tags$link(rel = "stylesheet", type = "text/css", href = "sizes_n_stuff.css"),
       tags$link(rel = "shortcut icon", href = "favicon.ico")
     ),
+    conditionalPanel(condition = "$('html').hasClass('shiny-busy')",
+                     tags$div(span("Loading..."), id = "loadmessage")
+    ),
     # Index ----
     tabItems(
       tabItem(tabName = "index",
