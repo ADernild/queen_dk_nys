@@ -12,7 +12,7 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 - [x] Collect english translated speeches.
 - [ ] Generate file with meta info about speeches (A).
 - [x] Clean speech text.
-- \* Clean english speech text (A).
+- [ ] Clean english speech text (A).
 - [x] Create custom stopwords list.
 - [ ] Create custom stopwords list for enlish speeches (A).
 - \* Preprocessing: Tokenization, stemming, lemmatization etc.
@@ -36,8 +36,8 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 - \* Add filtering by year and words - and implement in visualization data (M).
 - [R] Create list of data sources in dashboard (M).
 - \* Feature information about the queen, scraped from wikipedia, also in english (M)
-- [ ] Implement language option for dahsboard (M).
-- [ ] Finalize design of dashboard (M)
+- \* Implement language option for dahsboard (M).
+- \* Finalize design of dashboard (M)
 - [ ] Remove unfinished implementations from dashboard.
 - [ ] Write 4 page report.
 
@@ -45,7 +45,7 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 
 x = Done
 
-\* = In progress
+\* = Stuck untill another post can progress
 
 [R] = Ready to review
 
