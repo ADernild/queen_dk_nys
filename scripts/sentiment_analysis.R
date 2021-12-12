@@ -122,9 +122,16 @@ total_tokens <- tokens %>%
   group_by(headword) %>%
   summarise(n_hword_total = sum(n_in_year))
 
+year_tokens <- tokens %>%
+  group_by(headword, year) %>%
+  summarise(n_hword_year = sum(n_in_year))
+
 tokens <- tokens %>%
   left_join(total_tokens, by="headword") %>% 
-  arrange(desc(n_hword_total), word, desc(n_lemma_total), desc(n_stem_total), desc(n_total), desc(year), desc(n_in_year)) # arrange by largest n_hword_total
+  left_join(year_tokens, by=c("year", "headword")) %>% 
+  arrange(desc(n_hword_total), word, desc(n_lemma_total),
+          desc(n_stem_total), desc(n_total), desc(year),
+          desc(n_in_year)) # arrange by largest n_hword_total
 
 
 ## Add sentiment labels ----
