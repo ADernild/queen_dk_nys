@@ -412,7 +412,7 @@ server <- function(input, output, session) {
     }
     total_sum_sen <- sum(data$sentiment)
     valueBox(
-      total_sum_sen, "Total sentiment", icon = icon("equals"),
+      total_sum_sen, "Summed sentiment", icon = icon("equals"),
       color = "purple"
     )
   })
@@ -425,7 +425,7 @@ server <- function(input, output, session) {
     }
     total_pos_sen <- sum(data$sentiment_pos)
     valueBox(
-      total_pos_sen, "Total positive sentiment", icon = icon("plus"),
+      total_pos_sen, "Summed positive sentiment", icon = icon("plus"),
       color = "green"
     )
   })
@@ -438,21 +438,8 @@ server <- function(input, output, session) {
     }
     total_neg_sen <- sum(data$sentiment_neg)
     valueBox(
-      total_neg_sen, "Total negative sentiment", icon = icon("minus"),
+      total_neg_sen, "Summed negative sentiment", icon = icon("minus"),
       color = "red"
-    )
-  })
-  
-  output$total_num_wor <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
-      data <- sentiment_of_speech_data()
-    }
-    total_num_wor <- sum(data$n_words)
-    valueBox(
-      total_num_wor, "Total number of words that had sentiment", icon = icon("hashtag"),
-      color = "blue"
     )
   })
   
@@ -465,8 +452,21 @@ server <- function(input, output, session) {
       num_pos_sen <- sum(data[data$polarity > 0,]$n_hword_total)
     }
     valueBox(
-      num_pos_sen, "Number of words that had positive sentiment", icon = icon("plus-circle"),
+      num_pos_sen, "Number of words that carried positive sentiment", icon = icon("plus-circle"),
       color = "green"
+    )
+  })
+  
+  output$total_num_wor <- renderValueBox({
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
+    total_num_wor <- sum(data$n_words)
+    valueBox(
+      total_num_wor, "Number of words that carried sentiment", icon = icon("hashtag"),
+      color = "blue"
     )
   })
   
@@ -493,7 +493,7 @@ server <- function(input, output, session) {
     mean_sum_sen <- round(mean(data$sentiment),2)
     mean_sum_sen <- ifelse(is.nan(mean_sum_sen), 0, mean_sum_sen)
     valueBox(
-      mean_sum_sen, "Mean sentiment", icon = icon("equals"),
+      mean_sum_sen, "Average sentiment", icon = icon("equals"),
       color = "purple"
     )
   })
@@ -507,7 +507,7 @@ server <- function(input, output, session) {
     mean_pos_sen <- round(mean(data$sentiment_pos),2)
     mean_pos_sen <- ifelse(is.nan(mean_pos_sen), 0, mean_pos_sen)
     valueBox(
-      mean_pos_sen, "Mean positive sentiment", icon = icon("plus"),
+      mean_pos_sen, "Average positive sentiment", icon = icon("plus"),
       color = "green"
     )
   })
@@ -521,7 +521,7 @@ server <- function(input, output, session) {
     mean_neg_sen <- round(mean(data$sentiment_neg),2)
     mean_neg_sen <- ifelse(is.nan(mean_neg_sen), 0, mean_neg_sen)
     valueBox(
-      mean_neg_sen, "Mean negative sentiment", icon = icon("minus"),
+      mean_neg_sen, "Average negative sentiment", icon = icon("minus"),
       color = "red"
     )
   })
@@ -535,7 +535,7 @@ server <- function(input, output, session) {
     mean_num_wor <- round(mean(data$n_words),2)
     mean_num_wor <- ifelse(is.nan(mean_num_wor), 0, mean_num_wor)
     valueBox(
-      mean_num_wor, "Mean number of words that had sentiment", icon = icon("hashtag"),
+      mean_num_wor, "Average number of words that carried sentiment", icon = icon("hashtag"),
       color = "blue"
     )
   })

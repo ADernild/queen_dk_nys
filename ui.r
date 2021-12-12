@@ -112,7 +112,7 @@ ui <- dashboardPage(
                 )
               ),
               fluidRow(
-                box(width = 12, title = "Sentiment statistics",
+                box(width = 12, title = "Sentiment statistics through years in speeches",
                     fluidRow(
                       valueBoxOutput("total_sum_sen"),
                       valueBoxOutput("total_pos_sen"),
