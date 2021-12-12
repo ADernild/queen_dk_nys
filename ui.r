@@ -26,22 +26,14 @@ ui <- dashboardPage(
                        box(width=5,
                            title = "Speeches covered",
                            p("Theese are the speeches that are covered:"),
-                           tags$ul(
-                             lapply(1:nrow(source_year), function(i) {
-                               tags$li(a(href=source_year$Source[i],
-                                         target = "_blank",
-                                         paste("Her Majesty the Queen of Denmark's New Year's speech", source_year$year[i])))
-                             })
-                           )
-                       )
+                           uiOutput("Covered_speech"),
+                           helpText("Changes to language and year filter is relected here.")
+                        )
                       ),
                 column(3,
                        box(width=12,
                            div(id="wiki_infobox_wrap",
-                               a(href="https://da.wikipedia.org/wiki/Margrethe_2.",
-                                 target= "_blank",
-                                 "Info indhentet via wikipedia (08/12/2021)."
-                               ),
+                               uiOutput("scrabing_info"),
                                htmlOutput("wiki_infobox")
                            )
                        )

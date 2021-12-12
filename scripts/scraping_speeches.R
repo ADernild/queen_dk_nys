@@ -61,6 +61,6 @@ df <- data.frame(speech = c(speeches_kongehuset, speeches_dansketaler), year = c
   write.csv("data/new_year_speeches_1972-2020.csv", row.names = F, fileEncoding = "UTF-8") #saving as csv
 
 # Saving meta file with year and url
-source_year <- data.frame(Source = c(kongehuset$urls, dansketaler$urls), year = c(kongehuset$year, dansketaler$year)) %>% 
+source_year <- data.frame(urls = c(kongehuset$urls, dansketaler$urls), year = c(kongehuset$year, dansketaler$year)) %>% 
   arrange(year)
 saveRDS(source_year, "data/source_year.rds")

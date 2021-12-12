@@ -16,10 +16,11 @@ server <- function(input, output, session) {
                                choices = "Allow reactive choises",
                                selected = "Allow reactive choises"
             ),
-            radioButtons ("languages",
+            radioButtons ("l",
                           label = "New years eve speech language analyzed",
-                          choices = languages,
-                          selected = languages[1]
+                          selected = languages[1],
+                          choiceNames = c("Danish", "English"),
+                          choiceValues = languages
             ),
             helpText("Note: English version of speach are translations. Not all speeches are translated."),
             radioButtons ("yearopt",
@@ -36,23 +37,102 @@ server <- function(input, output, session) {
   })
   
   output$year <- renderUI({
-      req(input$yearopt)
-      if(input$yearopt == "Range"){
-        sliderInput("year_r", "Years range:",
-                    min = year_min, max = year_max,
-                    value = range(year_min,year_max),
-                    step = 1
-        )
-        
-      } else{
-        selectizeInput("year_si", label="Years", choices = years, selected = years,
-                       multiple = TRUE)
-      }
+    req(input$yearopt)
+    req(input$l)
+    if(input$l == "DK"){
+      year_min <- year_min
+      year_max <- year_max
+      years <- years
+    } else if(input$l == "EN"){
+      year_min <- year_min_en
+      year_max <- year_max_en
+      years <- years_en
+    } else{
+      warning("Invallid country setting")
+      return(p("Filter could not load due to invallid country setting."))
+    }
+    if(input$yearopt == "Range"){
+      sliderInput("year_r", "Years range:",
+                  min = year_min, max = year_max,
+                  value = range(year_min,year_max),
+                  step = 1
+      )
+      
+    } else{
+      selectizeInput("year_si", label="Years", choices = years, selected = years,
+                     multiple = TRUE)
+    }
   })
   
   updateSelectizeInput(
     session, 'words', choices = words_tokens_all, server = TRUE
     )
+
+  ## Index ------------------------------------------------------------------
+  ### Covered speeches ------------------------------------------------------
+  output$Covered_speech <- renderUI({
+    req(input$l)
+    if(input$l == "DK"){
+      source <- source_year
+    } else if(input$l == "EN"){
+      source <- source_year_en
+    } else{
+      warning("Invallid country setting")
+      return(p("Content could not load due to invallid country setting."))
+    }
+    
+    req(input$yearopt)
+    if(input$yearopt == "Range"){
+      req(input$year_r)
+      source <- source %>% 
+        filter(year %in% input$year_r[1]:input$year_r[2])
+    } else{
+      req(input$year_si)
+      source <- source %>% 
+        filter(year %in% input$year_si)
+    }
+    
+    content <- tags$ul(
+      lapply(1:nrow(source), function(i) {
+        tags$li(a(href=source$urls[i],
+                  target = "_blank",
+                  paste("Her Majesty the Queen of Denmark's New Year's speech", source$year[i])))
+      })
+    )
+    return(content)
+  })
+    
+  ### wiki_infobox ----------------------------------------------------------
+  output$scrabing_info <- renderUI({
+    req(input$l)
+    if(input$l == "DK"){
+      source <- "https://da.wikipedia.org/wiki/Margrethe_2."
+      date <- "08/12/2021"
+    } else if(input$l == "EN"){
+      source <- "https://en.wikipedia.org/wiki/Margrethe_II_of_Denmark"
+      date <- "12/12/2021"
+    } else{
+      warning("Invallid country setting")
+      return(p("Content could not load due to invallid country setting."))
+    }
+    a(href=source,
+      target= "_blank",
+      paste("Info scarped from wikipedia (", date, ").", sep = "")
+    )
+  })
+  
+  
+  output$wiki_infobox <- renderUI({
+    req(input$l)
+    if(input$l == "DK"){
+      includeHTML("www/queen_info_table.html")
+    } else if(input$l == "EN"){
+      includeHTML("www/queen_info_table_en.html")
+    } else{
+      warning("Invallid country setting")
+      return(p("Content could not load due to invallid country setting."))
+    }
+  })
   
   # topicVis ----------------------------------------------------------------
   output$topicVis <- renderVis({
@@ -538,11 +618,6 @@ server <- function(input, output, session) {
       mean_num_wor, "Average number of words that carried sentiment", icon = icon("hashtag"),
       color = "blue"
     )
-  })
-
-  # wiki_infobox ------------------------------------------------------------
-  output$wiki_infobox <- renderUI({
-    includeHTML("www/queen_info_table.html")
   })
   
   # Map ---------------------------------------------------------------------
