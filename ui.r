@@ -71,16 +71,16 @@ ui <- dashboardPage(
                 tabBox(width=12, id = "speeches",
                        title="Sentiment of speaches",
                   tabPanel("Sentiment (Bubles)",
-                           highchartOutput("sentiment_of_speech_bubles", height="50vh")
+                           highchartOutput("sentiment_of_speech_bubles", height="75vh")
                   ),
                   tabPanel("Sentiment (Columns)",
-                           highchartOutput("sentiment_of_speech_col_compare", height="50vh")
+                           highchartOutput("sentiment_of_speech_col_compare", height="75vh")
                   ),
                   tabPanel("Sentiment range (Shankey)",
-                           highchartOutput("sentiment_of_speech_sha_compare", height="50vh")
+                           highchartOutput("sentiment_of_speech_sha_compare", height="75vh")
                   ),
                   tabPanel("Average sentiment",
-                           highchartOutput("sentiment_of_speech_avg", height="50vh")
+                           highchartOutput("sentiment_of_speech_avg", height="75vh")
                   ),
                   fluidRow(
                     helpText("Press tab titles for different visualizatons."),

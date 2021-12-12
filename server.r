@@ -180,7 +180,7 @@ server <- function(input, output, session) {
         hc_tooltip(
           useHTML = T,
           headerFormat = '<table>',
-          pointFormat = paste('<tr><th colspan="2"><h3>{point.name}</h3></th></tr>',
+          pointFormat = paste('<tr><th colspan="2"><b>{point.name}</b></th></tr>',
                               '<tr><th>Featured words in year :</th><td>{point.fwords}</td></tr>',
                               '<tr><th>Overall sentiment:</th><td>{point.l}</td></tr>',
                               '<tr><th>Positive sentiment (x):</th><td>{point.x}</td></tr>',
@@ -205,7 +205,7 @@ server <- function(input, output, session) {
         hc_tooltip(
           useHTML = T,
           headerFormat = '<table>',
-          pointFormat = paste('<tr><th colspan="2"><h3>{point.name}</h3></th></tr>',
+          pointFormat = paste('<tr><th colspan="2"><b>{point.name}</b></th></tr>',
                               '<tr><th>Overall sentiment:</th><td>{point.l}</td></tr>',
                               '<tr><th>Positive sentiment (x):</th><td>{point.x}</td></tr>',
                               '<tr><th>Negative sentiment (y):</th><td>{point.y}</td></tr>',
@@ -309,13 +309,11 @@ server <- function(input, output, session) {
     data <- sentiment_of_speech_data()
     hc <- highchart() %>% 
       hc_add_series(
+        name = "Total sentiment",
         type = "arearange",
         stack = 1,
         data = data,
-        hcaes(x = year, low = sentiment, high = sentiment_pos, neg = sentiment_neg),
-        dataGrouping = list(
-          enabled = F
-        )
+        hcaes(x = year, low = sentiment, high = sentiment_pos, neg = sentiment_neg)
       ) %>% 
       hc_norevese() %>% 
       hc_tooltip(
@@ -323,17 +321,20 @@ server <- function(input, output, session) {
         headerFormat = "<b>{point.x}</b><br>",
         pointFormat = "Positive (high): {point.high}<br>Negative (difference): {point.neg}<br>Sentiment (low): {point.low}<br>"
       ) %>% 
-      hc_plotOptions(
-        series = list(
-          dataGrouping = list(
-            enabled = F
-          )
-        )
-      ) %>% 
       hc_yAxis(
         softMin = 0,
         startOnTick = T
       )
+    # if(length(input$words)){
+    #   selection <- sentiment_of_speech_data_filtered()
+    #   hc <- hc %>% 
+    #     hc_add_series(
+    #       type = "arearange",
+    #       name= "Selection",
+    #       data = selection,
+    #       hcaes(x = year, low = sentiment, high = sentiment_pos, neg = sentiment_neg)
+    #     ) 
+    # }
     return(hc)
   })
   

@@ -27,6 +27,13 @@ h2, h3{
 }
 
 /* Shiny dashboard */
+/* Main header */
+.main-header{
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 230px;
+}
 /* > Wrapper */
 .sidebar-collapse .content-wrapper, .sidebar-collapse .main-footer,
 .sidebar-collapse .right-side{
@@ -132,6 +139,13 @@ h2, h3{
   margin-bottom: 0;
 }
 
+/* Content */
+.content{
+  float: left;
+  width: 100%;
+  padding-top: 0;
+}
+
 /* > less */
 .row{
   margin-left: 0;
@@ -185,7 +199,8 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
 }
 
 /* > Shiny tabs */
-.nav-tabs-custom>.tab-content{
+.nav-tabs-custom>.tab-content,
+.tab-content, .tab-pane{
   float: left;
   width: 100%;
 }
@@ -221,3 +236,12 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
   clear: left;
 }
 
+/* Sentiment */
+#sentiment_of_speech_bubles, #sentiment_of_speech_col_compare,
+#sentiment_of_speech_sha_compare, #sentiment_of_speech_avg{
+  min-height: 550px;
+}
+
+#sentiment_of_words_freq, #sentiment_of_words{
+  min-height: 215px;
+}
