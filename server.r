@@ -638,6 +638,38 @@ server <- function(input, output, session) {
       return()
     proxy %>% setView(lng = click$lng, lat = click$lat, zoom = 4)
   })
+
+  # Word statistics ---------------------------------------------------------
+  ## Word data --------------------------------------------------------------
+  speech_data <- reactive({
+    req(input$yearopt)
+    data <- tokens %>%
+      select(year, headword, n_hword_year, n_hword_total, sentiment_true) %>% 
+      distinct() %>% 
+      group_by(headword, year) %>% 
+      arrange(year, headword)
+    if(length(input$words) > 0){
+      data <- data %>% 
+        filter(headword %in% input$words)
+    }
+    if(input$yearopt == "Range"){
+      req(input$year_r)
+      data <- filter(data, year %in% input$year_r[1]:input$year_r[2])
+    } else{
+      req(input$year_si)
+      data <- filter(data, year %in% input$year_si)
+    }
+    return(data)
+  })
+  
+  ### Word cloud -----------------------------------------------------------
+  output$wordcloud <- renderWordcloud2({
+    data <-  speech_data() %>% 
+      ungroup() %>% 
+      select(headword, n_hword_total) %>% 
+      distinct() %>% 
+      arrange(headword) %>% 
+      rename(word = headword, freq = n_hword_total)
+    wordcloud2(data=data, size=1.6, color='random-dark')
+  })
 }
-
-

@@ -1,6 +1,7 @@
 library(shiny)
 library(shinydashboard)
-library(dplyr) # for data manipulation
+library(plyr) # For data manipulation
+library(dplyr) # For data manipulation
 # library(DT) # For table visualizations
 # library(highcharter) # for interactive plots
 library(plotly) # for interactive plots
@@ -8,9 +9,11 @@ library(plotly) # for interactive plots
 library(LDAvis) # For topic models
 library(stm) # for stm models
 library(highcharter) # for plot display
-library(plyr) # For data manipulation
 library(leaflet)
 library(stringr)
+# library(RColorBrewer) # To color worldclouds. Requirement of wordlclouds
+# library(wordcloud) # To create wordclouds
+library(wordcloud2) # Two create wordclouds
 
 # Load data ---------------------------------------------------------------
 tokens <- readRDS("data/tokens.rds") # All tokens, filtered
