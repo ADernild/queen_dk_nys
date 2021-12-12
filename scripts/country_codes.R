@@ -25,25 +25,23 @@ coords <- coords %>%
 names(coords) <- c("land", "lat", "long", "code")
 coords$land <- tolower(coords$land)
 
-last_year <- as.integer(format(Sys.Date(), "%Y")) - 1 # Last year i.e., the year of the lastest speech
-
 # Reading in speeches
-df <- read.csv(paste0("data/nys_1972-", last_year, "_cleaned.csv"))
+df <- read.csv("data/nys_sentences.csv")
 
-# Matching country names with speeches
-matched_countries <- lapply(df$speech, function(x) str_match_all(x, coords$land))
+matches <- data.frame(t(sapply(seq(length(df$sentences)), function(i) list(countries=unlist(str_match_all(df$sentences[i], coords$land)),
+                                                                year=df$years[i],
+                                                                sentiment=df$polarity[i],
+                                                                sentence_id=i))))
+matches <- matches[lapply(matches$countries, length)>0,]
 
-data <- data.frame(year=c(), countries=c())
-for(i in 1:length(matched_countries)) {
-  year <- c(df$year[i])
-  countries <- c(unlist(matched_countries[[i]]))
-  data <- rbind(data, data.frame(year, countries))
-}
+matches <- tidyr::unnest(matches, cols = c(countries, year, sentiment, sentence_id))
 
 # Summarizing matched countries to number pr. year
-data <- data %>% 
+data <- matches %>% 
   group_by(year, countries) %>% 
   dplyr::summarise(
+    ids = list(sentence_id),
+    sentiment = mean(sentiment),
     n = n()
   )
 

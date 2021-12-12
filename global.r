@@ -86,12 +86,14 @@ cmatch <- function(left, right){
 poly_prep <- function(polygons, countries, years) {
   countries <- countries %>% 
     dplyr::filter(year %in% years) %>% 
-    dplyr::select(year, n, code, countries) %>% 
+    dplyr::select(year, n, code, countries, sentiment, ids) %>% 
     dplyr::group_by(code) %>% 
     dplyr::summarise(
       countries = str_to_title(unique(countries)),
       year = list(year),
       n_year = list(n),
+      ids = list(ids),
+      sentiment = mean(sentiment),
       n = sum(n)
     )
   countries
