@@ -146,7 +146,7 @@ ui <- dashboardPage(
                 box(width=2, title = "Disclaimers",
                    helpText("Stopwords are filtered. This is done to avoid the most common words (like \"the\") to dominate the statistics."),
                    helpText("Words have been stemmed, to get better data for topics. This does remove information about word forms."),
-                   helpText("Words have been lemmatized (replacing words with identical meaning with a headword), to improve topic analysis."),
+                   helpText("Words have been lemmatized (replacing words with identical meaning with a headword), to improve topic analysis.")
                 )
               )
       )
