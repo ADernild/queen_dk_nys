@@ -26,6 +26,7 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 - [x] Implement worldmap and map placese the queens mentions (A).
 - [ ] Add metadata to mentioned countries (A).
 - [R] Implement visualizations of the most used words (M).
+- [ ] Analyse speech lengths.
 - [ ] Implement visualizations speech length.
 - [x] Analyse sentiment by year.
 - [R] Sentiment statistics by year and preiod (M).
