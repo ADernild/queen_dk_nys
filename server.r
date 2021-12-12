@@ -452,6 +452,9 @@ server <- function(input, output, session) {
         pointFormat = "<span style=\"color: {point.color} \">\u25CF</span> {point.series.name}: {point.y}"
       ) %>% 
       hc_norevese() %>% 
+      hc_legend(
+        reversed = T
+      ) %>% 
       hc_xAxis(
         reversed = T
       )
@@ -483,6 +486,9 @@ server <- function(input, output, session) {
         pointFormat = "<span style=\"color: {point.color} \">\u25CF</span> {point.series.name}: {point.y}"
       ) %>% 
       hc_norevese() %>% 
+      hc_legend(
+        reversed = T
+      ) %>% 
       hc_xAxis(
         reversed = T
       )
