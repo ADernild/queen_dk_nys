@@ -124,11 +124,6 @@ ui <- dashboardPage(
                       valueBoxOutput("mean_num_wor")
                     )
                 )
-              ),
-              fluidRow(
-                box(width = 12,
-                  p("Todo: sentiment of whole text.")  
-                )
               )
       ),
       # Map ----
