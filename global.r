@@ -66,7 +66,7 @@ hc_norevese <- function(x){
     reversed = F
   ) %>% 
   hc_legend(
-    reversed = T
+    reversed = F
   )
 }
 
