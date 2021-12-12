@@ -92,6 +92,8 @@ poly_prep <- function(polygons, countries, years) {
     dplyr::group_by(code) %>% 
     dplyr::summarise(
       countries = str_to_title(unique(countries)),
+      year = list(year),
+      n_year = list(n),
       n = sum(n)
     )
   countries

@@ -634,11 +634,21 @@ server <- function(input, output, session) {
   
   # Map ---------------------------------------------------------------------
   output$map <- renderLeaflet({
-    leaflet(poly_prep(geojson, countries, input$year_r[1]:input$year_r[2])) %>% 
+    leaflet(poly_prep(geojson, countries, input$year_r[1]:input$year_r[2]), options = leafletOptions(worldCopyJump = T)) %>%
       addTiles() %>% 
       addPolygons(stroke = T, weight=0.2, color="black", smoothFactor = 0.3, fillOpacity = 1,
-                  fillColor=~pal(n), label = ~ paste(ADMIN, "was said:", n, "times"), highlightOptions = list(weight = 0.7, fillOpacity = 0.9)) %>% 
+                  fillColor=~pal(n), popup = ~paste("<b>", ADMIN, "</b>", "was said:", n, "times in total", "<br/>",
+                                                     sapply(1:length(n_year), function(x) paste(n_year[[x]], "times in:", year[[x]], collapse="<br/>"), simplify=T)),
+                  popupOptions = labelOptions(textsize = "8px"),
+                  highlightOptions = list(weight = 0.7, fillOpacity = 0.9)) %>% 
       addLegend(pal = pal, values = ~n)
+  })
+  observe({
+    click <- input$map_shape_click
+    proxy <- leafletProxy("map")
+    if(is.null(click))
+      return()
+    proxy %>% setView(lng = click$lng, lat = click$lat, zoom = 4)
   })
 
   # Word statistics ---------------------------------------------------------

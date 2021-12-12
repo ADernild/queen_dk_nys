@@ -23,7 +23,7 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 - [ ] Add sentiment scores to Topic Models (A).
 - [x] Calculate Polarity scores (Sentiment Analysis).
 - [x] Rebuild Structural Topic Model using Polarity scores as another co-variate.
-- [ ] Implement worldmap and map placese the queens mentions (A).
+- [x] Implement worldmap and map placese the queens mentions (A).
 - [ ] Add metadata to mentioned countries (A).
 - [ ] Implement visualizations of the most used words (M).
 - [x] Analyse sentiment by year.
