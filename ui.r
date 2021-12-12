@@ -125,6 +125,11 @@ ui <- dashboardPage(
                     )
                 )
               ),
+              fluidRow(
+                box(width = 12,
+                  p("Todo: sentiment of whole text.")  
+                )
+              )
       ),
       # Map ----
       tabItem(tabName = "map",

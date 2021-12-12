@@ -133,7 +133,6 @@ tokens <- tokens %>%
           desc(n_stem_total), desc(n_total), desc(year),
           desc(n_in_year)) # arrange by largest n_hword_total
 
-
 ## Add sentiment labels ----
 tokens <- tokens %>%
   mutate(sentiment = ifelse(polarity>= 2, "Positive",
