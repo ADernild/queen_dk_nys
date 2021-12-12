@@ -23,11 +23,11 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 - [ ] Add sentiment scores to Topic Models (A).
 - [x] Calculate Polarity scores (Sentiment Analysis).
 - [x] Rebuild Structural Topic Model using Polarity scores as another co-variate.
-- [x] Implement worldmap and map placese the queens mentions (A).
+- [R] Implement worldmap and map placese the queens mentions (A).
 - [ ] Add metadata to mentioned countries (A).
 - [R] Implement visualizations of the most used words (M).
 - [ ] Analyse speech lengths.
-- [ ] Implement visualizations speech length.
+- [ ] Implement visualizations for speech lengths.
 - [x] Analyse sentiment by year.
 - [R] Sentiment statistics by year and preiod (M).
 - [ ] Format data for display (M).
@@ -37,6 +37,7 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 - [ ] Create consistent colorpalette for data.
 - \* Add filtering by year and words - and implement in visualization data (M).
 - [R] Create list of data sources in dashboard (M).
+- [R] Add loading message (M).
 - \* Feature information about the queen, scraped from wikipedia, also in english (M)
 - \* Implement language option for dahsboard (M).
 - \* Finalize design of dashboard (M)
