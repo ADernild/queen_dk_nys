@@ -10,6 +10,9 @@ ui <- dashboardPage(
       tags$link(rel = "stylesheet", type = "text/css", href = "sizes_n_stuff.css"),
       tags$link(rel = "shortcut icon", href = "favicon.ico")
     ),
+    conditionalPanel(condition = "$('html').hasClass('shiny-busy')",
+                     tags$div(span("Loading..."), id = "loadmessage")
+    ),
     # Index ----
     tabItems(
       tabItem(tabName = "index",
@@ -99,7 +102,7 @@ ui <- dashboardPage(
                        helpText("Some words have a larger sentiment than others. Larger numbers are more positive, and negative numbers are more negative. In the moddel the most positive words have a polarity of 3. The most negative words have a polarity of -3."),
                        helpText("A sentiment of 0 would be true neutral. True neutral words do not impact the sentiment."),
                        helpText("The word slider only updates the plots, if the word has any ploarity and was features in the set year-range."),
-                       helpText("Using the word filter will recategorize results when relevant."),
+                       helpText("Using the word filter will recategorize results when relevant.")
                    )
                 )
               ),
@@ -124,7 +127,7 @@ ui <- dashboardPage(
                       valueBoxOutput("mean_num_wor")
                     )
                 )
-              ),
+              )
       ),
       # Map ----
       tabItem(tabName = "map",
@@ -143,10 +146,57 @@ ui <- dashboardPage(
                     wordcloud2Output("wordcloud"),
                     helpText("Words in wordcloud is randomly sellected from aviable words. It is influenced by filter.")
                 ),
-                box(width=2, title = "Disclaimers",
-                   helpText("Stopwords are filtered. This is done to avoid the most common words (like \"the\") to dominate the statistics."),
-                   helpText("Words have been stemmed, to get better data for topics. This does remove information about word forms."),
-                   helpText("Words have been lemmatized (replacing words with identical meaning with a headword), to improve topic analysis.")
+                column(2,
+                       box(width=12, title = "Disclaimers",
+                           helpText("Stopwords are filtered. This is done to avoid the most common words (like \"the\") to dominate the statistics."),
+                           helpText("Words have been stemmed, to get better data for topics. This does remove information about word forms."),
+                           helpText("Words have been lemmatized (replacing words with identical meaning with a headword), to improve topic analysis.")
+                       ),
+                       box(width=12, title = "Speech statistics sliders",
+                           column(12,
+                                  sliderInput("slider_word_ussage",
+                                              "Top frequent numbers",
+                                              min=1, max=number_of_rarity, value = 3,
+                                              step = 1)
+                           ),
+                           column(12,
+                                  helpText("We recommend not going above a frequency of 15. It will take a long time to load with values above that threshold. Plots might also become too clustered to comprehend.")
+                           )
+                       )
+                )
+              ),
+              fluidRow(
+                tabBox(width=6, id = "word_ussage", title="Most used words",
+                       tabPanel("Piechart",
+                                highchartOutput("word_ussage_pie", height="50vh")
+                       ),
+                       tabPanel("Stream graph",
+                                highchartOutput("word_ussage_streamgraph", height="50vh"),
+                                helpText("Bug: Stream graph cannot render together with wordcloud. Or it will do so very slowly. Use a different tab when applying filters, then visit the tab to update it.")
+                       ),
+                       tabPanel("Columns",
+                                highchartOutput("word_ussage_col", height="50vh")
+                       ),
+                       tabPanel("Scatterplot",
+                                highchartOutput("word_ussage_scatter", height="50vh")
+                       ),
+                       tabPanel("Table",
+                                DTOutput("word_ussage_tbl")
+                       )
+                ),
+                tabBox(width=6, id = "word_ussage", title="Speech length by words used",
+                       tabPanel("Spline",
+                                highchartOutput("speech_length_spline", height="50vh")
+                        ),
+                        tabPanel("Columns",
+                                 highchartOutput("speech_length_col", height="50vh")
+                        ),
+                        tabPanel("Piechart",
+                                 highchartOutput("speech_length_pie", height="50vh")
+                        ),
+                        fluidRow(
+                          helpText("Todo.")
+                       )
                 )
               )
       )

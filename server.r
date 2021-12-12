@@ -11,13 +11,13 @@ server <- function(input, output, session) {
         menuItem("Word statistics", tabName = "stats", icon = icon("chart-pie")),
         div(id="sidebar-input",
             h3("Filters"),
-            checkboxGroupInput("re",
-                               label = "Options",
-                               choices = "Allow reactive choises",
-                               selected = "Allow reactive choises"
-            ),
+            # checkboxGroupInput("re",
+            #                    label = "Options",
+            #                    choices = "Allow reactive choises",
+            #                    selected = "Allow reactive choises"
+            # ),
             radioButtons ("l",
-                          label = "New years eve speech language analyzed",
+                          label = "Language",
                           selected = languages[1],
                           choiceNames = c("Danish", "English"),
                           choiceValues = languages
@@ -52,14 +52,14 @@ server <- function(input, output, session) {
       return(p("Filter could not load due to invallid country setting."))
     }
     if(input$yearopt == "Range"){
-      sliderInput("year_r", "Years range:",
+      sliderInput("year_r", "Years range",
                   min = year_min, max = year_max,
                   value = range(year_min,year_max),
                   step = 1
       )
       
     } else{
-      selectizeInput("year_si", label="Years", choices = years, selected = years,
+      selectizeInput("year_si", label="Years selections", choices = years, selected = years,
                      multiple = TRUE)
     }
   })
@@ -73,9 +73,11 @@ server <- function(input, output, session) {
   output$Covered_speech <- renderUI({
     req(input$l)
     if(input$l == "DK"){
+      title <- "Hendes Majestæt Dronningens nytårstale"
       source <- source_year
     } else if(input$l == "EN"){
       source <- source_year_en
+      title <- "Her Majesty The Queen’s New Year Address"
     } else{
       warning("Invallid country setting")
       return(p("Content could not load due to invallid country setting."))
@@ -96,7 +98,7 @@ server <- function(input, output, session) {
       lapply(1:nrow(source), function(i) {
         tags$li(a(href=source$urls[i],
                   target = "_blank",
-                  paste("Her Majesty the Queen of Denmark's New Year's speech", source$year[i])))
+                  paste(title, source$year[i])))
       })
     )
     return(content)
@@ -246,7 +248,8 @@ server <- function(input, output, session) {
     }
   })
 
-  ## sentiment of speeches ----------------------------------------------------
+  ## sentiment of speeches -------------------------------------------------
+  ### Bubles ---------------------------------------------------------------
   output$sentiment_of_speech_bubles <- renderHighchart({
     data <- sentiment_of_speech_data()
     if("fwords" %in% colnames(data)){
@@ -333,6 +336,7 @@ server <- function(input, output, session) {
       )
   })
   
+  ### Column compare -------------------------------------------------------
   output$sentiment_of_speech_col_compare <- renderHighchart({
     data <- sentiment_of_speech_data() 
     hc <- highchart() %>% 
@@ -385,6 +389,7 @@ server <- function(input, output, session) {
     return(hc)
   })
   
+  ### Column compare -------------------------------------------------------
   output$sentiment_of_speech_sha_compare <- renderHighchart({
     data <- sentiment_of_speech_data()
     hc <- highchart() %>% 
@@ -418,6 +423,7 @@ server <- function(input, output, session) {
     return(hc)
   })
   
+  ### Column average -------------------------------------------------------
   output$sentiment_of_speech_avg <- renderHighchart({
     data <- sentiment_of_speech_data()
     hchart(data,
@@ -429,7 +435,8 @@ server <- function(input, output, session) {
       hc_norevese()
   })
 
-  ## sentiment_of_words ------------------------------------------------------
+  ## sentiment_of_words ----------------------------------------------------
+  ### Sentiment comparison -------------------------------------------------
   output$sentiment_of_words <- renderHighchart({
     data <- sentiment_of_words_data()
     hchart(data,
@@ -447,11 +454,15 @@ server <- function(input, output, session) {
         pointFormat = "<span style=\"color: {point.color} \">\u25CF</span> {point.series.name}: {point.y}"
       ) %>% 
       hc_norevese() %>% 
+      hc_legend(
+        reversed = T
+      ) %>% 
       hc_xAxis(
         reversed = T
       )
   })
 
+  ### Word comparison ------------------------------------------------------
   output$sentiment_of_words_freq <- renderHighchart({
     data <- sentiment_of_words_data()
     if("fwords" %in% colnames(data)){
@@ -477,6 +488,9 @@ server <- function(input, output, session) {
         pointFormat = "<span style=\"color: {point.color} \">\u25CF</span> {point.series.name}: {point.y}"
       ) %>% 
       hc_norevese() %>% 
+      hc_legend(
+        reversed = T
+      ) %>% 
       hc_xAxis(
         reversed = T
       )
@@ -642,12 +656,14 @@ server <- function(input, output, session) {
   # Word statistics ---------------------------------------------------------
   ## Word data --------------------------------------------------------------
   speech_data <- reactive({
+    req(input$slider_word_ussage)
     req(input$yearopt)
     data <- tokens %>%
-      select(year, headword, n_hword_year, n_hword_total, sentiment_true) %>% 
+      select(year, headword, n_hword_year, n_hword_total) %>% 
       distinct() %>% 
       group_by(headword, year) %>% 
       arrange(year, headword)
+    
     if(length(input$words) > 0){
       data <- data %>% 
         filter(headword %in% input$words)
@@ -659,10 +675,21 @@ server <- function(input, output, session) {
       req(input$year_si)
       data <- filter(data, year %in% input$year_si)
     }
+    
+    common_opt <- unique(arrange(data, desc(n_hword_total))$n_hword_total)[input$slider_word_ussage]
+    
+    data <- filter(data, n_hword_total >= common_opt)
+    
+    total <- data %>% 
+      summarise(n_sel = sum(n_hword_year))
+    
+    data <- data %>% 
+      left_join(total, by= c("year", "headword"))
+    
     return(data)
   })
-  
-  ### Word cloud -----------------------------------------------------------
+
+  ## Word cloud ------------------------------------------------------------
   output$wordcloud <- renderWordcloud2({
     data <-  speech_data() %>% 
       ungroup() %>% 
@@ -672,4 +699,120 @@ server <- function(input, output, session) {
       rename(word = headword, freq = n_hword_total)
     wordcloud2(data=data, size=1.6, color='random-dark')
   })
+  
+  ## Stream Graph ----------------------------------------------------------
+  output$word_ussage_streamgraph <- renderHighchart({
+    data <-  speech_data()
+    
+    hchart(data, "streamgraph", hcaes(year, n_hword_year, group = headword)) %>% 
+        hc_yAxis(
+          visible = F
+        ) %>% 
+        hc_norevese() %>% 
+        hc_tooltip(
+          shared = T
+        )
+  })
+  
+  ## Columns ---------------------------------------------------------------
+  output$word_ussage_col <- renderHighchart({
+    data <-  speech_data()
+    
+    hc <- hchart(data, "column",
+                 hcaes(x=year, y=n_hword_year,group = headword)) %>% 
+      hc_plotOptions(
+        series = list (
+          stacking = 'normal'
+        )
+      ) %>% 
+      hc_norevese() %>% 
+      hc_tooltip(
+        shared = T
+      )
+    return(hc)
+  })
+  
+  ## Pie ------------------------------------------------------------------
+  output$word_ussage_pie <- renderHighchart({
+    data <-  speech_data() %>% 
+      ungroup() %>%
+      select(headword, n_hword_total) %>%
+      distinct() %>% 
+      arrange(desc(n_hword_total))
+
+    hc <- hchart(data, "pie", name="Frequency",
+                 hcaes(y=n_hword_total, name = headword)) %>% 
+      hc_plotOptions(
+        series = list(
+          colorByPoint = T
+        ),
+        pie = list(
+          allowPointSelect = T,
+          cursor = 'pointer',
+          dataLabels = list(
+            enabled = T,
+            format = '<b>{point.name}</b>: {point.percentage:.1f} %'
+          )
+        )
+      ) %>% 
+      hc_norevese() %>% 
+      hc_tooltip(
+        shared = T,
+        headerFormat = "<span style=\"color: {point.color} \">\u25CF</span> <b>{point.series.name}</b><br>",
+        pointFormat = "Year: {point.x}<br>Frequency: {point.y}<br>Total frequency: {point.total}"
+      )
+      return(hc)
+  })
+  
+  ## Scatter --------------------------------------------------------------
+  output$word_ussage_scatter <- renderHighchart({
+    data <-  speech_data()
+    
+    hc <- hchart(data, "scatter",
+                 hcaes(x=year, y=n_hword_year, total = n_hword_total, group = headword)) %>% 
+      hc_norevese() %>% 
+      hc_plotOptions(
+        scatter = list(
+          marker = list(
+            radius = 3,
+            states = list(
+              hover = list(
+                enabled = T
+              )
+            )
+          )
+        ),
+        states = list(
+          hover = list(
+            marker = list(
+              enabled = F
+            )
+          )
+        )
+      ) %>% 
+      hc_xAxis(
+        startOnTick = T,
+        endOnTick = T,
+        showLastLabel = T
+      ) %>% 
+      hc_tooltip(
+        shared = T,
+        headerFormat = "<span style=\"color: {point.color} \">\u25CF</span> <b>{point.series.name}</b><br>",
+        pointFormat = "Year: {point.x}<br>Frequency: {point.y}<br>Total frequency: {point.total}"
+      )
+    return(hc)
+  })
+  
+  ## Table ----------------------------------------------------------------
+  output$word_ussage_tbl <- renderDT({
+    speech_data() %>%
+      ungroup() %>% 
+      rename(`Year` = year, `Word` = headword, `Total frequency` = n_hword_total,
+                `Frequency in year` = n_hword_year,
+                `Frequency in selection in year` = n_sel)
+  }#,
+  # options = list(
+  #   
+  # )
+  )
 }
