@@ -644,12 +644,14 @@ server <- function(input, output, session) {
   # Word statistics ---------------------------------------------------------
   ## Word data --------------------------------------------------------------
   speech_data <- reactive({
+    req(input$slider_word_ussage)
     req(input$yearopt)
     data <- tokens %>%
-      select(year, headword, n_hword_year, n_hword_total, sentiment_true) %>% 
+      select(year, headword, n_hword_year, n_hword_total) %>% 
       distinct() %>% 
       group_by(headword, year) %>% 
       arrange(year, headword)
+    
     if(length(input$words) > 0){
       data <- data %>% 
         filter(headword %in% input$words)
