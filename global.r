@@ -47,7 +47,9 @@ languages <- c("DK", "EN")
 words_all <-  unique(lemma$token) %>% sort()
 words_tokens_all <- unique(tokens$headword) %>% sort()
 words_count_unique <- length(words_all)
-
+most_common <- max(tokens$n_hword_total)
+most_common_any_year <- max(tokens$n_hword_year)
+number_of_rarity <- length(unique(arrange(tokens, desc(n_hword_total))$n_hword_total))
 
 # Highchart options -------------------------------------------------------
 opts <- getOption("highcharter.options")
