@@ -26,25 +26,26 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 - [x] Rebuild Structural Topic Model using Polarity scores as another co-variate.
 - [x] Implement worldmap and map placese the queens mentions.
 - [ ] Add metadata to mentioned countries (A).
-- [x] Implement visualizations of the most used words (M).
-- [ ] Analyse speech lengths (M).
-- [ ] Implement visualizations for speech lengths (M).
+- [x] Implement visualizations of the most used words.
+- [ ] Analyse speech lengths (M 7).
+- [ ] Implement visualizations for speech lengths (M 8).
 - [x] Analyse sentiment by year.
-- [ ] Fix stacked barchart select (M).
-- [ ] Cap word statistics top frequent numbers in stream graph and scatterplot. Add helptext (M).
-- [ ] Format data for display (M).
+- [ ] Fix stacked barchart select (M 6).
+- [ ] Cap word statistics top frequent numbers in stream graph and scatterplot. Add helptext (M 1).
+- [ ] Format data for display (M 9).
 - [x] Create interactive dashboard to interact with findings.
-- [ ] Add meaningfull titles to tabs.
-- [ ] Add descriptive text to all visualizations, and descriptions on how to use them and what to findings expect.
-- [ ] Add description on how to use, why you could use, and what to use the dashboard for on index page?
+- [ ] Add meaningfull titles to tabs (M 4).
+- [ ] Add descriptive text to all visualizations, and descriptions on how to use them and what to findings expect (M 2).
+- [ ] Add description on how to use, why you could use, and what to use the dashboard for on index page (M 3).
 - [ ] Write introduction to dahsboard and implement on git and index tab in dashboard.
 - [ ] Create consistent colorpalette for data.
 - \* Add filtering by year and words - and implement in visualization data (M).
+- [ ] Make year sliders into vector with reactive (M 5).
 - [x] Create list of data sources in dashboard.
 - [x] Feature information about the queen, scraped from wikipedia.
-- [ ] Make year sliders into vector with reactive (M).
 - \* Implement language option for dahsboard (M).
 - \* Finalize design of dashboard (M)
+- [ ] Simplifice dashboard design (M 10)
 - [ ] Remove unfinished implementations from dashboard.
 - [ ] Write 4 page report.
 
