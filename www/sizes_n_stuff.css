@@ -370,6 +370,10 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
   min-height: 215px;
 }
 
+#mean_num_wor{
+  padding-right: 15px;
+}
+
 /* Word ussage */
 .box_align_layout{
   display: flex;
