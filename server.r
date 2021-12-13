@@ -5,10 +5,10 @@ server <- function(input, output, session) {
   output$menu <- renderMenu({
       sidebarMenu(
         menuItem("Welcome and about", tabName = "index", icon = icon("home"), selected = T),
-        menuItem("Topic model", tabName = "tm", icon = icon("comment-dots")),
-        menuItem("Sentiments", tabName = "sentiment", icon = icon("theater-masks")),
+        menuItem("Topics", tabName = "tm", icon = icon("comment-dots")),
+        menuItem("Sentiment", tabName = "sentiment", icon = icon("theater-masks")),
         menuItem("Map", tabName = "map", icon = icon("globe-europe")),
-        menuItem("Word statistics", tabName = "stats", icon = icon("chart-pie")),
+        menuItem("Word statistic", tabName = "stats", icon = icon("chart-pie")),
         div(id="sidebar-input",
             h3("Filters"),
             # checkboxGroupInput("re",
