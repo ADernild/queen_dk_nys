@@ -82,7 +82,7 @@ ui <- dashboardPage(
                                 "Number of words (by frequency)",
                                 min=1, max=n_dist_t_headword, value = 100 ),
                     helpText("The word slider only updates the plots, if the word has any ploarity and was features in the set year-range."),
-                    helpText("Using the word filter will recategorize results when relevant."),
+                    helpText("Using the word filter will recategorize results when relevant.")
                     
                 )
               ),
@@ -186,7 +186,7 @@ ui <- dashboardPage(
                        tabPanel("Table",
                                 DTOutput("word_ussage_tbl")
                        )
-                ),
+                )
               )
       )
     )
