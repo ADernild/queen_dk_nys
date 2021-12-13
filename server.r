@@ -743,6 +743,7 @@ server <- function(input, output, session) {
   
   ## Pie ------------------------------------------------------------------
   output$word_ussage_pie <- renderHighchart({
+    #Todo: Add years
     data <-  speech_data() %>% 
       ungroup() %>%
       select(headword, n_hword_total) %>%
