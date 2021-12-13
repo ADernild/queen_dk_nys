@@ -51,6 +51,23 @@ most_common <- max(tokens$n_hword_total)
 most_common_any_year <- max(tokens$n_hword_year)
 number_of_rarity <- length(unique(arrange(tokens, desc(n_hword_total))$n_hword_total))
 
+
+# Colors ------------------------------------------------------------------
+# Chosen with https://coolors.co/ using refference picture:
+# https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Drottning_Margrethe_av_Danmark_crop.jpg/210px-Drottning_Margrethe_av_Danmark_crop.jpg
+colors_of_the_queen <- c(
+  "#435961", # Royal sweather blue / Deep space sparkle
+  "#BB3F56", # Her majesty lipstick / English red
+  "#9C5C52", # Royal dimple / redwood
+  "#E3BF9D", # Rising royal star of the queen / Desert sand
+  "#BACFF6", # Her majesty earing  / Light blue steel
+  "#4D5749", # Falling royal star of the queen / Ebony
+  "#C0BFBB", # Hair of the majestic / Gray X 11 gray
+  "#9F9080", # Royal hair / Grullo
+  "#ECC1BE", # Pink queen / Baby pink
+  "#321403" # Royal brown button / Black bean
+  )
+
 # Highchart options -------------------------------------------------------
 opts <- getOption("highcharter.options")
 opts$lang$decimalPoint <- "."
