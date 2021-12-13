@@ -636,11 +636,20 @@ server <- function(input, output, session) {
   
   # Map ---------------------------------------------------------------------
   output$map <- renderLeaflet({
-    leaflet(poly_prep(geojson, countries, input$year_r[1]:input$year_r[2]), options = leafletOptions(worldCopyJump = T)) %>%
+      years <- input$year_r[1]:input$year_r[2]
+    leaflet(poly_prep(geojson, countries, years),
+            options = leafletOptions(worldCopyJump = T,
+                                     minZoom = 1,
+                                     maxZoom = 4
+                                     )
+            ) %>%
       addTiles() %>% 
       addPolygons(stroke = T, weight=0.2, color="black", smoothFactor = 0.3, fillOpacity = 1,
                   fillColor=~pal(n), popup = ~paste("<b>", ADMIN, "</b>", "was said:", n, "times in total", "<br/>",
-                                                     sapply(1:length(n_year), function(x) paste(n_year[[x]], "times in:", year[[x]], collapse="<br/>"), simplify=T)),
+                                                     sapply(1:length(n_year), function(x) ifelse(length(n_year)>10,
+                                                                                                 paste(n_year[[x]], "t. in:", year[[x]], collapse=", "),
+                                                                                                 paste(n_year[[x]], "times in:", year[[x]], collapse="<br/>")),
+                                                            simplify=T)),
                   popupOptions = labelOptions(textsize = "8px"),
                   highlightOptions = list(weight = 0.7, fillOpacity = 0.9)) %>% 
       addLegend(pal = pal, values = ~n)
