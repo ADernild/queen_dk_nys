@@ -637,7 +637,8 @@ server <- function(input, output, session) {
   # Map ---------------------------------------------------------------------
   output$map <- renderLeaflet({
       years <- input$year_r[1]:input$year_r[2]
-    leaflet(poly_prep(geojson, countries, years),
+      mapDat <- poly_prep(geojson, countries, years)
+    leaflet(mapDat,
             options = leafletOptions(worldCopyJump = T,
                                      minZoom = 1,
                                      maxZoom = 4
@@ -652,7 +653,8 @@ server <- function(input, output, session) {
                                                                                                  paste(n_year[[i]], "times in:", year[[i]], collapse="<br/>")),
                                                             simplify=T)),
                   popupOptions = labelOptions(textsize = "8px"),
-                  highlightOptions = list(weight = 0.7, fillOpacity = 0.9)) %>% 
+                  highlightOptions = list(weight = 0.7, fillOpacity = 0.9),
+                  layerId = mapDat@data$ADMIN) %>% 
       addLegend(pal = pal, values = ~n)
   })
   observe({
@@ -661,6 +663,17 @@ server <- function(input, output, session) {
     if(is.null(click))
       return()
     proxy %>% setView(lng = click$lng, lat = click$lat, zoom = 4)
+  })
+  
+  observeEvent(input$map_shape_click, {
+    click <- input$map_shape_click
+    selected <- mapDat@data[mapDat@data$ADMIN == click$id,]
+    
+    if(!is.null(click$id)){
+      output$plot <- renderPlot({
+        boxplot(unlist(selected$sentiment_year), unlist(mapDat@data$sentiment_year))
+      })
+    }
   })
 
   # Word statistics ---------------------------------------------------------

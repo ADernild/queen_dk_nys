@@ -95,6 +95,7 @@ poly_prep <- function(polygons, countries, years) {
       year = list(year),
       n_year = list(n),
       sentence = list(sentence),
+      sentiment_year = list(sentiment),
       sentiment = mean(sentiment),
       n = sum(n)
     )
