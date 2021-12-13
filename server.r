@@ -646,9 +646,9 @@ server <- function(input, output, session) {
       addTiles() %>% 
       addPolygons(stroke = T, weight=0.2, color="black", smoothFactor = 0.3, fillOpacity = 1,
                   fillColor=~pal(n), popup = ~paste("<b>", ADMIN, "</b>", "was said:", n, "times in total", "<br/>",
-                                                     sapply(1:length(n_year), function(x) ifelse(length(n_year[[x]])>10,
-                                                                                                 paste(n_year[[x]], "t. in:", year[[x]], collapse=", "),
-                                                                                                 paste(n_year[[x]], "times in:", year[[x]], collapse="<br/>")),
+                                                     sapply(1:length(n_year), function(i) ifelse(length(n_year[[i]])>10,
+                                                                                                 paste(n_year[[i]], "t. in:", year[[i]], collapse=", "),
+                                                                                                 paste(n_year[[i]], "times in:", year[[i]], collapse="<br/>")),
                                                             simplify=T)),
                   popupOptions = labelOptions(textsize = "8px"),
                   highlightOptions = list(weight = 0.7, fillOpacity = 0.9)) %>% 
