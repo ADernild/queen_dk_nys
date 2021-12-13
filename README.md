@@ -2,45 +2,50 @@
 
 A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 
-|█████░░░░░░░|
+|████░░░░░░░░░|
 
-42% complete.
+32% complete.
 
 ### Tasks
 
 - [x] Collect speeches.
 - [x] Collect english translated speeches.
-- [ ] Generate file with meta info about speeches (A).
+- [x] Generate file with meta info about speeches.
 - [x] Clean speech text.
-- [ ] Clean english speech text (A).
 - [x] Create custom stopwords list.
 - [ ] Create custom stopwords list for enlish speeches (A).
-- \* Preprocessing: Tokenization, stemming, lemmatization etc.
+- [x] Preprocessing: Tokenization, stemming, lemmatization etc.
 - [ ] Preprocessing: Tokenization, stemming, lemmatization etc. for english speeches (A).
+- [ ] Clean english speech text (A).
+- [ ] Simmulate steps to do when a new speach is relased (A)
+- [ ] Run scripts for all speaches again (A).
 - [x] Build Structural Topic Model (STM).
-- [ ] Resarch STM filtering posibility options on finished model (A).
-- \* Test out other Topic models - optimize LDA or use HPD (A).
+- [ ] Test out other Topic models - optimize LDA or use HPD (A).
 - [ ] Add sentiment scores to Topic Models (A).
 - [x] Calculate Polarity scores (Sentiment Analysis).
 - [x] Rebuild Structural Topic Model using Polarity scores as another co-variate.
-- [R] Implement worldmap and map placese the queens mentions (A).
+- [x] Implement worldmap and map placese the queens mentions.
 - [ ] Add metadata to mentioned countries (A).
-- [R] Implement visualizations of the most used words (M).
-- [ ] Analyse speech lengths.
-- [ ] Implement visualizations for speech lengths.
+- [x] Implement visualizations of the most used words.
+- [ ] Analyse speech lengths (M 7).
+- [ ] Implement visualizations for speech lengths (M 8).
 - [x] Analyse sentiment by year.
-- [R] Sentiment statistics by year and preiod (M).
-- [ ] Format data for display (M).
+- [ ] Fix stacked barchart select (M 6).
+- [ ] Cap word statistics top frequent numbers in stream graph and scatterplot. Add helptext (M 1).
+- [ ] Format data for display (M 9).
 - [x] Create interactive dashboard to interact with findings.
-- [ ] Add meaningfull titles to tabs.
-- \* Write introduction to dahsboard and implement on git and index tab in dashboard.
+- [ ] Add meaningfull titles to tabs (M 4).
+- [ ] Add descriptive text to all visualizations, and descriptions on how to use them and what to findings expect (M 2).
+- [ ] Add description on how to use, why you could use, and what to use the dashboard for on index page (M 3).
+- [ ] Write introduction to dahsboard and implement on git and index tab in dashboard.
 - [ ] Create consistent colorpalette for data.
 - \* Add filtering by year and words - and implement in visualization data (M).
-- [R] Create list of data sources in dashboard (M).
-- [R] Add loading message (M).
-- \* Feature information about the queen, scraped from wikipedia, also in english (M)
-- \* Implement language option for dahsboard (M).
-- \* Finalize design of dashboard (M)
+- [ ] Make year sliders into vector with reactive (M 5).
+- [x] Create list of data sources in dashboard.
+- [x] Feature information about the queen that is scraped from wikipedia.
+- \* Implement language option for dahsboard, and reactively update data sources (M 11).
+- \* Finalize design of dashboard (M 12)
+- [ ] Simplifice dashboard design (M 10)
 - [ ] Remove unfinished implementations from dashboard.
 - [ ] Write 4 page report.
 
@@ -53,7 +58,7 @@ x = Done
 [R] = Ready to review
 
 ### Task... Maybe
-- \* Use CRON script to automize datacollection (A).
+- [ ] Use CRON script to automize datacollection (A).
 - [ ] Add logic to update filter inputs by data clicked in models.
 - \* Implement checkbox to ignore filter updates by clicked data in models (M).
 - [ ] Generate speeches in the style of the Queen.
