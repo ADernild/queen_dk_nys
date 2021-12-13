@@ -224,7 +224,7 @@ h2, h3{
   margin-left: 0;
   margin-right: 0;
   margin-top: 0;
-  margin-bottom: 2vh;
+  margin-bottom: 30px; /* same as padding between 2 box*/
 }
 
 .row:last-child{
@@ -258,7 +258,7 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
 .box {
   padding: 1vh 1.5vw;
   border: 1px solid #000;
-  margin-bottom: 2vh;
+  margin-bottom: 0;
   border-radius: 4px;
 }
 
@@ -279,6 +279,7 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
   border-radius: 4px;
   border-width: 1px;
   border-style: solid;
+  margin: 0;
   overflow: hidden;
 }
 
@@ -370,7 +371,19 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
 }
 
 /* Word ussage */
-#word_ussage_row .tab-pane,
-#word_ussage_row .tab-pane>div{
+.box_align_layout{
+  display: flex;
+}
+
+.box_align_layout>div{
+  float: none;
+}
+
+.box_align_layout .tab-pane,
+.box_align_layout .tab-pane>div{
   min-height: 400px;
+}
+
+.box_align_layout>div .box{
+  height: 100%;
 }
