@@ -172,13 +172,14 @@ ui <- dashboardPage(
                        ),
                        tabPanel("Stream graph",
                                 highchartOutput("word_ussage_streamgraph", height="50vh"),
-                                helpText("Bug: Stream graph cannot render together with wordcloud. Or it will do so very slowly. Use a different tab when applying filters, then visit the tab to update it.")
+                                helpText("Bug: Stream graph cannot render together with wordcloud. Use a different tab (eg. piechart) when applying filters, then visit the tab to update it.")
                        ),
                        tabPanel("Columns",
                                 highchartOutput("word_ussage_col", height="50vh")
                        ),
                        tabPanel("Scatterplot",
-                                highchartOutput("word_ussage_scatter", height="50vh")
+                                highchartOutput("word_ussage_scatter", height="50vh"),
+                                helpText("Bug: Scatterplot cannot render together with wordcloud. Use a different tab (eg. piechart) when applying filters, then visit the tab to update it.")
                        ),
                        tabPanel("Table",
                                 DTOutput("word_ussage_tbl")
