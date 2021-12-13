@@ -67,8 +67,21 @@ server <- function(input, output, session) {
   updateSelectizeInput(
     session, 'words', choices = words_tokens_all, server = TRUE
     )
-
-  ## Index ------------------------------------------------------------------
+  
+  # Date data --------------------------------------------------------------
+  y <- reactive({
+    req(input$yearopt)
+    if(input$yearopt == "Range"){
+      req(input$year_r)
+      year <- input$year_r[1]:input$year_r[2]
+    } else{
+      req(input$year_si)
+      year <- input$year_si
+    }
+    return(year)
+  })
+  
+  # Index ------------------------------------------------------------------
   output$royall_beautyfication <- renderUI({
     req(input$l)
     req(input$words)
@@ -79,7 +92,8 @@ server <- function(input, output, session) {
         return()
     }
   })
-  ### Covered speeches ------------------------------------------------------
+  
+  ## Covered speeches ------------------------------------------------------
   output$Covered_speech <- renderUI({
     req(input$l)
     if(input$l == "DK"){
@@ -93,17 +107,10 @@ server <- function(input, output, session) {
       return(p("Content could not load due to invallid country setting."))
     }
     
-    req(input$yearopt)
-    if(input$yearopt == "Range"){
-      req(input$year_r)
-      source <- source %>% 
-        filter(year %in% input$year_r[1]:input$year_r[2])
-    } else{
-      req(input$year_si)
-      source <- source %>% 
-        filter(year %in% input$year_si)
-    }
-    
+    req(y())
+    source <- source %>% 
+      filter(year %in% y())
+
     content <- tags$ul(
       lapply(1:nrow(source), function(i) {
         tags$li(a(href=source$urls[i],
@@ -114,7 +121,7 @@ server <- function(input, output, session) {
     return(content)
   })
     
-  ### wiki_infobox ----------------------------------------------------------
+  ## wiki_infobox ----------------------------------------------------------
   output$scrabing_info <- renderUI({
     req(input$l)
     if(input$l == "DK"){
@@ -132,7 +139,6 @@ server <- function(input, output, session) {
       paste("Info scarped from wikipedia (", date, ").", sep = "")
     )
   })
-  
   
   output$wiki_infobox <- renderUI({
     req(input$l)
@@ -164,7 +170,7 @@ server <- function(input, output, session) {
   # Sentiment ---------------------------------------------------------------
   ## sentiment data ---------------------------------------------------------
   sentiment_of_speech_data <- reactive({
-    req(input$yearopt)
+    req(y())
     data <- sentiment %>%
       group_by(year) %>% 
       arrange(year)
@@ -178,17 +184,12 @@ server <- function(input, output, session) {
         rowwise() %>% 
         mutate(fwords = ifelse(year %in% token_data, "Yes", "No"))
     }
-    if(input$yearopt == "Range"){
-      req(input$year_r)
-      filter(data, year %in% input$year_r[1]:input$year_r[2])
-    } else{
-      req(input$year_si)
-      filter(data, year %in% input$year_si)
-    }
+    
+    filter(data, year %in% y())
   })
   
   sentiment_of_words_data <- reactive({
-    req(input$yearopt)
+    req(y())
     req(input$slider_sentiment_of_words_n_words)
     data <- tokens %>%
       filter(polarity != 0) %>% 
@@ -202,13 +203,8 @@ server <- function(input, output, session) {
         mutate(sentiment_true = paste(sentiment_true, fwords, sep=": "))
     }
     
-    if(input$yearopt == "Range"){
-      data <- data %>% filter(year %in% input$year_r[1]:input$year_r[2])
-    } else{
-      req(input$year_si)
-      data <- data %>% filter(year %in% input$year_si)
-    }
-    
+    data <- data %>% filter(year %in% y())
+
     if("fwords" %in% colnames(data)){
       data <- data %>% 
         arrange(desc(fwords), desc(n_hword_total))
@@ -227,7 +223,7 @@ server <- function(input, output, session) {
   })
   
   sentiment_of_speech_data_filtered <- reactive({
-    req(input$yearopt)
+    req(y())
     req(input$words)
     
     data <- sentiment_of_words_data() %>%
@@ -249,13 +245,7 @@ server <- function(input, output, session) {
       group_by(year) %>% 
       arrange(year)
     
-    if(input$yearopt == "Range"){
-      req(input$year_r)
-      filter(data, year %in% input$year_r[1]:input$year_r[2])
-    } else{
-      req(input$year_si)
-      filter(data, year %in% input$year_si)
-    }
+    filter(data, year %in% y())
   })
 
   ## sentiment of speeches -------------------------------------------------
@@ -646,8 +636,8 @@ server <- function(input, output, session) {
   
   # Map ---------------------------------------------------------------------
   output$map <- renderLeaflet({
-      years <- input$year_r[1]:input$year_r[2]
-      mapDat <- poly_prep(geojson, countries, years)
+    years <- y()
+    mapDat <- poly_prep(geojson, countries, years)
     leaflet(mapDat,
             options = leafletOptions(worldCopyJump = T,
                                      minZoom = 1,
@@ -690,7 +680,7 @@ server <- function(input, output, session) {
   ## Word data --------------------------------------------------------------
   speech_data <- reactive({
     req(input$slider_word_ussage)
-    req(input$yearopt)
+    req(y())
     data <- tokens %>%
       select(year, headword, n_hword_year, n_hword_total) %>% 
       distinct() %>% 
@@ -701,14 +691,8 @@ server <- function(input, output, session) {
       data <- data %>% 
         filter(headword %in% input$words)
     }
-    if(input$yearopt == "Range"){
-      req(input$year_r)
-      data <- filter(data, year %in% input$year_r[1]:input$year_r[2])
-    } else{
-      req(input$year_si)
-      data <- filter(data, year %in% input$year_si)
-    }
-    
+    data <- filter(data, year %in% y())
+
     common_opt <- unique(arrange(data, desc(n_hword_total))$n_hword_total)[input$slider_word_ussage]
     
     data <- filter(data, n_hword_total >= common_opt)
