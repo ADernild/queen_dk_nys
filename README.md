@@ -2,9 +2,9 @@
 
 A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 
-|█████░░░░░░░|
+|████░░░░░░░░░|
 
-42% complete.
+32% complete.
 
 ### Tasks
 
