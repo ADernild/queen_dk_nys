@@ -679,7 +679,6 @@ server <- function(input, output, session) {
   # Word statistics ---------------------------------------------------------
   ## Word data --------------------------------------------------------------
   speech_data <- reactive({
-    req(input$slider_word_ussage)
     req(y())
     data <- tokens %>%
       select(year, headword, n_hword_year, n_hword_total) %>% 
@@ -687,14 +686,43 @@ server <- function(input, output, session) {
       group_by(headword, year) %>% 
       arrange(year, headword)
     
+    return(data)
+  })
+  
+  speech_data_word_filt <- reactive({
+    data <- speech_data()
+    
     if(length(input$words) > 0){
       data <- data %>% 
         filter(headword %in% input$words)
     }
-    data <- filter(data, year %in% y())
-
+    
+    return(data)
+  })
+  
+  speech_data_como_filt <- reactive({
+    req(input$slider_word_ussage)
+    data <- speech_data_word_filt()
+    
     common_opt <- unique(arrange(data, desc(n_hword_total))$n_hword_total)[input$slider_word_ussage]
     
+    data <- filter(data, n_hword_total >= common_opt)
+    
+    total <- data %>% 
+      summarise(n_sel = sum(n_hword_year))
+    
+    data <- data %>% 
+      left_join(total, by= c("year", "headword"))
+    
+    return(data)
+  })
+  
+  speech_data_como_filt_max <- reactive({
+    req(input$slider_word_ussage)
+    data <- speech_data_word_filt()
+    
+    common_opt <- unique(arrange(data, desc(n_hword_total))$n_hword_total)[ifelse(input$slider_word_ussage>15,15,input$slider_word_ussage)]
+
     data <- filter(data, n_hword_total >= common_opt)
     
     total <- data %>% 
@@ -708,7 +736,7 @@ server <- function(input, output, session) {
 
   ## Word cloud ------------------------------------------------------------
   output$wordcloud <- renderWordcloud2({
-    data <-  speech_data() %>% 
+    data <-  speech_data_como_filt() %>% 
       ungroup() %>% 
       select(headword, n_hword_total) %>% 
       distinct() %>% 
@@ -719,7 +747,8 @@ server <- function(input, output, session) {
   
   ## Stream Graph ----------------------------------------------------------
   output$word_ussage_streamgraph <- renderHighchart({
-    data <-  speech_data()
+    data <-  speech_data_como_filt_max()
+    req(input$slider_word_ussage)
     
     hchart(data, "streamgraph", hcaes(year, n_hword_year, group = headword)) %>% 
         hc_yAxis(
@@ -733,8 +762,8 @@ server <- function(input, output, session) {
   
   ## Columns ---------------------------------------------------------------
   output$word_ussage_col <- renderHighchart({
-    data <-  speech_data()
-    
+    data <-  speech_data_como_filt()
+
     hc <- hchart(data, "column",
                  hcaes(x=year, y=n_hword_year,group = headword)) %>% 
       hc_plotOptions(
@@ -752,7 +781,7 @@ server <- function(input, output, session) {
   ## Pie ------------------------------------------------------------------
   output$word_ussage_pie <- renderHighchart({
     #Todo: Add years
-    data <-  speech_data() %>% 
+    data <-  speech_data_como_filt() %>% 
       ungroup() %>%
       select(headword, n_hword_total) %>%
       distinct() %>% 
@@ -784,7 +813,7 @@ server <- function(input, output, session) {
   
   ## Scatter --------------------------------------------------------------
   output$word_ussage_scatter <- renderHighchart({
-    data <-  speech_data()
+    data <-  speech_data_como_filt_max()
     
     hc <- hchart(data, "scatter",
                  hcaes(x=year, y=n_hword_year, total = n_hword_total, group = headword)) %>% 
@@ -823,7 +852,8 @@ server <- function(input, output, session) {
   
   ## Table ----------------------------------------------------------------
   output$word_ussage_tbl <- renderDT({
-    speech_data() %>%
+    warning(names(speech_data_como_filt()))
+    speech_data_como_filt() %>%
       ungroup() %>% 
       rename(`Year` = year, `Word` = headword, `Total frequency` = n_hword_total,
                 `Frequency in year` = n_hword_year,
