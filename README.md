@@ -42,9 +42,9 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 - \* Add filtering by year and words - and implement in visualization data (M).
 - [ ] Make year sliders into vector with reactive (M 5).
 - [x] Create list of data sources in dashboard.
-- [x] Feature information about the queen, scraped from wikipedia.
-- \* Implement language option for dahsboard (M).
-- \* Finalize design of dashboard (M)
+- [x] Feature information about the queen that is scraped from wikipedia.
+- \* Implement language option for dahsboard, and reactively update data sources (M 11).
+- \* Finalize design of dashboard (M 12)
 - [ ] Simplifice dashboard design (M 10)
 - [ ] Remove unfinished implementations from dashboard.
 - [ ] Write 4 page report.
@@ -58,7 +58,7 @@ x = Done
 [R] = Ready to review
 
 ### Task... Maybe
-- \* Use CRON script to automize datacollection (A).
+- [ ] Use CRON script to automize datacollection (A).
 - [ ] Add logic to update filter inputs by data clicked in models.
 - \* Implement checkbox to ignore filter updates by clicked data in models (M).
 - [ ] Generate speeches in the style of the Queen.
