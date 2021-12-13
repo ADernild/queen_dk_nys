@@ -69,6 +69,16 @@ server <- function(input, output, session) {
     )
 
   ## Index ------------------------------------------------------------------
+  output$royall_beautyfication <- renderUI({
+    req(input$l)
+    req(input$words)
+    if(input$l == "DK" && "danmark" %in% input$words
+       && "dansk" %in% input$words
+       && "dannebrog" %in% input$words){
+      tags$link(rel = "stylesheet", type = "text/css", href = "royall_beautyfication.css") %>% 
+        return()
+    }
+  })
   ### Covered speeches ------------------------------------------------------
   output$Covered_speech <- renderUI({
     req(input$l)

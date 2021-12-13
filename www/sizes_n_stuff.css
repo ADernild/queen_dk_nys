@@ -10,6 +10,12 @@ html, body {
 .content-wrapper{
   min-height: 100vh !important;
 }
+
+.container-fluid{
+  padding-bottom: 6vh;
+}
+
+
 /* Loading message */
 #loadmessage {
   position: fixed;
@@ -62,6 +68,26 @@ h2, h3{
 .skin-blue .main-header .navbar .sidebar-toggle,
 .skin-blue .main-header .navbar .sidebar-toggle:hover{
   width: 100%;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-right-width: 1px;
+  border-right-style: solid;
+  color: #000;
+}
+
+.skin-blue .main-header .navbar .sidebar-toggle:before{
+  display: inline-block;
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(90deg);
+  -webkit-transition: -webkit-transform .3s ease-in-out,width .3s ease-in-out;
+  -moz-transition: -moz-transform .3s ease-in-out,width .3s ease-in-out;
+  -o-transition: -o-transform .3s ease-in-out,width .3s ease-in-out;
+  transition: transform .3s ease-in-out,width .3s ease-in-out;
+}
+
+.sidebar-collapse.skin-blue .main-header .navbar .sidebar-toggle:before{
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
 }
 
 .skin-blue .main-header .navbar{
@@ -79,6 +105,12 @@ h2, h3{
 }
 
 /* > Sidebar */
+#sidebarCollapsed{
+  background-color: #9e1025;
+  border-right-width: 1px;
+  border-right-style:  solid;
+}
+
 .left-side, .main-sidebar{
   float: left;
   height: 100%;
@@ -102,6 +134,13 @@ h2, h3{
   padding-top: 52px;
 }
 
+
+.sidebar-menu,
+.sidebar-menu:hover,
+.sidebar-menu:active{
+  overflow: auto;
+}
+
 .sidebar-menu{
   float: left;
   height: 100%;
@@ -112,12 +151,32 @@ h2, h3{
   overflow: hidden;
 }
 
+.skin-blue .sidebar a{
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
 .skin-blue .sidebar-menu>li>a{
   padding: 10px;
 }
 
+.skin-blue .sidebar li:first-child a{
+  border-top: 0;
+}
+
+.skin-blue .sidebar li:last-of-type a{
+  border-bottom: 0;
+}
+
 .skin-blue .sidebar-menu>li>a span{
   margin-left: 8px;
+}
+
+.skin-blue .sidebar-menu .form-group{
+  padding-top: 5px;
+  margin-bottom: 0;
 }
 
 .skin-blue .sidebar-menu .help-block{
@@ -126,7 +185,7 @@ h2, h3{
 
 #sidebar-input{
   float: left;
-  width: calc(100% - 3px);
+  width: 100%;
   -webkit-transition: -webkit-transform .3s ease-in-out,width 0s ease-in-out;
   -moz-transition: -moz-transform .3s ease-in-out,width 0s ease-in-out;
   -o-transition: -o-transform .3s ease-in-out,width 0s ease-in-out;
@@ -198,8 +257,9 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
 
 .box {
   padding: 1vh 1.5vw;
-  border: 3px solid #000;
+  border: 1px solid #000;
   margin-bottom: 2vh;
+  border-radius: 4px;
 }
 
 .box .box {
@@ -213,10 +273,33 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
 }
 
 /* > Shiny tabs */
+.nav-tabs-custom {
+  float: left;
+  width: 100%;
+  border-radius: 4px;
+  border-width: 1px;
+  border-style: solid;
+  overflow: hidden;
+}
+
 .nav-tabs-custom>.tab-content,
 .tab-content, .tab-pane{
   float: left;
   width: 100%;
+}
+
+.nav-tabs-custom>.nav-tabs{
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.nav-tabs-custom>.tab-content{
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.nav-tabs-custom>.nav-tabs>li{
+  margin: 0;
 }
 
 .nav-tabs-custom>.nav-tabs>li.header{
@@ -224,11 +307,37 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
   margin-top: 3px;
 }
 
+/* > Plots */
+.shiny-plot-output{
+  border-width: 1px;
+  border-style: solid;
+  width: calc(100% - 2px) !important;
+}
+
+.shiny-plot-output img{
+  float: left;
+  width: 100%;
+  height: 100%;
+}
+
 /* Infobox */
 #wiki_infobox{
   max-height: 100vh;
   overflow: auto;
 }
+
+#wiki_infobox .infobox tr{
+  border-top-color: CCC;
+  border-top-width: 1px ;
+  border-top-style: solid;
+}
+
+
+#wiki_infobox .infobox tr:first-child,
+#wiki_infobox .infobox tr:last-child{
+  border-top: 0;
+}
+
 
 .infobox{
   width: 100% !important;
