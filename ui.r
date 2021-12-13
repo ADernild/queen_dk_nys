@@ -134,7 +134,13 @@ ui <- dashboardPage(
               h2("A map of the countries mentioned in the new year eve speeches of Queen Margret"),
               fluidRow(
                 box(width=10,  
-                    leafletOutput("map", height = 740)
+                    leafletOutput("map", height = 740),
+                    absolutePanel(id = "controls", class = "panel panel-default", fixed = T,
+                                  draggable = T, top = 60, left = "auto", right = 20, bootom = "auto",
+                                  width = 330, height = "auto",
+                                  h2("Countries mentioned"),
+                                  )
+                    
                 )
               )
       ),
