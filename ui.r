@@ -1,5 +1,5 @@
 ui <- dashboardPage(
-  dashboardHeader(title = "Queen speech central"
+  dashboardHeader(title = "H.M. The Queen topic analyzer"
   ),
   dashboardSidebar(
     sidebarMenuOutput("menu")
@@ -17,7 +17,7 @@ ui <- dashboardPage(
     # Index ----
     tabItems(
       tabItem(tabName = "index",
-              h1("Queen speech central"),
+              h1("H.M. The Queen topic analyzer"),
               fluidRow(
                 box(width=12,
                     title = "All about the new years eve speeches of Queen Margret the 2. of Denmark",
