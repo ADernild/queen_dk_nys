@@ -643,7 +643,8 @@ server <- function(input, output, session) {
                                      maxZoom = 4
                                      )
             ) %>%
-      addTiles() %>% 
+      addTiles(options = providerTileOptions(minZoom = 1,
+                                             maxZoom = 4)) %>% 
       addPolygons(stroke = T, weight=0.2, color="black", smoothFactor = 0.3, fillOpacity = 1,
                   fillColor=~pal(n), popup = ~paste("<b>", ADMIN, "</b>", "was said:", n, "times in total", "<br/>",
                                                      sapply(1:length(n_year), function(i) ifelse(length(n_year[[i]])>10,
