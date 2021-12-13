@@ -35,6 +35,8 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 - [ ] Format data for display (M).
 - [x] Create interactive dashboard to interact with findings.
 - [ ] Add meaningfull titles to tabs.
+- [ ] Add descriptive text to all visualizations, and descriptions on how to use them and what to findings expect.
+- [ ] Add description on how to use, why you could use, and what to use the dashboard for on index page?
 - [ ] Write introduction to dahsboard and implement on git and index tab in dashboard.
 - [ ] Create consistent colorpalette for data.
 - \* Add filtering by year and words - and implement in visualization data (M).
