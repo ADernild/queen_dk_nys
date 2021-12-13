@@ -368,3 +368,9 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
 #sentiment_of_words_freq, #sentiment_of_words{
   min-height: 215px;
 }
+
+/* Word ussage */
+#word_ussage_row .tab-pane,
+#word_ussage_row .tab-pane>div{
+  min-height: 400px;
+}
