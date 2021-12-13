@@ -798,15 +798,15 @@ server <- function(input, output, session) {
           cursor = 'pointer',
           dataLabels = list(
             enabled = T,
-            format = '<b>{point.name}</b>: {point.percentage:.1f} %'
+            format = '<b>{point.name}</b>: {point.percentage:.1f}%'
           )
         )
       ) %>% 
       hc_norevese() %>% 
       hc_tooltip(
         shared = T,
-        headerFormat = "<span style=\"color: {point.color} \">\u25CF</span> <b>{point.series.name}</b><br>",
-        pointFormat = "Year: {point.x}<br>Frequency: {point.y}<br>Total frequency: {point.total}"
+        headerFormat = "",
+        pointFormat = "<span style=\"color: {point.color} \">\u25CF</span> <b>{point.name}</b><br>Frequency: {point.y}<br>Selection slice size: {point.percentage:.1f}%"
       )
       return(hc)
   })
