@@ -11,7 +11,35 @@ body, .content-wrapper, .skin-blue .wrapper{
 }
 
 .help-block{
-  color: #CCC;
+  color: #C1C1c1;
+}
+
+.whatViz, .whyViz, .howViz{
+  font-weight: bold;
+}
+
+.whatViz{
+  color: #28353a; /* Darker version of marker */
+}
+
+.whyViz{
+  color: #5a4c3e; /* Darker version of marker */
+}
+
+.howViz{
+  color: #5d3731; /* Darker version of marker */
+}
+
+.whatViz>span{
+  color: #435961; /* Lighter version of parrent */
+}
+
+.whyViz>span{
+  color: #E3BF9D; /* Lighter version of parrent */
+}
+
+.howViz>span{
+  color: #9C5C52; /* Lighter version of parrent */
 }
 
 /* Titles */

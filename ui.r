@@ -20,9 +20,24 @@ ui <- dashboardPage(
               h1("H.M. The Queen topic analyzer"),
               fluidRow(
                 box(width=12,
-                    title = "All about the new years eve speeches of Queen Margret the 2. of Denmark",
+                    title = "You are hearby invited to a look into the speaches of the royal majesty herself",
                     div(id = "intoduction",
-                        p("You are hearby invited to a look into the speaches of the royal majesty herself. This is a interactive dashboard, that alows you to select a category in the navigation menu on the left. You could look up the sentiment of her speaches, see a model of the topics she uses, look at a map, showing what countries she has spoken of through the years, or just see which words she uses the most. Enjoy your data ride."),
+                        p(class="what", "This is a dashboard. The dashboard is a tool to analyze topics in speeches."),
+                        p(class="why", "Topics can be hard to document correctly. By using this tool, you can find relevant topics and the words within on the topics tab. From there you can then choose to explore the sentiment, countries or statistics to get a better understanding of the topic. You could also do your own thing, and look at pretty graphs and statistics. We won't judge."),
+                        p(class="how", "This is a interactive dashboard. You can select tabsin the sidebar on the left to navigate to different sections. When sidebar is expanded (see toggle button in top left cornor), you can apply filters and settings for your liking."),
+                        p("If you wish to have some guidance in your data journey, we have prepared assisting labels for each visualization."),
+                        p(class="whatViz",
+                          span("\u25CF"),
+                          "This marking idicates what kind of visualization is depicted."
+                        ),
+                        p(class="whyViz",
+                          span("\u25A0"),
+                          "This marking idicates the kind of information you can observe from the visualization."
+                        ),
+                        p(class="howViz",
+                          span("\u25B2"),
+                          "This marking idicates how you can imterpret information in the visualization."
+                        ),
                         p(class="bold", "GUD BEVARE DANMARK.")
                     )
                 )
