@@ -148,50 +148,7 @@ ui <- dashboardPage(
       tabItem(tabName = "stats",
               h2("Sentiment of new year eve speeches of Queen Margret, and the words used within"),
               fluidRow(
-                box(width = 10, title="Wordcloud",
-                    wordcloud2Output("wordcloud"),
-                    helpText("Words in wordcloud is randomly sellected from aviable words. It is influenced by filter.")
-                ),
-                column(2,
-                       box(width=12, title = "Disclaimers",
-                           helpText("Stopwords are filtered. This is done to avoid the most common words (like \"the\") to dominate the statistics."),
-                           helpText("Words have been stemmed, to get better data for topics. This does remove information about word forms."),
-                           helpText("Words have been lemmatized (replacing words with identical meaning with a headword), to improve topic analysis.")
-                       ),
-                       box(width=12, title = "Speech statistics sliders",
-                           column(12,
-                                  sliderInput("slider_word_ussage",
-                                              "Top frequent numbers",
-                                              min=1, max=number_of_rarity, value = 3,
-                                              step = 1)
-                           ),
-                           column(12,
-                                  helpText("We recommend not going above a frequency of 15. It will take a long time to load with values above that threshold. Plots might also become too clustered to comprehend.")
-                           )
-                       )
-                )
-              ),
-              fluidRow(
-                tabBox(width=6, id = "word_ussage", title="Most used words",
-                       tabPanel("Piechart",
-                                highchartOutput("word_ussage_pie", height="50vh")
-                       ),
-                       tabPanel("Stream graph",
-                                highchartOutput("word_ussage_streamgraph", height="50vh"),
-                                helpText("Bug: Stream graph cannot render together with wordcloud. Use a different tab (eg. piechart) when applying filters, then visit the tab to update it.")
-                       ),
-                       tabPanel("Columns",
-                                highchartOutput("word_ussage_col", height="50vh")
-                       ),
-                       tabPanel("Scatterplot",
-                                highchartOutput("word_ussage_scatter", height="50vh"),
-                                helpText("Bug: Scatterplot cannot render together with wordcloud. Use a different tab (eg. piechart) when applying filters, then visit the tab to update it.")
-                       ),
-                       tabPanel("Table",
-                                DTOutput("word_ussage_tbl")
-                       )
-                ),
-                tabBox(width=6, id = "word_ussage", title="Speech length by words used",
+                tabBox(width=10, id = "word_ussage", title="Speech length by words used",
                        tabPanel("Spline",
                                 highchartOutput("speech_length_spline", height="50vh")
                         ),
@@ -204,7 +161,46 @@ ui <- dashboardPage(
                         fluidRow(
                           helpText("Todo.")
                        )
+                ),
+                column(2,
+                       box(width=12, title = "Disclaimers",
+                           helpText("Stopwords are filtered. This is done to avoid the most common words (like \"the\") to dominate the statistics."),
+                           helpText("Words have been stemmed, to get better data for topics. This does remove information about word forms."),
+                           helpText("Words have been lemmatized (replacing words with identical meaning with a headword), to improve topic analysis.")
+                       )
                 )
+              ),
+              fluidRow(id="word_ussage_row",
+                box(width=2, title = "Speech statistics sliders",
+                    sliderInput("slider_word_ussage",
+                                "Top frequent numbers",
+                                min=1, max=number_of_rarity, value = 15,
+                                step = 1),
+                    helpText("We recommend not going above a frequency of 15. It will take a long time to load with values above that threshold. Plots might also become too clustered to comprehend.")
+                ),
+                tabBox(width=10, id = "word_ussage", title="Most used words",
+                       tabPanel("Piechart",
+                                highchartOutput("word_ussage_pie", height="50vh")
+                       ),
+                       tabPanel("Stream graph",
+                                highchartOutput("word_ussage_streamgraph", height="50vh"),
+                                helpText("Stream graph is limited to a maximum frequency of 15. Any number set above, will result in 15 being featured.")
+                       ),
+                       tabPanel("Columns",
+                                highchartOutput("word_ussage_col", height="50vh")
+                       ),
+                       tabPanel("Scatterplot",
+                                highchartOutput("word_ussage_scatter", height="50vh"),
+                                helpText("Scatterplot is limited to a maximum frequency of 15. Any number set above, will result in 15 being featured.")
+                       ),
+                       tabPanel("Wordcloud",
+                           wordcloud2Output("wordcloud"),
+                           helpText("Words in wordcloud is randomly sellected from aviable words. It is influenced by filter.")
+                       ),
+                       tabPanel("Table",
+                                DTOutput("word_ussage_tbl")
+                       )
+                ),
               )
       )
     )
