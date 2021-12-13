@@ -31,12 +31,12 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 - [ ] Implement visualizations for speech lengths (M 8).
 - [x] Analyse sentiment by year.
 - [ ] Fix stacked barchart select (M 6).
-- [ ] Cap word statistics top frequent numbers in stream graph and scatterplot. Add helptext (M 1).
+- [R] Cap word statistics top frequent numbers in stream graph and scatterplot. Add helptext.
 - [ ] Format data for display (M 9).
 - [x] Create interactive dashboard to interact with findings.
 - [ ] Add meaningfull titles to tabs (M 4).
-- [ ] Add descriptive text to all visualizations, and descriptions on how to use them and what to findings expect (M 2).
-- [ ] Add description on how to use, why you could use, and what to use the dashboard for on index page (M 3).
+- [ ] Add description on how to use, why you could use, and what to use the dashboard for on index page (M 2).
+- [ ] Add descriptive text to all visualizations, and descriptions on how to use them and what to findings expect (M 3).
 - [ ] Write introduction to dahsboard and implement on git and index tab in dashboard.
 - [ ] Create consistent colorpalette for data.
 - \* Add filtering by year and words - and implement in visualization data (M).
