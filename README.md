@@ -10,35 +10,37 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 
 - [x] Collect speeches.
 - [x] Collect english translated speeches.
-- [ ] Generate file with meta info about speeches (A).
+- [x] Generate file with meta info about speeches.
 - [x] Clean speech text.
-- [ ] Clean english speech text (A).
 - [x] Create custom stopwords list.
 - [ ] Create custom stopwords list for enlish speeches (A).
-- \* Preprocessing: Tokenization, stemming, lemmatization etc.
+- [x] Preprocessing: Tokenization, stemming, lemmatization etc.
 - [ ] Preprocessing: Tokenization, stemming, lemmatization etc. for english speeches (A).
+- [ ] Clean english speech text (A).
+- [ ] Simmulate steps to do when a new speach is relased (A)
+- [ ] Run scripts for all speaches again (A).
 - [x] Build Structural Topic Model (STM).
-- [ ] Resarch STM filtering posibility options on finished model (A).
-- \* Test out other Topic models - optimize LDA or use HPD (A).
+- [ ] Test out other Topic models - optimize LDA or use HPD (A).
 - [ ] Add sentiment scores to Topic Models (A).
 - [x] Calculate Polarity scores (Sentiment Analysis).
 - [x] Rebuild Structural Topic Model using Polarity scores as another co-variate.
-- [R] Implement worldmap and map placese the queens mentions (A).
+- [x] Implement worldmap and map placese the queens mentions.
 - [ ] Add metadata to mentioned countries (A).
-- [R] Implement visualizations of the most used words (M).
-- [ ] Analyse speech lengths.
-- [ ] Implement visualizations for speech lengths.
+- [x] Implement visualizations of the most used words (M).
+- [ ] Analyse speech lengths (M).
+- [ ] Implement visualizations for speech lengths (M).
 - [x] Analyse sentiment by year.
-- [R] Sentiment statistics by year and preiod (M).
+- [ ] Fix stacked barchart select (M).
+- [ ] Cap word statistics top frequent numbers in stream graph and scatterplot. Add helptext (M).
 - [ ] Format data for display (M).
 - [x] Create interactive dashboard to interact with findings.
 - [ ] Add meaningfull titles to tabs.
-- \* Write introduction to dahsboard and implement on git and index tab in dashboard.
+- [ ] Write introduction to dahsboard and implement on git and index tab in dashboard.
 - [ ] Create consistent colorpalette for data.
 - \* Add filtering by year and words - and implement in visualization data (M).
-- [R] Create list of data sources in dashboard (M).
-- [R] Add loading message (M).
-- \* Feature information about the queen, scraped from wikipedia, also in english (M)
+- [x] Create list of data sources in dashboard.
+- [x] Feature information about the queen, scraped from wikipedia.
+- [ ] Make year sliders into vector with reactive (M).
 - \* Implement language option for dahsboard (M).
 - \* Finalize design of dashboard (M)
 - [ ] Remove unfinished implementations from dashboard.
