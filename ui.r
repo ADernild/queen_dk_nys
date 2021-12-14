@@ -369,7 +369,7 @@ ui <- dashboardPage(
                                     howViz("Tooltip:"),
                                     howViz("Year filter: Setting the year filter will filter for the words used in those years."),
                                     howViz("Featured words: Setting featured words will filter for the words set in selection."),
-                                    helpText("Stream graph is limited to a maximum frequency of 15. Any number set above, will result in 15 being featured.")
+                                    helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 20. Any number set above, will result in 20 being featured.")
                                 )
                        ),
                        tabPanel("Columns normal",
@@ -406,7 +406,7 @@ ui <- dashboardPage(
                                     howViz("Tooltip:"),
                                     howViz("Year filter: Setting the year filter will filter for the words used in those years."),
                                     howViz("Featured words: Setting featured words will filter for the words set in selection."),
-                                    helpText("Scatterplot is limited to a maximum frequency of 15. Any number set above, will result in 15 being featured.")
+                                    helpText("Notice: Due to performance issues, scatterplot is limited to a maximum frequency of 20 Any number set above, will result in 20 being featured.")
                                 )
                        ),
                        tabPanel("Wordcloud",
