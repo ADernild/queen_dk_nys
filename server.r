@@ -676,6 +676,7 @@ server <- function(input, output, session) {
   })
   
   output$sentences <- renderUI({
+    data <- mapData()
     sentences <- sample(unlist(data@data$sentence), size = 5)
     sentences[!is.na(sentences)] %>% 
       str_to_sentence() %>% 
