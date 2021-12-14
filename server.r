@@ -665,6 +665,15 @@ server <- function(input, output, session) {
       addLegend(pal = pal, values = ~n)
   })
   
+  output$n_hist <- renderHighchart({
+    data <- mapData()
+    df <- data.frame(year = unlist(data@data$year), n_year = unlist(data@data$n_year)) %>% 
+      group_by(year) %>% 
+      summarise(n_year = sum(n_year)) %>% 
+      hchart("bar", hcaes(x="year", y="n_year")) %>% 
+      hc_yAxis(title = list(text = "Mentions per year")) %>% 
+      hc_xAxis(title = list(text = "Year"))
+  })
   # Setview and zoom to clicked country
   observe({
     click <- input$map_shape_click
@@ -676,16 +685,26 @@ server <- function(input, output, session) {
   
   # Making visualization based on clicked country
   observeEvent(input$map_shape_click, {
-    mapData <- mapData()
+    data <- mapData()
     click <- input$map_shape_click
-    selected <- mapData@data[mapData@data$ADMIN == click$id,]
+    selected <- data@data[data@data$ADMIN == click$id,]
     
     if(!is.null(click$id)){
-      output$plot <- renderPlot({
-        boxplot(unlist(selected$sentiment_year), unlist(mapData@data$sentiment_year))
-      })
-    }
-  })
+      output$n_hist <- renderHighchart({
+        df <- tidyr::unnest(data@data, cols = c(year, n_year)) %>% 
+          select(ADMIN, ISO_A2, year, n_year)
+        df$ISO_A2[df$ADMIN != click$id] <- "*All"
+        df <- df %>% 
+          group_by(ISO_A2, year) %>% 
+          summarise(n_year = sum(n_year)) %>% 
+          hchart("bar", hcaes(x = "year", y = "n_year", group = "ISO_A2"),
+                stacking = "normal") %>% 
+          hc_yAxis(title = list(text = "Mentions per year")) %>% 
+          hc_xAxis(title = list(text = "Year")) %>% 
+          hc_title(text = click$id)
+        })
+      }
+    })
 
   # Word statistics ---------------------------------------------------------
   ## Word data --------------------------------------------------------------

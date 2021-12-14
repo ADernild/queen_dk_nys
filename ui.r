@@ -178,11 +178,11 @@ ui <- dashboardPage(
       tabItem(tabName = "map",
               h2("A map of the countries mentioned in the new year eve speeches of Queen Margret"),
               fluidRow(class="box_align_layout",
-                box(width=10,  
+                box(width=8,  
                     leafletOutput("map", height = 740)
                 ),
-                box(width=2, title="Countries mentioned",
-                    plotOutput("plot")
+                box(width=4, title="Countries mentioned",
+                    highchartOutput("n_hist", height="50vh")
                 )
               )
       ),
