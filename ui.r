@@ -115,7 +115,7 @@ ui <- dashboardPage(
       ),
       # Sentiment ----
       tabItem(tabName = "sentiment",
-              h2("Sentiment of new year eve speeches of Queen Margret, and the words used within"),
+              h2("Sentiment"),
               fluidRow(class="box_align_layout",
                 tabBox(width=10, id = "speeches",
                        title="Sentiment of speaches",
