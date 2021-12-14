@@ -645,13 +645,13 @@ server <- function(input, output, session) {
     data <- mapData()
     leaflet(data,
             options = leafletOptions(worldCopyJump = T,
-                                     minZoom = 1,
+                                     minZoom = 2,
                                      maxZoom = 4
                                      )
             ) %>%
       addTiles(options = providerTileOptions(
         worldCopyJump = T,
-        minZoom = 1,
+        minZoom = 2,
         maxZoom = 4)) %>% 
       addPolygons(stroke = T, weight=0.2, color="black", smoothFactor = 0.3, fillOpacity = 1,
                   fillColor=~pal(n), popup = ~paste("<b>", ADMIN, "</b>", "was said:", n, "times in total", "<br/>",
