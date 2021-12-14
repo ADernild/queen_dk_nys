@@ -140,7 +140,7 @@ whyViz <- function(text){
   )
 }
 howViz <- function(text){
-  p(class="howViz", title="how",
+  p(class="howViz", title="How",
     span("\u25B2"),
     text
   )

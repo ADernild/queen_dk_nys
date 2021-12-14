@@ -382,9 +382,13 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
   float: none;
 }
 
-.box_align_layout .tab-pane,
-.box_align_layout .tab-pane>div{
+.box_align_layout .tab-content>.tab-pane,
+.box_align_layout .tab-content>.tab-pane>div{
   min-height: 400px;
+}
+
+.box_align_layout .tab-content>.tab-pane>div.col-sm-12{
+  min-height: 1px;
 }
 
 .box_align_layout>div .box{
