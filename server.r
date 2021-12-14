@@ -674,6 +674,14 @@ server <- function(input, output, session) {
       hc_yAxis(title = list(text = "Mentions per year")) %>% 
       hc_xAxis(title = list(text = "Year"))
   })
+  
+  output$sentences <- renderUI({
+    sentences <- sample(unlist(data@data$sentence), size = 5)
+    sentences[!is.na(sentences)] %>% 
+      str_to_sentence() %>% 
+      paste(collapse=". <br/>") %>% 
+      HTML()
+  })
   # Setview and zoom to clicked country
   observe({
     click <- input$map_shape_click
@@ -703,6 +711,28 @@ server <- function(input, output, session) {
           hc_xAxis(title = list(text = "Year")) %>% 
           hc_title(text = click$id)
         })
+      output$sent_box <- renderHighchart({
+        df <- tidyr::unnest(data@data, cols=c(year, sentiment_year)) %>% 
+          select(ADMIN, ISO_A2, year, sentiment_year)
+        df$ISO_A2[df$ADMIN != click$id] <- "*All"
+        df <- df %>% 
+          group_by(ISO_A2, year) %>% 
+          summarise(sentiment = mean(sentiment_year))
+        dat <- data_to_boxplot(df, sentiment, ISO_A2, year)
+        
+        highchart() %>% 
+          hc_xAxis(title = list(text = "Country"), type = "category") %>% 
+          hc_yAxis(title = list(text = "Average sentence sentiment")) %>% 
+          hc_title(text = paste("Average sentiment when", click$id, "is mentioned")) %>% 
+          hc_add_series_list(dat)
+      })
+      output$sentences <- renderUI({
+        sentences <- unlist(selected$sentence)[1:5]
+        sentences[!is.na(sentences)] %>% 
+          str_to_sentence() %>% 
+          paste(collapse=". <br/>") %>% 
+          HTML()
+      })
       }
     })
 

@@ -269,6 +269,8 @@ ui <- dashboardPage(
               fluidRow(class="box_align_layout",
                 box(width=8,  
                     leafletOutput("map", height = 740),
+                    h3("Sentences"),
+                    uiOutput("sentences"),
                     box(width = 12, class="infoViz", title = "Expl.",
                         collapsible = T, collapsed = T,
                         whatViz("A world map, with countries mentioned in speeches."),
@@ -280,11 +282,14 @@ ui <- dashboardPage(
                 ),
                 box(width=4, title="Countries mentioned",
                     highchartOutput("n_hist", height="50vh"),
+                    highchartOutput("sent_box"),
                     box(width = 12, class="infoViz", title = "Expl.",
                         collapsible = T, collapsed = T,
                         whatViz("A bar chart showing the amount of times a country is mentioned for each year."),
+                        whatViz("A boxplot showing the average sentiment of sentences in which a country is mentioned"),
                         whyViz("To compare the mentions of a specific country, to mentions of countries in general"),
-                        howViz("Tooltip: hovering over a bar shows the amount a specific country is mentioned in that year, compared to mentions of countries in general")
+                        howViz("Tooltip bar chart: hovering over a bar shows the amount a specific country is mentioned in that year, compared to mentions of countries in general"),
+                        howViz("Tooltip boxplot: hovering over a box shows distribution statistics of the average sentiment of sentences, in which a specific country is mentioned, compared to the distribution of average sentiment of sentences, in which any country is mentioned.")
                     )
                 )
               )
