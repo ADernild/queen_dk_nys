@@ -104,10 +104,11 @@ ui <- dashboardPage(
             ),
             box(width=10, title = "Topic model",
                 visOutput("topicVis"),
-                whatViz("Topic model is a tool that maps topics. It does so by analyzing word relations by analyzing all speeches and mapping the relations as word matrixes. Then the model displays the topics to the left, and he words within on the right. Frequency of use is depicted by size for topics, and bar length for words. Topics are named 1:n, where 1 is the largest topic."),
+                whatViz("Topic model is a tool that maps topics. It does so by analyzing word relations by analyzing all speeches and mapping the relations as word matrixes. Then the model displays the topics to the left, and the words within on the right. Frequency of use is depicted by size for topics, and bar length for words. Topics are named 1:n, where 1 is the largest topic."),
                 whyViz("The topics model can be used to get an understanding of themes present in the speeches throughout the years."),
-                howViz("The sizes represent frequency and can be interpreted as so. To inspect a topic, it can be selected in the top right selector, or a topic can be hovered. Clicking a topic will keep it highlighted. Hovering a word will show what topics they are included in. Clicking a word will add an underline, but nothing else."),
-                helpText("Notice: The slider on the top right does nothing.")
+                howViz("Topics (left): The sizes in the visualization in the body represent frequency and can be interpreted as so. To inspect a topic, it can be selected in the selector in the header, a topic circle can be hovered. Clicking a topic will keep it highlighted."),
+                howViz("Topic content (right body): Hovering a word will show what topics they are included in. Clicking a word will add an underline, but nothing else."),
+                howViz("Relevance metric slider (right header): The slider adjusts relevance for words to be part of a topic. To see it work, first highlight a topic (by clicking or using the top left filter).")
             )
           )
       ),
