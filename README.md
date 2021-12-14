@@ -44,10 +44,11 @@ See live on: https://app.dernild.com/
 - [ ] Add meaningfull titles to tabbox (M 4).
 - [R] Add description on how to use, why you could use, and what to use the dashboard for on index page (M).
 - [ ] Add descriptive text to all visualizations, and descriptions on how to use them and what to findings expect (M 3).
-- [ ] Write introduction to dahsboard and implement on git and index tab in dashboard.
-- [ ] Create consistent colorpalette for data.
+- [R] Write introduction to dahsboard and implement on git and index tab in dashboard (M).
+- [R] Create consistent colorpalette for data.
+- [ ] Implement consistent colorpalette for data.
 - \* Add filtering by year and words - and implement in visualization data (M).
-- [ ] Make year sliders into vector with reactive (M 5).
+- [R] Make year sliders into vector with reactive (M).
 - [x] Create list of data sources in dashboard.
 - [x] Feature information about the queen that is scraped from wikipedia.
 - \* Implement language option for dahsboard, and reactively update data sources (M 11).
