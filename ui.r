@@ -40,28 +40,38 @@ ui <- dashboardPage(
                            p("If you wish to have some guidance in your data journey, we have prepared assisting labels for each visualization."),
                            p("These labels will be located directly beneath the point of interest."),
                            hr(),
-                           whatViz("What marking: A blue dot with bold dark-blue text indicates what kind of visualization/information is depicted."),
-                           whyViz("Why marking: A Yellow circle with dark-yellow bold text indicates why and when to use you could use the visualization/information you can observe."),
-                           howViz("How marking: A light-brown triangle with brown bold text indicates how you can interpret information in the visualization."),
-                           p(helpText("Grey italic/slanted text indicates other kinds of help text. This could be descriptions on how operate inputs, information about limitations and bugs.")),
-                           p("Black text is other kinds of information. It would usually be practical information.")
+                           p("Click the icon in the top right cornor to hide/expand section."),
+                           box(width = 12, class="infoViz", title = "Expl.",
+                               collapsible = T, collapsed = F,
+                               whatViz("What marking: A blue dot with bold dark-blue text indicates what kind of visualization/information is depicted."),
+                               whyViz("Why marking: A Yellow circle with dark-yellow bold text indicates why and when to use you could use the visualization/information you can observe."),
+                               howViz("How marking: A light-brown triangle with brown bold text indicates how you can interpret information in the visualization."),
+                               p(helpText("Grey italic/slanted text indicates other kinds of help text. This could be descriptions on how operate inputs, information about limitations and bugs.")),
+                               p("Black text is other kinds of information. It would usually be practical information.")
+                           )
                        ),
                        box(width=4,
                            title = "Speeches covered",
                            uiOutput("Covered_speech"),
-                           whatViz("This are the speeches that are covered in the dashboard, with your current filter."),
-                           whyViz("You can use this to see the source from what you filtered."),
-                           howViz("You can use language and year filters. To see all text in a language selected language, select all possible years."),
-                           p(helpText("Notice: English version of speech are translations. Not all Danish speeches are translated. Some years are therefore not available."))
+                           box(width = 12, class="infoViz", title = "Expl.",
+                               collapsible = T, collapsed = T,
+                               whatViz("This are the speeches that are covered in the dashboard, with your current filter."),
+                               whyViz("You can use this to see the source from what you filtered."),
+                               howViz("You can use language and year filters. To see all text in a language selected language, select all possible years."),
+                               p(helpText("Notice: English version of speech are translations. Not all Danish speeches are translated. Some years are therefore not available."))
+                           )
                        ),
                        box(width=4,
                            div(id="wiki_infobox_wrap",
                                uiOutput("scrabing_info"),
                                htmlOutput("wiki_infobox")
                            ),
-                           whatViz("This is the info box from Wikipedia about the queen."),
-                           whyViz("You can use this to familiarize yourself with the subject, or just want a quick read-up."),
-                           howViz("You can read the table, or visit the source, above the table.")
+                           box(width = 12, class="infoViz", title = "Expl.",
+                               collapsible = T, collapsed = T,
+                               whatViz("This is the info box from Wikipedia about the queen."),
+                               whyViz("You can use this to familiarize yourself with the subject, or just want a quick read-up."),
+                               howViz("You can read the table, or visit the source, above the table.")
+                           )
                        )
               ),
               hr(),
@@ -103,18 +113,24 @@ ui <- dashboardPage(
                 # Sidebar with a slider input for number of bins
                 radioButtons("topicmodel", "Topicmodel", list("STM" = "stm_model", "LDA" = "lda_model")),
                 fluidRow(sliderInput("nTerms", "Number of terms to display", min = 10, max = 50, value = 30)),
-                whatViz("Number of terms to display sets the number of terms used in the topic model, by size of topic."),
-                whyViz("Limiting the number of terms makes the topic model easier to interpret. Adding more, gives more information."),
-                howViz("Use the slider to select a number for your liking."),
-                helpText("Notice: Topic model selector will result in a failure if LDA is selected.")
+                box(width = 12, class="infoViz", title = "Expl.",
+                    collapsible = T, collapsed = T,
+                    whatViz("Number of terms to display sets the number of terms used in the topic model, by size of topic."),
+                    whyViz("Limiting the number of terms makes the topic model easier to interpret. Adding more, gives more information."),
+                    howViz("Use the slider to select a number for your liking."),
+                    helpText("Notice: Topic model selector will result in a failure if LDA is selected.")
+                )
             ),
             box(width=10, title = "Topic model",
                 visOutput("topicVis"),
-                whatViz("Topic model is a tool that maps topics. It does so by analyzing word relations by analyzing all speeches and mapping the relations as word matrixes. Then the model displays the topics to the left, and the words within on the right. Frequency of use is depicted by size for topics, and bar length for words. Topics are named 1:n, where 1 is the largest topic."),
-                whyViz("The topics model can be used to get an understanding of themes present in the speeches throughout the years."),
-                howViz("Topics (left): The sizes in the visualization in the body represent frequency and can be interpreted as so. To inspect a topic, it can be selected in the selector in the header, a topic circle can be hovered. Clicking a topic will keep it highlighted."),
-                howViz("Topic content (right body): Hovering a word will show what topics they are included in. Clicking a word will add an underline, but nothing else."),
-                howViz("Relevance metric slider (right header): The slider adjusts relevance for words to be part of a topic. To see it work, first highlight a topic (by clicking or using the top left filter).")
+                box(width = 12, class="infoViz", title = "Expl.",
+                    collapsible = T, collapsed = T,
+                    whatViz("Topic model is a tool that maps topics. It does so by analyzing word relations by analyzing all speeches and mapping the relations as word matrixes. Then the model displays the topics to the left, and the words within on the right. Frequency of use is depicted by size for topics, and bar length for words. Topics are named 1:n, where 1 is the largest topic."),
+                    whyViz("The topics model can be used to get an understanding of themes present in the speeches throughout the years."),
+                    howViz("Topics (left): The sizes in the visualization in the body represent frequency and can be interpreted as so. To inspect a topic, it can be selected in the selector in the header, a topic circle can be hovered. Clicking a topic will keep it highlighted."),
+                    howViz("Topic content (right body): Hovering a word will show what topics they are included in. Clicking a word will add an underline, but nothing else."),
+                    howViz("Relevance metric slider (right header): The slider adjusts relevance for words to be part of a topic. To see it work, first highlight a topic (by clicking or using the top left filter).")
+                )
             )
           )
       ),
@@ -126,31 +142,40 @@ ui <- dashboardPage(
                        title="Sentiment of speaches",
                   tabPanel("Sentiment relationship (Bubles)",
                            highchartOutput("sentiment_of_speech_bubles", height="75vh"),
-                           whatViz("Sentiment relationship shows the relationship between positive and negative and size of speeches."),
-                           whyViz("The sentiment of speeches could indicate influences in topics. Influences from a year needs to be researched independently."),
-                           howViz("Interpretation: The center position of a year-circle indicates it's sentiment. X-axis indicates positive sentiment from low (left) to high (right). Y-axis indicates negative sentiment from high (bottom) to low (top)."),
-                           howViz("Tooltip: Hovering a year-circle shows its positive sentiment, negative sentiment, summed sentiment, sentiment label and words with polarity in year in a tooltip."),
-                           howViz("Year filter: Using the year filter, will filter years featured."),
-                           howViz("Featured words: Using the featured words, will group the years into years that include words in the filter, and years that do not. This will be displayed in the tooltip.")
+                           box(width = 12, class="infoViz", title = "Expl.",
+                               collapsible = T, collapsed = T,
+                               whatViz("Sentiment relationship shows the relationship between positive and negative and size of speeches."),
+                               whyViz("The sentiment of speeches could indicate influences in topics. Influences from a year needs to be researched independently."),
+                               howViz("Interpretation: The center position of a year-circle indicates it's sentiment. X-axis indicates positive sentiment from low (left) to high (right). Y-axis indicates negative sentiment from high (bottom) to low (top)."),
+                               howViz("Tooltip: Hovering a year-circle shows its positive sentiment, negative sentiment, summed sentiment, sentiment label and words with polarity in year in a tooltip."),
+                               howViz("Year filter: Using the year filter, will filter years featured."),
+                               howViz("Featured words: Using the featured words, will group the years into years that include words in the filter, and years that do not. This will be displayed in the tooltip.")
+                           )
                   ),
                   tabPanel("Sentiment by year (Columns)",
                            highchartOutput("sentiment_of_speech_col_compare", height="75vh"),
-                           whatViz("Sentiment by year shows the positive-, negative- and summed sentiment by year. This model does so in columns."),
-                           whyViz("Displaying sentiment in columns like this makes it easy to interpret sentiment sizes in relation between positive-, negative- and summed sentiment and difference between years."),
-                           howViz("Interpretation: Negatives are displayed left and positives right. The Sum shows their aggregated value. Observe the size difference."),
-                           howViz("Series filter: By clicking on a series name, it can be disabled until clicked again, or updated by a filter."),
-                           howViz("Tooltip: Hovering the values of a year will show the sentiment of enabled series."),
-                           howViz("Year filter: Using the year filter, will filter years featured."),
-                           howViz("Featured words: Using featured words will show the sentiment that subset had in each year."),
-                           helpText("Error: Currently, featured words filter will not show the results correctly.")
+                           box(width = 12, class="infoViz", title = "Expl.",
+                               collapsible = T, collapsed = T,
+                               whatViz("Sentiment by year shows the positive-, negative- and summed sentiment by year. This model does so in columns."),
+                               whyViz("Displaying sentiment in columns like this makes it easy to interpret sentiment sizes in relation between positive-, negative- and summed sentiment and difference between years."),
+                               howViz("Interpretation: Negatives are displayed left and positives right. The Sum shows their aggregated value. Observe the size difference."),
+                               howViz("Series filter: By clicking on a series name, it can be disabled until clicked again, or updated by a filter."),
+                               howViz("Tooltip: Hovering the values of a year will show the sentiment of enabled series."),
+                               howViz("Year filter: Using the year filter, will filter years featured."),
+                               howViz("Featured words: Using featured words will show the sentiment that subset had in each year."),
+                               helpText("Error: Currently, featured words filter will not show the results correctly.")
+                           )
                   ),
                   tabPanel("Sentiment by year (Shankey)",
                            highchartOutput("sentiment_of_speech_sha_compare", height="75vh"),
-                           whatViz("Sentiment by year shows the positive-, negative- and summed sentiment by year. This model does so in ranges."),
-                           whyViz("Displaying sentiment in connected ranges, makes it easy to interpret the relation of sentiment between years."),
-                           howViz("Interpretation: Positive sentiment is the top point. Summed sentiment is the bottom point. The difference is the negative sentiment. Looking at the size of the changing sizes of the shankey can be used to observe changes in sentiment by year."),
-                           howViz("Tooltip: Hovering a year displays a tooltip that shows the sentiment values of the year."),
-                           howViz("Year filter: Using the year filter, will filter years featured.")
+                           box(width = 12, class="infoViz", title = "Expl.",
+                               collapsible = T, collapsed = T,
+                               whatViz("Sentiment by year shows the positive-, negative- and summed sentiment by year. This model does so in ranges."),
+                               whyViz("Displaying sentiment in connected ranges, makes it easy to interpret the relation of sentiment between years."),
+                               howViz("Interpretation: Positive sentiment is the top point. Summed sentiment is the bottom point. The difference is the negative sentiment. Looking at the size of the changing sizes of the shankey can be used to observe changes in sentiment by year."),
+                               howViz("Tooltip: Hovering a year displays a tooltip that shows the sentiment values of the year."),
+                               howViz("Year filter: Using the year filter, will filter years featured.")
+                           )
                   # ),
                   # tabPanel("Average sentiment",
                   #          highchartOutput("sentiment_of_speech_avg", height="75vh"),
@@ -166,34 +191,43 @@ ui <- dashboardPage(
                 # Show a plot of the generated distribution
                 box(width=5, title = "Sentiment of words (-3:3)",
                     highchartOutput("sentiment_of_words", height="35vh"),
-                    whatViz("Sentiment of words displays words by sentiment."),
-                    whyViz("Sentiment of words can help you identify what words influenced the sentiment."),
-                    howViz("Interpretation: the most positive words have a polarity of 3. The most negative words have a polarity of -3. "),
-                    howViz("Tooltip: hovering a word will display the polarity of the word, and the sentiment category."),
-                    howViz("Series filter: Click on a series name to disable it. Click again or set a new filter that affects the visualization to enable it again."),
-                    howViz("Year filter: Setting the year filter will filter for the words used in those years."),
-                    howViz("Featured words: Setting featured words that have sentient will make them be included before other words (otherwise words are included by frequency). If at least one word with sentiment is present, the series will be names after both if they are positive/negative and if they are included or not."),
-                    howViz("Number of words: Number of words filters words included, from most to least frequent."),
-                    helpText("Notice: Words with a polarity of 0 is filtered.")
+                    box(width = 12, class="infoViz", title = "Expl.",
+                        collapsible = T, collapsed = T,
+                        whatViz("Sentiment of words displays words by sentiment."),
+                        whyViz("Sentiment of words can help you identify what words influenced the sentiment."),
+                        howViz("Interpretation: the most positive words have a polarity of 3. The most negative words have a polarity of -3. "),
+                        howViz("Tooltip: hovering a word will display the polarity of the word, and the sentiment category."),
+                        howViz("Series filter: Click on a series name to disable it. Click again or set a new filter that affects the visualization to enable it again."),
+                        howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+                        howViz("Featured words: Setting featured words that have sentient will make them be included before other words (otherwise words are included by frequency). If at least one word with sentiment is present, the series will be names after both if they are positive/negative and if they are included or not."),
+                        howViz("Number of words: Number of words filters words included, from most to least frequent."),
+                        helpText("Notice: Words with a polarity of 0 is filtered.")
+                    )
                 ),
                 box(width=5, title = "Frequency used (n uses in total)",
                     highchartOutput("sentiment_of_words_freq", height="35vh"),
-                    whatViz("Frequency used displays words by frequency."),
-                    whyViz("Frequency used can help you identify what words influenced the sentiment."),
-                    howViz("Interpretation: Larger bars have higher frequency."),
-                    howViz("Series filter: Click on a series name to disable it. Click again or set a new filter that affects the visualization to enable it again."),
-                    howViz("Year filter: Setting the year filter will filter for the words used in those years."),
-                    howViz("Featured words: Setting featured words that have sentient will make them be included before other words (otherwise words are included by frequency). If at least one word with sentiment is present, the series will be names after both if they are positive/negative and if they are included or not."),
-                    howViz("Number of words: Number of words filters words included, from most to least frequent."),
-                    helpText("Notice: Words with a polarity of 0 is filtered.")
+                    box(width = 12, class="infoViz", title = "Expl.",
+                        collapsible = T, collapsed = T,
+                        whatViz("Frequency used displays words by frequency."),
+                        whyViz("Frequency used can help you identify what words influenced the sentiment."),
+                        howViz("Interpretation: Larger bars have higher frequency."),
+                        howViz("Series filter: Click on a series name to disable it. Click again or set a new filter that affects the visualization to enable it again."),
+                        howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+                        howViz("Featured words: Setting featured words that have sentient will make them be included before other words (otherwise words are included by frequency). If at least one word with sentiment is present, the series will be names after both if they are positive/negative and if they are included or not."),
+                        howViz("Number of words: Number of words filters words included, from most to least frequent."),
+                        helpText("Notice: Words with a polarity of 0 is filtered.")
+                    )
                 ),
                 box(width = 2, title = "Number of words",
                     sliderInput("slider_sentiment_of_words_n_words",
                                 "Number of words (by frequency)",
                                 min=1, max=n_dist_t_headword, value = 100 ),
-                    whatViz("Number of words is a slider to set the number of featured words."),
-                    whyViz("Limiting the amount words featured will reduce clutter and make Sentiment of words and Frequency used easier to interpret."),
-                    howViz("Set a number by using the slider.")
+                    box(width = 12, class="infoViz", title = "Expl.",
+                        collapsible = T, collapsed = T,
+                        whatViz("Number of words is a slider to set the number of featured words."),
+                        whyViz("Limiting the amount words featured will reduce clutter and make Sentiment of words and Frequency used easier to interpret."),
+                        howViz("Set a number by using the slider.")
+                    )
                 )
               ),
               fluidRow(
@@ -217,11 +251,14 @@ ui <- dashboardPage(
                     #   valueBoxOutput("mean_num_wor")
                     # ),
                     fluidRow(
-                      whatViz("Total sentiment displays the total sentiment statistics."),
-                      whyViz("Total values can be useful to interpret for selections."),
-                      howViz("Interpretation: Values are summed for different categories."),
-                      howViz("Year filter: Setting the year filter will filter for the words used in those years."),
-                      howViz("Featured words: Setting featured words will filter for the words used in that selection.")
+                      box(width = 12, class="infoViz", title = "Expl.",
+                          collapsible = T, collapsed = T,
+                          whatViz("Total sentiment displays the total sentiment statistics."),
+                          whyViz("Total values can be useful to interpret for selections."),
+                          howViz("Interpretation: Values are summed for different categories."),
+                          howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+                          howViz("Featured words: Setting featured words will filter for the words used in that selection.")
+                      )
                     )
                 )
               )
