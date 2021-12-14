@@ -38,6 +38,7 @@ See live on: https://app.dernild.com/
 - [ ] Implement visualizations for speech lengths (M 8).
 - [x] Analyse sentiment by year.
 - [ ] Fix stacked barchart select (M 6).
+- [ ] Fix filtering in word statistics (M 12)
 - [R] Cap word statistics top frequent numbers in stream graph and scatterplot. Add helptext.
 - [ ] Format data for display (M 9).
 - [x] Create interactive dashboard to interact with findings.
