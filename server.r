@@ -782,7 +782,7 @@ server <- function(input, output, session) {
     req(input$slider_word_ussage)
     data <- speech_data_word_filt()
     
-    common_opt <- unique(arrange(data, desc(n_hword_total))$n_hword_total)[ifelse(input$slider_word_ussage>15,15,input$slider_word_ussage)]
+    common_opt <- unique(arrange(data, desc(n_hword_total))$n_hword_total)[ifelse(input$slider_word_ussage>20,20,input$slider_word_ussage)]
 
     data <- filter(data, n_hword_total >= common_opt)
     
@@ -808,9 +808,22 @@ server <- function(input, output, session) {
   
   ## Stream Graph ----------------------------------------------------------
   output$word_ussage_streamgraph <- renderHighchart({
-    data <-  speech_data_como_filt_max()
-    req(input$slider_word_ussage)
-    
+    data <-  speech_data_como_filt_max() %>% 
+      ungroup() %>% 
+      select(year, n_hword_year, headword)
+
+    for(word in unique(data$headword)){
+      for(year in unique(data$year)){
+        if(!(word %in% data[data$year == year,]$headword)){
+          data <-  data %>%
+            add_row(headword = word, year=year, n_hword_year=0)
+        }
+      }
+    }
+    dis <<- data
+    data <- data %>% 
+      arrange(year, headword, n_hword_year)
+
     hchart(data, "streamgraph", hcaes(year, n_hword_year, group = headword)) %>% 
         hc_yAxis(
           visible = F
@@ -824,6 +837,7 @@ server <- function(input, output, session) {
   ## Columns ---------------------------------------------------------------
   output$word_ussage_col <- renderHighchart({
     data <-  speech_data_como_filt()
+    
 
     hc <- hchart(data, "column",
                  hcaes(x=year, y=n_hword_year,group = headword)) %>% 
