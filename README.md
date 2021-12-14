@@ -24,7 +24,7 @@ See live on: https://app.dernild.com/
 - [ ] Create custom stopwords list for enlish speeches (A).
 - [x] Preprocessing: Tokenization, stemming, lemmatization etc.
 - [ ] Preprocessing: Tokenization, stemming, lemmatization etc. for english speeches (A).
-- [ ] Simmulate steps to do when a new speach is relased (A)
+- [ ] Simulate steps to do when a new speach is relased (A)
 - [ ] Run scripts for all speaches again (A).
 - [x] Build Structural Topic Model (STM).
 - [ ] Test out other Topic models - optimize LDA or use HPD (A).
@@ -32,7 +32,7 @@ See live on: https://app.dernild.com/
 - [x] Calculate Polarity scores (Sentiment Analysis).
 - [x] Rebuild Structural Topic Model using Polarity scores as another co-variate.
 - [x] Implement worldmap and map placese the queens mentions.
-- [ ] Add metadata to mentioned countries (A).
+- [R] Add metadata to mentioned countries (A).
 - [x] Implement visualizations of the most used words.
 - [ ] Analyse speech lengths (M 7).
 - [ ] Implement visualizations for speech lengths (M 8).
