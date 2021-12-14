@@ -848,7 +848,9 @@ server <- function(input, output, session) {
       ) %>% 
       hc_norevese() %>% 
       hc_tooltip(
-        shared = T
+        shared = T,
+        headerFormat = "<b>Year</b>: {point.x}<br>Total frequency: {point.total}",
+        pointFormat = "<br><span style=\"color: {point.color} \">\u25CF</span> {point.series.name}: {point.y}"
       )
     return(hc)
   })
