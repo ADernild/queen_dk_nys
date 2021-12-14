@@ -42,9 +42,9 @@ See live on: https://app.dernild.com/
 - [R] Cap word statistics top frequent numbers in stream graph and scatterplot. Add helptext.
 - [ ] Format data for display (M 9).
 - [x] Create interactive dashboard to interact with findings.
-- [ ] Add meaningfull titles to tabbox (M 4).
+- [R] Add meaningfull titles to tabbox (M).
 - [R] Add description on how to use, why you could use, and what to use the dashboard for on index page (M).
-- [ ] Add descriptive text to all visualizations, and descriptions on how to use them and what to findings expect (M 3).
+- [R] Add descriptive text to all visualizations, and descriptions on how to use them and what to findings expect (M).
 - [R] Write introduction to dahsboard and implement on git and index tab in dashboard (M).
 - [R] Create consistent colorpalette for data.
 - [ ] Implement consistent colorpalette for data.
@@ -54,7 +54,7 @@ See live on: https://app.dernild.com/
 - [x] Feature information about the queen that is scraped from wikipedia.
 - \* Implement language option for dahsboard, and reactively update data sources (M 11).
 - \* Finalize design of dashboard (M 12)
-- [ ] Simplifice dashboard design (M 10)
+- [R] Simplifice dashboard design (M)
 - [ ] Remove unfinished implementations from dashboard.
 - [ ] Write 4 page report.
 
