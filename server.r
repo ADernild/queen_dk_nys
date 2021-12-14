@@ -635,8 +635,7 @@ server <- function(input, output, session) {
   
   # Map ---------------------------------------------------------------------
   mapData <- reactive({
-    req(y())
-    data <- poly_prep(geojson, countries, y())
+    data <- poly_prep(geojson, countries, req(y()))
     return(data)
   })
   
