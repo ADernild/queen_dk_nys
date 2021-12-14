@@ -271,18 +271,18 @@ ui <- dashboardPage(
                     leafletOutput("map", height = 740),
                     box(width = 12, class="infoViz", title = "Expl.",
                         collapsible = T, collapsed = T,
-                        whatViz(""),
-                        whyViz(""),
-                        howViz("Interpretation:"),
-                        howViz("Tooltip:"),
-                        howViz("Year filter: Setting the year filter will filter for the words used in those years.")
+                        whatViz("A world map, with countries mentioned in speeches."),
+                        whyViz("To know where countries are, and how often they are mentioned."),
+                        howViz("Interpretation: Highlighted countries are mentioned. Darker colors represent more mentions."),
+                        howViz("Tooltip: hovering or clicking brings up a tooltip, showing total mentions and amount of mentions in each relevant year."),
+                        howViz("Year filter: Setting the year filter will filter for the counties used in those years.")
                     )
                 ),
                 box(width=2, title="Countries mentioned",
                     plotOutput("plot"),
                     box(width = 12, class="infoViz", title = "Expl.",
                         collapsible = T, collapsed = T,
-                        whatViz(""),
+                        whatViz("Pls. add Alexander."),
                         whyViz(""),
                         howViz("")
                     )
