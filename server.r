@@ -636,11 +636,13 @@ server <- function(input, output, session) {
   })
   
   # Map ---------------------------------------------------------------------
+  # Readying data for map
   mapData <- reactive({
     data <- poly_prep(geojson, countries, req(y()))
     return(data)
   })
   
+  # Creating a map
   output$map <- renderLeaflet({
     data <- mapData()
     leaflet(data,
@@ -665,6 +667,7 @@ server <- function(input, output, session) {
       addLegend(pal = pal, values = ~n)
   })
   
+  # bar chart of number of times per year a country is mentioned
   output$n_hist <- renderHighchart({
     data <- mapData()
     df <- data.frame(year = unlist(data@data$year), n_year = unlist(data@data$n_year)) %>% 
@@ -675,6 +678,7 @@ server <- function(input, output, session) {
       hc_xAxis(title = list(text = "Year"))
   })
   
+  # Show sentences in which countries is mentioned
   output$sentences <- renderUI({
     data <- mapData()
     sentences <- sample(unlist(data@data$sentence), size = 5)
@@ -683,6 +687,7 @@ server <- function(input, output, session) {
       paste(collapse=". <br/>") %>% 
       HTML()
   })
+  
   # Setview and zoom to clicked country
   observe({
     click <- input$map_shape_click
@@ -699,7 +704,7 @@ server <- function(input, output, session) {
     selected <- data@data[data@data$ADMIN == click$id,]
     
     if(!is.null(click$id)){
-      output$n_hist <- renderHighchart({
+      output$n_hist <- renderHighchart({ # bar chart based on number of times a country is mentioned
         df <- tidyr::unnest(data@data, cols = c(year, n_year)) %>% 
           select(ADMIN, ISO_A2, year, n_year)
         df$ISO_A2[df$ADMIN != click$id] <- "*All"
@@ -711,8 +716,9 @@ server <- function(input, output, session) {
           hc_yAxis(title = list(text = "Mentions per year")) %>% 
           hc_xAxis(title = list(text = "Year")) %>% 
           hc_title(text = click$id)
-        })
-      output$sent_box <- renderHighchart({
+        }) 
+      
+      output$sent_box <- renderHighchart({# boxplot of average sentiment of sentences in which a country is mentioned
         df <- tidyr::unnest(data@data, cols=c(year, sentiment_year)) %>% 
           select(ADMIN, ISO_A2, year, sentiment_year)
         df$ISO_A2[df$ADMIN != click$id] <- "*All"
@@ -726,8 +732,9 @@ server <- function(input, output, session) {
           hc_yAxis(title = list(text = "Average sentence sentiment")) %>% 
           hc_title(text = paste("Average sentiment when", click$id, "is mentioned")) %>% 
           hc_add_series_list(dat)
-      })
-      output$sentences <- renderUI({
+      }) 
+      
+      output$sentences <- renderUI({ # Showing sentences of country mentioned
         sentences <- unlist(selected$sentence)
         sample(sentences, ifelse(length(sentences)<5, length(sentences), 5)) %>% 
           str_to_sentence() %>% 

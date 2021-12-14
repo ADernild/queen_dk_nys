@@ -31,16 +31,18 @@ df <- read.csv("data/nys_sentences.csv")
 matches <- data.frame(t(sapply(seq(length(df$sentences)), function(i) list(countries=unlist(str_match_all(df$sentences[i], coords$land)),
                                                                 year=df$years[i],
                                                                 sentiment=df$polarity[i],
-                                                                sentence=df$sentences[i]))))
+                                                                sentence=df$sentences[i],
+                                                                sentence_full=df$sentences_full[i]))))
 matches <- matches[lapply(matches$countries, length)>0,]
 
-matches <- tidyr::unnest(matches, cols = c(countries, year, sentiment, sentence))
+matches <- tidyr::unnest(matches, cols = c(countries, year, sentiment, sentence, sentence_full))
 
 # Summarizing matched countries to number pr. year
 data <- matches %>% 
   group_by(year, countries) %>% 
   dplyr::summarise(
     sentence = list(sentence),
+    sentence_full = list(sentence_full),
     sentiment = mean(sentiment),
     n = n()
   )
