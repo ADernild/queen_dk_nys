@@ -34,8 +34,8 @@ A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
 - [R] Cap word statistics top frequent numbers in stream graph and scatterplot. Add helptext.
 - [ ] Format data for display (M 9).
 - [x] Create interactive dashboard to interact with findings.
-- [ ] Add meaningfull titles to tabs (M 4).
-- [R] Add description on how to use, why you could use, and what to use the dashboard for on index page (M 2).
+- [ ] Add meaningfull titles to tabbox (M 4).
+- [R] Add description on how to use, why you could use, and what to use the dashboard for on index page (M).
 - [ ] Add descriptive text to all visualizations, and descriptions on how to use them and what to findings expect (M 3).
 - [ ] Write introduction to dahsboard and implement on git and index tab in dashboard.
 - [ ] Create consistent colorpalette for data.
