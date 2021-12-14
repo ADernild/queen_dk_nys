@@ -340,21 +340,21 @@ ui <- dashboardPage(
                                 step = 1),
                     box(width = 12, class="infoViz", title = "Expl.",
                         collapsible = T, collapsed = T,
-                        whatViz(""),
-                        whyViz(""),
-                        howViz(""),
-                        helpText("We recommend not going above a frequency of 15. It will take a long time to load with values above that threshold. Plots might also become too clustered to comprehend.")
+                        whatViz("Top frequnt numbers is a slider to filter for frequency of words in word themed visualizations."),
+                        whyViz("Many words can be mentioned. Most of theese visualizations can become to clutered to interpret."),
+                        howViz("Use the slider by dragging the circle to a any number."),
+                        p("Tip: Don't choose a too high number at first. Start low. Models can become to clutered to interpret and it will take a long time to load visualizations.")
                     )
                 ),
                 tabBox(width=10, id = "word_ussage", title="Most used words",
-                       tabPanel("Piechart",
+                       tabPanel("Frequency by word",
                                 highchartOutput("word_ussage_pie", height="50vh"),
                                 box(width = 12, class="infoViz", title = "Expl.",
                                     collapsible = T, collapsed = T,
-                                    whatViz(""),
-                                    whyViz(""),
-                                    howViz("Interpretation:"),
-                                    howViz("Tooltip:"),
+                                    whatViz("Frequency by word is a piechart displaying frequency by words."),
+                                    whyViz("Frequency is a major factor for determin topics."),
+                                    howViz("Interpretation: frequency can be read from the labels."),
+                                    howViz("Tooltip: Hovering a word will display a tooltip showing the frequency of the word, and frequency in percentage in relation to selection. Clicking a word will highligt it."),
                                     howViz("Year filter: Setting the year filter will filter for the words used in those years."),
                                     howViz("Featured words: Setting featured words will filter for the words set in selection.")
                                 )
