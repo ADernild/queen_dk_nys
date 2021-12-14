@@ -22,7 +22,6 @@ server <- function(input, output, session) {
                           choiceNames = c("Danish", "English"),
                           choiceValues = languages
             ),
-            helpText("Note: English version of speach are translations. Not all speeches are translated."),
             radioButtons ("yearopt",
                           label = "Year input",
                           choices = c("Range", "Select inputs"),
@@ -52,14 +51,14 @@ server <- function(input, output, session) {
       return(p("Filter could not load due to invallid country setting."))
     }
     if(input$yearopt == "Range"){
-      sliderInput("year_r", "Years range",
+      sliderInput("year_r", "Years",
                   min = year_min, max = year_max,
                   value = range(year_min,year_max),
                   step = 1
       )
       
     } else{
-      selectizeInput("year_si", label="Years selections", choices = years, selected = years,
+      selectizeInput("year_si", label="Years", choices = years, selected = years,
                      multiple = TRUE)
     }
   })
