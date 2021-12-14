@@ -19,11 +19,11 @@ See live on: https://app.dernild.com/
 - [x] Collect english translated speeches.
 - [x] Generate file with meta info about speeches.
 - [x] Clean speech text.
+- [ ] Clean english speech text (A).
 - [x] Create custom stopwords list.
 - [ ] Create custom stopwords list for enlish speeches (A).
 - [x] Preprocessing: Tokenization, stemming, lemmatization etc.
 - [ ] Preprocessing: Tokenization, stemming, lemmatization etc. for english speeches (A).
-- [ ] Clean english speech text (A).
 - [ ] Simmulate steps to do when a new speach is relased (A)
 - [ ] Run scripts for all speaches again (A).
 - [x] Build Structural Topic Model (STM).
