@@ -267,24 +267,29 @@ ui <- dashboardPage(
       tabItem(tabName = "map",
               h2("A map of the countries mentioned in the new year eve speeches of Queen Margret"),
               fluidRow(class="box_align_layout",
-                box(width=10,  
+                box(width=8,  
                     leafletOutput("map", height = 740),
+                    h3("Sentences"),
+                    uiOutput("sentences"),
                     box(width = 12, class="infoViz", title = "Expl.",
                         collapsible = T, collapsed = T,
                         whatViz("A world map, with countries mentioned in speeches."),
                         whyViz("To know where countries are, and how often they are mentioned."),
                         howViz("Interpretation: Highlighted countries are mentioned. Darker colors represent more mentions."),
                         howViz("Tooltip: hovering or clicking brings up a tooltip, showing total mentions and amount of mentions in each relevant year."),
-                        howViz("Year filter: Setting the year filter will filter for the counties used in those years.")
+                        howViz("Year filter: Setting the year filter will filter for the countries mentioned in those years.")
                     )
                 ),
-                box(width=2, title="Countries mentioned",
-                    plotOutput("plot"),
+                box(width=4, title="Countries mentioned",
+                    highchartOutput("n_hist", height="50vh"),
+                    highchartOutput("sent_box"),
                     box(width = 12, class="infoViz", title = "Expl.",
                         collapsible = T, collapsed = T,
-                        whatViz("Pls. add Alexander."),
-                        whyViz(""),
-                        howViz("")
+                        whatViz("A bar chart showing the amount of times a country is mentioned for each year."),
+                        whatViz("A boxplot showing the average sentiment of sentences in which a country is mentioned"),
+                        whyViz("To compare the mentions of a specific country, to mentions of countries in general"),
+                        howViz("Tooltip bar chart: hovering over a bar shows the amount a specific country is mentioned in that year, compared to mentions of countries in general"),
+                        howViz("Tooltip boxplot: hovering over a box shows distribution statistics of the average sentiment of sentences, in which a specific country is mentioned, compared to the distribution of average sentiment of sentences, in which any country is mentioned.")
                     )
                 )
               )
