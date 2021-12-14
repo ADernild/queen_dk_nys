@@ -820,9 +820,9 @@ server <- function(input, output, session) {
         }
       }
     }
-    dis <<- data
+
     data <- data %>% 
-      arrange(year, headword, n_hword_year)
+      arrange(year, desc(n_hword_year), headword)
 
     hchart(data, "streamgraph", hcaes(year, n_hword_year, group = headword)) %>% 
         hc_yAxis(
