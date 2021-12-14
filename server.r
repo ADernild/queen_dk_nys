@@ -84,7 +84,9 @@ server <- function(input, output, session) {
   output$royall_beautyfication <- renderUI({
     req(input$l)
     req(input$words)
-    if(input$l == "DK" && "danmark" %in% input$words
+    if(input$l == "DK"
+       && length(input$words) == 3
+       && "danmark" %in% input$words
        && "dansk" %in% input$words
        && "dannebrog" %in% input$words){
       tags$link(rel = "stylesheet", type = "text/css", href = "royall_beautyfication.css") %>% 
