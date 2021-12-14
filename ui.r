@@ -225,8 +225,11 @@ ui <- dashboardPage(
                                 highchartOutput("word_ussage_streamgraph", height="50vh"),
                                 helpText("Stream graph is limited to a maximum frequency of 15. Any number set above, will result in 15 being featured.")
                        ),
-                       tabPanel("Columns",
+                       tabPanel("Columns normal",
                                 highchartOutput("word_ussage_col", height="50vh")
+                       ),
+                       tabPanel("Columns percent",
+                                highchartOutput("word_ussage_col_per", height="50vh")
                        ),
                        tabPanel("Scatterplot",
                                 highchartOutput("word_ussage_scatter", height="50vh"),

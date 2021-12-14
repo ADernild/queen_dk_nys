@@ -777,6 +777,24 @@ server <- function(input, output, session) {
     return(hc)
   })
   
+  ## Columns percent ------------------------------------------------------
+  output$word_ussage_col_per <- renderHighchart({
+    data <-  speech_data_como_filt()
+
+    hc <- hchart(data, "column",
+                 hcaes(x=year, y=n_hword_year,group = headword)) %>% 
+      hc_plotOptions(
+        series = list (
+          stacking = 'percent'
+        )
+      ) %>% 
+      hc_norevese() %>% 
+      hc_tooltip(
+        shared = T
+      )
+    return(hc)
+  })
+  
   ## Pie ------------------------------------------------------------------
   output$word_ussage_pie <- renderHighchart({
     #Todo: Add years
