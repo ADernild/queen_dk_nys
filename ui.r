@@ -20,7 +20,7 @@ ui <- dashboardPage(
               h1("H.M. The Queen topic analyzer"),
               h2("Welcome and about"),
               fluidRow(
-                box(width=12,
+                box(width=8,
                     title = "You are hereby invited to a look into the new year eve speeches of the royal majesty herself",
                     div(id = "intoduction",
                         p(class="what", "This is a dashboard. The dashboard is a tool to analyze topics in speeches."),
@@ -28,6 +28,11 @@ ui <- dashboardPage(
                         p(class="how", "This is an interactive dashboard. You can select tabs in the sidebar on the left to navigate to different sections. When sidebar is expanded (see toggle button in top left corner), you can apply filters and settings for your liking."),
                         p(class="bold", "GUD BEVARE DANMARK.")
                     )
+                ),
+                box(width=4, title = "Info",
+                    p("Stopwords are filtered. This is done to avoid the most common words (like \"the\") to dominate the statistics."),
+                    p("Words have been stemmed, to get better data for topics. This does remove information about word forms."),
+                    p("Words have been lemmatized (replacing words with identical meaning with a headword), to improve topic analysis.")
                 )
               ),
               fluidRow(class="box_align_layout",
@@ -237,7 +242,7 @@ ui <- dashboardPage(
       tabItem(tabName = "stats",
               h2("Sentiment of new year eve speeches of Queen Margret, and the words used within"),
               fluidRow(class="box_align_layout",
-                tabBox(width=10, id = "word_ussage", title="Speech length by words used",
+                tabBox(width=12, id = "word_ussage", title="Speech length by words used",
                        tabPanel("Spline",
                                 highchartOutput("speech_length_spline", height="50vh")
                         ),
@@ -250,11 +255,6 @@ ui <- dashboardPage(
                         fluidRow(
                           helpText("Todo.")
                        )
-                ),
-                box(width=2, title = "Disclaimers",
-                    helpText("Stopwords are filtered. This is done to avoid the most common words (like \"the\") to dominate the statistics."),
-                    helpText("Words have been stemmed, to get better data for topics. This does remove information about word forms."),
-                    helpText("Words have been lemmatized (replacing words with identical meaning with a headword), to improve topic analysis.")
                 )
               ),
               fluidRow(class="box_align_layout",
