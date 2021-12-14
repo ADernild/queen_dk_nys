@@ -18,6 +18,7 @@ ui <- dashboardPage(
     tabItems(
       tabItem(tabName = "index",
               h1("H.M. The Queen topic analyzer"),
+              h2("Welcome and about"),
               fluidRow(
                 box(width=12,
                     title = "You are hereby invited to a look into the new year eve speeches of the royal majesty herself",
