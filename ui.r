@@ -419,7 +419,7 @@ ui <- dashboardPage(
                                howViz("Tooltip:"),
                                howViz("Year filter: Setting the year filter will filter for the words used in those years."),
                                howViz("Featured words: Setting featured words will filter for the words set in selection."),
-                               helpText("Words in wordcloud is randomly sellected from aviable words. It is influenced by filter.")
+                               helpText("Notice: Words in wordcloud is randomly sellected from aviable words. It is influenced by filter.")
                            )
                        ),
                        tabPanel("Table",
