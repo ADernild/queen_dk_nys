@@ -130,6 +130,14 @@ ui <- dashboardPage(
                   ),
                   tabPanel("Average sentiment",
                            highchartOutput("sentiment_of_speech_avg", height="75vh")
+                  # ),
+                  # tabPanel("Average sentiment",
+                  #          highchartOutput("sentiment_of_speech_avg", height="75vh"),
+                  #          whatViz("Average sentiment displays the average sentiment of by year."),
+                  #          whyViz("The average sentiment can be used to observe sentiment of a year better in relation to the words used."),
+                  #          howViz("Interpretation: the size of the bars indicate the size of average sentiment in relation to other years."),
+                  #          howViz("Tooltip: hovering a bar displays the sentiment of the year."),
+                  #          howViz("Year filter: Using the year filter, will filter years featured.")
                   )
                 ),
                 box(width = 2, title = "Slider",
@@ -164,13 +172,15 @@ ui <- dashboardPage(
                       valueBoxOutput("num_pos_sen"),
                       valueBoxOutput("num_neg_sen")
                     ),
+                    # fluidRow(
+                    #   valueBoxOutput("mean_sum_sen"),
+                    #   valueBoxOutput("mean_pos_sen"),
+                    #   valueBoxOutput("mean_neg_sen")
+                    # ),
+                    # fluidRow(
+                    #   valueBoxOutput("mean_num_wor")
+                    # ),
                     fluidRow(
-                      valueBoxOutput("mean_sum_sen"),
-                      valueBoxOutput("mean_pos_sen"),
-                      valueBoxOutput("mean_neg_sen")
-                    ),
-                    fluidRow(
-                      valueBoxOutput("mean_num_wor")
                     )
                 )
               )
