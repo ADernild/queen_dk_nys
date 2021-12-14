@@ -872,12 +872,12 @@ server <- function(input, output, session) {
     warning(names(speech_data_como_filt()))
     speech_data_como_filt() %>%
       ungroup() %>% 
-      rename(`Year` = year, `Word` = headword, `Total frequency` = n_hword_total,
+      transmute(`Year` = year, `Word` = headword, `Total frequency` = n_hword_total,
                 `Frequency in year` = n_hword_year,
                 `Frequency in selection in year` = n_sel)
-  }#,
-  # options = list(
-  #   
-  # )
+  }, rownames = FALSE, filter = 'top',
+  options = list(
+    
+    )
   )
 }
