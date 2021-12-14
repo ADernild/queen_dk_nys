@@ -728,8 +728,8 @@ server <- function(input, output, session) {
           hc_add_series_list(dat)
       })
       output$sentences <- renderUI({
-        sentences <- unlist(selected$sentence)[1:5]
-        sentences[!is.na(sentences)] %>% 
+        sentences <- unlist(selected$sentence)
+        sample(sentences, ifelse(length(sentences)<5, length(sentences), 5)) %>% 
           str_to_sentence() %>% 
           paste(collapse=". <br/>") %>% 
           HTML()
