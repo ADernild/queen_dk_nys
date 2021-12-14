@@ -93,15 +93,21 @@ ui <- dashboardPage(
       tabItem(tabName = "tm",
           h2("Topics"),
           fluidRow(class="box_align_layout",
-            box(width=2,
-                title = "Topic model parameters <3",
+            box(width=2, title = "Topic model parameters",
                 # Sidebar with a slider input for number of bins
                 radioButtons("topicmodel", "Topicmodel", list("STM" = "stm_model", "LDA" = "lda_model")),
-                sliderInput("nTerms", "Number of terms to display", min = 10, max = 50, value = 30)
+                fluidRow(sliderInput("nTerms", "Number of terms to display", min = 10, max = 50, value = 30)),
+                whatViz("Number of terms to display sets the number of terms used in the topic model, by size of topic."),
+                whyViz("Limiting the number of terms makes the topic model easier to interpret. Adding more, gives more information."),
+                howViz("Use the slider to select a number for your liking."),
+                helpText("Notice: Topic model selector will result in a failure if LDA is selected.")
             ),
-            box(width=10,
-                title = "Topic model :-O",
-                visOutput("topicVis")
+            box(width=10, title = "Topic model",
+                visOutput("topicVis"),
+                whatViz("Topic model is a tool that maps topics. It does so by analyzing word relations by analyzing all speeches and mapping the relations as word matrixes. Then the model displays the topics to the left, and he words within on the right. Frequency of use is depicted by size for topics, and bar length for words. Topics are named 1:n, where 1 is the largest topic."),
+                whyViz("The topics model can be used to get an understanding of themes present in the speeches throughout the years."),
+                howViz("The sizes represent frequency and can be interpreted as so. To inspect a topic, it can be selected in the top right selector, or a topic can be hovered. Clicking a topic will keep it highlighted. Hovering a word will show what topics they are included in. Clicking a word will add an underline, but nothing else."),
+                helpText("Notice: The slider on the top right does nothing.")
             )
           )
       ),
