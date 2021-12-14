@@ -125,3 +125,23 @@ poly_prep <- function(polygons, countries, years) {
 
 pal <- colorNumeric(c("#a3dcff", "#007bff"), NULL)
 
+
+# Text --------------------------------------------------------------------
+whatViz <- function(text){
+  p(class="whatViz",
+    span("\u25CF", title="What"),
+    text
+  )
+}
+whyViz <- function(text){
+  p(class="whyViz",
+    span("\u25A0", title="Why"),
+    text
+  )
+}
+howViz <- function(text){
+  p(class="howViz", title="how",
+    span("\u25B2"),
+    text
+  )
+}

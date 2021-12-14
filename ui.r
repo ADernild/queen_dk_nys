@@ -32,21 +32,13 @@ ui <- dashboardPage(
               fluidRow(class="box_align_layout",
                        box(width=4, title="How to interpret visualizations and information",
                            p("If you wish to have some guidance in your data journey, we have prepared assisting labels for each visualization."),
+                           p("These labels will be located directly beneath the point of interest."),
                            hr(),
-                           p(class="whatViz",
-                             span("\u25CF", title="What"),
-                             "What marking: A blue dot with bold dark-blue text indicates what kind of visualization/information is depicted."
-                           ),
-                           p(class="whyViz", title ="Why",
-                             span("\u25A0"),
-                             "Why marking: A Yellow circle with dark-yellow bold text indicates why and when to use you could use the visualization/information you can observe."
-                           ),
-                           p(class="howViz", title="Why",
-                             span("\u25B2"),
-                             "How marking: A light-brown triangle with brown bold text indicates how you can interpret information in the visualization."
-                           ),
+                           whatViz("What marking: A blue dot with bold dark-blue text indicates what kind of visualization/information is depicted."),
+                           whyViz("Why marking: A Yellow circle with dark-yellow bold text indicates why and when to use you could use the visualization/information you can observe."),
+                           howViz("How marking: A light-brown triangle with brown bold text indicates how you can interpret information in the visualization."),
                            p(helpText("Grey italic/slanted text indicates other kinds of help text. This could be descriptions on how operate inputs, information about limitations and bugs.")),
-                           ("Black text is other kinds of information. It would usually be practical information.")
+                           p("Black text is other kinds of information. It would usually be practical information.")
                        ),
                        box(width=4,
                            title = "Speeches covered",
