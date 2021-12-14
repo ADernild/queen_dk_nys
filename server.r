@@ -827,9 +827,9 @@ server <- function(input, output, session) {
         }
       }
     }
-    dis <<- data
+
     data <- data %>% 
-      arrange(year, headword, n_hword_year)
+      arrange(year, desc(n_hword_year), headword)
 
     hchart(data, "streamgraph", hcaes(year, n_hword_year, group = headword)) %>% 
         hc_yAxis(
@@ -855,7 +855,9 @@ server <- function(input, output, session) {
       ) %>% 
       hc_norevese() %>% 
       hc_tooltip(
-        shared = T
+        shared = T,
+        headerFormat = "<b>Year</b>: {point.x}<br>Total frequency: {point.total}",
+        pointFormat = "<br><span style=\"color: {point.color} \">\u25CF</span> {point.series.name}: {point.y}"
       )
     return(hc)
   })
