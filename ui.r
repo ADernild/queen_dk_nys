@@ -42,16 +42,48 @@ ui <- dashboardPage(
                        ),
                        box(width=4,
                            title = "Speeches covered",
-                           p("These are the speeches that are covered:"),
                            uiOutput("Covered_speech"),
-                           helpText("Changes to language and year filter is reflected here.")
+                           whatViz("This are the speeches that are covered in the dashboard, with your current filter."),
+                           whyViz("You can use this to see the source from what you filtered."),
+                           howViz("You can use language and year filters. To see all text in a language selected language, select all possible years."),
+                           p(helpText("Notice: English version of speech are translations. Not all Danish speeches are translated. Some years are therefore not available."))
                        ),
                        box(width=4,
                            div(id="wiki_infobox_wrap",
                                uiOutput("scrabing_info"),
                                htmlOutput("wiki_infobox")
-                           )
+                           ),
+                           whatViz("This is the info box from Wikipedia about the queen."),
+                           whyViz("You can use this to familiarize yourself with the subject, or just want a quick read-up."),
+                           howViz("You can read the table, or visit the source, above the table.")
                        )
+              ),
+              fluidRow(
+                box(width=12, title="Filters",
+                    whatViz("This dashboard utilizes filtering systems. The main filters are in the sidebar when expanded. Some visualizations have custom filters. They are documented when needed."),
+                    whyViz("The filters can be used to filter the data you see. You can do this to inspect a certain subset of data. E.g., to look data relevant to you."),
+                    howViz("To expand the sidebar, press the expand button in the top left corner."),
+                    hr(),
+                    h4("Language filter"),
+                    whatViz("The language filter set's what language/translation of speeches you inspect, and what language to display the Wikipedia info box."),
+                    whyViz("For this dashboard, Danish would be optimal. It is the original language of the speeches. If you don't understand Danish, you can still use a limited set of speeches in English."),
+                    howViz("Push the text or dot next to the language you want to use."),
+                    hr(),
+                    h4("Year filters"),
+                    whatViz("Year filter refers to the group of filters affecting year. These are: the year input, the year slider and the year selector."),
+                    whyViz("Filtering years can help you limit the data relevant to the topic you are researching."),
+                    howViz("Year input: Push the text or dot next to the year input method you need or prefer"),
+                    howViz("Year range: select the start year and end year by drag 'n drop the round dots."),
+                    howViz("Year selector - remove year(s): click on a year and press Backspace-key or Delete-key to remove a year. Hold down Ctrl to select multiple. Alternatively, select input-field (e.g. by clicking or using tab button), and navigate the cursor with the arrow keys, and use Backspace-key or Delete-key to remove years."),
+                    howViz("Year selector - Add year: select input-field (e.g. by clicking or using tab button) and type year. Press enter to add or select suggestion by clicking on it."),
+                    p(helpText("Notice: Some visualizations will use the whole dataset as a reference regardless of your set filter.")),
+                    hr(),
+                    h4("Featured words"),
+                    whatViz("Featured words is a selection of words from words featured in the speeches, that is used to filter or feature words in different kinds of ways."),
+                    whyViz("When you are inspecting a topic, some words might seem important. So, you can filter for these words using the filter."),
+                    howViz("Select word: Type word and press enter when done or click suggestion pop up."),
+                    howViz("Remove word(s): click on a word and press Backspace-key or Delete-key to remove word Hold down Ctrl to select multiple. Alternatively, select input-field (e.g. by clicking or using tab button), and navigate the cursor with the arrow keys, and use Backspace-key or Delete-key to remove words.")
+                )
               )
       ),
       # Topic Model ----
