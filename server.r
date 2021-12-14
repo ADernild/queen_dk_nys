@@ -634,10 +634,14 @@ server <- function(input, output, session) {
   })
   
   # Map ---------------------------------------------------------------------
+  mapData <- reactive({
+    req(y())
+    data <- poly_prep(geojson, countries, y())
+    return(data)
+  })
+  
   output$map <- renderLeaflet({
-    years <- y()
-    mapDat <- poly_prep(geojson, countries, years)
-    leaflet(mapDat,
+    leaflet(mapData(),
             options = leafletOptions(worldCopyJump = T,
                                      minZoom = 1,
                                      maxZoom = 4
@@ -656,6 +660,8 @@ server <- function(input, output, session) {
                   layerId = mapDat@data$ADMIN) %>% 
       addLegend(pal = pal, values = ~n)
   })
+  
+  # Setview and zoom to clicked country
   observe({
     click <- input$map_shape_click
     proxy <- leafletProxy("map")
@@ -664,13 +670,15 @@ server <- function(input, output, session) {
     proxy %>% setView(lng = click$lng, lat = click$lat, zoom = 4)
   })
   
+  # Making visualization based on clicked country
   observeEvent(input$map_shape_click, {
+    mapData <- mapData()
     click <- input$map_shape_click
-    selected <- mapDat@data[mapDat@data$ADMIN == click$id,]
+    selected <- mapData@data[mapData@data$ADMIN == click$id,]
     
     if(!is.null(click$id)){
       output$plot <- renderPlot({
-        boxplot(unlist(selected$sentiment_year), unlist(mapDat@data$sentiment_year))
+        boxplot(unlist(selected$sentiment_year), unlist(mapData@data$sentiment_year))
       })
     }
   })
