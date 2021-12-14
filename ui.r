@@ -117,19 +117,35 @@ ui <- dashboardPage(
       tabItem(tabName = "sentiment",
               h2("Sentiment"),
               fluidRow(class="box_align_layout",
-                tabBox(width=10, id = "speeches",
+                tabBox(width=12, id = "speeches",
                        title="Sentiment of speaches",
-                  tabPanel("Sentiment (Bubles)",
-                           highchartOutput("sentiment_of_speech_bubles", height="75vh")
+                  tabPanel("Sentiment relationship (Bubles)",
+                           highchartOutput("sentiment_of_speech_bubles", height="75vh"),
+                           whatViz("Sentiment relationship shows the relationship between positive and negative and size of speeches."),
+                           whyViz("The sentiment of speeches could indicate influences in topics. Influences from a year needs to be researched independently."),
+                           howViz("Interpretation: The center position of a year-circle indicates it's sentiment. X-axis indicates positive sentiment from low (left) to high (right). Y-axis indicates negative sentiment from high (bottom) to low (top)."),
+                           howViz("Tooltip: Hovering a year-circle shows its positive sentiment, negative sentiment, summed sentiment, sentiment label and words with polarity in year in a tooltip."),
+                           howViz("Year filter: Using the year filter, will filter years featured."),
+                           howViz("Featured words: Using the featured words, will group the years into years that include words in the filter, and years that do not. This will be displayed in the tooltip.")
                   ),
-                  tabPanel("Sentiment (Columns)",
-                           highchartOutput("sentiment_of_speech_col_compare", height="75vh")
+                  tabPanel("Sentiment by year (Columns)",
+                           highchartOutput("sentiment_of_speech_col_compare", height="75vh"),
+                           whatViz("Sentiment by year shows the positive-, negative- and summed sentiment by year. This model does so in columns."),
+                           whyViz("Displaying sentiment in columns like this makes it easy to interpret sentiment sizes in relation between positive-, negative- and summed sentiment and difference between years."),
+                           howViz("Interpretation: Negatives are displayed left and positives right. The Sum shows their aggregated value. Observe the size difference."),
+                           howViz("Series filter: By clicking on a series name, it can be disabled until clicked again, or updated by a filter."),
+                           howViz("Tooltip: Hovering the values of a year will show the sentiment of enabled series."),
+                           howViz("Year filter: Using the year filter, will filter years featured."),
+                           howViz("Featured words: Using featured words will show the sentiment that subset had in each year."),
+                           helpText("Error: Currently, featured words filter will not show the results correctly.")
                   ),
-                  tabPanel("Sentiment range (Shankey)",
-                           highchartOutput("sentiment_of_speech_sha_compare", height="75vh")
-                  ),
-                  tabPanel("Average sentiment",
-                           highchartOutput("sentiment_of_speech_avg", height="75vh")
+                  tabPanel("Sentiment by year (Shankey)",
+                           highchartOutput("sentiment_of_speech_sha_compare", height="75vh"),
+                           whatViz("Sentiment by year shows the positive-, negative- and summed sentiment by year. This model does so in ranges."),
+                           whyViz("Displaying sentiment in connected ranges, makes it easy to interpret the relation of sentiment between years."),
+                           howViz("Interpretation: Positive sentiment is the top point. Summed sentiment is the bottom point. The difference is the negative sentiment. Looking at the size of the changing sizes of the shankey can be used to observe changes in sentiment by year."),
+                           howViz("Tooltip: Hovering a year displays a tooltip that shows the sentiment values of the year."),
+                           howViz("Year filter: Using the year filter, will filter years featured.")
                   # ),
                   # tabPanel("Average sentiment",
                   #          highchartOutput("sentiment_of_speech_avg", height="75vh"),
@@ -139,29 +155,44 @@ ui <- dashboardPage(
                   #          howViz("Tooltip: hovering a bar displays the sentiment of the year."),
                   #          howViz("Year filter: Using the year filter, will filter years featured.")
                   )
-                ),
-                box(width = 2, title = "Slider",
-                    sliderInput("slider_sentiment_of_words_n_words",
-                                "Number of words (by frequency)",
-                                min=1, max=n_dist_t_headword, value = 100 ),
-                    helpText("The word slider only updates the plots, if the word has any ploarity and was features in the set year-range."),
-                    helpText("Using the word filter will recategorize results when relevant.")
-                    
                 )
               ),
               fluidRow(class="box_align_layout",
                 # Show a plot of the generated distribution
-                box(width=6, title = "Sentiment of words (-3:3)",
+                box(width=5, title = "Sentiment of words (-3:3)",
                     highchartOutput("sentiment_of_words", height="35vh"),
-                    helpText("Some words have a larger sentiment than others. Larger numbers are more positive, and negative numbers are more negative. In the moddel the most positive words have a polarity of 3. The most negative words have a polarity of -3.")
+                    whatViz("Sentiment of words displays words by sentiment."),
+                    whyViz("Sentiment of words can help you identify what words influenced the sentiment."),
+                    howViz("Interpretation: the most positive words have a polarity of 3. The most negative words have a polarity of -3. "),
+                    howViz("Tooltip: hovering a word will display the polarity of the word, and the sentiment category."),
+                    howViz("Series filter: Click on a series name to disable it. Click again or set a new filter that affects the visualization to enable it again."),
+                    howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+                    howViz("Featured words: Setting featured words that have sentient will make them be included before other words (otherwise words are included by frequency). If at least one word with sentiment is present, the series will be names after both if they are positive/negative and if they are included or not."),
+                    howViz("Number of words: Number of words filters words included, from most to least frequent."),
+                    helpText("Notice: Words with a polarity of 0 is filtered.")
                 ),
-                box(width=6, title = "Frequency used (n uses in total)",
+                box(width=5, title = "Frequency used (n uses in total)",
                     highchartOutput("sentiment_of_words_freq", height="35vh"),
-                    helpText("A sentiment of 0 would be true neutral. True neutral words do not impact the sentiment. Neutral sentiment is filtered on the sentiment tab.")
+                    whatViz("Frequency used displays words by frequency."),
+                    whyViz("Frequency used can help you identify what words influenced the sentiment."),
+                    howViz("Interpretation: Larger bars have higher frequency."),
+                    howViz("Series filter: Click on a series name to disable it. Click again or set a new filter that affects the visualization to enable it again."),
+                    howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+                    howViz("Featured words: Setting featured words that have sentient will make them be included before other words (otherwise words are included by frequency). If at least one word with sentiment is present, the series will be names after both if they are positive/negative and if they are included or not."),
+                    howViz("Number of words: Number of words filters words included, from most to least frequent."),
+                    helpText("Notice: Words with a polarity of 0 is filtered.")
+                ),
+                box(width = 2, title = "Number of words",
+                    sliderInput("slider_sentiment_of_words_n_words",
+                                "Number of words (by frequency)",
+                                min=1, max=n_dist_t_headword, value = 100 ),
+                    whatViz("Number of words is a slider to set the number of featured words."),
+                    whyViz("Limiting the amount words featured will reduce clutter and make Sentiment of words and Frequency used easier to interpret."),
+                    howViz("Set a number by using the slider.")
                 )
               ),
               fluidRow(
-                box(width = 12, title = "Sentiment statistics through years in speeches",
+                box(width = 12, title = "Total sentiment",
                     fluidRow(
                       valueBoxOutput("total_sum_sen"),
                       valueBoxOutput("total_pos_sen"),
@@ -181,6 +212,11 @@ ui <- dashboardPage(
                     #   valueBoxOutput("mean_num_wor")
                     # ),
                     fluidRow(
+                      whatViz("Total sentiment displays the total sentiment statistics."),
+                      whyViz("Total values can be useful to interpret for selections."),
+                      howViz("Interpretation: Values are summed for different categories."),
+                      howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+                      howViz("Featured words: Setting featured words will filter for the words used in that selection.")
                     )
                 )
               )
