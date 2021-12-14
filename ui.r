@@ -20,41 +20,46 @@ ui <- dashboardPage(
               h1("H.M. The Queen topic analyzer"),
               fluidRow(
                 box(width=12,
-                    title = "You are hearby invited to a look into the speaches of the royal majesty herself",
+                    title = "You are hereby invited to a look into the new year eve speeches of the royal majesty herself",
                     div(id = "intoduction",
                         p(class="what", "This is a dashboard. The dashboard is a tool to analyze topics in speeches."),
-                        p(class="why", "Topics can be hard to document correctly. By using this tool, you can find relevant topics and the words within on the topics tab. From there you can then choose to explore the sentiment, countries or statistics to get a better understanding of the topic. You could also do your own thing, and look at pretty graphs and statistics. We won't judge."),
-                        p(class="how", "This is a interactive dashboard. You can select tabsin the sidebar on the left to navigate to different sections. When sidebar is expanded (see toggle button in top left cornor), you can apply filters and settings for your liking."),
-                        p("If you wish to have some guidance in your data journey, we have prepared assisting labels for each visualization."),
-                        p(class="whatViz",
-                          span("\u25CF"),
-                          "This marking idicates what kind of visualization is depicted."
-                        ),
-                        p(class="whyViz",
-                          span("\u25A0"),
-                          "This marking idicates the kind of information you can observe from the visualization."
-                        ),
-                        p(class="howViz",
-                          span("\u25B2"),
-                          "This marking idicates how you can imterpret information in the visualization."
-                        ),
+                        p(class="why", "Topics can be hard to document correctly. By using this tool, you can find relevant topics and the words within on the topics tab. From there you can then choose to explore the sentiment, countries, or statistics to get a better understanding of the topic. You could also do your own thing and look at pretty graphs and statistics. We won't judge."),
+                        p(class="how", "This is an interactive dashboard. You can select tabs in the sidebar on the left to navigate to different sections. When sidebar is expanded (see toggle button in top left corner), you can apply filters and settings for your liking."),
                         p(class="bold", "GUD BEVARE DANMARK.")
                     )
                 )
               ),
               fluidRow(class="box_align_layout",
-                box(width=6,
-                    title = "Speeches covered",
-                    p("Theese are the speeches that are covered:"),
-                    uiOutput("Covered_speech"),
-                    helpText("Changes to language and year filter is relected here.")
-                ),
-                box(width=6,
-                    div(id="wiki_infobox_wrap",
-                        uiOutput("scrabing_info"),
-                        htmlOutput("wiki_infobox")
-                    )
-                )
+                       box(width=4, title="How to interpret visualizations and information",
+                           p("If you wish to have some guidance in your data journey, we have prepared assisting labels for each visualization."),
+                           hr(),
+                           p(class="whatViz",
+                             span("\u25CF", title="What"),
+                             "What marking: A blue dot with bold dark-blue text indicates what kind of visualization/information is depicted."
+                           ),
+                           p(class="whyViz", title ="Why",
+                             span("\u25A0"),
+                             "Why marking: A Yellow circle with dark-yellow bold text indicates why and when to use you could use the visualization/information you can observe."
+                           ),
+                           p(class="howViz", title="Why",
+                             span("\u25B2"),
+                             "How marking: A light-brown triangle with brown bold text indicates how you can interpret information in the visualization."
+                           ),
+                           p(helpText("Grey italic/slanted text indicates other kinds of help text. This could be descriptions on how operate inputs, information about limitations and bugs.")),
+                           ("Black text is other kinds of information. It would usually be practical information.")
+                       ),
+                       box(width=4,
+                           title = "Speeches covered",
+                           p("These are the speeches that are covered:"),
+                           uiOutput("Covered_speech"),
+                           helpText("Changes to language and year filter is reflected here.")
+                       ),
+                       box(width=4,
+                           div(id="wiki_infobox_wrap",
+                               uiOutput("scrabing_info"),
+                               htmlOutput("wiki_infobox")
+                           )
+                       )
               )
       ),
       # Topic Model ----

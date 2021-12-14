@@ -136,7 +136,7 @@ server <- function(input, output, session) {
     }
     a(href=source,
       target= "_blank",
-      paste("Info scarped from wikipedia (", date, ").", sep = "")
+      paste("Info scarped from Wikipedia (", date, ").", sep = "")
     )
   })
   

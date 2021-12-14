@@ -30,6 +30,12 @@ body, .content-wrapper, .skin-blue .wrapper{
   color: #5d3731; /* Darker version of marker */
 }
 
+.whatViz>span,
+.whyViz>span,
+.howViz>span{
+  cursor: help;
+}
+
 .whatViz>span{
   color: #435961; /* Lighter version of parrent */
 }

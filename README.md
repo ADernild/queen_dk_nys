@@ -1,6 +1,13 @@
 # Queen of Denmark - New Years Speeches: Web scraping and NLP-project
 
-A visualization project by Max Festersen Hansen and Alexander Ibsen Dernild.
+A visualization project by Alexander Ibsen Dernild & Max Festersen Hansen.
+
+"Topics can be hard to document correctly.
+By using this tool, you can find relevant topics and the words within on the topics tab.
+From there you can then choose to explore the sentiment, countries, or statistics to get a better understanding of the topic.
+You could also do your own thing and look at pretty graphs and statistics. We won't judge."
+
+See live on: https://app.dernild.com/
 
 |████░░░░░░░░░|
 

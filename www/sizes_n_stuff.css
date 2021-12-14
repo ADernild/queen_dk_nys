@@ -40,7 +40,6 @@ h2, h3{
 
 /* > p/span */
 .help-block{
-  float: left;
   font-style: italic;
   white-space: break-spaces;
   clear: both;
