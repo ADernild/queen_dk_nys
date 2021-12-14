@@ -39,7 +39,6 @@ dk_sentiment_min_wordform <- dk_sentiment_min[dk_sentiment_min$word_form %in% df
     polarity = mean(polarity_label_headword)
   )
 
-
 # Initiating empty list
 polarity_list <- c()
 
