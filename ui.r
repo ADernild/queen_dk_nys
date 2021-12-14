@@ -268,10 +268,24 @@ ui <- dashboardPage(
               h2("A map of the countries mentioned in the new year eve speeches of Queen Margret"),
               fluidRow(class="box_align_layout",
                 box(width=10,  
-                    leafletOutput("map", height = 740)
+                    leafletOutput("map", height = 740),
+                    box(width = 12, class="infoViz", title = "Expl.",
+                        collapsible = T, collapsed = T,
+                        whatViz(""),
+                        whyViz(""),
+                        howViz("Interpretation:"),
+                        howViz("Tooltip:"),
+                        howViz("Year filter: Setting the year filter will filter for the words used in those years.")
+                    )
                 ),
                 box(width=2, title="Countries mentioned",
-                    plotOutput("plot")
+                    plotOutput("plot"),
+                    box(width = 12, class="infoViz", title = "Expl.",
+                        collapsible = T, collapsed = T,
+                        whatViz(""),
+                        whyViz(""),
+                        howViz("")
+                    )
                 )
               )
       ),
@@ -281,17 +295,41 @@ ui <- dashboardPage(
               fluidRow(class="box_align_layout",
                 tabBox(width=12, id = "word_ussage", title="Speech length by words used",
                        tabPanel("Spline",
-                                highchartOutput("speech_length_spline", height="50vh")
-                        ),
+                                highchartOutput("speech_length_spline", height="50vh"),
+                                box(width = 12, class="infoViz", title = "Expl.",
+                                    collapsible = T, collapsed = T,
+                                    whatViz(""),
+                                    whyViz(""),
+                                    howViz("Interpretation:"),
+                                    howViz("Tooltip:"),
+                                    howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+                                    howViz("Featured words: Setting featured words will filter for the words set in selection.")
+                                )
+                       ),
                         tabPanel("Columns",
-                                 highchartOutput("speech_length_col", height="50vh")
+                                 highchartOutput("speech_length_col", height="50vh"),
+                                 box(width = 12, class="infoViz", title = "Expl.",
+                                     collapsible = T, collapsed = T,
+                                     whatViz(""),
+                                     whyViz(""),
+                                     howViz("Interpretation:"),
+                                     howViz("Tooltip:"),
+                                     howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+                                     howViz("Featured words: Setting featured words will filter for the words set in selection.")
+                                 )
                         ),
                         tabPanel("Piechart",
-                                 highchartOutput("speech_length_pie", height="50vh")
-                        ),
-                        fluidRow(
-                          helpText("Todo.")
-                       )
+                                 highchartOutput("speech_length_pie", height="50vh"),
+                                 box(width = 12, class="infoViz", title = "Expl.",
+                                     collapsible = T, collapsed = T,
+                                     whatViz(""),
+                                     whyViz(""),
+                                     howViz("Interpretation:"),
+                                     howViz("Tooltip:"),
+                                     howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+                                     howViz("Featured words: Setting featured words will filter for the words set in selection.")
+                                 )
+                        )
                 )
               ),
               fluidRow(class="box_align_layout",
@@ -300,32 +338,101 @@ ui <- dashboardPage(
                                 "Top frequent numbers",
                                 min=1, max=number_of_rarity, value = 15,
                                 step = 1),
-                    helpText("We recommend not going above a frequency of 15. It will take a long time to load with values above that threshold. Plots might also become too clustered to comprehend.")
+                    box(width = 12, class="infoViz", title = "Expl.",
+                        collapsible = T, collapsed = T,
+                        whatViz(""),
+                        whyViz(""),
+                        howViz(""),
+                        helpText("We recommend not going above a frequency of 15. It will take a long time to load with values above that threshold. Plots might also become too clustered to comprehend.")
+                    )
                 ),
                 tabBox(width=10, id = "word_ussage", title="Most used words",
                        tabPanel("Piechart",
-                                highchartOutput("word_ussage_pie", height="50vh")
+                                highchartOutput("word_ussage_pie", height="50vh"),
+                                box(width = 12, class="infoViz", title = "Expl.",
+                                    collapsible = T, collapsed = T,
+                                    whatViz(""),
+                                    whyViz(""),
+                                    howViz("Interpretation:"),
+                                    howViz("Tooltip:"),
+                                    howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+                                    howViz("Featured words: Setting featured words will filter for the words set in selection.")
+                                )
                        ),
                        tabPanel("Stream graph",
                                 highchartOutput("word_ussage_streamgraph", height="50vh"),
-                                helpText("Stream graph is limited to a maximum frequency of 15. Any number set above, will result in 15 being featured.")
+                                box(width = 12, class="infoViz", title = "Expl.",
+                                    collapsible = T, collapsed = T,
+                                    whatViz(""),
+                                    whyViz(""),
+                                    howViz("Interpretation:"),
+                                    howViz("Tooltip:"),
+                                    howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+                                    howViz("Featured words: Setting featured words will filter for the words set in selection."),
+                                    helpText("Stream graph is limited to a maximum frequency of 15. Any number set above, will result in 15 being featured.")
+                                )
                        ),
                        tabPanel("Columns normal",
-                                highchartOutput("word_ussage_col", height="50vh")
+                                highchartOutput("word_ussage_col", height="50vh"),
+                                box(width = 12, class="infoViz", title = "Expl.",
+                                    collapsible = T, collapsed = T,
+                                    whatViz(""),
+                                    whyViz(""),
+                                    howViz("Interpretation:"),
+                                    howViz("Tooltip:"),
+                                    howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+                                    howViz("Featured words: Setting featured words will filter for the words set in selection.")
+                                )
                        ),
                        tabPanel("Columns percent",
-                                highchartOutput("word_ussage_col_per", height="50vh")
+                                highchartOutput("word_ussage_col_per", height="50vh"),
+                                box(width = 12, class="infoViz", title = "Expl.",
+                                    collapsible = T, collapsed = T,
+                                    whatViz(""),
+                                    whyViz(""),
+                                    howViz("Interpretation:"),
+                                    howViz("Tooltip:"),
+                                    howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+                                    howViz("Featured words: Setting featured words will filter for the words set in selection.")
+                                )
                        ),
                        tabPanel("Scatterplot",
                                 highchartOutput("word_ussage_scatter", height="50vh"),
-                                helpText("Scatterplot is limited to a maximum frequency of 15. Any number set above, will result in 15 being featured.")
+                                box(width = 12, class="infoViz", title = "Expl.",
+                                    collapsible = T, collapsed = T,
+                                    whatViz(""),
+                                    whyViz(""),
+                                    howViz("Interpretation:"),
+                                    howViz("Tooltip:"),
+                                    howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+                                    howViz("Featured words: Setting featured words will filter for the words set in selection."),
+                                    helpText("Scatterplot is limited to a maximum frequency of 15. Any number set above, will result in 15 being featured.")
+                                )
                        ),
                        tabPanel("Wordcloud",
                            wordcloud2Output("wordcloud"),
-                           helpText("Words in wordcloud is randomly sellected from aviable words. It is influenced by filter.")
+                           box(width = 12, class="infoViz", title = "Expl.",
+                               collapsible = T, collapsed = T,
+                               whatViz(""),
+                               whyViz(""),
+                               howViz("Interpretation:"),
+                               howViz("Tooltip:"),
+                               howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+                               howViz("Featured words: Setting featured words will filter for the words set in selection."),
+                               helpText("Words in wordcloud is randomly sellected from aviable words. It is influenced by filter.")
+                           )
                        ),
                        tabPanel("Table",
-                                DTOutput("word_ussage_tbl")
+                                DTOutput("word_ussage_tbl"),
+                                box(width = 12, class="infoViz", title = "Expl.",
+                                    collapsible = T, collapsed = T,
+                                    whatViz(""),
+                                    whyViz(""),
+                                    howViz("Interpretation:"),
+                                    howViz("Tooltip:"),
+                                    howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+                                    howViz("Featured words: Setting featured words will filter for the words set in selection.")
+                                )
                        )
                 )
               )
