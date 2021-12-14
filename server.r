@@ -680,7 +680,7 @@ server <- function(input, output, session) {
     
     if(!is.null(click$id)){
       output$plot <- renderPlot({
-        # boxplot(unlist(selected$sentiment_year), unlist(mapData@data$sentiment_year))
+        boxplot(unlist(selected$sentiment_year), unlist(mapData@data$sentiment_year))
       })
     }
   })
