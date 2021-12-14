@@ -827,7 +827,7 @@ server <- function(input, output, session) {
           cursor = 'pointer',
           dataLabels = list(
             enabled = T,
-            format = '<b>{point.name}</b>: {point.percentage:.1f}%'
+            format = '<b>{point.name}</b>: {point.y}'
           )
         )
       ) %>% 
