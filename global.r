@@ -31,7 +31,7 @@ geojson <- readRDS("data/countries.rds") # Library containing geographic informa
 
 # Formatting data ---------------------------------------------------------
 # Number of distinct headwords
-n_dist_t_headword <- nrow(distinct(tokens, headword))
+n_dist_t_headword <- nrow(distinct(tokens, stemmed))
 
 ## Years ----
 years <- unique(source_year$year) %>% sort()
@@ -48,11 +48,15 @@ languages <- c("DK", "EN")
 
 ## Words ----
 words_all <-  unique(lemma$token) %>% sort()
-words_tokens_all <- unique(tokens$headword) %>% sort()
+words_tokens_all <- tokens %>%
+  mutate(wordisnum = as.integer(suppressWarnings(ifelse(!is.na(as.numeric(stemmed)),1,0)))) %>% 
+  arrange(wordisnum, stemmed) %>% 
+  .$stemmed %>% 
+  unique()
 words_count_unique <- length(words_all)
-most_common <- max(tokens$n_hword_total)
-most_common_any_year <- max(tokens$n_hword_year)
-number_of_rarity <- length(unique(arrange(tokens, desc(n_hword_total))$n_hword_total))
+most_common <- max(tokens$n_stem_total)
+most_common_any_year <- max(tokens$n_stem_year)
+number_of_rarity <- length(unique(arrange(tokens, desc(n_stem_total))$n_stem_total))
 
 
 # Colors ------------------------------------------------------------------
@@ -69,7 +73,7 @@ colors_of_the_queen <- c(
   "#9F9080", # Royal hair / Grullo
   "#ECC1BE", # Pink queen / Baby pink
   "#321403" # Royal brown button / Black bean
-  )
+)
 
 # Highchart options -------------------------------------------------------
 opts <- getOption("highcharter.options")
@@ -96,10 +100,8 @@ cmatch <- function(left, right){
     if(item %in% right){
       return(T)
     }
-    
   }
   return(F)
-  
 }
 
 # Map ----------------------------------------------------------------------
