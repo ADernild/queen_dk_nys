@@ -34,7 +34,7 @@ See live on: https://app.dernild.com/
 - [x] Analyse sentiment by year.
 - [R] Fix sentiment data values (M).
 - [R] Fix filtering in word statistics (M).
-- [ ] Limit word frequency columns to 30, piechart to 65, scatterplot to 30 (M).
+- [R] Limit word frequency columns to 30, piechart to 65, scatterplot to 20 (M).
 - [ ] Format data for display (M).
 - [x] Create interactive dashboard to interact with findings.
 - [ ] Implement consistent colorpalette for data (M).
