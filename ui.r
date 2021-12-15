@@ -221,7 +221,7 @@ ui <- dashboardPage(
                 box(width = 2, title = "Number of words",
                     sliderInput("slider_sentiment_of_words_n_words",
                                 "Number of words (by frequency)",
-                                min=1, max=n_dist_t_headword, value = 100 ),
+                                min=1, max=n_dist_t_headword, value = 100, step = 1 ),
                     box(width = 12, class="infoViz", title = "Expl.",
                         collapsible = T, collapsed = T,
                         whatViz("Number of words is a slider to set the number of featured words."),
