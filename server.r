@@ -155,17 +155,11 @@ server <- function(input, output, session) {
   
   # topicVis ----------------------------------------------------------------
   output$topicVis <- renderVis({
-      ifelse(input$topicmodel == "lda_model",
-             if(!is.null(input$nTerms)){
-              with(lda_model,
-                    createJSON(phi, theta, doc.length, vocab, term.frequency,
-                             R = input$nTerms))
-               },
              if(!is.null(input$nTerms)){
               with(stm_model,
                     toLDAvisJson(mod, docs, R = input$nTerms))}
-      )
     })
+  ## Show sentences based on topic clicked ----------------------------------
   observeEvent(input$topicVis_topic_click, {
     topic <- input$topicVis_topic_click
     output$topicText <- renderUI({
@@ -674,25 +668,27 @@ server <- function(input, output, session) {
   })
   
   # Map ---------------------------------------------------------------------
-  # Readying data for map
+  ## Map data ---------------------------------------------------------------
   mapData <- reactive({
     data <- poly_prep(geojson, countries, req(y()))
     return(data)
   })
   
-  # Creating a map
+  ## Creating a map ---------------------------------------------------------
   output$map <- renderLeaflet({
     data <- mapData()
     leaflet(data,
             options = leafletOptions(worldCopyJump = T,
-                                     minZoom = 2,
-                                     maxZoom = 4
+                                     minZoom = 1.8,
+                                     maxZoom = 4,
+                                     zoomSnap = 0.2,
                                      )
             ) %>%
       addTiles(options = providerTileOptions(
         worldCopyJump = T,
-        minZoom = 2,
-        maxZoom = 4)) %>% 
+        minZoom = 1.8,
+        maxZoom = 4,
+        zoomSnap = 0.2)) %>% 
       addPolygons(stroke = T, weight=0.2, color="black", smoothFactor = 0.3, fillOpacity = 1,
                   fillColor=~pal(n), popup = ~paste("<b>", ADMIN, "</b>", "was said:", n, "times in total", "<br/>",
                                                      sapply(1:length(n_year), function(i) ifelse(length(n_year[[i]])>10,
@@ -702,10 +698,11 @@ server <- function(input, output, session) {
                   popupOptions = labelOptions(textsize = "8px"),
                   highlightOptions = list(weight = 0.7, fillOpacity = 0.9),
                   layerId = data@data$ADMIN) %>% 
+      setView(0, 20, 1.8) %>% 
       addLegend(pal = pal, values = ~n)
   })
   
-  # bar chart of number of times per year a country is mentioned
+  ## Bar chart --------------------------------------------------------------
   output$n_hist <- renderHighchart({
     data <- mapData()
     df <- data.frame(year = unlist(data@data$year), n_year = unlist(data@data$n_year)) %>% 
@@ -716,7 +713,7 @@ server <- function(input, output, session) {
       hc_xAxis(title = list(text = "Year"))
   })
   
-  # Show sentences in which countries is mentioned
+  ## Sentences --------------------------------------------------------------
   output$sentences <- renderUI({
     data <- mapData()
     sentences <- sample(unlist(data@data$sentence), size = 5)
@@ -726,7 +723,7 @@ server <- function(input, output, session) {
       HTML()
   })
   
-  # Setview and zoom to clicked country
+  ## Setview and zoom to clicked country ------------------------------------
   observe({
     click <- input$map_shape_click
     proxy <- leafletProxy("map")
@@ -735,7 +732,7 @@ server <- function(input, output, session) {
     proxy %>% setView(lng = click$lng, lat = click$lat, zoom = 4)
   })
   
-  # Making visualization based on clicked country
+  ## Making visualization based on clicked country --------------------------
   observeEvent(input$map_shape_click, {
     data <- mapData()
     click <- input$map_shape_click
