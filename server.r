@@ -195,7 +195,7 @@ server <- function(input, output, session) {
     data <- tokens %>%
       filter(polarity != 0) %>% 
       group_by(headword) %>% 
-      distinct(headword, .keep_all = TRUE)
+      distinct(year, headword, .keep_all = TRUE)
     
     if(length(input$words) > 0 && cmatch(data$headword, input$words)){
       data <- data %>%
@@ -213,14 +213,19 @@ server <- function(input, output, session) {
       data <- data %>% 
         arrange(desc(n_hword_total))
     }
-    data <- data %>% head(input$slider_sentiment_of_words_n_words) 
+    
+    
+    first_n_words <- unique(data$headword)[1:input$slider_sentiment_of_words_n_words]
+    
+    data <- data %>% filter(headword %in% first_n_words)
+    
     if("fwords" %in% colnames(data)){
-      data %>% arrange(fwords, polarity, n_hword_total) %>% 
-        return()
+      data %>% arrange(fwords, polarity, n_hword_total)
     } else{
-      data %>% arrange(polarity, n_hword_total) %>% 
-        return()
+      data %>% arrange(polarity, n_hword_total)
     }
+    
+    return(data)
   })
   
   sentiment_of_speech_data_filtered <- reactive({
@@ -384,13 +389,14 @@ server <- function(input, output, session) {
           type = "bar",
           stack = 3,
           name= "Selection",
-          data = selection$sentiment
+          data = selection,
+          hcaes(x=sentiment, y=year)
         ) 
     }
     return(hc)
   })
   
-  ### Column compare -------------------------------------------------------
+  ### Shankey compare -------------------------------------------------------
   output$sentiment_of_speech_sha_compare <- renderHighchart({
     data <- sentiment_of_speech_data()
     hc <- highchart() %>% 
@@ -439,7 +445,10 @@ server <- function(input, output, session) {
   ## sentiment_of_words ----------------------------------------------------
   ### Sentiment comparison -------------------------------------------------
   output$sentiment_of_words <- renderHighchart({
-    data <- sentiment_of_words_data()
+    data <- sentiment_of_words_data() %>% 
+      distinct(headword, .keep_all = TRUE) %>% 
+      arrange(polarity, n_hword_total)
+    
     hchart(data,
            hcaes(x = headword, y = polarity, group = sentiment_true),
            type="column") %>% 
@@ -465,7 +474,10 @@ server <- function(input, output, session) {
 
   ### Word comparison ------------------------------------------------------
   output$sentiment_of_words_freq <- renderHighchart({
-    data <- sentiment_of_words_data()
+    data <- sentiment_of_words_data() %>% 
+      distinct(headword, .keep_all = TRUE) %>% 
+      arrange(n_hword_total, polarity)
+    
     if("fwords" %in% colnames(data)){
       data <- data %>% 
         arrange(fwords, n_hword_total, polarity)
@@ -505,7 +517,7 @@ server <- function(input, output, session) {
     } else{
       data <- sentiment_of_speech_data()
     }
-    total_sum_sen <- sum(data$sentiment)
+    total_sum_sen <- sum(data$sentiment)*sum(data$n_words)
     valueBox(
       total_sum_sen, "Summed sentiment", icon = icon("equals"),
       color = "purple"
@@ -518,7 +530,7 @@ server <- function(input, output, session) {
     } else{
       data <- sentiment_of_speech_data()
     }
-    total_pos_sen <- sum(data$sentiment_pos)
+    total_pos_sen <- sum(data$sentiment_pos)*sum(data$n_words)
     valueBox(
       total_pos_sen, "Summed positive sentiment", icon = icon("plus"),
       color = "green"
@@ -531,7 +543,7 @@ server <- function(input, output, session) {
     } else{
       data <- sentiment_of_speech_data()
     }
-    total_neg_sen <- sum(data$sentiment_neg)
+    total_neg_sen <- sum(data$sentiment_neg)*sum(data$n_words)
     valueBox(
       total_neg_sen, "Summed negative sentiment", icon = icon("minus"),
       color = "red"
