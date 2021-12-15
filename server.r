@@ -410,17 +410,17 @@ server <- function(input, output, session) {
       hc_tooltip(
         shared = T
       )
-    if(length(input$words)){
-      selection <- sentiment_of_speech_data_filtered()
-      hc <- hc %>% 
-        hc_add_series(
-          type = "bar",
-          stack = 3,
-          name= "Selection",
-          data = selection,
-          hcaes(x=sentiment, y=year)
-        ) 
-    }
+    # if(length(input$words)){
+    #   selection <- sentiment_of_speech_data_filtered()
+    #   hc <- hc %>% 
+    #     hc_add_series(
+    #       type = "bar",
+    #       stack = 3,
+    #       name= "Selection",
+    #       data = selection,
+    #       hcaes(x=sentiment, y=year)
+    #     ) 
+    # }
     return(hc)
   })
   
