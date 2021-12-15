@@ -35,7 +35,7 @@ See live on: https://app.dernild.com/
 - [R] Fix sentiment data values (M).
 - [R] Fix filtering in word statistics (M).
 - [R] Limit word frequency columns to 30, piechart to 65, scatterplot to 20 (M).
-- [ ] Consitantly use stem form instead of headword (M)
+- [R] Consitantly use stem form instead of headword (M)
 - [ ] Format data for display (M).
 - [ ] Optimize visualisations for english speech data (A/M).
 - [x] Create interactive dashboard to interact with findings.

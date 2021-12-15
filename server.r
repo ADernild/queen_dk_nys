@@ -207,7 +207,7 @@ server <- function(input, output, session) {
       arrange(year)
     if(length(input$words) > 0){
       token_data <- tokens %>% 
-        filter(headword %in% input$words) %>% 
+        filter(stemmed %in% input$words) %>% 
         .$year %>% 
         unique() %>% 
         sort()
@@ -224,13 +224,13 @@ server <- function(input, output, session) {
     req(input$slider_sentiment_of_words_n_words)
     data <- tokens %>%
       filter(polarity != 0) %>% 
-      group_by(headword) %>% 
-      distinct(year, headword, .keep_all = TRUE)
+      group_by(stemmed) %>% 
+      distinct(year, stemmed, .keep_all = TRUE)
     
-    if(length(input$words) > 0 && cmatch(data$headword, input$words)){
+    if(length(input$words) > 0 && cmatch(data$stemmed, input$words)){
       data <- data %>%
-        # filter(headword %in% input$words) %>% 
-        mutate(fwords = ifelse(headword %in% input$words, "featured word: Yes", "featured word: No")) %>% 
+        # filter(stemmed %in% input$words) %>% 
+        mutate(fwords = ifelse(stemmed %in% input$words, "featured word: Yes", "featured word: No")) %>% 
         mutate(sentiment_true = paste(sentiment_true, fwords, sep=": "))
     }
     
@@ -238,21 +238,21 @@ server <- function(input, output, session) {
 
     if("fwords" %in% colnames(data)){
       data <- data %>% 
-        arrange(desc(fwords), desc(n_hword_total))
+        arrange(desc(fwords), desc(n_stem_total))
     } else{
       data <- data %>% 
-        arrange(desc(n_hword_total))
+        arrange(desc(n_stem_total))
     }
     
     
-    first_n_words <- unique(data$headword)[1:input$slider_sentiment_of_words_n_words]
+    first_n_words <- unique(data$stemmed)[1:input$slider_sentiment_of_words_n_words]
     
-    data <- data %>% filter(headword %in% first_n_words)
+    data <- data %>% filter(stemmed %in% first_n_words)
     
     if("fwords" %in% colnames(data)){
-      data %>% arrange(fwords, polarity, n_hword_total)
+      data %>% arrange(fwords, polarity, n_stem_total)
     } else{
-      data %>% arrange(polarity, n_hword_total)
+      data %>% arrange(polarity, n_stem_total)
     }
     
     return(data)
@@ -268,11 +268,11 @@ server <- function(input, output, session) {
              polarity_neg = as.numeric(ifelse(polarity < 0, polarity, 0)),
              n_in_year_pos = as.numeric(ifelse(polarity > 0, n_in_year, 0)),
              n_in_year_neg = as.numeric(ifelse(polarity < 0, n_in_year, 0))) %>% 
-      group_by(year, headword)
+      group_by(year, stemmed)
     
-    if(length(input$words) > 0 && cmatch(data$headword, input$words)){
+    if(length(input$words) > 0 && cmatch(data$stemmed, input$words)){
       data <- data %>%
-        filter(headword %in% input$words)
+        filter(stemmed %in% input$words)
     }
     
     data <- data %>% filter(year %in% y())
@@ -420,13 +420,13 @@ server <- function(input, output, session) {
       )
     if(length(input$words)>0){
       selection <- sentiment_of_speech_data_filtered() %>% 
-        select(sentiment, year, headword) %>% 
+        select(sentiment, year, stemmed) %>% 
         ungroup()
-      for(word in unique(selection$headword)){
+      for(word in unique(selection$stemmed)){
         for(year in unique(data$year)){
-          if(!(word %in% selection[selection$year == year,]$headword)){
+          if(!(word %in% selection[selection$year == year,]$stemmed)){
             selection <-  selection %>%
-              add_row(headword = word, year=year, sentiment=0)
+              add_row(stemmed = word, year=year, sentiment=0)
           }
         }
       }
@@ -496,11 +496,11 @@ server <- function(input, output, session) {
   ### Sentiment comparison -------------------------------------------------
   output$sentiment_of_words <- renderHighchart({
     data <- sentiment_of_words_data() %>% 
-      distinct(headword, .keep_all = TRUE) %>% 
-      arrange(polarity, n_hword_total)
+      distinct(stemmed, .keep_all = TRUE) %>% 
+      arrange(polarity, n_stem_total)
     
     hchart(data,
-           hcaes(x = headword, y = polarity, group = sentiment_true),
+           hcaes(x = stemmed, y = polarity, group = sentiment_true),
            type="column") %>% 
       hc_yAxis(
         startOnTick = T,
@@ -525,25 +525,25 @@ server <- function(input, output, session) {
   ### Word comparison ------------------------------------------------------
   output$sentiment_of_words_freq <- renderHighchart({
     data <- sentiment_of_words_data() %>% 
-      distinct(headword, .keep_all = TRUE) %>% 
-      arrange(n_hword_total, polarity)
+      distinct(stemmed, .keep_all = TRUE) %>% 
+      arrange(n_stem_total, polarity)
     
     if("fwords" %in% colnames(data)){
       data <- data %>% 
-        arrange(fwords, n_hword_total, polarity)
+        arrange(fwords, n_stem_total, polarity)
     } else{
       data <- data %>% 
-        arrange(n_hword_total, polarity)
+        arrange(n_stem_total, polarity)
     }
     
     hchart(data,
-           hcaes(x = headword, y = n_hword_total, group = sentiment_true),
+           hcaes(x = stemmed, y = n_stem_total, group = sentiment_true),
            type="column") %>% 
       hc_yAxis(
         startOnTick = T,
-        tickInterval = round_any(max(data$n_hword_total)/4,10),
+        tickInterval = round_any(max(data$n_stem_total)/4,10),
         min = 0,
-        max = max(data$n_hword_total)
+        max = max(data$n_stem_total)
       ) %>% 
       hc_tooltip(
         shared = TRUE,
@@ -817,10 +817,10 @@ server <- function(input, output, session) {
   speech_data <- reactive({
     req(y())
     data <- tokens %>%
-      select(year, headword, n_hword_year, n_hword_total) %>% 
+      select(year, stemmed, n_stem_total, n_stem_year) %>% 
       distinct() %>% 
-      group_by(headword, year) %>% 
-      arrange(year, headword)
+      group_by(stemmed, year) %>% 
+      arrange(year, stemmed)
     
     return(data)
   })
@@ -830,7 +830,7 @@ server <- function(input, output, session) {
     
     if(length(input$words) > 0){
       data <- data %>% 
-        filter(headword %in% input$words)
+        filter(stemmed %in% input$words)
     }
     
     return(data)
@@ -839,16 +839,18 @@ server <- function(input, output, session) {
   speech_data_como_filt <- reactive({
     req(input$slider_word_ussage)
     data <- speech_data_word_filt()
-    
-    common_opt <- unique(arrange(data, desc(n_hword_total))$n_hword_total)[input$slider_word_ussage]
-    
-    data <- filter(data, n_hword_total >= common_opt)
+
+    common_opt <- unique(arrange(data, desc(n_stem_total))$n_stem_total)[input$slider_word_ussage]
+
+    if(!is.na(common_opt)){
+      data <- filter(data, n_stem_total >= common_opt)
+    }
     
     total <- data %>% 
-      summarise(n_sel = sum(n_hword_year))
+      summarise(n_sel = sum(n_stem_year))
     
     data <- data %>% 
-      left_join(total, by= c("year", "headword"))
+      left_join(total, by= c("year", "stemmed"))
     
     return(data)
   })
@@ -857,15 +859,17 @@ server <- function(input, output, session) {
     req(input$slider_word_ussage)
     data <- speech_data_word_filt()
     
-    common_opt <- unique(arrange(data, desc(n_hword_total))$n_hword_total)[ifelse(input$slider_word_ussage>20,20,input$slider_word_ussage)]
-
-    data <- filter(data, n_hword_total >= common_opt)
+    common_opt <- unique(arrange(data, desc(n_stem_total))$n_stem_total)[ifelse(input$slider_word_ussage>20, 20, input$slider_word_ussage)]
+    
+    if(!is.na(common_opt)){
+      data <- filter(data, n_stem_total >= common_opt)
+    }
     
     total <- data %>% 
-      summarise(n_sel = sum(n_hword_year))
+      summarise(n_sel = sum(n_stem_year))
     
     data <- data %>% 
-      left_join(total, by= c("year", "headword"))
+      left_join(total, by= c("year", "stemmed"))
     
     return(data)
   })
@@ -874,10 +878,10 @@ server <- function(input, output, session) {
   output$wordcloud <- renderWordcloud2({
     data <-  speech_data_como_filt() %>% 
       ungroup() %>% 
-      select(headword, n_hword_total) %>% 
+      select(stemmed, n_stem_total) %>% 
       distinct() %>% 
-      arrange(headword) %>% 
-      rename(word = headword, freq = n_hword_total)
+      arrange(stemmed) %>% 
+      rename(word = stemmed, freq = n_stem_total)
     wordcloud2(data=data, size=1.6, color='random-dark')
   })
   
@@ -885,21 +889,21 @@ server <- function(input, output, session) {
   output$word_ussage_streamgraph <- renderHighchart({
     data <-  speech_data_como_filt_max() %>% 
       ungroup() %>% 
-      select(year, n_hword_year, headword)
+      select(year, n_stem_year, stemmed)
 
-    for(word in unique(data$headword)){
+    for(word in unique(data$stemmed)){
       for(year in unique(data$year)){
-        if(!(word %in% data[data$year == year,]$headword)){
+        if(!(word %in% data[data$year == year,]$stemmed)){
           data <-  data %>%
-            add_row(headword = word, year=year, n_hword_year=0)
+            add_row(stemmed = word, year=year, n_stem_year=0)
         }
       }
     }
 
     data <- data %>% 
-      arrange(year, desc(n_hword_year), headword)
+      arrange(year, desc(n_stem_year), stemmed)
 
-    hchart(data, "streamgraph", hcaes(year, n_hword_year, group = headword)) %>% 
+    hchart(data, "streamgraph", hcaes(year, n_stem_year, group = stemmed)) %>% 
         hc_yAxis(
           visible = F
         ) %>% 
@@ -913,12 +917,14 @@ server <- function(input, output, session) {
   output$word_ussage_col <- renderHighchart({
     data <-  speech_data_como_filt()
     
-    common_opt <- unique(arrange(data, desc(n_hword_total))$n_hword_total)[ifelse(input$slider_word_ussage>30,30,input$slider_word_ussage)]
+    common_opt <- unique(arrange(data, desc(n_stem_total))$n_stem_total)[ifelse(input$slider_word_ussage>30, 30, input$slider_word_ussage)]
     
-    data <- filter(data, n_hword_total >= common_opt)
+    if(!is.na(common_opt)){
+      data <- filter(data, n_stem_total >= common_opt)
+    }
     
     hc <- hchart(data, "column",
-                 hcaes(x=year, y=n_hword_year,group = headword)) %>% 
+                 hcaes(x=year, y=n_stem_year,group = stemmed)) %>% 
       hc_plotOptions(
         series = list (
           stacking = 'normal'
@@ -937,13 +943,14 @@ server <- function(input, output, session) {
   output$word_ussage_col_per <- renderHighchart({
     data <-  speech_data_como_filt()
     
-    common_opt <- unique(arrange(data, desc(n_hword_total))$n_hword_total)[ifelse(input$slider_word_ussage>30,30,input$slider_word_ussage)]
+    common_opt <- unique(arrange(data, desc(n_stem_total))$n_stem_total)[ifelse(input$slider_word_ussage>30, 30, input$slider_word_ussage)]
     
-    data <- filter(data, n_hword_total >= common_opt)
-    
+    if(!is.na(common_opt)){
+      data <- filter(data, n_stem_total >= common_opt)
+    }
     
     hc <- hchart(data, "column",
-                 hcaes(x=year, y=n_hword_year,group = headword)) %>% 
+                 hcaes(x=year, y=n_stem_year, group = stemmed)) %>% 
       hc_plotOptions(
         series = list (
           stacking = 'percent'
@@ -958,19 +965,20 @@ server <- function(input, output, session) {
   
   ## Pie ------------------------------------------------------------------
   output$word_ussage_pie <- renderHighchart({
-    #Todo: Add years
     data <-  speech_data_como_filt()
     
-    common_opt <- unique(arrange(data, desc(n_hword_total))$n_hword_total)[ifelse(input$slider_word_ussage>65,65,input$slider_word_ussage)]
-      
-      data <- filter(data, n_hword_total >= common_opt) %>% 
+    common_opt <- unique(arrange(data, desc(n_stem_total))$n_stem_total)[ifelse(input$slider_word_ussage>65, 65, input$slider_word_ussage)]
+    
+    if(!is.na(common_opt)){
+      data <- filter(data, n_stem_total >= common_opt) %>% 
       ungroup() %>%
-      select(headword, n_hword_total) %>%
+      select(stemmed, n_stem_total) %>%
       distinct() %>% 
-      arrange(desc(n_hword_total))
+      arrange(desc(n_stem_total))
+    }
 
     hc <- hchart(data, "pie", name="Frequency",
-                 hcaes(y=n_hword_total, name = headword)) %>% 
+                 hcaes(y=n_stem_total, name = stemmed)) %>% 
       hc_plotOptions(
         series = list(
           colorByPoint = T
@@ -998,7 +1006,7 @@ server <- function(input, output, session) {
     data <-  speech_data_como_filt_max()
     
     hc <- hchart(data, "scatter",
-                 hcaes(x=year, y=n_hword_year, total = n_hword_total, group = headword)) %>% 
+                 hcaes(x=year, y=n_stem_year, total = n_stem_total, group = stemmed)) %>% 
       hc_norevese() %>% 
       hc_plotOptions(
         scatter = list(
@@ -1037,8 +1045,8 @@ server <- function(input, output, session) {
     warning(names(speech_data_como_filt()))
     speech_data_como_filt() %>%
       ungroup() %>% 
-      transmute(`Year` = year, `Word` = headword, `Total frequency` = n_hword_total,
-                `Frequency in year` = n_hword_year,
+      transmute(`Year` = year, `Word` = stemmed, `Total frequency` = n_stem_total,
+                `Frequency in year` = n_stem_year,
                 `Frequency in selection in year` = n_sel)
   }, rownames = FALSE, filter = 'top',
   options = list(
