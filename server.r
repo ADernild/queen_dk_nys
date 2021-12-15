@@ -884,7 +884,10 @@ server <- function(input, output, session) {
   output$word_ussage_col <- renderHighchart({
     data <-  speech_data_como_filt()
     
-
+    common_opt <- unique(arrange(data, desc(n_hword_total))$n_hword_total)[ifelse(input$slider_word_ussage>30,30,input$slider_word_ussage)]
+    
+    data <- filter(data, n_hword_total >= common_opt)
+    
     hc <- hchart(data, "column",
                  hcaes(x=year, y=n_hword_year,group = headword)) %>% 
       hc_plotOptions(
@@ -904,7 +907,12 @@ server <- function(input, output, session) {
   ## Columns percent ------------------------------------------------------
   output$word_ussage_col_per <- renderHighchart({
     data <-  speech_data_como_filt()
-
+    
+    common_opt <- unique(arrange(data, desc(n_hword_total))$n_hword_total)[ifelse(input$slider_word_ussage>30,30,input$slider_word_ussage)]
+    
+    data <- filter(data, n_hword_total >= common_opt)
+    
+    
     hc <- hchart(data, "column",
                  hcaes(x=year, y=n_hword_year,group = headword)) %>% 
       hc_plotOptions(
@@ -922,7 +930,11 @@ server <- function(input, output, session) {
   ## Pie ------------------------------------------------------------------
   output$word_ussage_pie <- renderHighchart({
     #Todo: Add years
-    data <-  speech_data_como_filt() %>% 
+    data <-  speech_data_como_filt()
+    
+    common_opt <- unique(arrange(data, desc(n_hword_total))$n_hword_total)[ifelse(input$slider_word_ussage>65,65,input$slider_word_ussage)]
+      
+      data <- filter(data, n_hword_total >= common_opt) %>% 
       ungroup() %>%
       select(headword, n_hword_total) %>%
       distinct() %>% 

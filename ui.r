@@ -360,7 +360,8 @@ ui <- dashboardPage(
                                     howViz("Tooltip: Hovering a word will display a tooltip showing the frequency of the word, and frequency in percentage in relation to selection. Clicking a word will highlight it."),
                                     howViz("Top frequent numbers: Top frequent numbers will filter for the most frequent numbers by the specified amount."),
                                     howViz("Year filter: Setting the year filter will filter for the words used in those years."),
-                                    howViz("Featured words: Setting featured words will filter for the words set in selection.")
+                                    howViz("Featured words: Setting featured words will filter for the words set in selection."),
+                                    helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 65. Any number set above, will result in 65 being featured.")
                                 )
                        ),
                        tabPanel("Word frequency by year (Stream graph)",
@@ -387,7 +388,8 @@ ui <- dashboardPage(
                                     howViz("Tooltip: Hovering a year will display a tooltip. The tooltip will list the year, the total frequency, and the frequency of each year."),
                                     howViz("Top frequent numbers: Top frequent numbers will filter for the most frequent numbers by the specified amount."),
                                     howViz("Year filter: Setting the year filter will filter for the words used in those years."),
-                                    howViz("Featured words: Setting featured words will filter for the words set in selection.")
+                                    howViz("Featured words: Setting featured words will filter for the words set in selection."),
+                                    helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 30. Any number set above, will result in 30 being featured.")
                                 )
                        ),
                        # tabPanel("Columns percent",
