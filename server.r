@@ -249,7 +249,16 @@ server <- function(input, output, session) {
              polarity_neg = as.numeric(ifelse(polarity < 0, polarity, 0)),
              n_in_year_pos = as.numeric(ifelse(polarity > 0, n_in_year, 0)),
              n_in_year_neg = as.numeric(ifelse(polarity < 0, n_in_year, 0))) %>% 
-      group_by(year) %>%
+      group_by(year, headword)
+    
+    if(length(input$words) > 0 && cmatch(data$headword, input$words)){
+      data <- data %>%
+        filter(headword %in% input$words)
+    }
+    
+    data <- data %>% filter(year %in% y())
+    
+    data <- data %>%
       summarise(sentiment = sum(n_in_year*polarity),
                 sentiment_pos = sum(n_in_year*polarity_pos),
                 sentiment_neg = sum(n_in_year*polarity_neg),
@@ -258,28 +267,8 @@ server <- function(input, output, session) {
                 n_neg = sum(n_in_year_neg)
       ) %>% 
       mutate(n_words = n_pos+n_neg) %>% 
-      rowwise() %>% 
-      mutate(sentiment_label = ifelse(sentiment>0, "Positive", "Negative"))
-    
-            rowwise() %>% 
-      mutate(polarity_pos = as.numeric(ifelse(polarity > 0, polarity, 0)),
-             polarity_neg = as.numeric(ifelse(polarity < 0, polarity, 0))) %>% 
-      group_by(year) %>%
-      filter(headword %in% input$words) %>% 
-      mutate(n_pos = as.numeric(ifelse(polarity>0, n_in_year, 0)),
-             n_neg = as.numeric(ifelse(polarity<0, n_in_year, 0))) %>% 
-      mutate(sentiment = (n_in_year*polarity),
-             sentiment_pos = (n_in_year*polarity_pos),
-             sentiment_neg = (n_in_year*polarity_neg),
-             average_sentiment = (n_in_year*polarity),
-             n_words = (n_in_year),
-             n_words_pos = (n_pos),
-             n_words_neg = (n_neg)
-      ) %>% 
-      group_by(year) %>% 
       arrange(year)
-    
-    filter(data, year %in% y())
+    return(data)
   })
 
   ## sentiment of speeches -------------------------------------------------
@@ -410,17 +399,31 @@ server <- function(input, output, session) {
       hc_tooltip(
         shared = T
       )
-    # if(length(input$words)){
-    #   selection <- sentiment_of_speech_data_filtered()
-    #   hc <- hc %>% 
-    #     hc_add_series(
-    #       type = "bar",
-    #       stack = 3,
-    #       name= "Selection",
-    #       data = selection,
-    #       hcaes(x=sentiment, y=year)
-    #     ) 
-    # }
+    if(length(input$words)>0){
+      selection <- sentiment_of_speech_data_filtered() %>% 
+        select(sentiment, year, headword) %>% 
+        ungroup()
+      for(word in unique(selection$headword)){
+        for(year in unique(data$year)){
+          if(!(word %in% selection[selection$year == year,]$headword)){
+            selection <-  selection %>%
+              add_row(headword = word, year=year, sentiment=0)
+          }
+        }
+      }
+      selection <-  selection %>%
+        group_by(year) %>% 
+        summarise(sentiment = sum(sentiment)) %>% 
+        arrange(year, sentiment)
+      dis<<-sentiment
+      hc <- hc %>%
+        hc_add_series(
+          type = "bar",
+          stack = 3,
+          name= "Selection",
+          data = selection$sentiment
+        )
+    }
     return(hc)
   })
   

@@ -162,8 +162,7 @@ ui <- dashboardPage(
                                howViz("Series filter: By clicking on a series name, it can be disabled until clicked again, or updated by a filter."),
                                howViz("Tooltip: Hovering the values of a year will show the sentiment of enabled series."),
                                howViz("Year filter: Using the year filter, will filter years featured."),
-                               howViz("Featured words: Using featured words will show the sentiment that subset had in each year."),
-                               helpText("Error: Currently, featured words filter will not show the results correctly.")
+                               howViz("Featured words: Using featured words will show the sentiment that subset had in each year.")
                            )
                   ),
                   tabPanel("Sentiment by year (Shankey)",
@@ -221,7 +220,7 @@ ui <- dashboardPage(
                 box(width = 2, title = "Number of words",
                     sliderInput("slider_sentiment_of_words_n_words",
                                 "Number of words (by frequency)",
-                                min=1, max=n_dist_t_headword, value = 100 ),
+                                min=1, max=n_dist_t_headword, value = 100, step = 1 ),
                     box(width = 12, class="infoViz", title = "Expl.",
                         collapsible = T, collapsed = T,
                         whatViz("Number of words is a slider to set the number of featured words."),
