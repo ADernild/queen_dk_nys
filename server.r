@@ -679,14 +679,16 @@ server <- function(input, output, session) {
     data <- mapData()
     leaflet(data,
             options = leafletOptions(worldCopyJump = T,
-                                     minZoom = 1,
-                                     maxZoom = 4
+                                     minZoom = 1.8,
+                                     maxZoom = 4,
+                                     zoomSnap = 0.2,
                                      )
             ) %>%
       addTiles(options = providerTileOptions(
         worldCopyJump = T,
-        minZoom = 1,
-        maxZoom = 4)) %>% 
+        minZoom = 1.8,
+        maxZoom = 4,
+        zoomSnap = 0.2)) %>% 
       addPolygons(stroke = T, weight=0.2, color="black", smoothFactor = 0.3, fillOpacity = 1,
                   fillColor=~pal(n), popup = ~paste("<b>", ADMIN, "</b>", "was said:", n, "times in total", "<br/>",
                                                      sapply(1:length(n_year), function(i) ifelse(length(n_year[[i]])>10,
@@ -696,6 +698,7 @@ server <- function(input, output, session) {
                   popupOptions = labelOptions(textsize = "8px"),
                   highlightOptions = list(weight = 0.7, fillOpacity = 0.9),
                   layerId = data@data$ADMIN) %>% 
+      setView(0, 20, 1.8) %>% 
       addLegend(pal = pal, values = ~n)
   })
   
