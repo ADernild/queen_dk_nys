@@ -153,3 +153,35 @@ howViz <- function(text){
     text
   )
 }
+
+# library(colorspace)
+# 
+# cols <- colors_of_the_queen
+# new_col <- c()
+# for(i in 1:10){
+# 
+#   cols1 <- readhex(file = textConnection(paste(cols, collapse = "\n")),
+#                    class = "RGB")
+#   #transform to hue/lightness/saturation colorspace
+#   cols2 <- as(cols1, "HLS")
+#   #additive decrease of lightness
+#   #multiplicative decrease of lightness
+#   cols2@coords[, "L"] <- cols2@coords[, "L"] * 0.75
+#   #going via rgb seems to work better
+#   cols2 <- as(cols2, "RGB")
+#   cols2 <- hex(cols2)
+#   #again
+#   cols1 <- readhex(file = textConnection(paste(cols2, collapse = "\n")),
+#                    class = "RGB")
+#   cols2 <- as(cols1, "HLS")
+#   #additive decrease of lightness
+#   #multiplicative decrease of lightness
+#   cols2@coords[, "L"] <- cols2@coords[, "L"] * 0.75
+#   #going via rgb seems to work better
+#   cols2 <- as(cols2, "RGB")
+#   cols2 <- hex(cols2)
+#   cols <- cols2
+#   new_col <- c(new_col, cols)
+# 
+# }
+# paste0(new_col, collapse = '",')
