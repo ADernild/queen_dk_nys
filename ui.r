@@ -296,46 +296,46 @@ ui <- dashboardPage(
       # Stats ----
       tabItem(tabName = "stats",
               h2("Sentiment of new year eve speeches of Queen Margret, and the words used within"),
-              fluidRow(class="box_align_layout",
-                tabBox(width=12, id = "word_ussage", title="Speech length by words used",
-                       tabPanel("Spline",
-                                highchartOutput("speech_length_spline", height="50vh"),
-                                box(width = 12, class="infoViz", title = "Expl.",
-                                    collapsible = T, collapsed = T,
-                                    whatViz(""),
-                                    whyViz(""),
-                                    howViz("Interpretation:"),
-                                    howViz("Tooltip:"),
-                                    howViz("Year filter: Setting the year filter will filter for the words used in those years."),
-                                    howViz("Featured words: Setting featured words will filter for the words set in selection.")
-                                )
-                       ),
-                        tabPanel("Columns",
-                                 highchartOutput("speech_length_col", height="50vh"),
-                                 box(width = 12, class="infoViz", title = "Expl.",
-                                     collapsible = T, collapsed = T,
-                                     whatViz(""),
-                                     whyViz(""),
-                                     howViz("Interpretation:"),
-                                     howViz("Tooltip:"),
-                                     howViz("Year filter: Setting the year filter will filter for the words used in those years."),
-                                     howViz("Featured words: Setting featured words will filter for the words set in selection.")
-                                 )
-                        ),
-                        tabPanel("Piechart",
-                                 highchartOutput("speech_length_pie", height="50vh"),
-                                 box(width = 12, class="infoViz", title = "Expl.",
-                                     collapsible = T, collapsed = T,
-                                     whatViz(""),
-                                     whyViz(""),
-                                     howViz("Interpretation:"),
-                                     howViz("Tooltip:"),
-                                     howViz("Year filter: Setting the year filter will filter for the words used in those years."),
-                                     howViz("Featured words: Setting featured words will filter for the words set in selection.")
-                                 )
-                        )
-                )
-              ),
+              # fluidRow(class="box_align_layout",
+              #   tabBox(width=12, id = "word_ussage", title="Speech length by words used",
+              #          tabPanel("Spline",
+              #                   highchartOutput("speech_length_spline", height="50vh"),
+              #                   box(width = 12, class="infoViz", title = "Expl.",
+              #                       collapsible = T, collapsed = T,
+              #                       whatViz(""),
+              #                       whyViz(""),
+              #                       howViz("Interpretation:"),
+              #                       howViz("Tooltip:"),
+              #                       howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+              #                       howViz("Featured words: Setting featured words will filter for the words set in selection.")
+              #                   )
+              #          ),
+              #           tabPanel("Columns",
+              #                    highchartOutput("speech_length_col", height="50vh"),
+              #                    box(width = 12, class="infoViz", title = "Expl.",
+              #                        collapsible = T, collapsed = T,
+              #                        whatViz(""),
+              #                        whyViz(""),
+              #                        howViz("Interpretation:"),
+              #                        howViz("Tooltip:"),
+              #                        howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+              #                        howViz("Featured words: Setting featured words will filter for the words set in selection.")
+              #                    )
+              #           ),
+              #           tabPanel("Piechart",
+              #                    highchartOutput("speech_length_pie", height="50vh"),
+              #                    box(width = 12, class="infoViz", title = "Expl.",
+              #                        collapsible = T, collapsed = T,
+              #                        whatViz(""),
+              #                        whyViz(""),
+              #                        howViz("Interpretation:"),
+              #                        howViz("Tooltip:"),
+              #                        howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+              #                        howViz("Featured words: Setting featured words will filter for the words set in selection.")
+              #                    )
+              #           )
+              #   )
+              # ),
               fluidRow(class="box_align_layout",
                 box(width=2, title = "Speech statistics sliders",
                     sliderInput("slider_word_ussage",
