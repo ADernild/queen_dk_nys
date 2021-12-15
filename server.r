@@ -171,7 +171,13 @@ server <- function(input, output, session) {
         HTML()
     })
   })
-  
+  observeEvent(input$topicVis_term_click, {
+    updateSelectizeInput(session, 
+                         "words", 
+                         "Featured words",
+                         selected = c(input$words, input$topicVis_term_click)
+                         )
+  })
 
   # Sentiment ---------------------------------------------------------------
   ## sentiment data ---------------------------------------------------------
