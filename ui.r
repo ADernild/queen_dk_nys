@@ -111,7 +111,6 @@ ui <- dashboardPage(
           fluidRow(class="box_align_layout",
             box(width=2, title = "Topic model parameters",
                 # Sidebar with a slider input for number of bins
-                radioButtons("topicmodel", "Topicmodel", list("STM" = "stm_model", "LDA" = "lda_model")),
                 fluidRow(sliderInput("nTerms", "Number of terms to display", min = 10, max = 50, value = 30)),
                 box(width = 12, class="infoViz", title = "Expl.",
                     collapsible = T, collapsed = T,
