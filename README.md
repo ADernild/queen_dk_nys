@@ -32,8 +32,8 @@ See live on: https://app.dernild.com/
 - [x] Implement worldmap and map placese the queens mentions.
 - [x] Implement visualizations of the most used words.
 - [x] Analyse sentiment by year.
-- [ ] Fix sentiment data values (M).
-- [ ] Fix filtering in word statistics (M).
+- [R] Fix sentiment data values (M).
+- [R] Fix filtering in word statistics (M).
 - [ ] Limit word frequency columns to 30, piechart to 65, scatterplot to 30 (M).
 - [ ] Format data for display (M).
 - [x] Create interactive dashboard to interact with findings.
@@ -66,3 +66,4 @@ x = Done
 - [ ] Implement visualizations for speech lengths (M).
 - [ ] Consitantly use stem form instead of headword (M)
 - [ ] Reactive word additions to featured words - from topic model
+- [ ] Optimize for mobile view
