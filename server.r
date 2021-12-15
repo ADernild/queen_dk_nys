@@ -679,7 +679,11 @@ server <- function(input, output, session) {
   # Map ---------------------------------------------------------------------
   ## Map data ---------------------------------------------------------------
   mapData <- reactive({
-    data <- poly_prep(geojson, countries, req(y()))
+    if(input$l == "DK"){
+      data <- poly_prep(geojson, countries, req(y()))
+    }else if(input$l == "EN"){
+      data <- poly_prep(geojson, countries_en, req(y()))
+    }
     return(data)
   })
   
