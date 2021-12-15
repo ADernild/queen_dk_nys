@@ -237,21 +237,38 @@ server <- function(input, output, session) {
     req(y())
     req(input$words)
     
-    data <- sentiment_of_words_data() %>%
+    data <- tokens %>%
       rowwise() %>% 
+      mutate(polarity_pos = as.numeric(ifelse(polarity > 0, polarity, 0)),
+             polarity_neg = as.numeric(ifelse(polarity < 0, polarity, 0)),
+             n_in_year_pos = as.numeric(ifelse(polarity > 0, n_in_year, 0)),
+             n_in_year_neg = as.numeric(ifelse(polarity < 0, n_in_year, 0))) %>% 
+      group_by(year) %>%
+      summarise(sentiment = sum(n_in_year*polarity),
+                sentiment_pos = sum(n_in_year*polarity_pos),
+                sentiment_neg = sum(n_in_year*polarity_neg),
+                average_sentiment = mean(n_in_year*polarity),
+                n_pos = sum(n_in_year_pos),
+                n_neg = sum(n_in_year_neg)
+      ) %>% 
+      mutate(n_words = n_pos+n_neg) %>% 
+      rowwise() %>% 
+      mutate(sentiment_label = ifelse(sentiment>0, "Positive", "Negative"))
+    
+            rowwise() %>% 
       mutate(polarity_pos = as.numeric(ifelse(polarity > 0, polarity, 0)),
              polarity_neg = as.numeric(ifelse(polarity < 0, polarity, 0))) %>% 
       group_by(year) %>%
       filter(headword %in% input$words) %>% 
       mutate(n_pos = as.numeric(ifelse(polarity>0, n_in_year, 0)),
              n_neg = as.numeric(ifelse(polarity<0, n_in_year, 0))) %>% 
-      mutate(sentiment = sum(n_in_year*polarity),
-             sentiment_pos = sum(n_in_year*polarity_pos),
-             sentiment_neg = sum(n_in_year*polarity_neg),
-             average_sentiment = mean(n_in_year*polarity),
-             n_words = sum(n_in_year),
-             n_words_pos = sum(n_pos),
-             n_words_neg = sum(n_neg)
+      mutate(sentiment = (n_in_year*polarity),
+             sentiment_pos = (n_in_year*polarity_pos),
+             sentiment_neg = (n_in_year*polarity_neg),
+             average_sentiment = (n_in_year*polarity),
+             n_words = (n_in_year),
+             n_words_pos = (n_pos),
+             n_words_neg = (n_neg)
       ) %>% 
       group_by(year) %>% 
       arrange(year)
@@ -559,10 +576,9 @@ server <- function(input, output, session) {
     if(length(input$words) > 0){
       data <- sentiment_of_speech_data_filtered()
     } else{
-      data <- sentiment_of_words_data() %>% 
-        filter(polarity!=0)
+      data <- sentiment_of_speech_data()
     }
-    total_num_wor <- nrow(data)
+    total_num_wor <- sum(data$n_words)
     valueBox(
       total_num_wor, "Number of words that carried sentiment", icon = icon("hashtag"),
       color = "blue"
@@ -572,13 +588,10 @@ server <- function(input, output, session) {
   output$num_pos_sen <- renderValueBox({
     if(length(input$words) > 0){
       data <- sentiment_of_speech_data_filtered()
-      num_pos_sen <- round(sum(data$n_words_pos),2)
     } else{
-      data <- sentiment_of_words_data() %>% 
-        filter(polarity>0)
-      
-      num_pos_sen <- nrow(data)
+      data <- sentiment_of_speech_data()
     }
+    num_pos_sen <- sum(data$n_pos)
     valueBox(
       num_pos_sen, "Number of words that carried positive sentiment", icon = icon("plus-circle"),
       color = "green"
@@ -588,12 +601,10 @@ server <- function(input, output, session) {
   output$num_neg_sen <- renderValueBox({
     if(length(input$words) > 0){
       data <- sentiment_of_speech_data_filtered()
-      num_neg_sen <- round(sum(data$n_words_neg),2)
     } else{
-      data <- sentiment_of_words_data() %>% 
-        filter(polarity<0)
-      num_neg_sen <- nrow(data)
+      data <- sentiment_of_speech_data()
     }
+    num_neg_sen <- sum(data$n_neg)
     valueBox(
       num_neg_sen, "Number of words that had negative sentiment", icon = icon("minus-circle"),
       color = "red"

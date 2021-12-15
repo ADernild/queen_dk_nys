@@ -147,14 +147,18 @@ saveRDS(tokens,"data/tokens.rds")
 sentiments <- tokens %>% 
   rowwise() %>% 
   mutate(polarity_pos = as.numeric(ifelse(polarity > 0, polarity, 0)),
-         polarity_neg = as.numeric(ifelse(polarity < 0, polarity, 0))) %>% 
+         polarity_neg = as.numeric(ifelse(polarity < 0, polarity, 0)),
+         n_in_year_pos = as.numeric(ifelse(polarity > 0, n_in_year, 0)),
+         n_in_year_neg = as.numeric(ifelse(polarity < 0, n_in_year, 0))) %>% 
   group_by(year) %>%
   summarise(sentiment = sum(n_in_year*polarity),
             sentiment_pos = sum(n_in_year*polarity_pos),
             sentiment_neg = sum(n_in_year*polarity_neg),
             average_sentiment = mean(n_in_year*polarity),
-            n_words = sum(n_in_year)
+            n_pos = sum(n_in_year_pos),
+            n_neg = sum(n_in_year_neg)
   ) %>% 
+  mutate(n_words = n_pos+n_neg) %>% 
   rowwise() %>% 
   mutate(sentiment_label = ifelse(sentiment>0, "Positive", "Negative"))
 
