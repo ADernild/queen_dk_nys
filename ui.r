@@ -294,7 +294,7 @@ ui <- dashboardPage(
       ),
       # Stats ----
       tabItem(tabName = "stats",
-              h2("Sentiment of new year eve speeches of Queen Margret, and the words used within"),
+              h2("Word statistics"),
               # fluidRow(class="box_align_layout",
               #   tabBox(width=12, id = "word_ussage", title="Speech length by words used",
               #          tabPanel("Spline",
