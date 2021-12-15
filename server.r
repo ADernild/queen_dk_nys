@@ -318,7 +318,8 @@ server <- function(input, output, session) {
           followTouchMove = F,
           snap = 100,
           hideDelay = 500
-        )
+        ) %>% 
+        hc_queencol()
     } else{
       hc <- hchart(data,
              type="bubble",
@@ -375,7 +376,8 @@ server <- function(input, output, session) {
       hc_xAxis(
         startOnTick = T,
         gridLineWidth = T
-      )
+      ) %>% 
+      hc_queencol()
   })
   
   ### Column compare -------------------------------------------------------
@@ -417,7 +419,8 @@ server <- function(input, output, session) {
       ) %>% 
       hc_tooltip(
         shared = T
-      )
+      ) %>% 
+      hc_queencol()
     if(length(input$words)>0){
       selection <- sentiment_of_speech_data_filtered() %>% 
         select(sentiment, year, stemmed) %>% 
@@ -466,7 +469,8 @@ server <- function(input, output, session) {
       hc_yAxis(
         softMin = 0,
         startOnTick = T
-      )
+      ) %>% 
+      hc_queencol()
     # if(length(input$words)){
     #   selection <- sentiment_of_speech_data_filtered()
     #   hc <- hc %>% 
@@ -489,7 +493,8 @@ server <- function(input, output, session) {
            colorByPoint = T,
            styledMode = T
     ) %>% 
-      hc_norevese()
+      hc_norevese() %>% 
+      hc_queencol()
   })
 
   ## sentiment_of_words ----------------------------------------------------
@@ -519,7 +524,8 @@ server <- function(input, output, session) {
       ) %>% 
       hc_xAxis(
         reversed = T
-      )
+      ) %>% 
+      hc_queencol()
   })
 
   ### Word comparison ------------------------------------------------------
@@ -556,7 +562,8 @@ server <- function(input, output, session) {
       ) %>% 
       hc_xAxis(
         reversed = T
-      )
+      ) %>% 
+      hc_queencol()
   })
   
 
@@ -742,7 +749,8 @@ server <- function(input, output, session) {
       summarise(n_year = sum(n_year)) %>% 
       hchart("bar", hcaes(x="year", y="n_year")) %>% 
       hc_yAxis(title = list(text = "Mentions per year")) %>% 
-      hc_xAxis(title = list(text = "Year"))
+      hc_xAxis(title = list(text = "Year")) %>% 
+      hc_queencol()
   })
   
   ## Sentences --------------------------------------------------------------
@@ -798,7 +806,8 @@ server <- function(input, output, session) {
           hc_xAxis(title = list(text = "Country"), type = "category") %>% 
           hc_yAxis(title = list(text = "Average sentence sentiment")) %>% 
           hc_title(text = paste("Average sentiment when", click$id, "is mentioned")) %>% 
-          hc_add_series_list(dat)
+          hc_add_series_list(dat) %>% 
+          hc_queencol()
       }) 
       
       output$sentences <- renderUI({ # Showing sentences of country mentioned
@@ -910,7 +919,8 @@ server <- function(input, output, session) {
         hc_norevese() %>% 
         hc_tooltip(
           shared = T
-        )
+        ) %>% 
+      hc_queencol()
   })
   
   ## Columns ---------------------------------------------------------------
@@ -938,7 +948,8 @@ server <- function(input, output, session) {
         shared = T,
         headerFormat = "<b>Year</b>: {point.x}<br>Total frequency: {point.total}",
         pointFormat = "<br><span style=\"color: {point.color} \">\u25CF</span> {point.series.name}: {point.y}"
-      )
+      ) %>% 
+      hc_queencol()
     return(hc)
   })
   
@@ -962,7 +973,8 @@ server <- function(input, output, session) {
       hc_norevese() %>% 
       hc_tooltip(
         shared = T
-      )
+      ) %>% 
+      hc_queencol()
     return(hc)
   })
   
@@ -996,6 +1008,7 @@ server <- function(input, output, session) {
         )
       ) %>% 
       hc_norevese() %>% 
+      hc_queencol %>% 
       hc_tooltip(
         shared = T,
         headerFormat = "",
@@ -1039,7 +1052,8 @@ server <- function(input, output, session) {
         shared = T,
         headerFormat = "<span style=\"color: {point.color} \">\u25CF</span> <b>{point.series.name}</b><br>",
         pointFormat = "Year: {point.x}<br>Frequency: {point.y}<br>Total frequency: {point.total}"
-      )
+      ) %>% 
+      hc_queencol()
     return(hc)
   })
   
