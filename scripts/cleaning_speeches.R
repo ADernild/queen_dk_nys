@@ -67,8 +67,8 @@ sentences_eng <- unnest_sentences(sentences_eng)
 write.csv(sentences_eng, "data/nys_sentences_eng.csv", row.names = F, fileEncoding = "UTF-8")
 # Cleaning speech of each year
 df$speech <- clean_speech(df$speech)
-write.csv(df, "data/nys_1972-2020_cleaned.csv", row.names = F, fileEncoding = "UTF-8")
+write.csv(df, paste0("data/nys_1972-", last_year, "_cleaned.csv"), row.names = F, fileEncoding = "UTF-8")
 
 # Cleaning speech of each year
 df_2$speech <- clean_speech(df_2$speech)
-write.csv(df_2, "data/nys_1972-2020_eng_cleaned.csv", row.names = F, fileEncoding = "UTF-8")
+write.csv(df_2, paste0("data/nys_1972-", last_year, "_eng_cleaned.csv"), row.names = F, fileEncoding = "UTF-8")
