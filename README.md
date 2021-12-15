@@ -9,9 +9,9 @@ You could also do your own thing and look at pretty graphs and statistics. We wo
 
 See live on: https://app.dernild.com/
 
-|████░░░░░░░░░|
+|████████░░░░░|
 
-32% complete.
+62% complete.
 
 ### Tasks
 
@@ -19,7 +19,6 @@ See live on: https://app.dernild.com/
 - [x] Collect english translated speeches.
 - [x] Generate file with meta info about speeches.
 - [x] Clean speech text.
-- [R] Clean english speech text (A).
 - [x] Create custom stopwords list.
 - [ ] Create custom stopwords list for enlish speeches (A).
 - [x] Preprocessing: Tokenization, stemming, lemmatization etc.
@@ -27,37 +26,24 @@ See live on: https://app.dernild.com/
 - [ ] Simulate steps to do when a new speach is relased (A)
 - [ ] Run scripts for all speaches again (A).
 - [x] Build Structural Topic Model (STM).
-- [ ] Test out other Topic models - optimize LDA or use HPD (A).
-- [R] Classify documents using STM model to make data for sentiment analysis (A).
-- \* Add sentiment scores to Topic Models (A).
-- [R] Add sentence output to Topic Models (A).
+- [ ] Add sentiment scores to Topic Models (A).
 - [x] Calculate Polarity scores (Sentiment Analysis).
 - [x] Rebuild Structural Topic Model using Polarity scores as another co-variate.
 - [x] Implement worldmap and map placese the queens mentions.
-- [R] Add metadata to mentioned countries (A).
 - [x] Implement visualizations of the most used words.
-- [ ] Analyse speech lengths (M 7).
-- [ ] Implement visualizations for speech lengths (M 8).
 - [x] Analyse sentiment by year.
-- [ ] Fix stacked barchart select (M 6).
-- [ ] Fix filtering in word statistics (M 12)
-- [R] Cap word statistics top frequent numbers in stream graph and scatterplot. Add helptext.
-- [ ] Format data for display (M 9).
+- [ ] Fix sentiment data values (M).
+- [ ] Fix filtering in word statistics (M).
+- [ ] Limit word frequency columns to 30, piechart to 65, scatterplot to 30 (M).
+- [ ] Format data for display (M).
 - [x] Create interactive dashboard to interact with findings.
-- [R] Add meaningfull titles to tabbox (M).
-- [R] Add description on how to use, why you could use, and what to use the dashboard for on index page (M).
-- [R] Add descriptive text to all visualizations, and descriptions on how to use them and what to findings expect (M).
-- [R] Write introduction to dahsboard and implement on git and index tab in dashboard (M).
-- [R] Create consistent colorpalette for data.
-- [ ] Implement consistent colorpalette for data.
+- [ ] Implement consistent colorpalette for data (M).
 - \* Add filtering by year and words - and implement in visualization data (M).
-- [R] Make year sliders into vector with reactive (M).
 - [x] Create list of data sources in dashboard.
 - [x] Feature information about the queen that is scraped from wikipedia.
-- \* Implement language option for dahsboard, and reactively update data sources (M 11).
-- \* Finalize design of dashboard (M 12)
-- [R] Simplifice dashboard design (M)
-- [ ] Remove unfinished implementations from dashboard.
+- \* Implement language option for dahsboard, and reactively update data sources (M).
+- \* Finalize design of dashboard (M)
+- [ ] Remove unfinished implementations from dashboard - lda (A).
 - [ ] Write 4 page report.
 
 [ ] = To do
@@ -75,3 +61,8 @@ x = Done
 - [ ] Generate speeches in the style of the Queen.
 - [ ] Translate dashboard to Danish, and give option to use Danish/English.
 - [ ] Remove unsatasfactory models.
+- [ ] Fix stacked barchart select (M).
+- [ ] Analyse speech lengths (M).
+- [ ] Implement visualizations for speech lengths (M).
+- [ ] Consitantly use stem form instead of headword (M)
+- [ ] Reactive word additions to featured words - from topic model
