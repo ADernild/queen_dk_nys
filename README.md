@@ -19,20 +19,22 @@ See live on: https://app.dernild.com/
 - [x] Collect english translated speeches.
 - [x] Generate file with meta info about speeches.
 - [x] Clean speech text.
-- [ ] Clean english speech text (A).
+- [R] Clean english speech text (A).
 - [x] Create custom stopwords list.
 - [ ] Create custom stopwords list for enlish speeches (A).
 - [x] Preprocessing: Tokenization, stemming, lemmatization etc.
 - [ ] Preprocessing: Tokenization, stemming, lemmatization etc. for english speeches (A).
-- [ ] Simmulate steps to do when a new speach is relased (A)
+- [ ] Simulate steps to do when a new speach is relased (A)
 - [ ] Run scripts for all speaches again (A).
 - [x] Build Structural Topic Model (STM).
 - [ ] Test out other Topic models - optimize LDA or use HPD (A).
-- [ ] Add sentiment scores to Topic Models (A).
+- [R] Classify documents using STM model to make data for sentiment analysis (A).
+- \* Add sentiment scores to Topic Models (A).
+- [R] Add sentence output to Topic Models (A).
 - [x] Calculate Polarity scores (Sentiment Analysis).
 - [x] Rebuild Structural Topic Model using Polarity scores as another co-variate.
 - [x] Implement worldmap and map placese the queens mentions.
-- [ ] Add metadata to mentioned countries (A).
+- [R] Add metadata to mentioned countries (A).
 - [x] Implement visualizations of the most used words.
 - [ ] Analyse speech lengths (M 7).
 - [ ] Implement visualizations for speech lengths (M 8).

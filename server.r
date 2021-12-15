@@ -166,6 +166,17 @@ server <- function(input, output, session) {
                     toLDAvisJson(mod, docs, R = input$nTerms))}
       )
     })
+  observeEvent(input$topicVis_topic_click, {
+    topic <- input$topicVis_topic_click
+    output$topicText <- renderUI({
+      sentences <- unlist(thoughts$docs[topic])
+      sentences <- sample(sentences, ifelse(length(sentences)<5, length(sentences), 5)) %>%
+        str_to_sentence()
+      
+      paste("<ul>", paste("<li>", sentences, "</li>", collapse = ""), "</ul>") %>%
+        HTML()
+    })
+  })
   
 
   # Sentiment ---------------------------------------------------------------
@@ -694,9 +705,9 @@ server <- function(input, output, session) {
   output$sentences <- renderUI({
     data <- mapData()
     sentences <- sample(unlist(data@data$sentence), size = 5)
-    sentences[!is.na(sentences)] %>% 
-      str_to_sentence() %>% 
-      paste(collapse=". <br/>") %>% 
+    sentences <- sentences[!is.na(sentences)] %>% 
+      str_to_sentence()
+    paste("<ul>", paste("<li>", sentences, "</li>", collapse=""),"</ul>") %>% 
       HTML()
   })
   
@@ -748,9 +759,10 @@ server <- function(input, output, session) {
       
       output$sentences <- renderUI({ # Showing sentences of country mentioned
         sentences <- unlist(selected$sentence)
-        sample(sentences, ifelse(length(sentences)<5, length(sentences), 5)) %>% 
-          str_to_sentence() %>% 
-          paste(collapse=". <br/>") %>% 
+        sentences <- sample(sentences, ifelse(length(sentences)<5, length(sentences), 5)) %>% 
+          str_to_sentence()
+        
+        paste("<ul>", paste("<li>", sentences, "</li>", collapse=""),"</ul>") %>% 
           HTML()
       })
       }

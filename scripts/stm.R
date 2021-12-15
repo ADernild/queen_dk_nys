@@ -40,6 +40,7 @@ make_stm_model <- function(docs, df, covariates, stop_words) {
   model <- stm(out$documents, out$vocab, K=best_k, prevalence=covariates,
                max.em.its=300, data=out$meta, init.type="Spectral", verbose=F)
 
+  thoughts <- findThoughts(model, out$meta$sentences_full, n=100, thresh = 0.45)
   # Saving model results in list
   stm_model <- list(mod=model,
                     docs=out$documents,
@@ -47,30 +48,11 @@ make_stm_model <- function(docs, df, covariates, stop_words) {
 
   # Saving model as rds
   saveRDS(stm_model, file="data/stm_model.rds")
+  saveRDS(thoughts, file="data/thoughts.rds")
   stm_model
 }
 
 make_stm_model(df$sentences, df, covariates=formula(~years + polarity), stop_words$word)
-
-# processed <- textProcessor(df$sentences, metadata = df, stem=F, customstopwords = stop_words$word, language = "danish")
-# 
-# out <- prepDocuments(processed$documents, processed$vocab, processed$meta)
-# 
-# best_model <- searchK(out$documents, out$vocab, K=c(10, 19:39, 40),
-#                       init.type = "Spectral", proportion = 0.1,
-#                       prevalence =~ years + polarity, data=out$meta,
-#                       cores = parallel::detectCores())
-# 
-# best_k <- best_model$results$K[which.max(best_model$results$heldout)]
-# 
-# q_nys <- stm(out$documents, out$vocab, K = best_k, prevalence =~years + polarity,
-#              max.em.its = 300, data = out$meta, init.type = "Spectral")
-# 
-# stm_model <- list(mod = q_nys,
-#                   docs = out$documents)
-# 
-# # Saving model
-# saveRDS(stm_model, file = "data/stm_model.rds")
 
 # stmCorrViz::stmCorrViz(q_nys, "test.html", documents_raw = df$speech, documents_matrix = processed$documents)
 
