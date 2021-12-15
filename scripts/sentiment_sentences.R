@@ -1,96 +1,70 @@
 ## Library for lemmatizing sentences
 library(udpipe)
+library(tidytext)
+library(stringr)
+library(dplyr)
 
 setwd("../")
 
-# Sentiment lookup table
-dk_sentiment <- read.csv("https://raw.githubusercontent.com/dsldk/danish-sentiment-lexicon/main/2a_fullform_headword_polarity.csv", encoding = "UTF-8", header = FALSE, sep = "\t")
-names(dk_sentiment) <- c("word_form", "headword", "homograph_number", "POS", "DDO_headword_ID", "polarity_label_headword")
-
 # sentences
 df <- read.csv("data/nys_sentences.csv")
+df_eng <- read.csv("data/nys_sentences_eng.csv")
 
 # Lemmatizing sentences
 df_lemmatized <- udpipe(df$sentences, "danish")
+df_eng_lemmatized <- udpipe(df_eng$sentences, "english")
 
 # Correcting sentence_id to match rownumber for sentences in df
 df_lemmatized$sentence_id <- as.numeric(str_replace(df_lemmatized$doc_id, "doc", ""))
+df_eng_lemmatized$sentence_id <- as.numeric(str_replace(df_eng_lemmatized$doc_id, "doc", ""))
 
-# Selecting needed columns in lookup table and deleting duplicates
-dk_sentiment_min <- dk_sentiment %>% 
-  select(headword, word_form, polarity_label_headword) %>% 
-  unique()
-
-# Limiting lemmatized sentences to headwords that are in lookup table
-df_matched_headword <- df_lemmatized[df_lemmatized$lemma %in% dk_sentiment_min$headword,]
-
-# Limiting lemmatized sentences to word_form that are in lookup table
-df_matched_wordform <- df_lemmatized[df_lemmatized$lemma %in% dk_sentiment_min$word_form,]
-
-# Limiting lookup table to words in sentences, and setting polarity of words with multiple polarities to mean
-dk_sentiment_min_headword <- dk_sentiment_min[dk_sentiment_min$headword %in% df_lemmatized$lemma,] %>% 
-  group_by(headword) %>% 
-  summarise(
-    polarity = mean(polarity_label_headword)
-  )
-
-# Limiting lookup table to words in sentences, and setting polarity of words with multiple polarities to mean
-dk_sentiment_min_wordform <- dk_sentiment_min[dk_sentiment_min$word_form %in% df_lemmatized$lemma,] %>% 
-  group_by(word_form) %>% 
-  summarise(
-    polarity = mean(polarity_label_headword)
-  )
-
-# Initiating empty list
-polarity_list <- c()
-
-# looping through words in sentences that are matched and appending their polarity to polarity list
-for (row in 1:nrow(df_matched_headword)) {
-  polarity_list <- c(polarity_list, dk_sentiment_min_headword$polarity[dk_sentiment_min_headword$headword == df_matched_headword$lemma[row]])
+sentence_sentiment <- function(df, df_lemmatized, lang="en"){
+  if(lang == "en"){
+    afinn <- get_sentiments("afinn")
+    df_match <- df_lemmatized %>% 
+      inner_join(afinn, by=c("lemma" = "word")) %>% 
+      inner_join(afinn, by=c("token" = "word")) %>% 
+      summarise(
+        sentence_id = sentence_id,
+        value = (value.x + value.y)/2
+      ) %>% 
+      group_by(sentence_id) %>% 
+      summarise(
+        sentence_id = sentence_id,
+        polarity = mean(value)
+      )
+    df$polarity <- 0
+    df$polarity[df_match$sentence_id] <- df_match$polarity
+    return(df)
+  }else if(lang == "da"){
+    dk_sentiment <- read.csv("https://raw.githubusercontent.com/dsldk/danish-sentiment-lexicon/main/2a_fullform_headword_polarity.csv", encoding = "UTF-8", header = FALSE, sep = "\t")
+    names(dk_sentiment) <- c("word_form", "headword", "homograph_number", "POS", "DDO_headword_ID", "polarity")
+    dk_sentiment <- dk_sentiment %>% 
+      select(headword, word_form, polarity) %>% 
+      unique()
+    df_match <- df_lemmatized %>% 
+      inner_join(dk_sentiment, by=c("lemma" = "headword")) %>% 
+      inner_join(dk_sentiment, by=c("lemma" = "word_form")) %>% 
+      inner_join(dk_sentiment, by=c("token" = "headword")) %>% 
+      inner_join(dk_sentiment, by=c("token" = "word_form")) %>% 
+      summarise(
+        sentence_id = sentence_id,
+        value = (polarity.x + polarity.y + polarity.x.x + polarity.y.y)/4
+      ) %>% 
+      group_by(sentence_id) %>% 
+      summarise(
+        sentence_id = sentence_id,
+        polarity = mean(value)
+      )
+    df$polarity <- 0
+    df$polarity[df_match$sentence_id] <- df_match$polarity
+    return(df)
+  }
 }
 
-# Making polarity list a column in lemmatized words from sentences
-df_matched_headword$polarity <- polarity_list
+df_eng <- sentence_sentiment(df_eng, df_eng_lemmatized, lang="en")
+df_da <- sentence_sentiment(df, df_lemmatized, lang = "da")
 
-# Initiating empty list
-polarity_list <- c()
 
-# looping through words in sentences that are matched and appending their polarity to polarity list
-for (row in 1:nrow(df_matched_wordform)) {
-  polarity_list <- c(polarity_list, dk_sentiment_min_wordform$polarity[dk_sentiment_min_wordform$word_form == df_matched_wordform$lemma[row]])
-}
-
-# Making polarity list a column in lemmatized words from sentences
-df_matched_wordform$polarity <- polarity_list
-
-# Calculating mean polarity of headwords for each sentence
-polarity_headword <- df_matched_headword %>% 
-  group_by(sentence_id) %>% 
-  summarise(
-    polarity = mean(polarity)
-  )
-
-# Calculating mean polarity of word forms for each sentence
-polarity_wordform <- df_matched_wordform %>% 
-  group_by(sentence_id) %>% 
-  summarise(
-    polarity = mean(polarity)
-  )
-
-# Joining the respective polarity scores
-polarity <- full_join(polarity_headword, polarity_wordform)
-
-# In cases where a sentences has headword and wordform polarity polarity is set to mean
-polarity <- polarity %>% 
-  group_by(sentence_id) %>% 
-  summarise(
-    polarity = mean(polarity)
-  )
-
-# Creating new column in sentences
-df$polarity <- 0
-
-# Adding mean polarity to sentences with matched words
-df$polarity[polarity$sentence_id] <- polarity$polarity
-
-write.csv(df, "data/nys_sentences.csv", row.names = F)
+write.csv(df_da, "data/nys_sentences.csv", row.names = F)
+write.csv(df_eng, "data/nys_sentences_eng.csv", row.names = F)
