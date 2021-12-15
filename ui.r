@@ -162,8 +162,7 @@ ui <- dashboardPage(
                                howViz("Series filter: By clicking on a series name, it can be disabled until clicked again, or updated by a filter."),
                                howViz("Tooltip: Hovering the values of a year will show the sentiment of enabled series."),
                                howViz("Year filter: Using the year filter, will filter years featured."),
-                               howViz("Featured words: Using featured words will show the sentiment that subset had in each year."),
-                               helpText("Error: Currently, featured words filter will not show the results correctly.")
+                               howViz("Featured words: Using featured words will show the sentiment that subset had in each year.")
                            )
                   ),
                   tabPanel("Sentiment by year (Shankey)",
