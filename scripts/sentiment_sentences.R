@@ -1,6 +1,8 @@
 ## Library for lemmatizing sentences
 library(udpipe)
 
+setwd("../")
+
 # Sentiment lookup table
 dk_sentiment <- read.csv("https://raw.githubusercontent.com/dsldk/danish-sentiment-lexicon/main/2a_fullform_headword_polarity.csv", encoding = "UTF-8", header = FALSE, sep = "\t")
 names(dk_sentiment) <- c("word_form", "headword", "homograph_number", "POS", "DDO_headword_ID", "polarity_label_headword")

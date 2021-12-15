@@ -2,6 +2,8 @@
 library(stringr)
 library(dplyr)
 
+setwd("../")
+
 # Cleaning function
 clean_speech <- function(x) {
   x %>%
@@ -14,7 +16,7 @@ clean_speech <- function(x) {
 clean_sentences <- function(x) {
   x %>%
     str_replace_all("\\\n", " ") %>% # removes linebreaks
-    str_replace_all("[^[:alnum:].]", " ") %>% # removes special characters except .,
+    str_replace_all("[^[:alnum:].']", " ") %>% # removes special characters except .,
     str_to_lower() %>% # Converts to lower case
     str_squish() # Removes leading, trailing and middle whitespace
 }
@@ -22,19 +24,27 @@ clean_sentences <- function(x) {
 clean_sentences_less <- function(x) {
   x %>%
     str_replace_all("\\\n", " ") %>% # removes linebreaks
-    str_replace_all("[^[:alnum:].,]", " ") %>% # removes special characters except .,
+    str_replace_all("[^[:alnum:].,']", " ") %>% # removes special characters except .,
     str_to_lower() %>% # Converts to lower case
     str_squish() # Removes leading, trailing and middle whitespace
 }
 
 # Importing data
-df <- read.csv("data/new_year_speeches_1972-2020.csv", encoding = "UTF-8")
-
+last_year <- as.integer(format(Sys.Date(), "%Y")) - 1 # Last year i.e., the year of the lastest speech
+df <- read.csv(paste0("data/new_year_speeches_1972-", last_year, ".csv"), encoding = "UTF-8")
+df_2 <- read.csv(paste0("data/new_year_speeches_eng_2010-", last_year, ".csv"), encoding = "UTF-8")
 # Cleaning sentences i.e., leaving in the . (dots) for later separation
 sentences <- data.frame(cbind(df$year, clean_sentences(df$speech), clean_sentences_less(df$speech)))
-
+sentences_eng <- data.frame(cbind(df_2$year, clean_sentences(df_2$speech), clean_sentences_less(df_2$speech)))
 # Grouping speaches by year and separating into sentences by . (dots)
 sentences <- sentences %>% 
+  group_by(X1) %>% 
+  summarize(
+    sentence = strsplit(X2, "[.]"),
+    sentence_full = strsplit(X3, "[.]")
+  )
+
+sentences_eng <- sentences_eng %>% 
   group_by(X1) %>% 
   summarize(
     sentence = strsplit(X2, "[.]"),
@@ -53,6 +63,12 @@ unnest_sentences <- function(x) {
 sentences <- unnest_sentences(sentences)
 write.csv(sentences, "data/nys_sentences.csv", row.names = F, fileEncoding = "UTF-8")
 
+sentences_eng <- unnest_sentences(sentences_eng)
+write.csv(sentences_eng, "data/nys_sentences_eng.csv", row.names = F, fileEncoding = "UTF-8")
 # Cleaning speech of each year
 df$speech <- clean_speech(df$speech)
 write.csv(df, "data/nys_1972-2020_cleaned.csv", row.names = F, fileEncoding = "UTF-8")
+
+# Cleaning speech of each year
+df_2$speech <- clean_speech(df_2$speech)
+write.csv(df_2, "data/nys_1972-2020_eng_cleaned.csv", row.names = F, fileEncoding = "UTF-8")

@@ -123,6 +123,8 @@ ui <- dashboardPage(
             ),
             box(width=10, title = "Topic model",
                 visOutput("topicVis"),
+                h3("Sentences belonging to chosen topic"),
+                uiOutput("topicText"),
                 box(width = 12, class="infoViz", title = "Expl.",
                     collapsible = T, collapsed = T,
                     whatViz("Topic model is a tool that maps topics. It does so by analyzing word relations by analyzing all speeches and mapping the relations as word matrixes. Then the model displays the topics to the left, and the words within on the right. Frequency of use is depicted by size for topics, and bar length for words. Topics are named 1:n, where 1 is the largest topic."),

@@ -166,6 +166,16 @@ server <- function(input, output, session) {
                     toLDAvisJson(mod, docs, R = input$nTerms))}
       )
     })
+  observeEvent(input$topicVis_topic_click, {
+    topic <- input$topicVis_topic_click
+    output$topicText <- renderUI({
+      sentences <- unlist(thoughts$docs[topic])
+      sample(sentences, ifelse(length(sentences)<5, length(sentences), 5)) %>%
+        str_to_sentence() %>%
+        paste(collapse=". <br/>") %>%
+        HTML()
+    })
+  })
   
 
   # Sentiment ---------------------------------------------------------------
