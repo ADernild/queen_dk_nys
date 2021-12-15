@@ -35,7 +35,9 @@ See live on: https://app.dernild.com/
 - [R] Fix sentiment data values (M).
 - [R] Fix filtering in word statistics (M).
 - [R] Limit word frequency columns to 30, piechart to 65, scatterplot to 20 (M).
+- [ ] Consitantly use stem form instead of headword (M)
 - [ ] Format data for display (M).
+- [ ] Optimize visualisations for english speech data (A/M).
 - [x] Create interactive dashboard to interact with findings.
 - [ ] Implement consistent colorpalette for data (M).
 - \* Add filtering by year and words - and implement in visualization data (M).
@@ -61,9 +63,7 @@ x = Done
 - [ ] Generate speeches in the style of the Queen.
 - [ ] Translate dashboard to Danish, and give option to use Danish/English.
 - [ ] Remove unsatasfactory models.
-- [ ] Fix stacked barchart select (M).
 - [ ] Analyse speech lengths (M).
 - [ ] Implement visualizations for speech lengths (M).
-- [ ] Consitantly use stem form instead of headword (M)
 - [ ] Reactive word additions to featured words - from topic model
 - [ ] Optimize for mobile view
