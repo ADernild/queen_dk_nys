@@ -154,16 +154,35 @@ server <- function(input, output, session) {
   })
   
   # topicVis ----------------------------------------------------------------
+  stm_models <- reactive({
+    if(input$l == "DK"){
+      data <- stm_model_da
+    }else if(input$l == "EN"){
+      data <- stm_model_en
+    }
+    return(data)
+  })
+  
   output$topicVis <- renderVis({
              if(!is.null(input$nTerms)){
-              with(stm_model,
+              with(stm_models(),
                     toLDAvisJson(mod, docs, R = input$nTerms))}
     })
   ## Show sentences based on topic clicked ----------------------------------
+  
+  thoughts <- reactive({
+    if(input$l == "DK"){
+      data <- thoughts_da
+    }else if(input$l == "EN"){
+      data <- thoughts_en
+    }
+    return(data)
+  })
+  
   observeEvent(input$topicVis_topic_click, {
     topic <- input$topicVis_topic_click
     output$topicText <- renderUI({
-      sentences <- unlist(thoughts$docs[topic])
+      sentences <- unlist(thoughts()$docs[topic])
       sentences <- sample(sentences, ifelse(length(sentences)<5, length(sentences), 5)) %>%
         str_to_sentence()
       

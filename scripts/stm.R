@@ -13,6 +13,7 @@ setwd("../")
 # Reading data
 # df <- read.csv("data/nys_2001-2020_cleaned.csv")
 df <- read.csv("data/nys_sentences.csv", encoding = "UTF-8")
+df_en <- read.csv("data/nys_sentences_eng.csv", encoding = "UTF-8")
 
 # Making stopwords list
 stop_words <- read.csv("utils/custom_stopwords.txt", header=F) %>% 
@@ -22,10 +23,15 @@ stop_words <- read.csv("utils/custom_stopwords.txt", header=F) %>%
   rbind("danmark", "danske") %>% 
   rename(word = V1)
 
+stop_words_en <- read.csv("utils/custom_stopwords_en.txt", header=F) %>% 
+  rbind(stopwords::stopwords(language = "en", source = "snowball")) %>% 
+  rbind("danmark", "danske") %>% 
+  rename(word = V1)
+
 # STM 
-make_stm_model <- function(docs, df, covariates, stop_words) {
+make_stm_model <- function(docs, df, covariates, stop_words, language="danish") {
   # Preprocessing documents for use in STM
-  processed <- textProcessor(docs, metadata=df, stem=T, customstopwords=stop_words, language="danish")
+  processed <- textProcessor(docs, metadata=df, stem=T, customstopwords=stop_words, removenumbers = F, language=language)
   out <- prepDocuments(processed$documents, processed$vocab, processed$meta)
   
   # finding best amount of topics K
@@ -46,13 +52,20 @@ make_stm_model <- function(docs, df, covariates, stop_words) {
                     docs=out$documents,
                     best=best_model)
 
-  # Saving model as rds
-  saveRDS(stm_model, file="data/stm_model.rds")
-  saveRDS(thoughts, file="data/thoughts.rds")
-  stm_model
+  
+  list(stm_model = stm_model, thoughts = thoughts)
 }
 
-make_stm_model(df$sentences, df, covariates=formula(~years + polarity), stop_words$word)
+stm_da <- make_stm_model(df$sentences, df, covariates=formula(~years + polarity), stop_words$word)
+stm_en <- make_stm_model(df_en$sentences, df_en, covariates=formula(~years + polarity), stop_words_en$word, language="english")
+
+# Saving model as rds
+saveRDS(stm_da$stm_model, file="data/stm_model.rds")
+saveRDS(stm_da$thoughts, file="data/thoughts.rds")
+
+# Saving model as rds
+saveRDS(stm_en$stm_model, file="data/stm_model_en.rds")
+saveRDS(stm_en$thoughts, file="data/thoughts_en.rds")
 
 # stmCorrViz::stmCorrViz(q_nys, "test.html", documents_raw = df$speech, documents_matrix = processed$documents)
 

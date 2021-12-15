@@ -19,8 +19,10 @@ library(wordcloud2) # Two create wordclouds
 # Load data ---------------------------------------------------------------
 tokens <- readRDS("data/tokens.rds") # All tokens, filtered
 lda_model <- readRDS("data/lda_model.rds") # LDA model
-stm_model <- readRDS("data/stm_model.rds") # STM model
-thoughts <- readRDS("data/thoughts.rds") # sentences belonging to topics (topic proportion 45%)
+stm_model_da <- readRDS("data/stm_model.rds") # STM model
+stm_model_en <- readRDS("data/stm_model_en.rds") # STM model
+thoughts_da <- readRDS("data/thoughts.rds") # sentences belonging to topics (topic proportion 45%)
+thoughts_en <- readRDS("data/thoughts_en.rds") # sentences belonging to topics (topic proportion 45%)
 lemma <- readRDS("data/lemma.rds") # All lematized values unfiltered
 sentiment <- readRDS("data/sentiments.rds") # Sentiment for year
 countries <- readRDS("data/country_speech.rds") # Countries, country code, lat, lon and # mentions
