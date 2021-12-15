@@ -83,7 +83,8 @@ opts <- getOption("highcharter.options")
 opts$lang$decimalPoint <- "."
 options(highcharter.options = opts)
 
-## Highchart sorting function ----
+
+## Highcharts functions ----
 hc_norevese <- function(x){
   x %>% 
   hc_chart(
@@ -96,6 +97,11 @@ hc_norevese <- function(x){
     reversed = F
   )
 }
+
+hc_queencol <- function(x){
+  x %>% hc_colors(colors_of_the_queen)
+}
+
 
 # Sorting ----
 cmatch <- function(left, right){
