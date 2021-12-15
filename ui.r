@@ -265,7 +265,7 @@ ui <- dashboardPage(
       ),
       # Map ----
       tabItem(tabName = "map",
-              h2("A map of the countries mentioned in the new year eve speeches of Queen Margret"),
+              h2("Map"),
               fluidRow(class="box_align_layout",
                 box(width=8,  
                     leafletOutput("map", height = 740),
