@@ -931,6 +931,9 @@ server <- function(input, output, session) {
         )
       ) %>% 
       hc_norevese() %>% 
+      hc_xAxis(
+        categories = min(data$year):max(data$year)
+      ) %>% 
       hc_tooltip(
         shared = T,
         headerFormat = "<b>Year</b>: {point.x}<br>Total frequency: {point.total}",
