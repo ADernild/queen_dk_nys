@@ -173,7 +173,7 @@ server <- function(input, output, session) {
       sentences <- sample(sentences, ifelse(length(sentences)<5, length(sentences), 5)) %>%
         str_to_sentence()
       
-      paste("<ul>", paste("<li>", sentences, "</li>", collapse = ""), "</ul>") %>%
+      paste("<h3>Sentences belonging to topic", topic, "</h3>","<ul>", paste("<li>", sentences, "</li>", collapse = ""), "</ul>") %>%
         HTML()
     })
   })
@@ -695,7 +695,7 @@ server <- function(input, output, session) {
     sentences <- sample(unlist(data@data$sentence), size = 5)
     sentences <- sentences[!is.na(sentences)] %>% 
       str_to_sentence()
-    paste("<ul>", paste("<li>", sentences, "</li>", collapse=""),"</ul>") %>% 
+    paste("<h3> Sentences mentioning a country</h3>", "<ul>", paste0("<li>", sentences, ".", "</li>", collapse=""),"</ul>") %>% 
       HTML()
   })
   
@@ -750,7 +750,7 @@ server <- function(input, output, session) {
         sentences <- sample(sentences, ifelse(length(sentences)<5, length(sentences), 5)) %>% 
           str_to_sentence()
         
-        paste("<ul>", paste("<li>", sentences, "</li>", collapse=""),"</ul>") %>% 
+        paste("<h3>Sentences mentioning", click$id, "</h3>", "<ul>", paste0("<li>", sentences, ".", "</li>", collapse=""),"</ul>") %>% 
           HTML()
       })
       }
