@@ -25,13 +25,18 @@ coords <- coords %>%
   unique()
 
 names(coords) <- c("land", "country", "lat", "long", "code")
-coords$land <- tolower(paste("", coords$land))
-coords$country <- tolower(paste("", coords$country))
+coords$land <- tolower(coords$land)
+coords$land[coords$land == "oman"] <- "[^r]oman"
+coords$country <- tolower(coords$country)
+coords$country[coords$country == "oman"] <- "[^r]oman"
 
 coords <- na.omit(coords)
 # Reading in speeches
 df <- read.csv("data/nys_sentences.csv")
 df_eng <- read.csv("data/nys_sentences_eng.csv")
+
+df$sentences <- paste("", df$sentences)
+df_eng$sentences <- paste("", df_eng$sentences)
 
 match_countries <- function(df, coords, lang="da"){
   if(lang == "da"){
