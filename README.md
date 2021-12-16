@@ -45,7 +45,7 @@ See live on: https://app.dernild.com/
 - [x] Feature information about the queen that is scraped from wikipedia.
 - \* Implement language option for dahsboard, and reactively update data sources (M).
 - \* Finalize design of dashboard (M)
-- [ ] Remove unfinished implementations from dashboard - lda (A).
+- [R] Remove unfinished implementations from dashboard - lda (A).
 - [ ] Write 4 page report.
 
 [ ] = To do
@@ -65,5 +65,5 @@ x = Done
 - [ ] Remove unsatasfactory models.
 - [ ] Analyse speech lengths (M).
 - [ ] Implement visualizations for speech lengths (M).
-- [ ] Reactive word additions to featured words - from topic model
+- [R] Reactive word additions to featured words - from topic model
 - [ ] Optimize for mobile view
