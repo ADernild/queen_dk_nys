@@ -66,16 +66,16 @@ number_of_rarity <- length(unique(arrange(tokens, desc(n_stem_total))$n_stem_tot
 # Chosen with https://coolors.co/ using refference picture:
 # https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Drottning_Margrethe_av_Danmark_crop.jpg/210px-Drottning_Margrethe_av_Danmark_crop.jpg
 colors_of_the_queen <- c(
-  "#435961", # Royal sweather blue / Deep space sparkle
-  "#BB3F56", # Her majesty lipstick / English red
-  "#9C5C52", # Royal dimple / redwood
-  "#E3BF9D", # Rising royal star of the queen / Desert sand
-  "#BACFF6", # Her majesty earing  / Light blue steel
   "#4D5749", # Falling royal star of the queen / Ebony
-  "#C0BFBB", # Hair of the majestic / Gray X 11 gray
-  "#9F9080", # Royal hair / Grullo
+  "#BB3F56", # Her majesty lipstick / English red
+  "#BACFF6", # Her majesty earing  / Light blue steel
   "#ECC1BE", # Pink queen / Baby pink
-  "#321403" # Royal brown button / Black bean
+  "#E3BF9D", # Rising royal star of the queen / Desert sand
+  "#9C5C52", # Royal dimple / redwood
+  "#435961", # Royal sweather blue / Deep space sparkle
+  "#9F9080", # Royal hair / Grullo
+  "#321403", # Royal brown button / Black bean
+  "#C0BFBB" # Hair of the majestic / Gray X 11 gray
 )
 
 # Highchart options -------------------------------------------------------
@@ -83,7 +83,8 @@ opts <- getOption("highcharter.options")
 opts$lang$decimalPoint <- "."
 options(highcharter.options = opts)
 
-## Highchart sorting function ----
+
+## Highcharts functions ----
 hc_norevese <- function(x){
   x %>% 
   hc_chart(
@@ -96,6 +97,11 @@ hc_norevese <- function(x){
     reversed = F
   )
 }
+
+hc_queencol <- function(x){
+  x %>% hc_colors(colors_of_the_queen)
+}
+
 
 # Sorting ----
 cmatch <- function(left, right){
@@ -153,3 +159,35 @@ howViz <- function(text){
     text
   )
 }
+
+# library(colorspace)
+# 
+# cols <- colors_of_the_queen
+# new_col <- c()
+# for(i in 1:10){
+# 
+#   cols1 <- readhex(file = textConnection(paste(cols, collapse = "\n")),
+#                    class = "RGB")
+#   #transform to hue/lightness/saturation colorspace
+#   cols2 <- as(cols1, "HLS")
+#   #additive decrease of lightness
+#   #multiplicative decrease of lightness
+#   cols2@coords[, "L"] <- cols2@coords[, "L"] * 0.75
+#   #going via rgb seems to work better
+#   cols2 <- as(cols2, "RGB")
+#   cols2 <- hex(cols2)
+#   #again
+#   cols1 <- readhex(file = textConnection(paste(cols2, collapse = "\n")),
+#                    class = "RGB")
+#   cols2 <- as(cols1, "HLS")
+#   #additive decrease of lightness
+#   #multiplicative decrease of lightness
+#   cols2@coords[, "L"] <- cols2@coords[, "L"] * 0.75
+#   #going via rgb seems to work better
+#   cols2 <- as(cols2, "RGB")
+#   cols2 <- hex(cols2)
+#   cols <- cols2
+#   new_col <- c(new_col, cols)
+# 
+# }
+# paste0(new_col, collapse = '",')
