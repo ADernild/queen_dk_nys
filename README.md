@@ -53,6 +53,7 @@ See live on: https://app.dernild.com/
 - [ ] Analyze topics, or describe how to do so.
 - [ ] Move What an Why above models.
 - [ ] Rename Expl. to How (to use).
+- [ ] Remove comma from integer sliders.
 - [ ] Write 4 page report.
 
 [ ] = To do
