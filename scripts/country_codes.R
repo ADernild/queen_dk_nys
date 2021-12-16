@@ -25,8 +25,8 @@ coords <- coords %>%
   unique()
 
 names(coords) <- c("land", "country", "lat", "long", "code")
-coords$land <- tolower(coords$land)
-coords$country <- tolower(coords$country)
+coords$land <- tolower(paste("", coords$land))
+coords$country <- tolower(paste("", coords$country))
 
 coords <- na.omit(coords)
 # Reading in speeches
