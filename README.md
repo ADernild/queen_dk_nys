@@ -45,7 +45,14 @@ See live on: https://app.dernild.com/
 - [x] Feature information about the queen that is scraped from wikipedia.
 - \* Implement language option for dahsboard, and reactively update data sources (M).
 - \* Finalize design of dashboard (M)
+- [ ] Optimize user experience
+- [ ] Split Index tab into: index, data subject and about tabs.
+- [ ] Improve ussage description to dashboard on index tab.
 - [ ] Remove unfinished implementations from dashboard - lda (A).
+- [ ] Reactive word additions to featured words - from topic model
+- [ ] Analyze topics, or describe how to do so.
+- [ ] Move What an Why above models.
+- [ ] Rename Expl. to How (to use).
 - [ ] Write 4 page report.
 
 [ ] = To do
@@ -60,10 +67,9 @@ x = Done
 - [ ] Use CRON script to automize datacollection (A).
 - [ ] Add logic to update filter inputs by data clicked in models.
 - \* Implement checkbox to ignore filter updates by clicked data in models (M).
-- [ ] Generate speeches in the style of the Queen.
+- [ ] Use ai to generate speeches.
 - [ ] Translate dashboard to Danish, and give option to use Danish/English.
 - [ ] Remove unsatasfactory models.
 - [ ] Analyse speech lengths (M).
 - [ ] Implement visualizations for speech lengths (M).
-- [ ] Reactive word additions to featured words - from topic model
 - [ ] Optimize for mobile view
