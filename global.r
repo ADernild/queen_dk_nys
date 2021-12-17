@@ -206,7 +206,6 @@ opts <- getOption("highcharter.options")
 opts$lang$decimalPoint <- "."
 options(highcharter.options = opts)
 
-
 ## Highcharts functions ----
 hc_norevese <- function(x){
   x %>% 
@@ -296,7 +295,7 @@ poly_prep <- function(polygons, countries, years) {
   poly
 }
 
-pal <- colorNumeric(c("#a3dcff", "#007bff"), NULL)
+pal <- colorNumeric(rev(col_red_gradient), NULL)
 
 
 # Text --------------------------------------------------------------------

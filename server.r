@@ -54,7 +54,8 @@ server <- function(input, output, session) {
       sliderInput("year_r", "Years",
                   min = year_min, max = year_max,
                   value = range(year_min,year_max),
-                  step = 1
+                  step = 1,
+                  sep = ""
       )
       
     } else{
