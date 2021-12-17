@@ -39,13 +39,13 @@ See live on: https://app.dernild.com/
 - [x] Feature information about the queen that is scraped from wikipedia.
 - \* Implement language option for dahsboard, and reactively update data sources (M).
 - [ ] Finalize design of dashboard (M)
-- [ ] Optimize user experience
 - [ ] Split Index tab into: index, How-to and about tabs (M).
 - [ ] Improve ussage description to dashboard on index tab.
 - [R] Move What an Why above charts (M).
 - [R] Rename Expl. to "How (to use)" (M).
 - [ ] Analyze topics, or describe how to do so.
 - [R] Remove comma from integer sliders (A/M).
+- [ ] Optimize user experience
 - [ ] Write 4 page report.
 
 [ ] = To do
