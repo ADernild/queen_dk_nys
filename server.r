@@ -852,7 +852,7 @@ server <- function(input, output, session) {
       output$n_hist <- renderHighchart({ # bar chart based on number of times a country is mentioned
         df <- tidyr::unnest(data@data, cols = c(year, n_year)) %>% 
           select(ADMIN, ISO_A2, year, n_year)
-        df$ISO_A2[df$ADMIN != click$id] <- "*All"
+        df$ISO_A2[df$ADMIN != click$id] <- "*Other"
         df <- df %>% 
           group_by(ISO_A2, year) %>% 
           summarise(n_year = sum(n_year)) %>% 
@@ -872,7 +872,7 @@ server <- function(input, output, session) {
       output$sent_box <- renderHighchart({# boxplot of average sentiment of sentences in which a country is mentioned
         df <- tidyr::unnest(data@data, cols=c(year, sentiment_year)) %>% 
           select(ADMIN, ISO_A2, year, sentiment_year)
-        df$ISO_A2[df$ADMIN != click$id] <- "*All"
+        df$ISO_A2[df$ADMIN != click$id] <- "*Other"
         df <- df %>% 
           group_by(ISO_A2, year) %>% 
           summarise(sentiment = mean(sentiment_year))
