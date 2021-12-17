@@ -12,10 +12,16 @@ detachAllPackages <- function() {
   
 }
 
-scripts <- c("new_speech_appender.R", "cleaning_speeches.R", "preprocessing.R", "sentiment_analysis.R", "sentiment_sentences.R", "stm.R", "country_codes.R")
-
-for(i in scripts){
-  source(i)
-  detachAllPackages()
-}
-
+source("new_speech_appender.R")
+detachAllPackages()
+source("cleaning_speeches.R")
+detachAllPackages()
+source("preprocessing.R")
+detachAllPackages()
+source("sentiment_analysis.R")
+detachAllPackages()
+source("sentiment_sentences.R")
+detachAllPackages()
+source("stm.R")
+detachAllPackages()
+source("country_codes.R")
