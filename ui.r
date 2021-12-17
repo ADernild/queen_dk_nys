@@ -111,7 +111,7 @@ ui <- dashboardPage(
           fluidRow(class="box_align_layout",
             box(width=2, title = "Topic model parameters",
                 # Sidebar with a slider input for number of bins
-                fluidRow(sliderInput("nTerms", "Number of terms to display", min = 10, max = 50, value = 30)),
+                fluidRow(sliderInput("nTerms", "Number of terms to display", min = 10, max = 50, value = 30, sep="")),
                 box(width = 12, class="infoViz", title = "Expl.",
                     collapsible = T, collapsed = T,
                     whatViz("Number of terms to display sets the number of terms used in the topic model, by size of topic."),
@@ -220,7 +220,7 @@ ui <- dashboardPage(
                 box(width = 2, title = "Number of words",
                     sliderInput("slider_sentiment_of_words_n_words",
                                 "Number of words (by frequency)",
-                                min=1, max=n_dist_t_headword, value = 100, step = 1 ),
+                                min=1, max=n_dist_t_headword, value = 100, step = 1, sep=""),
                     box(width = 12, class="infoViz", title = "Expl.",
                         collapsible = T, collapsed = T,
                         whatViz("Number of words is a slider to set the number of featured words."),
@@ -268,7 +268,7 @@ ui <- dashboardPage(
               fluidRow(class="box_align_layout",
                 box(width=8,  
                     leafletOutput("map", height = 740),
-                    uiOutput("sentences"),
+                    # uiOutput("sentences"),
                     box(width = 12, class="infoViz", title = "Expl.",
                         collapsible = T, collapsed = T,
                         whatViz("A world map, with countries mentioned in speeches."),
@@ -289,6 +289,14 @@ ui <- dashboardPage(
                         howViz("Tooltip bar chart: hovering over a bar shows the amount a specific country is mentioned in that year, compared to mentions of countries in general"),
                         howViz("Tooltip boxplot: hovering over a box shows distribution statistics of the average sentiment of sentences, in which a specific country is mentioned, compared to the distribution of average sentiment of sentences, in which any country is mentioned.")
                     )
+                )
+              ),
+              fluidRow(
+                box(width=8, title = "Sentence(s) mentioning a country",
+                    uiOutput("sentences")
+                ),
+                box(width = 4, id="map_sentece_slider_wrapper", title = "Sentence options",
+                    sliderInput("map_sentence_slider", label = "Senteces allowed", min=1, max=149, value=1, step=1, sep=""),
                 )
               )
       ),
@@ -340,7 +348,7 @@ ui <- dashboardPage(
                     sliderInput("slider_word_ussage",
                                 "Top frequent numbers",
                                 min=1, max=number_of_rarity, value = 15,
-                                step = 1),
+                                step = 1, sep=""),
                     box(width = 12, class="infoViz", title = "Expl.",
                         collapsible = T, collapsed = T,
                         whatViz("Top frequent numbers is a slider to filter for frequency of words in word themed visualizations."),
