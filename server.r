@@ -238,6 +238,25 @@ server <- function(input, output, session) {
       paste("<h3>Sentences belonging to topic", topic, "</h3>","<ul>", paste0("<li>", sentences, ".", "</li>", collapse = ""), "</ul>") %>%
         HTML()
     })
+    
+    output$sent_topic <- renderHighchart({
+      df <- thoughts()
+      polarity_topic <- as.numeric(unlist(df$polarity[topic]))
+      polarity_rest <- as.numeric(unlist(df$polarity[-topic]))
+      dat <- data.frame(topic = c(rep(paste("Topic", topic), length(polarity_topic)), rep("Rest", length(polarity_rest))),
+                        polarity = c(polarity_topic, polarity_rest))
+      
+      dat <- data_to_boxplot(dat, polarity, topic)
+      
+      highchart() %>%
+        hc_xAxis(title = list(text = "Country"), type = "category") %>%
+        hc_yAxis(title = list(text = "Average sentence sentiment")) %>%
+        hc_title(text = paste("Average sentiment in topic", 4)) %>%
+        hc_add_series_list(dat) %>%
+        hc_dualcol()
+    })
+
+    
   })
   observeEvent(input$topicVis_term_click, {
     updateSelectizeInput(session, 

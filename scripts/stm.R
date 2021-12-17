@@ -45,10 +45,10 @@ make_stm_model <- function(docs, df, covariates, stop_words, language="danish") 
   model <- stm(out$documents, out$vocab, K=best_k, prevalence=covariates,
                max.em.its=300, data=out$meta, init.type="Spectral", verbose=F)
 
-  thoughts <- findThoughts(model, out$meta$sentences_full, n=100, thresh = 0.45)
+  thoughts <- findThoughts(model, out$meta$sentences_full, n=200, thresh = 0.45)
   
-  thoughts$years <- lapply(thoughts$index, function(i) out$meta$years)
-  thoughts$polarity <- lapply(thoughts$index, function(i) out$meta$polarity)
+  thoughts$years <- lapply(thoughts$index, function(i) out$meta$years[i])
+  thoughts$polarity <- lapply(thoughts$index, function(i) out$meta$polarity[i])
   
   # Saving model results in list
   stm_model <- list(mod=model,
