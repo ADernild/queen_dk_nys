@@ -334,8 +334,8 @@ server <- function(input, output, session) {
                               '<tr><th>Overall sentiment:</th><td>{point.l}</td></tr>',
                               '<tr><th>Positive sentiment (x):</th><td>{point.x}</td></tr>',
                               '<tr><th>Negative sentiment (y):</th><td>{point.y}</td></tr>',
-                              '<tr><th>Summed sentiment:</th><td>{point.z}</td></tr>',
-                              '<tr><th>Words with polarity (size/saturation):</th><td>{point.pn}</td></tr>',
+                              '<tr><th>Summed sentiment (size/saturation):</th><td>{point.z}</td></tr>',
+                              '<tr><th>Words with polarity:</th><td>{point.pn}</td></tr>',
                               sep = ""),
           footerFormat = '</table>',
           followPointer = F,
@@ -404,19 +404,22 @@ server <- function(input, output, session) {
         type = "bar",
         stack = 1,
         name="Positive sentiment",
-        data = data$sentiment_pos
+        data = data,
+        hcaes(x = year, y = sentiment_pos)
       ) %>% 
       hc_add_series(
         type = "bar",
         stack = 1,
         name="Negative sentiment",
-        data = data$sentiment_neg
+        data = data,
+        hcaes(x = year, y = sentiment_neg)
       ) %>% 
       hc_add_series(
         type = "bar",
         stack = 2,
         name ="Summed sentiment",
-        data = data$sentiment
+        data = data,
+        hcaes(x = year, y = sentiment)
       ) %>% 
       hc_plotOptions(
         series = list (
@@ -428,8 +431,8 @@ server <- function(input, output, session) {
       ) %>% 
       hc_xAxis(
         reversed = T,
-        startOnTick = T,
-        categories = data$year,
+        # endOnTick = T,
+        # startOnTick = T,
         title = list(
           text = "Year"
         )
@@ -468,7 +471,8 @@ server <- function(input, output, session) {
           type = "bar",
           stack = 3,
           name= "Sentiment of selection",
-          data = selection$sentiment
+          data = selection,
+          hcaes(x = year, y = sentiment)
         )
     }
     return(hc)
