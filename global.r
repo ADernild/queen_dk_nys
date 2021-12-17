@@ -37,6 +37,9 @@ source_year_en <- readRDS("data/source_year_eng.rds") # Sources and year of sour
 geojson <- readRDS("data/countries.rds") # Library containing geographic information
 
 # Formatting data ---------------------------------------------------------
+tokens <- tokens_dk
+lemma <- lemma_dk
+
 # Number of distinct headwords
 n_dist_t_headword <- nrow(distinct(tokens, stemmed))
 
