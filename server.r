@@ -24,9 +24,7 @@ server <- function(input, output, session) {
     most_common_any_year <<- max(tokens$n_stem_year)
     number_of_rarity <<- length(unique(arrange(tokens, desc(n_stem_total))$n_stem_total))
     n_dist_t_headword <<- nrow(distinct(tokens, stemmed))
-    
-    warning(n_dist_t_headword)
-    
+
     updateSelectizeInput(
       session, 'words', choices = words_tokens_all, selected = "", server = TRUE
     )
