@@ -295,7 +295,7 @@ poly_prep <- function(polygons, countries, years) {
   poly
 }
 
-pal <- colorNumeric(c("#a3dcff", "#007bff"), NULL)
+pal <- colorNumeric(rev(col_red_gradient), NULL)
 
 
 # Text --------------------------------------------------------------------
