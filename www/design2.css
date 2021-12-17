@@ -10,6 +10,10 @@ body, .content-wrapper, .skin-blue .wrapper{
   font-weight: bold;
 }
 
+.help-me{
+  color: #CCC;
+}
+
 .help-block{
   color: #C1C1c1;
 }
@@ -121,6 +125,11 @@ h1{
     color: #000;
     background: #F5D9D4; /*Danebrog photo white */
     border-left-color: #FFF;
+}
+
+.skin-blue .sidebar-menu>li:hover>a .help-me,
+.skin-blue .sidebar-menu>li.active>a .help-me{
+    color: #000;
 }
 
 /* Plots */

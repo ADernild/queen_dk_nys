@@ -48,11 +48,13 @@ server <- function(input, output, session) {
   ## Sidebar Menu -------------------------------------------------------------
   output$menu <- renderMenu({
       sidebarMenu(
-        menuItem("Welcome and about", tabName = "index", icon = icon("home"), selected = T),
-        menuItem("Topics", tabName = "tm", icon = icon("comment-dots")),
-        menuItem("Sentiment", tabName = "sentiment", icon = icon("theater-masks")),
-        menuItem("Map", tabName = "map", icon = icon("globe-europe")),
-        menuItem("Word statistic", tabName = "stats", icon = icon("chart-pie")),
+        menuItem(span("Welcome and about", title="Welcome page"), tabName = "index", icon = icon("home", title="Welcome page"), selected = T),
+        menuItem(span("Topics", title="Topics found, ready yo be analyzed"), tabName = "tm", icon = icon("comment-dots", title="Topics found, ready yo be analyzed")),
+        menuItem(span("Sentiment", title="Sentiment analysis for speeches and word selections"), tabName = "sentiment", icon = icon("theater-masks", title="Sentiment analysis for speeches and word selections")),
+        menuItem(span("Countries", title="Map of cointries mentioned during speeches"), tabName = "map", icon = icon("globe-europe", title="Map of cointries mentioned during speeches")),
+        menuItem(span("Word statistics", title="Statistics for all words"), tabName = "stats", icon = icon("chart-pie", title="Statistics for all words")),
+        menuItem(span("Data", title="Information about data sources and data subject"), tabName = "data", icon=icon("database", title="Information about data sources and data subject")),
+        menuItem(span("How to operate", class="help-me", title="Help and how to operate dashboard"), tabName = "howto", icon=icon("question-circle", class="help-me", title="Help and how to operate dashboard")),
         div(id="sidebar-input",
             h3("Filters"),
             # checkboxGroupInput("re",

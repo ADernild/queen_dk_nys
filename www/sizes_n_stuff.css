@@ -45,6 +45,10 @@ h2, h3{
   clear: both;
 }
 
+.help-me{
+  cursor: help;
+}
+
 /* Shiny dashboard */
 /* Main header */
 .main-header{
