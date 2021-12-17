@@ -133,7 +133,7 @@ ui <- dashboardPage(
             )
           ),
           fluidRow(class="box_align_layout",
-                   box(width=8, title = textOutput("topics_sentce_title"),
+                   box(width=5, title = textOutput("topics_sentce_title"),
                        whatViz("Samples of mentions."),
                        whyViz("To see examples of mentions."),
                        uiOutput("topicText"),
@@ -142,7 +142,10 @@ ui <- dashboardPage(
                            howViz("Click on a a topic in the topic map above.")
                        )
                    ),
-                   box(width = 4, id="map_sentece_slider_wrapper", title = "Sentence options",
+                    box(width=4, title = textOutput("topics_means_title"),
+                      highchartOutput("sent_topic")
+                    ),
+                   box(width = 3, id="map_sentece_slider_wrapper", title = "Sentence options",
                        whatViz("A slider to set the maxium amount of sample sentences."),
                        whyViz("To adjust how many sentece samples you want to see."),
                        sliderInput("topis_sentence_slider", label = "Senteces allowed", min=1, max=10, value=5, step=1, sep=""),
