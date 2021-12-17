@@ -49,6 +49,6 @@ new_speech <- data.frame(speech = new_speech, year = last_year)
 # Saving newest speech to new .csv
 df <- read.csv(paste0("data/new_year_speeches_1972-", (last_year-1), ".csv")) %>% 
   rbind(new_speech) %>% 
-  write.csv(paste0("data/new_year_speeches_1972-", (last_year), ".csv"))
+  write.csv(paste0("data/new_year_speeches_1972-", (last_year), ".csv"), row.names = F)
 
          
