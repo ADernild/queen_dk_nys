@@ -417,7 +417,7 @@ ui <- dashboardPage(
                                     howViz("Top frequent numbers: Top frequent numbers will filter for the most frequent numbers by the specified amount."),
                                     howViz("Year filter: Setting the year filter will filter for the words used in those years. It will display the word, the year, frequency of year, and frequency of word in all of the years, even outside of set filter."),
                                     howViz("Featured words: Setting featured words will filter for the words set in selection."),
-                                    helpText("Notice: Due to performance issues, scatterplot is limited to a maximum frequency of 20 Any number set above, will result in 20 being featured.")
+                                    helpText("Notice: Due to performance issues, scatterplot is limited to a maximum frequency of 20. Any number set above, will result in 20 being featured.")
                                 )
                        ),
                        tabPanel("Wordcloud",

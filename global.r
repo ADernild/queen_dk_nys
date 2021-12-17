@@ -36,7 +36,6 @@ source_year <- readRDS("data/source_year.rds") # Sources and year of source
 source_year_en <- readRDS("data/source_year_eng.rds") # Sources and year of source
 geojson <- readRDS("data/countries.rds") # Library containing geographic information
 
-
 # Formatting data ---------------------------------------------------------
 # Number of distinct headwords
 n_dist_t_headword <- nrow(distinct(tokens, stemmed))
@@ -85,28 +84,46 @@ colors_of_the_queen <- c(
 )
 
 ## For multiple series points/continuous ----
-col_multi <- colorBlindness::paletteMartin[2:(length(colorBlindness::paletteMartin))] # Good palette, but black for the first value is not good.
+col_multi <- c(
+  # colorBlindness::paletteMartin[2:(length(colorBlindness::paletteMartin))], # Good palette, but black for the first value is not good.
+  rev(Blue2DarkRed18Steps)[1:7],
+  rev(Blue2DarkRed18Steps)[11:length(Blue2DarkRed18Steps)],
+  Blue2DarkOrange18Steps[2:length(Blue2DarkOrange18Steps)] # It's fine. Most importantly, none of the colors are redundant, though some are similar
+) %>% 
+  as.character
 
 ## Two types ----
 col_dual <- c( # Based on colorBlindness::paletteMartin
-  "#B6DBFF", # Light blue
-  "#920000" # red
+  "#00CCCC", # Light blue
+  "#A50021" # red
 )
 
 ## For 2 or 4 series ----
+col_tri_pos <- c( # Based on colorBlindness::paletteMartin
+  "#A50021", # Dark red - representing false
+  "#00CCCC", # dark blue - representing true
+  "#65FFFF" # Light blue - representing true again
+)
+
+col_tri_neg <- c( # Based on colorBlindness::paletteMartin
+  "#A50021", # Dark red - representing false
+  "#FF7856", # Orange - representing false again
+  "#00CCCC" # dark blue - representing true
+)
+
 col_quad <- c( # Based on colorBlindness::paletteMartin
-  "#24FF24", # green - representing true
-  "#920000", # red - representing false
-  "#B6DBFF", # Light blue - representing true again
-  "#FFB6DB" # Pink - representing false again
+  "#00CCCC", # dark blue - representing true
+  "#A50021", # Dark red - representing false
+  "#65FFFF", # Light blue - representing true again
+  "#FF7856" # Orange - representing false again
 )
 
 # For comparing 2, sum, and something else ----
 col_quad_sum <- c( # Based on colorBlindness::paletteMartin
-  "#24FF24", # green - representing true
-  "#920000", # red - representing false
+  "#00CCCC", # dark blue - representing true
+  "#A50021", # Dark red - representing false
   "#DB6D00", # Orange - representing sum (red and green combined)
-  "#B66DFF" # purple - representing something unrelated to the others
+  "#662700" # Brown - representing something unrelated to the others
 )
 
 ## For levels ----
@@ -215,14 +232,33 @@ hc_dualcol <- function(x){
   x %>% hc_colors(col_dual)
 }
 
+hc_dualcol_rev <- function(x){
+  x %>% hc_colors(rev(col_dual))
+}
+
+hc_tricol_pos <- function(x){
+  x %>% hc_colors(col_tri_pos)
+}
+
+hc_tricol_neg <- function(x){
+  x %>% hc_colors(col_tri_neg)
+}
+
 hc_quadcol <- function(x){
   x %>% hc_colors(col_quad)
 }
 
+hc_quadcol_custom <- function(x){
+  x %>% hc_colors(c(
+    "#A50021", # Dark red - representing false
+    "#FF7856", # Orange - representing false again
+    "#00CCCC", # dark blue - representing true
+    "#65FFFF" # Light blue - representing true again
+  ))
+}
+
 hc_quadcolsum <- function(x){
   x %>% hc_colors(col_quad_sum)
-}
-hc_waytomanycol <- function(x, points){
 }
 
 # Sorting ----

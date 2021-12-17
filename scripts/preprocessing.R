@@ -52,7 +52,7 @@ tokens <- tokens %>%
   arrange(desc(n_total), word, desc(year), desc(n_in_year)) # arrange by largest n_total, word alphabetically, largest year and lastly largest n_in_year.
 
 # Stemming ----
-tokens$stemmed <- wordStem(tokens$word, language = "danish") #stemming
+tokens$stemmed <- wordStem(tokens$word, language = "danish") # stemming
 # tokens$stemmed_hunspell <- hunspell::hunspell_stem(tokens$word, dict = dictionary('da_DK')) # Dictionary based stemming
 # hunspell::hunspell_stem(tokens$word, dict = dictionary('da_DK'))
 

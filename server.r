@@ -231,8 +231,8 @@ server <- function(input, output, session) {
     if(length(input$words) > 0 && cmatch(data$stemmed, input$words)){
       data <- data %>%
         # filter(stemmed %in% input$words) %>% 
-        mutate(fwords = ifelse(stemmed %in% input$words, "featured word: Yes", "featured word: No")) %>% 
-        mutate(sentiment_true = paste(sentiment_true, fwords, sep=": "))
+        mutate(fwords = ifelse(stemmed %in% input$words, "featured word", "")) %>% 
+        mutate(sentiment_true = ifelse(stemmed %in% input$words, paste(sentiment_true, fwords, sep=" | "), sentiment_true))
     }
     
     data <- data %>% filter(year %in% y())
@@ -335,8 +335,8 @@ server <- function(input, output, session) {
                               '<tr><th>Overall sentiment:</th><td>{point.l}</td></tr>',
                               '<tr><th>Positive sentiment (x):</th><td>{point.x}</td></tr>',
                               '<tr><th>Negative sentiment (y):</th><td>{point.y}</td></tr>',
-                              '<tr><th>Summed sentiment:</th><td>{point.z}</td></tr>',
-                              '<tr><th>Words with polarity (size/saturation):</th><td>{point.pn}</td></tr>',
+                              '<tr><th>Summed sentiment (size/saturation):</th><td>{point.z}</td></tr>',
+                              '<tr><th>Words with polarity:</th><td>{point.pn}</td></tr>',
                               sep = ""),
           footerFormat = '</table>',
           followPointer = F,
@@ -405,19 +405,22 @@ server <- function(input, output, session) {
         type = "bar",
         stack = 1,
         name="Positive sentiment",
-        data = data$sentiment_pos
+        data = data,
+        hcaes(x = year, y = sentiment_pos)
       ) %>% 
       hc_add_series(
         type = "bar",
         stack = 1,
         name="Negative sentiment",
-        data = data$sentiment_neg
+        data = data,
+        hcaes(x = year, y = sentiment_neg)
       ) %>% 
       hc_add_series(
         type = "bar",
         stack = 2,
         name ="Summed sentiment",
-        data = data$sentiment
+        data = data,
+        hcaes(x = year, y = sentiment)
       ) %>% 
       hc_plotOptions(
         series = list (
@@ -429,8 +432,8 @@ server <- function(input, output, session) {
       ) %>% 
       hc_xAxis(
         reversed = T,
-        startOnTick = T,
-        categories = data$year,
+        # endOnTick = T,
+        # startOnTick = T,
         title = list(
           text = "Year"
         )
@@ -469,7 +472,8 @@ server <- function(input, output, session) {
           type = "bar",
           stack = 3,
           name= "Sentiment of selection",
-          data = selection$sentiment
+          data = selection,
+          hcaes(x = year, y = sentiment)
         )
     }
     return(hc)
@@ -533,7 +537,7 @@ server <- function(input, output, session) {
       distinct(stemmed, .keep_all = TRUE) %>% 
       arrange(polarity, n_stem_total)
     
-    hchart(data,
+    hc <- hchart(data,
            hcaes(x = stemmed, y = polarity, group = sentiment_true),
            type="column") %>% 
       hc_yAxis(
@@ -553,8 +557,19 @@ server <- function(input, output, session) {
       ) %>% 
       hc_xAxis(
         reversed = T
-      ) %>% 
-      hc_queencol()
+      )
+    if(length(unique(data$sentiment_true))<=2){
+      hc <- hc %>% hc_dualcol_rev()
+    } else if(length(unique(data$sentiment_true))==3){
+      if("Positive | featured word" %in% unique(data$sentiment_true)){
+        hc <- hc %>% hc_tricol_pos()
+      } else{
+        hc <- hc %>% hc_tricol_neg()
+      }
+    } else{
+      hc <- hc %>% hc_quadcol_custom()
+    }
+    return(hc)
   })
 
   ### Word comparison ------------------------------------------------------
@@ -571,7 +586,7 @@ server <- function(input, output, session) {
         arrange(n_stem_total, polarity)
     }
     
-    hchart(data,
+    hc <- hchart(data,
            hcaes(x = stemmed, y = n_stem_total, group = sentiment_true),
            type="column") %>% 
       hc_yAxis(
@@ -591,8 +606,19 @@ server <- function(input, output, session) {
       ) %>% 
       hc_xAxis(
         reversed = T
-      ) %>% 
-      hc_queencol()
+      )
+    if(length(unique(data$sentiment_true))<=2){
+      hc <- hc %>% hc_dualcol_rev()
+    } else if(length(unique(data$sentiment_true))==3){
+      if("Positive | featured word" %in% unique(data$sentiment_true)){
+        hc <- hc %>% hc_tricol_pos()
+      } else{
+        hc <- hc %>% hc_tricol_neg()
+      }
+    } else{
+      hc <- hc %>% hc_quadcol_custom()
+    }
+    return(hc)
   })
   
 
