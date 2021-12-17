@@ -124,7 +124,6 @@ ui <- dashboardPage(
                 whatViz("Topic model is a tool that maps topics. It does so by analyzing word relations by analyzing all speeches and mapping the relations as word matrixes. Then the model displays the topics to the left, and the words within on the right. Frequency of use is depicted by size for topics, and bar length for words. Topics are named 1:n, where 1 is the largest topic."),
                 whyViz("The topics model can be used to get an understanding of themes present in the speeches throughout the years."),
                 visOutput("topicVis"),
-                uiOutput("topicText"),
                 box(width = 12, class="infoViz", title = "How to use",
                     collapsible = T, collapsed = T,
                     howViz("Topics (left): The sizes in the visualization in the body represent frequency and can be interpreted as so. To inspect a topic, it can be selected in the selector in the header, a topic circle can be hovered. Clicking a topic will keep it highlighted."),
@@ -132,6 +131,26 @@ ui <- dashboardPage(
                     howViz("Relevance metric slider (right header): The slider adjusts relevance for words to be part of a topic. To see it work, first highlight a topic (by clicking or using the top left filter).")
                 )
             )
+          ),
+          fluidRow(class="box_align_layout",
+                   box(width=8, title = textOutput("topics_sentce_title"),
+                       whatViz("Samples of mentions."),
+                       whyViz("To see examples of mentions."),
+                       uiOutput("topicText"),
+                       box(width = 12, class="infoViz", title = "How to use",
+                           collapsible = T, collapsed = T,
+                           howViz("Click on a a topic in the topic map above.")
+                       )
+                   ),
+                   box(width = 4, id="map_sentece_slider_wrapper", title = "Sentence options",
+                       whatViz("A slider to set the maxium amount of sample sentences."),
+                       whyViz("To adjust how many sentece samples you want to see."),
+                       sliderInput("topis_sentence_slider", label = "Senteces allowed", min=1, max=10, value=5, step=1, sep=""),
+                       box(width = 12, class="infoViz", title = "How to use",
+                           collapsible = T, collapsed = T,
+                           howViz("Drag the cirkle on the slider to any number.")
+                       )
+                   )
           )
       ),
       # Sentiment ----

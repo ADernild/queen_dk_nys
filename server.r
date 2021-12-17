@@ -229,16 +229,24 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$topicVis_topic_click, {
+    req(input$topis_sentence_slider)
+    slide_num <- input$topis_sentence_slider
     topic <- input$topicVis_topic_click
     output$topicText <- renderUI({
       sentences <- unlist(thoughts()$docs[topic])
-      sentences <- sample(sentences, ifelse(length(sentences)<5, length(sentences), 5)) %>%
+      sentences <- sample(sentences, ifelse(length(sentences)<slide_num, length(sentences), slide_num)) %>%
         str_to_sentence()
       
-      paste("<h3>Sentences belonging to topic", topic, "</h3>","<ul>", paste0("<li>", sentences, ".", "</li>", collapse = ""), "</ul>") %>%
+      output$topics_sentce_title <-  renderText({
+        paste("Sentences belonging to topic", topic)
+      })
+      
+      paste("<ul>", paste0("<li>", sentences, ".", "</li>", collapse = ""), "</ul>") %>%
         HTML()
     })
+    
   })
+  
   observeEvent(input$topicVis_term_click, {
     updateSelectizeInput(session, 
                          "words", 
@@ -246,7 +254,11 @@ server <- function(input, output, session) {
                          selected = c(input$words, input$topicVis_term_click)
                          )
   })
-
+  
+  output$topics_sentce_title <-  renderText({
+    "Sentences belonging to topics"
+  })
+  
   # Sentiment ---------------------------------------------------------------
   ## sentiment data ---------------------------------------------------------
   sentiment_of_speech_data <- reactive({
@@ -935,10 +947,12 @@ server <- function(input, output, session) {
       }) 
       
       output$sentences <- renderUI({ # Showing sentences of country mentioned
+        req(input$map_sentence_slider)
         data <- tidyr::unnest(tidyr::unnest(selected, cols = c(year, sentence)), cols=c(sentence)) %>% 
           unique() %>% 
           select(sentence, year)
-        sentences <- data[sample.int(nrow(data), size = ifelse(nrow(data) < 5, nrow(data), 5)),]
+        slide_num <- input$map_sentence_slider
+        sentences <- data[sample.int(nrow(data), size = ifelse(nrow(data) < slide_num, nrow(data), slide_num)),]
         sentences$sentence <- str_to_sentence(sentences$sentence)
         
         output$map_sentce_title <-  renderText({
