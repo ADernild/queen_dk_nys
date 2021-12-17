@@ -877,7 +877,7 @@ server <- function(input, output, session) {
       select(sentence, year)
     sentences <- data[sample.int(nrow(data), size = 5),]
     sentences$sentence <- str_to_sentence(sentences$sentence)
-    paste("<h3> Sentences mentioning a country</h3>", "<ul>", paste0("<li>", sentences$sentence, ".", " (", sentences$year, ")", "</li>", collapse=""),"</ul>") %>% 
+    paste("<ul>", paste0("<li>", sentences$sentence, ".", " (", sentences$year, ")", "</li>", collapse=""),"</ul>") %>% 
       HTML()
   })
   
@@ -941,12 +941,20 @@ server <- function(input, output, session) {
         sentences <- data[sample.int(nrow(data), size = ifelse(nrow(data) < 5, nrow(data), 5)),]
         sentences$sentence <- str_to_sentence(sentences$sentence)
         
+        output$map_sentce_title <-  renderText({
+          "disdatter 2r"
+        })
+
         paste("<h3>Sentences mentioning", click$id, "</h3>", "<ul>", paste0("<li>", sentences$sentence, ".", " (", sentences$year, ")", "</li>", collapse=""),"</ul>") %>% 
           HTML()
       })
       }
     })
-
+  
+  output$map_sentce_title <-  renderText({
+    "disdatter"
+  })
+  
   # Word statistics ---------------------------------------------------------
   ## Word data --------------------------------------------------------------
   speech_data <- reactive({
