@@ -128,77 +128,13 @@ col_quad_sum <- c( # Based on colorBlindness::paletteMartin
 
 ## For levels ----
 col_red_gradient <- c(
-  "#ff0000",
-  "#fff8f6"
+  "#A50021",
+  "#ffd1c1"
 )
 
 col_blu_gradient <- c(
-  "#1500ff",
-  "#fbf7ff"
-)
-
-col_red_levels <- c( # Based on the dannebrog red towards white - with white removed - with Bézier interpolation
-  "#ff0000",
-  "#ff210e",
-  "#ff3219",
-  "#ff3f22",
-  "#ff4a2b",
-  "#ff5434",
-  "#ff5d3c",
-  "#ff6544",
-  "#ff6e4c",
-  "#ff7654",
-  "#ff7d5c",
-  "#ff8565",
-  "#ff8c6d",
-  "#ff9375",
-  "#ff9a7d",
-  "#ffa185",
-  "#ffa88e",
-  "#ffaf96",
-  "#ffb69f",
-  "#ffbda7",
-  "#ffc3b0",
-  "#ffcab8",
-  "#ffd1c1",
-  "#ffd7ca",
-  "#ffded2",
-  "#ffe5db",
-  "#ffebe4",
-  "#fff2ed",
-  "#fff8f6"
-)
-
-col_blu_levels <- c( # Based on #1500FF towards white - with white removed - with Bézier interpolation
-  "#1500ff",
-  "#3414ff",
-  "#4622ff",
-  "#552cff",
-  "#6136ff",
-  "#6b3fff",
-  "#7548ff",
-  "#7e50ff",
-  "#8658ff",
-  "#8e60ff",
-  "#9668ff",
-  "#9d70ff",
-  "#a478ff",
-  "#aa80ff",
-  "#b188ff",
-  "#b78fff",
-  "#bd97ff",
-  "#c39fff",
-  "#c8a7ff",
-  "#ceafff",
-  "#d3b7ff",
-  "#d9bfff",
-  "#dec7ff",
-  "#e3cfff",
-  "#e8d7ff",
-  "#eddfff",
-  "#f1e7ff",
-  "#f6efff",
-  "#fbf7ff"
+  "#00CCCC",
+  "#dec7ff"
 )
 
 # Highchart options -------------------------------------------------------
