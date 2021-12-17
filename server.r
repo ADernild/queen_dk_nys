@@ -638,8 +638,8 @@ server <- function(input, output, session) {
       hc_yAxis(
         startOnTick = T,
         tickInterval = 1,
-        min = -3,
-        max = 3,
+        min = -5,
+        max = 5,
         title = list(
           text = "Polarity"
         )

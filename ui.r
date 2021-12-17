@@ -210,7 +210,7 @@ ui <- dashboardPage(
               ),
               fluidRow(class="box_align_layout",
                 # Show a plot of the generated distribution
-                box(width=5, title = "Sentiment of words (-3:3)",
+                box(width=5, title = "Sentiment of words",
                     whatViz("Sentiment of words displays words by sentiment."),
                     whyViz("Sentiment of words can help you identify what words influenced the sentiment."),
                     highchartOutput("sentiment_of_words", height="35vh"),
