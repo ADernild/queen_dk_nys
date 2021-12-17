@@ -268,7 +268,7 @@ ui <- dashboardPage(
               fluidRow(class="box_align_layout",
                 box(width=8,  
                     leafletOutput("map", height = 740),
-                    uiOutput("sentences"),
+                    # uiOutput("sentences"),
                     box(width = 12, class="infoViz", title = "Expl.",
                         collapsible = T, collapsed = T,
                         whatViz("A world map, with countries mentioned in speeches."),
@@ -289,6 +289,14 @@ ui <- dashboardPage(
                         howViz("Tooltip bar chart: hovering over a bar shows the amount a specific country is mentioned in that year, compared to mentions of countries in general"),
                         howViz("Tooltip boxplot: hovering over a box shows distribution statistics of the average sentiment of sentences, in which a specific country is mentioned, compared to the distribution of average sentiment of sentences, in which any country is mentioned.")
                     )
+                )
+              ),
+              fluidRow(
+                box(width=8, title = "Sentence(s) mentioning a country",
+                    uiOutput("sentences")
+                ),
+                box(width = 4, id="map_sentece_slider_wrapper", title = "Sentence options",
+                    sliderInput("map_sentence_slider", label = "Senteces allowed", min=1, max=149, value=1, step=1, sep=""),
                 )
               )
       ),

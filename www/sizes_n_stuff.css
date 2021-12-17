@@ -394,3 +394,8 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
 .box_align_layout>div .box{
   height: 100%;
 }
+
+/* Map */
+#map_sentece_slider_wrapper .shiny-input-container{
+  float: none;
+}
