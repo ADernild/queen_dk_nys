@@ -18,14 +18,13 @@ df_en <- read.csv("data/nys_sentences_eng.csv", encoding = "UTF-8")
 # Making stopwords list
 stop_words <- read.csv("utils/custom_stopwords.txt", header=F) %>% 
   rbind(read.csv("utils/stopord.txt", header=F)) %>% 
-  rbind(stopwords::stopwords(language = "da", source = "snowball")) %>% 
+  rbind(data.frame(V1 = stopwords::stopwords(language = "da", source = "snowball"))) %>% 
   unique() %>%
   rbind("danmark", "danske") %>% 
   rename(word = V1)
 
 stop_words_en <- read.csv("utils/custom_stopwords_en.txt", header=F) %>% 
-  rbind(stopwords::stopwords(language = "en", source = "snowball")) %>% 
-  rbind("danmark", "danske") %>% 
+  rbind(data.frame(V1 = stopwords::stopwords(language = "en", source = "snowball"))) %>% 
   rename(word = V1)
 
 # STM 

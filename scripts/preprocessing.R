@@ -6,10 +6,12 @@ library(tidytext)
 library(udpipe)
 # library(hunspell)
 
+setwd("../")
 
 # Importing cleanned speaches ----
 last_year <- as.integer(format(Sys.Date(), "%Y")) - 1 # Last year i.e., the year of the lastest speech
 df <- read.csv(paste0("data/nys_1972-", last_year, "_cleaned.csv"), encoding = "UTF-8")
+
 
 # Tokenization ----
 # Removing stopwords and stemming
@@ -88,4 +90,60 @@ tokens <- tokens %>%
 # Save tokens ----
 saveRDS(tokens,"data/tokens.rds")
 
-# Extract countries ----
+# English speeches with a function ------
+df_en <- read.csv(paste0("data/nys_2010-", last_year, "_eng_cleaned.csv"), encoding = "UTF-8")
+
+## English stopwords ----
+stop_words_en <- read.csv("utils/custom_stopwords_en.txt", header=F) %>% 
+  rbind(data.frame(V1 = stopwords::stopwords(language = "en", source = "snowball"))) %>% 
+  rename(word = V1)
+
+preprocess <- function(df, stop_words, lang) {
+  tokens <- tibble(df_en) %>% 
+    unnest_tokens(word, speech) %>% 
+    anti_join(stop_words, by = "word") %>% 
+    count(year, word, sort = T)
+  
+  total_tokens <- tokens %>% 
+    group_by(word) %>% 
+    summarise(n_total = sum(n))
+  
+  tokens <- tokens %>% 
+    left_join(total_tokens, by = "word") %>%
+    rename(n_in_year = n) %>% 
+    arrange(desc(n_total), word, desc(year), desc(n_in_year))
+  
+  tokens$stemmed <- wordStem(tokens$word, language = lang)
+
+  total_tokens <- tokens %>%
+    group_by(stemmed) %>%
+    summarise(n_stem_total = sum(n_in_year))
+
+  tokens <- tokens %>%
+    left_join(total_tokens, by="stemmed") %>%
+    arrange(desc(n_stem_total), word, desc(n_total), desc(year), desc(n_in_year)) # arrange by largest n_total, word alphabetically, largest year and lastly largest n_in_year.
+
+  # Lemmatization ----
+  lemmi <- udpipe(df$speech, lang)
+  lemmi <- lemmi[colSums(!is.na(lemmi)) > 0]
+
+  ## Implement legitimized references into tokens ----
+  tokens <- tokens %>%
+    rowwise() %>%
+    mutate(lemma = paste(unique(lemmi[lemmi$token == word,]$lemma), collapse=","))
+
+  ## Count total occurrences of limmitized words ----
+  total_tokens <- tokens %>%
+    group_by(lemma) %>%
+    summarise(n_lemma_total = sum(n_in_year))
+
+  tokens <- tokens %>%
+    left_join(total_tokens, by="lemma") %>%
+    arrange(desc(n_lemma_total), word, desc(n_stem_total), desc(n_total), desc(year), desc(n_in_year)) # arrange by largest n_lemma_total, word alphabetically, largest n_stem_total, largest year and lastly largest n_in_year.
+  
+  list(tokens = tokens, lemma = lemmi)
+}
+
+preprocessed_en <- preprocess(df_en, stop_words_en, "english")
+saveRDS(preprocessed_en$tokens, "data/tokens_en.rds")
+saveRDS(preprocessed_en$lemma, "data/lemma_en.rds")
