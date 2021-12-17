@@ -189,7 +189,6 @@ opts <- getOption("highcharter.options")
 opts$lang$decimalPoint <- "."
 options(highcharter.options = opts)
 
-
 ## Highcharts functions ----
 hc_norevese <- function(x){
   x %>% 
