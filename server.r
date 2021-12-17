@@ -811,10 +811,12 @@ server <- function(input, output, session) {
   ## Sentences --------------------------------------------------------------
   output$sentences <- renderUI({
     data <- mapData()
-    sentences <- sample(unlist(data@data$sentence), size = 5)
-    sentences <- sentences[!is.na(sentences)] %>% 
-      str_to_sentence()
-    paste("<h3> Sentences mentioning a country</h3>", "<ul>", paste0("<li>", sentences, ".", "</li>", collapse=""),"</ul>") %>% 
+    data <- tidyr::unnest(tidyr::unnest(data@data, cols = c(year, sentence)), cols=c(sentence)) %>% 
+      unique() %>% 
+      select(sentence, year)
+    sentences <- data[sample.int(nrow(data), size = 5),]
+    sentences$sentence <- str_to_sentence(sentences$sentence)
+    paste("<h3> Sentences mentioning a country</h3>", "<ul>", paste0("<li>", sentences$sentence, ".", " (", sentences$year, ")", "</li>", collapse=""),"</ul>") %>% 
       HTML()
   })
   
@@ -867,11 +869,13 @@ server <- function(input, output, session) {
       }) 
       
       output$sentences <- renderUI({ # Showing sentences of country mentioned
-        sentences <- unlist(selected$sentence)
-        sentences <- sample(sentences, ifelse(length(sentences)<5, length(sentences), 5)) %>% 
-          str_to_sentence()
+        data <- tidyr::unnest(tidyr::unnest(selected, cols = c(year, sentence)), cols=c(sentence)) %>% 
+          unique() %>% 
+          select(sentence, year)
+        sentences <- data[sample.int(nrow(data), size = ifelse(nrow(data) < 5, nrow(data), 5)),]
+        sentences$sentence <- str_to_sentence(sentences$sentence)
         
-        paste("<h3>Sentences mentioning", click$id, "</h3>", "<ul>", paste0("<li>", sentences, ".", "</li>", collapse=""),"</ul>") %>% 
+        paste("<h3>Sentences mentioning", click$id, "</h3>", "<ul>", paste0("<li>", sentences$sentence, ".", " (", sentences$year, ")", "</li>", collapse=""),"</ul>") %>% 
           HTML()
       })
       }

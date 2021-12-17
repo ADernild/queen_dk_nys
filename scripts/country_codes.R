@@ -40,7 +40,7 @@ df_eng$sentences <- paste("", df_eng$sentences)
 
 match_countries <- function(df, coords, lang="da"){
   if(lang == "da"){
-    matches <- data.frame(t(sapply(seq(length(df$sentences)), function(i) list(countries=unlist(str_match_all(df$sentences[i], coords$land)),
+    matches <- data.frame(t(sapply(seq(length(df$sentences)), function(i) list(countries=unlist(str_match_all(df$sentences[i], unique(coords$land))),
                                                                                year=df$years[i],
                                                                                sentiment=df$polarity[i],
                                                                                sentence=df$sentences[i],
