@@ -30,7 +30,7 @@ See live on: https://app.dernild.com/
 - [x] Implement worldmap and map placese the queens mentions.
 - [x] Implement visualizations of the most used words.
 - [x] Analyse sentiment by year.
-- [ ] Format data for display (M).
+- [R] Format data for display (M).
 - [ ] Optimize visualisations for english speech data (A/M).
 - [x] Create interactive dashboard to interact with findings.
 - \* Implement consistent colorpalette for data (M).
