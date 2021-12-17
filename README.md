@@ -33,13 +33,13 @@ See live on: https://app.dernild.com/
 - [R] Format data for display (M).
 - [R] Optimize visualisations for english speech data.
 - [x] Create interactive dashboard to interact with findings.
-- \* Implement consistent colorpalette for data (M).
+- [R] Implement consistent colorpalette for data (M).
 - [x] Add filtering by year and words.
 - [x] Create list of data sources in dashboard.
 - [x] Feature information about the queen that is scraped from wikipedia.
-- \* Implement language option for dahsboard, and reactively update data sources (M).
-- [ ] Finalize design of dashboard (M)
-- [ ] Split Index tab into: index, How-to and about tabs (M).
+- [R] Implement language option for dahsboard, and reactively update data sources (M).
+- [R] Finalize design of dashboard (M)
+- [R] Split Index tab into: index, How-to and about tabs (M).
 - [ ] Improve ussage description to dashboard on index tab.
 - [R] Move What an Why above charts (M).
 - [R] Rename Expl. to "How (to use)" (M).
