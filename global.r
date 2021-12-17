@@ -15,6 +15,8 @@ library(stringr)
 # library(RColorBrewer) # To color worldclouds. Requirement of wordlclouds
 # library(wordcloud) # To create wordclouds
 library(wordcloud2) # Two create wordclouds
+library(colorBlindness) # For colors
+# library(cartography) # For colors
 
 # Load data ---------------------------------------------------------------
 tokens <- readRDS("data/tokens.rds") # All tokens, filtered
@@ -68,6 +70,7 @@ number_of_rarity <- length(unique(arrange(tokens, desc(n_stem_total))$n_stem_tot
 # Colors ------------------------------------------------------------------
 # Chosen with https://coolors.co/ using refference picture:
 # https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Drottning_Margrethe_av_Danmark_crop.jpg/210px-Drottning_Margrethe_av_Danmark_crop.jpg
+# Note: using our own colorpalette is cool and stuff, but i have not optimized it greatly for colorblindness, so using a standard scheme might be better.
 colors_of_the_queen <- c(
   "#4D5749", # Falling royal star of the queen / Ebony
   "#BB3F56", # Her majesty lipstick / English red
@@ -79,6 +82,106 @@ colors_of_the_queen <- c(
   "#9F9080", # Royal hair / Grullo
   "#321403", # Royal brown button / Black bean
   "#C0BFBB" # Hair of the majestic / Gray X 11 gray
+)
+
+## For multiple series points/continuous ----
+col_multi <- colorBlindness::paletteMartin[2:(length(colorBlindness::paletteMartin))] # Good palette, but black for the first value is not good.
+
+## Two types ----
+col_dual <- c( # Based on colorBlindness::paletteMartin
+  "#B6DBFF", # Light blue
+  "#920000" # red
+)
+
+## For 2 or 4 series ----
+col_quad <- c( # Based on colorBlindness::paletteMartin
+  "#24FF24", # green - representing true
+  "#920000", # red - representing false
+  "#B6DBFF", # Light blue - representing true again
+  "#FFB6DB" # Pink - representing false again
+)
+
+# For comparing 2, sum, and something else ----
+col_quad_sum <- c( # Based on colorBlindness::paletteMartin
+  "#24FF24", # green - representing true
+  "#920000", # red - representing false
+  "#DB6D00", # Orange - representing sum (red and green combined)
+  "#B66DFF" # purple - representing something unrelated to the others
+)
+
+## For levels ----
+col_red_gradient <- c(
+  "#ff0000",
+  "#fff8f6"
+)
+
+col_blu_gradient <- c(
+  "#1500ff",
+  "#fbf7ff"
+)
+
+col_red_levels <- c( # Based on the dannebrog red towards white - with white removed - with Bézier interpolation
+  "#ff0000",
+  "#ff210e",
+  "#ff3219",
+  "#ff3f22",
+  "#ff4a2b",
+  "#ff5434",
+  "#ff5d3c",
+  "#ff6544",
+  "#ff6e4c",
+  "#ff7654",
+  "#ff7d5c",
+  "#ff8565",
+  "#ff8c6d",
+  "#ff9375",
+  "#ff9a7d",
+  "#ffa185",
+  "#ffa88e",
+  "#ffaf96",
+  "#ffb69f",
+  "#ffbda7",
+  "#ffc3b0",
+  "#ffcab8",
+  "#ffd1c1",
+  "#ffd7ca",
+  "#ffded2",
+  "#ffe5db",
+  "#ffebe4",
+  "#fff2ed",
+  "#fff8f6"
+)
+
+col_blu_levels <- c( # Based on #1500FF towards white - with white removed - with Bézier interpolation
+  "#1500ff",
+  "#3414ff",
+  "#4622ff",
+  "#552cff",
+  "#6136ff",
+  "#6b3fff",
+  "#7548ff",
+  "#7e50ff",
+  "#8658ff",
+  "#8e60ff",
+  "#9668ff",
+  "#9d70ff",
+  "#a478ff",
+  "#aa80ff",
+  "#b188ff",
+  "#b78fff",
+  "#bd97ff",
+  "#c39fff",
+  "#c8a7ff",
+  "#ceafff",
+  "#d3b7ff",
+  "#d9bfff",
+  "#dec7ff",
+  "#e3cfff",
+  "#e8d7ff",
+  "#eddfff",
+  "#f1e7ff",
+  "#f6efff",
+  "#fbf7ff"
 )
 
 # Highchart options -------------------------------------------------------
@@ -105,6 +208,23 @@ hc_queencol <- function(x){
   x %>% hc_colors(colors_of_the_queen)
 }
 
+hc_multicol <- function(x){
+  x %>% hc_colors(col_multi)
+}
+
+hc_dualcol <- function(x){
+  x %>% hc_colors(col_dual)
+}
+
+hc_quadcol <- function(x){
+  x %>% hc_colors(col_quad)
+}
+
+hc_quadcolsum <- function(x){
+  x %>% hc_colors(col_quad_sum)
+}
+hc_waytomanycol <- function(x, points){
+}
 
 # Sorting ----
 cmatch <- function(left, right){
@@ -162,35 +282,3 @@ howViz <- function(text){
     text
   )
 }
-
-# library(colorspace)
-# 
-# cols <- colors_of_the_queen
-# new_col <- c()
-# for(i in 1:10){
-# 
-#   cols1 <- readhex(file = textConnection(paste(cols, collapse = "\n")),
-#                    class = "RGB")
-#   #transform to hue/lightness/saturation colorspace
-#   cols2 <- as(cols1, "HLS")
-#   #additive decrease of lightness
-#   #multiplicative decrease of lightness
-#   cols2@coords[, "L"] <- cols2@coords[, "L"] * 0.75
-#   #going via rgb seems to work better
-#   cols2 <- as(cols2, "RGB")
-#   cols2 <- hex(cols2)
-#   #again
-#   cols1 <- readhex(file = textConnection(paste(cols2, collapse = "\n")),
-#                    class = "RGB")
-#   cols2 <- as(cols1, "HLS")
-#   #additive decrease of lightness
-#   #multiplicative decrease of lightness
-#   cols2@coords[, "L"] <- cols2@coords[, "L"] * 0.75
-#   #going via rgb seems to work better
-#   cols2 <- as(cols2, "RGB")
-#   cols2 <- hex(cols2)
-#   cols <- cols2
-#   new_col <- c(new_col, cols)
-# 
-# }
-# paste0(new_col, collapse = '",')

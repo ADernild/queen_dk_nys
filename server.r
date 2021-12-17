@@ -297,7 +297,7 @@ server <- function(input, output, session) {
     if("fwords" %in% colnames(data)){
       hc <- hchart(data,
                    type="bubble",
-                   hcaes(x = sentiment_pos, y = sentiment_neg, z = (n_words/max(n_words)), size = n_words, s = sentiment, l = sentiment_label, name = year, group = fwords, fwords = fwords),
+                   hcaes(x = sentiment_pos, y = sentiment_neg, z = sentiment, pn = n_words, size = sentiment, l = sentiment_label, name = year, group = fwords, fwords = fwords),
                    showInLegend = F,
                    stickyTracking = F,
                    styledMode = T
@@ -310,20 +310,19 @@ server <- function(input, output, session) {
                               '<tr><th>Overall sentiment:</th><td>{point.l}</td></tr>',
                               '<tr><th>Positive sentiment (x):</th><td>{point.x}</td></tr>',
                               '<tr><th>Negative sentiment (y):</th><td>{point.y}</td></tr>',
-                              '<tr><th>Summed sentiment:</th><td>{point.s}</td></tr>',
-                              '<tr><th>Words with polarity (size):</th><td>{point.size}</td></tr>',
+                              '<tr><th>Summed sentiment (size/saturation):</th><td>{point.z}</td></tr>',
+                              '<tr><th>Words with polarity:</th><td>{point.pn}</td></tr>',
                               sep = ""),
           footerFormat = '</table>',
           followPointer = F,
           followTouchMove = F,
           snap = 100,
           hideDelay = 500
-        ) %>% 
-        hc_queencol()
+        )
     } else{
       hc <- hchart(data,
              type="bubble",
-             hcaes(x = sentiment_pos, y = sentiment_neg, z = (n_words/max(n_words)), size = n_words, s = sentiment, l = sentiment_label, name = year, group = year),
+             hcaes(x = sentiment_pos, y = sentiment_neg, z = sentiment, pn = n_words, size = sentiment, l = sentiment_label, name = year, group = year),
              showInLegend = F,
              stickyTracking = F,
              styledMode = T
@@ -335,21 +334,33 @@ server <- function(input, output, session) {
                               '<tr><th>Overall sentiment:</th><td>{point.l}</td></tr>',
                               '<tr><th>Positive sentiment (x):</th><td>{point.x}</td></tr>',
                               '<tr><th>Negative sentiment (y):</th><td>{point.y}</td></tr>',
-                              '<tr><th>Summed sentiment:</th><td>{point.s}</td></tr>',
-                              '<tr><th>Words with polarity (size):</th><td>{point.size}</td></tr>',
+                              '<tr><th>Summed sentiment:</th><td>{point.z}</td></tr>',
+                              '<tr><th>Words with polarity (size/saturation):</th><td>{point.pn}</td></tr>',
                               sep = ""),
           footerFormat = '</table>',
           followPointer = F,
           followTouchMove = F,
           snap = 100,
           hideDelay = 500
+        ) %>% 
+        hc_colorAxis(
+          minColor = col_red_gradient[2],
+          maxColor = col_red_gradient[1],
+          floor = min(data$sentiment),
+          ceiling = max(data$sentiment),
+          min = min(data$sentiment),
+          max = max(data$sentiment),
+          startOnTick = T,
+          endOnTick = T,
+          dataClassColor = "category",
+          title = "Sentiment"
         )
     }
     hc %>%
       hc_plotOptions(
         bubble = list(
-          minSize = paste(15, "%", sep=""),
-          maxSize = paste(30, "%", sep="")
+          minSize = paste(7.5, "%", sep=""),
+          maxSize = paste(15, "%", sep="")
         ),
         series = list(
           animation = list(
@@ -371,13 +382,18 @@ server <- function(input, output, session) {
       hc_yAxis(
         reversed = T,
         startOnTick = T,
-        gridLineWidth = T
+        gridLineWidth = T,
+        title = list(
+          text = "Positive sentiment"
+        )
       ) %>% 
       hc_xAxis(
         startOnTick = T,
-        gridLineWidth = T
-      ) %>% 
-      hc_queencol()
+        gridLineWidth = T,
+        title = list(
+          text = "Negative sentiment"
+        )
+      )
   })
   
   ### Column compare -------------------------------------------------------
@@ -387,19 +403,19 @@ server <- function(input, output, session) {
       hc_add_series(
         type = "bar",
         stack = 1,
-        name="Positives",
+        name="Positive sentiment",
         data = data$sentiment_pos
       ) %>% 
       hc_add_series(
         type = "bar",
         stack = 1,
-        name="Negatives",
+        name="Negative sentiment",
         data = data$sentiment_neg
       ) %>% 
       hc_add_series(
         type = "bar",
         stack = 2,
-        name ="Sum",
+        name ="Summed sentiment",
         data = data$sentiment
       ) %>% 
       hc_plotOptions(
@@ -412,7 +428,17 @@ server <- function(input, output, session) {
       ) %>% 
       hc_xAxis(
         reversed = T,
-        categories = data$year
+        startOnTick = T,
+        categories = data$year,
+        title = list(
+          text = "Year"
+        )
+      ) %>% 
+      hc_yAxis(
+        startOnTick = T,
+        title = list(
+          text = "Sentiment"
+        )
       ) %>% 
       hc_legend(
         reversed = T
@@ -420,7 +446,7 @@ server <- function(input, output, session) {
       hc_tooltip(
         shared = T
       ) %>% 
-      hc_queencol()
+      hc_quadcolsum()
     if(length(input$words)>0){
       selection <- sentiment_of_speech_data_filtered() %>% 
         select(sentiment, year, stemmed) %>% 
@@ -437,12 +463,11 @@ server <- function(input, output, session) {
         group_by(year) %>% 
         summarise(sentiment = sum(sentiment)) %>% 
         arrange(year, sentiment)
-      dis<<-sentiment
       hc <- hc %>%
         hc_add_series(
           type = "bar",
           stack = 3,
-          name= "Selection",
+          name= "Sentiment of selection",
           data = selection$sentiment
         )
     }
@@ -456,9 +481,9 @@ server <- function(input, output, session) {
       hc_add_series(
         name = "Total sentiment",
         type = "arearange",
-        stack = 1,
         data = data,
-        hcaes(x = year, low = sentiment, high = sentiment_pos, neg = sentiment_neg)
+        hcaes(x = year, low = sentiment, high = sentiment_pos, neg = sentiment_neg),
+        showInLegend = F
       ) %>% 
       hc_norevese() %>% 
       hc_tooltip(
@@ -470,17 +495,20 @@ server <- function(input, output, session) {
         softMin = 0,
         startOnTick = T
       ) %>% 
-      hc_queencol()
-    # if(length(input$words)){
-    #   selection <- sentiment_of_speech_data_filtered()
-    #   hc <- hc %>% 
-    #     hc_add_series(
-    #       type = "arearange",
-    #       name= "Selection",
-    #       data = selection,
-    #       hcaes(x = year, low = sentiment, high = sentiment_pos, neg = sentiment_neg)
-    #     ) 
-    # }
+      hc_xAxis(
+        startOnTick = T,
+        categories = data$year,
+        title = list(
+          text = "Year"
+        )
+      ) %>% 
+      hc_yAxis(
+        startOnTick = T,
+        title = list(
+          text = "Sentiment"
+        )
+      ) %>% 
+      hc_multicol()
     return(hc)
   })
   
@@ -494,7 +522,7 @@ server <- function(input, output, session) {
            styledMode = T
     ) %>% 
       hc_norevese() %>% 
-      hc_queencol()
+      hc_multicol()
   })
 
   ## sentiment_of_words ----------------------------------------------------
@@ -750,7 +778,7 @@ server <- function(input, output, session) {
       hchart("bar", hcaes(x="year", y="n_year")) %>% 
       hc_yAxis(title = list(text = "Mentions per year")) %>% 
       hc_xAxis(title = list(text = "Year")) %>% 
-      hc_queencol()
+      hc_dualcol()
   })
   
   ## Sentences --------------------------------------------------------------
@@ -790,7 +818,8 @@ server <- function(input, output, session) {
                 stacking = "normal") %>% 
           hc_yAxis(title = list(text = "Mentions per year")) %>% 
           hc_xAxis(title = list(text = "Year")) %>% 
-          hc_title(text = click$id)
+          hc_title(text = click$id) %>% 
+          hc_dualcol()
         }) 
       
       output$sent_box <- renderHighchart({# boxplot of average sentiment of sentences in which a country is mentioned
@@ -807,7 +836,7 @@ server <- function(input, output, session) {
           hc_yAxis(title = list(text = "Average sentence sentiment")) %>% 
           hc_title(text = paste("Average sentiment when", click$id, "is mentioned")) %>% 
           hc_add_series_list(dat) %>% 
-          hc_queencol()
+          hc_dualcol()
       }) 
       
       output$sentences <- renderUI({ # Showing sentences of country mentioned
@@ -920,7 +949,7 @@ server <- function(input, output, session) {
         hc_tooltip(
           shared = T
         ) %>% 
-      hc_queencol()
+      hc_multicol()
   })
   
   ## Columns ---------------------------------------------------------------
@@ -949,7 +978,7 @@ server <- function(input, output, session) {
         headerFormat = "<b>Year</b>: {point.x}<br>Total frequency: {point.total}",
         pointFormat = "<br><span style=\"color: {point.color} \">\u25CF</span> {point.series.name}: {point.y}"
       ) %>% 
-      hc_queencol()
+      hc_multicol()
     return(hc)
   })
   
@@ -974,7 +1003,7 @@ server <- function(input, output, session) {
       hc_tooltip(
         shared = T
       ) %>% 
-      hc_queencol()
+      hc_multicol()
     return(hc)
   })
   
@@ -1008,7 +1037,7 @@ server <- function(input, output, session) {
         )
       ) %>% 
       hc_norevese() %>% 
-      hc_queencol %>% 
+      hc_multicol %>% 
       hc_tooltip(
         shared = T,
         headerFormat = "",
@@ -1053,7 +1082,7 @@ server <- function(input, output, session) {
         headerFormat = "<span style=\"color: {point.color} \">\u25CF</span> <b>{point.series.name}</b><br>",
         pointFormat = "Year: {point.x}<br>Frequency: {point.y}<br>Total frequency: {point.total}"
       ) %>% 
-      hc_queencol()
+      hc_multicol()
     return(hc)
   })
   
