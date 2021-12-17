@@ -942,17 +942,17 @@ server <- function(input, output, session) {
         sentences$sentence <- str_to_sentence(sentences$sentence)
         
         output$map_sentce_title <-  renderText({
-          "disdatter 2r"
+          paste("Sentences mentioning", click$id)
         })
 
-        paste("<h3>Sentences mentioning", click$id, "</h3>", "<ul>", paste0("<li>", sentences$sentence, ".", " (", sentences$year, ")", "</li>", collapse=""),"</ul>") %>% 
+        paste("<ul>", paste0("<li>", sentences$sentence, ".", " (", sentences$year, ")", "</li>", collapse=""),"</ul>") %>% 
           HTML()
       })
       }
     })
   
   output$map_sentce_title <-  renderText({
-    "disdatter"
+    "Sentence(s) mentioning a country"
   })
   
   # Word statistics ---------------------------------------------------------
