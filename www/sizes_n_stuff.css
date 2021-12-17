@@ -307,6 +307,14 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
   margin-top: 3px;
 }
 
+#source{
+  overflow: hidden;
+  float: left;
+  width:0;
+  height: 0;
+  clear: both;
+}
+
 /* > Plots */
 .shiny-plot-output{
   border-width: 1px;

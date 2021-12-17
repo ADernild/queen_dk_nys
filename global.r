@@ -19,14 +19,14 @@ library(colorBlindness) # For colors
 # library(cartography) # For colors
 
 # Load data ---------------------------------------------------------------
-tokens <- readRDS("data/tokens.rds") # All tokens, filtered
+tokens_dk <- readRDS("data/tokens.rds") # All tokens, filtered
 tokens_en <- readRDS("data/tokens_en.rds") # All tokens, filtered
 lda_model <- readRDS("data/lda_model.rds") # LDA model
 stm_model_da <- readRDS("data/stm_model.rds") # STM model
 stm_model_en <- readRDS("data/stm_model_en.rds") # STM model
 thoughts_da <- readRDS("data/thoughts.rds") # sentences belonging to topics (topic proportion 45%)
 thoughts_en <- readRDS("data/thoughts_en.rds") # sentences belonging to topics (topic proportion 45%)
-lemma <- readRDS("data/lemma.rds") # All lematized values unfiltered
+lemma_dk <- readRDS("data/lemma.rds") # All lematized values unfiltered
 lemma_en <- readRDS("data/lemma.rds") # All lematized values unfiltered
 sentiment <- readRDS("data/sentiments.rds") # Sentiment for year
 sentiment_en <- readRDS("data/sentiments_en.rds") # Sentiment for year
