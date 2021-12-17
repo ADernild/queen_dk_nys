@@ -540,12 +540,6 @@ server <- function(input, output, session) {
     hc <- hchart(data,
            hcaes(x = stemmed, y = polarity, group = sentiment_true),
            type="column") %>% 
-      hc_yAxis(
-        startOnTick = T,
-        tickInterval = 1,
-        min = -3,
-        max = 3
-      ) %>% 
       hc_tooltip(
         shared = TRUE,
         headerFormat = "<b>{point.key}</b><br>",
@@ -555,8 +549,18 @@ server <- function(input, output, session) {
       hc_legend(
         reversed = T
       ) %>% 
+      hc_yAxis(
+        startOnTick = T,
+        tickInterval = 1,
+        min = -3,
+        max = 3,
+        title = list(
+          text = "Polarity"
+        )
+      ) %>% 
       hc_xAxis(
-        reversed = T
+        reversed = T,
+        title = F
       )
     if(length(unique(data$sentiment_true))<=2){
       hc <- hc %>% hc_dualcol_rev()
@@ -589,12 +593,6 @@ server <- function(input, output, session) {
     hc <- hchart(data,
            hcaes(x = stemmed, y = n_stem_total, group = sentiment_true),
            type="column") %>% 
-      hc_yAxis(
-        startOnTick = T,
-        tickInterval = round_any(max(data$n_stem_total)/4,10),
-        min = 0,
-        max = max(data$n_stem_total)
-      ) %>% 
       hc_tooltip(
         shared = TRUE,
         headerFormat = "<b>{point.key}</b><br>",
@@ -604,8 +602,18 @@ server <- function(input, output, session) {
       hc_legend(
         reversed = T
       ) %>% 
+      hc_yAxis(
+        startOnTick = T,
+        tickInterval = round_any(max(data$n_stem_total)/4,10),
+        min = 0,
+        max = max(data$n_stem_total),
+        title = list(
+          text = "Frequency of word"
+        )
+      ) %>% 
       hc_xAxis(
-        reversed = T
+        reversed = T,
+        title = F
       )
     if(length(unique(data$sentiment_true))<=2){
       hc <- hc %>% hc_dualcol_rev()
@@ -793,7 +801,7 @@ server <- function(input, output, session) {
                   highlightOptions = list(weight = 0.7, fillOpacity = 0.9),
                   layerId = data@data$ADMIN) %>% 
       setView(0, 20, 1.8) %>% 
-      addLegend(pal = pal, values = ~n)
+      addLegend(pal = pal, values = ~n, title="Mentions")
   })
   
   ## Bar chart --------------------------------------------------------------

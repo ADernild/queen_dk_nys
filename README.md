@@ -33,7 +33,7 @@ See live on: https://app.dernild.com/
 - [ ] Format data for display (M).
 - [ ] Optimize visualisations for english speech data (A/M).
 - [x] Create interactive dashboard to interact with findings.
-- [ ] Implement consistent colorpalette for data (M).
+- \* Implement consistent colorpalette for data (M).
 - [x] Add filtering by year and words.
 - [x] Create list of data sources in dashboard.
 - [x] Feature information about the queen that is scraped from wikipedia.
