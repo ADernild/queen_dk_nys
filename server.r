@@ -245,22 +245,24 @@ server <- function(input, output, session) {
         HTML()
     })
     
+    output$topics_means_title <-  renderText({
+      paste("Average sentiment in topic", topic)
+    })
+    
     output$sent_topic <- renderHighchart({
       df <- thoughts()
       polarity_topic <- as.numeric(unlist(df$polarity[topic]))
       polarity_rest <- as.numeric(unlist(df$polarity[-topic]))
+      topic_year <- as.numeric(unlist(df$years[topic]))
+      rest_year <- as.numeric(unlist(df$years[-topic]))
       dat <- data.frame(topic = c(rep(paste("Topic", topic), length(polarity_topic)), rep("Rest", length(polarity_rest))),
-                        polarity = c(polarity_topic, polarity_rest))
+                        polarity = c(polarity_topic, polarity_rest),
+                        years = c(topic_year, rest_year))
       
-      dat <- data_to_boxplot(dat, polarity, topic)
-      
-      output$topics_means_title <-  renderText({
-        paste("Average sentiment in topic", topic)
-      })
-      
+      dat <- data_to_boxplot(dat, polarity, group_var2 = topic)
       
       highchart() %>%
-        hc_xAxis(title = list(text = "Country"), type = "category") %>%
+        hc_xAxis(title = list(text = "Topic"), type = "category") %>%
         hc_yAxis(title = list(text = "Average sentence sentiment")) %>%
         hc_title(text = paste("Average sentiment in topic", topic)) %>%
         hc_add_series_list(dat) %>%
