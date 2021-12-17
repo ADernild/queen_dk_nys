@@ -230,8 +230,8 @@ server <- function(input, output, session) {
     if(length(input$words) > 0 && cmatch(data$stemmed, input$words)){
       data <- data %>%
         # filter(stemmed %in% input$words) %>% 
-        mutate(fwords = ifelse(stemmed %in% input$words, "featured word: Yes", "featured word: No")) %>% 
-        mutate(sentiment_true = paste(sentiment_true, fwords, sep=": "))
+        mutate(fwords = ifelse(stemmed %in% input$words, "featured word", "")) %>% 
+        mutate(sentiment_true = ifelse(stemmed %in% input$words, paste(sentiment_true, fwords, sep=" | "), sentiment_true))
     }
     
     data <- data %>% filter(year %in% y())
@@ -532,7 +532,7 @@ server <- function(input, output, session) {
       distinct(stemmed, .keep_all = TRUE) %>% 
       arrange(polarity, n_stem_total)
     
-    hchart(data,
+    hc <- hchart(data,
            hcaes(x = stemmed, y = polarity, group = sentiment_true),
            type="column") %>% 
       hc_yAxis(
@@ -552,8 +552,19 @@ server <- function(input, output, session) {
       ) %>% 
       hc_xAxis(
         reversed = T
-      ) %>% 
-      hc_queencol()
+      )
+    if(length(unique(data$sentiment_true))<=2){
+      hc <- hc %>% hc_dualcol_rev()
+    } else if(length(unique(data$sentiment_true))==3){
+      if("Positive | featured word" %in% unique(data$sentiment_true)){
+        hc <- hc %>% hc_tricol_pos()
+      } else{
+        hc <- hc %>% hc_tricol_neg()
+      }
+    } else{
+      hc <- hc %>% hc_quadcol_custom()
+    }
+    return(hc)
   })
 
   ### Word comparison ------------------------------------------------------
@@ -570,7 +581,7 @@ server <- function(input, output, session) {
         arrange(n_stem_total, polarity)
     }
     
-    hchart(data,
+    hc <- hchart(data,
            hcaes(x = stemmed, y = n_stem_total, group = sentiment_true),
            type="column") %>% 
       hc_yAxis(
@@ -590,8 +601,19 @@ server <- function(input, output, session) {
       ) %>% 
       hc_xAxis(
         reversed = T
-      ) %>% 
-      hc_queencol()
+      )
+    if(length(unique(data$sentiment_true))<=2){
+      hc <- hc %>% hc_dualcol_rev()
+    } else if(length(unique(data$sentiment_true))==3){
+      if("Positive | featured word" %in% unique(data$sentiment_true)){
+        hc <- hc %>% hc_tricol_pos()
+      } else{
+        hc <- hc %>% hc_tricol_neg()
+      }
+    } else{
+      hc <- hc %>% hc_quadcol_custom()
+    }
+    return(hc)
   })
   
 
