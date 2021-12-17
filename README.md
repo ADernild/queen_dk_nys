@@ -31,7 +31,7 @@ See live on: https://app.dernild.com/
 - [x] Implement visualizations of the most used words.
 - [x] Analyse sentiment by year.
 - [R] Format data for display (M).
-- [ ] Optimize visualisations for english speech data (A/M).
+- [R] Optimize visualisations for english speech data.
 - [x] Create interactive dashboard to interact with findings.
 - \* Implement consistent colorpalette for data (M).
 - [x] Add filtering by year and words.
@@ -42,10 +42,10 @@ See live on: https://app.dernild.com/
 - [ ] Optimize user experience
 - [ ] Split Index tab into: index, How-to and about tabs (M).
 - [ ] Improve ussage description to dashboard on index tab.
-- [ ] Move What an Why above charts.
-- [ ] Rename Expl. to How (to use).
+- [ ] Move What an Why above charts (M).
+- [R] Rename Expl. to "How (to use)" (M).
 - [ ] Analyze topics, or describe how to do so.
-- [ ] Remove comma from integer sliders.
+- [R] Remove comma from integer sliders (A/M).
 - [ ] Write 4 page report.
 
 [ ] = To do
