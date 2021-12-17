@@ -71,4 +71,4 @@ write.csv(df, paste0("data/nys_1972-", last_year, "_cleaned.csv"), row.names = F
 
 # Cleaning speech of each year
 df_2$speech <- clean_speech(df_2$speech)
-write.csv(df_2, paste0("data/nys_1972-", last_year, "_eng_cleaned.csv"), row.names = F, fileEncoding = "UTF-8")
+write.csv(df_2, paste0("data/nys_2010-", last_year, "_eng_cleaned.csv"), row.names = F, fileEncoding = "UTF-8")
