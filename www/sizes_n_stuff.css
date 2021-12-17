@@ -261,9 +261,24 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
   border-radius: 4px;
 }
 
-.box .box {
+.box .box,
+.tab-content .box {
   margin-right: 2%;
-  border: 2px solid #CCC;
+  border-width: 2px;
+  border-style: solid;
+}
+
+.box .box .box-tools.pull-right,
+.box .box .box-tools.pull-right .btn-box-tool,
+.tab-content .box .box-tools.pull-right,
+.tab-content .box .box-tools.pull-right .btn-box-tool{
+  width: 100%;
+  float: right;
+}
+
+.box .box .box-tools.pull-right .btn-box-tool i,
+.tab-content .box .box-tools.pull-right .btn-box-tool i{
+  float: right;
 }
 
 /* > Shiny input */

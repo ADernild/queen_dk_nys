@@ -283,7 +283,7 @@ ui <- dashboardPage(
                         howViz("Year filter: Setting the year filter will filter for the countries mentioned in those years.")
                     )
                 ),
-                box(width=4, title=textOutput("map_sentce_title"),
+                box(width=4, title="Countries mentioned",
                     whatViz("A bar chart showing the amount of times a country is mentioned for each year."),
                     whatViz("A boxplot showing the average sentiment of sentences in which a country is mentioned"),
                     whyViz("To compare the mentions of a specific country, to mentions of countries in general"),
@@ -297,11 +297,23 @@ ui <- dashboardPage(
                 )
               ),
               fluidRow(class="box_align_layout",
-                box(width=8, title = "Sentence(s) mentioning a country",
-                    uiOutput("sentences")
-                ),
+                        box(width=8, title = textOutput("map_sentce_title"),
+                           whatViz("Samples of mentions."),
+                           whyViz("To see examples of mentions."),
+                            uiOutput("sentences"),
+                           box(width = 12, class="infoViz", title = "How to use",
+                               collapsible = T, collapsed = T,
+                               howViz("Click on a country in the map above."),
+                           )
+                        ),
                 box(width = 4, id="map_sentece_slider_wrapper", title = "Sentence options",
+                    whatViz("A slider to set the maxium amount of sample sentences."),
+                    whyViz("To adjust how many sentece samples you want to see."),
                     sliderInput("map_sentence_slider", label = "Senteces allowed", min=1, max=149, value=1, step=1, sep=""),
+                    box(width = 12, class="infoViz", title = "How to use",
+                        collapsible = T, collapsed = T,
+                        howViz("Drag the cirkle on the slider to any number."),
+                    )
                 )
               )
       ),

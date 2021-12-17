@@ -134,6 +134,18 @@ h1{
   background-color: rgba(255,255,255,1);
 }
 
+.box .box,
+.tab-content .box {
+  border-color: #5d3731;
+}
+
+.box .box button.btn-box-tool,
+.box .box .box-title,
+.tab-content .box button.btn-box-tool,
+.tab-content .box .box-title{
+  color: #5d3731;
+}
+
 /* Tabs */
 .nav-tabs-custom {
   border-color: #000;

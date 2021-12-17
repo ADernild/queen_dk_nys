@@ -42,7 +42,7 @@ See live on: https://app.dernild.com/
 - [ ] Optimize user experience
 - [ ] Split Index tab into: index, How-to and about tabs (M).
 - [ ] Improve ussage description to dashboard on index tab.
-- [ ] Move What an Why above charts (M).
+- [R] Move What an Why above charts (M).
 - [R] Rename Expl. to "How (to use)" (M).
 - [ ] Analyze topics, or describe how to do so.
 - [R] Remove comma from integer sliders (A/M).
