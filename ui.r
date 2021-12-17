@@ -42,9 +42,9 @@ ui <- dashboardPage(
                 fluidRow(sliderInput("nTerms", "Number of terms to display", min = 10, max = 50, value = 30, sep="")),
                 box(width = 12, class="infoViz", title = "How to use",
                     collapsible = T, collapsed = T,
-                    howViz("Use the slider to select a number for your liking."),
-                    helpText("Notice: Topic model selector will result in a failure if LDA is selected.")
-                )
+                    howViz("Use the slider to select a number for your liking.")
+                ),
+                helpText("Notice: Topic model selector will result in a failure if LDA is selected.")
             ),
             box(width=10, title = "Topic model",
                 whatViz("Topic model is a tool that maps topics. It does so by analyzing word relations by analyzing all speeches and mapping the relations as word matrixes. Then the model displays the topics to the left, and the words within on the right. Frequency of use is depicted by size for topics, and bar length for words. Topics are named 1:n, where 1 is the largest topic."),
@@ -147,9 +147,9 @@ ui <- dashboardPage(
                         howViz("Series filter: Click on a series name to disable it. Click again or set a new filter that affects the visualization to enable it again."),
                         howViz("Year filter: Setting the year filter will filter for the words used in those years."),
                         howViz("Featured words: Setting featured words that have sentient will make them be included before other words (otherwise words are included by frequency). If at least one word with sentiment is present, the series will be names after both if they are positive/negative and if they are included or not."),
-                        howViz("Number of words: Number of words filters words included, from most to least frequent."),
-                        helpText("Notice: Words with a polarity of 0 is filtered.")
-                    )
+                        howViz("Number of words: Number of words filters words included, from most to least frequent.")
+                    ),
+                    helpText("Notice: Words with a polarity of 0 is filtered.")
                 ),
                 box(width=5, title = "Frequency used (n uses in total)",
                     whatViz("Frequency used displays words by frequency."),
@@ -161,9 +161,9 @@ ui <- dashboardPage(
                         howViz("Series filter: Click on a series name to disable it. Click again or set a new filter that affects the visualization to enable it again."),
                         howViz("Year filter: Setting the year filter will filter for the words used in those years."),
                         howViz("Featured words: Setting featured words that have sentient will make them be included before other words (otherwise words are included by frequency). If at least one word with sentiment is present, the series will be names after both if they are positive/negative and if they are included or not."),
-                        howViz("Number of words: Number of words filters words included, from most to least frequent."),
-                        helpText("Notice: Words with a polarity of 0 is filtered.")
-                    )
+                        howViz("Number of words: Number of words filters words included, from most to least frequent.")
+                    ),
+                    helpText("Notice: Words with a polarity of 0 is filtered.")
                 ),
                 box(width = 2, title = "Number of words",
                     whatViz("Number of words is a slider to set the number of featured words."),
@@ -330,9 +330,9 @@ ui <- dashboardPage(
                                     howViz("Tooltip: Hovering a word will display a tooltip showing the frequency of the word, and frequency in percentage in relation to selection. Clicking a word will highlight it."),
                                     howViz("Top frequent numbers: Top frequent numbers will filter for the most frequent numbers by the specified amount."),
                                     howViz("Year filter: Setting the year filter will filter for the words used in those years."),
-                                    howViz("Featured words: Setting featured words will filter for the words set in selection."),
-                                    helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 65. Any number set above, will result in 65 being featured.")
-                                )
+                                    howViz("Featured words: Setting featured words will filter for the words set in selection.")
+                                ),
+                                helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 65. Any number set above, will result in 65 being featured.")
                        ),
                        tabPanel("Word frequency by year (Stream graph)",
                                 collapsible = T, collapsed = T,
@@ -344,9 +344,9 @@ ui <- dashboardPage(
                                     howViz("Tooltip: Hovering above a year displays a tooltip for the year. It will display the frequency of each word in that year."),
                                     howViz("Top frequent numbers: Top frequent numbers will filter for the most frequent numbers by the specified amount."),
                                     howViz("Year filter: Setting the year filter will filter for the words used in those years."),
-                                    howViz("Featured words: Setting featured words will filter for the words set in selection."),
-                                    helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 20. Any number set above, will result in 20 being featured.")
-                                )
+                                    howViz("Featured words: Setting featured words will filter for the words set in selection.")
+                                ),
+                                helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 20. Any number set above, will result in 20 being featured.")
                        ),
                        tabPanel("Word frequency by year (Columns)",
                                 whatViz("This shows the frequency of words by year with stacked columns."),
@@ -358,9 +358,9 @@ ui <- dashboardPage(
                                     howViz("Tooltip: Hovering a year will display a tooltip. The tooltip will list the year, the total frequency, and the frequency of each year."),
                                     howViz("Top frequent numbers: Top frequent numbers will filter for the most frequent numbers by the specified amount."),
                                     howViz("Year filter: Setting the year filter will filter for the words used in those years."),
-                                    howViz("Featured words: Setting featured words will filter for the words set in selection."),
-                                    helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 30. Any number set above, will result in 30 being featured.")
-                                )
+                                    howViz("Featured words: Setting featured words will filter for the words set in selection.")
+                                ),
+                                helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 30. Any number set above, will result in 30 being featured.")
                        ),
                        # tabPanel("Columns percent",
                        #          highchartOutput("word_ussage_col_per", height="50vh"),
@@ -386,9 +386,9 @@ ui <- dashboardPage(
                                     howViz("Tooltip: Hovering a datapoint, will display a tooltip for the point. The tool"),
                                     howViz("Top frequent numbers: Top frequent numbers will filter for the most frequent numbers by the specified amount."),
                                     howViz("Year filter: Setting the year filter will filter for the words used in those years. It will display the word, the year, frequency of year, and frequency of word in all of the years, even outside of set filter."),
-                                    howViz("Featured words: Setting featured words will filter for the words set in selection."),
-                                    helpText("Notice: Due to performance issues, scatterplot is limited to a maximum frequency of 20. Any number set above, will result in 20 being featured.")
-                                )
+                                    howViz("Featured words: Setting featured words will filter for the words set in selection.")
+                                ),
+                                helpText("Notice: Due to performance issues, scatterplot is limited to a maximum frequency of 20. Any number set above, will result in 20 being featured.")
                        ),
                        tabPanel("Wordcloud",
                            whatViz("Words in the wordcloud is randomly selected from available words."),
