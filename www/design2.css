@@ -181,6 +181,40 @@ h1{
   font-weight: bold;
 }
 
+/* Input */
+.irs--shiny .irs-line{
+  background:linear-gradient(to bottom, #435961 -50%, #dec7ff 150%);
+
+}
+.irs--shiny .irs-bar{
+  background: #435961;
+  border-top-color: #35474d;
+  border-bottom-color: #687a80;
+}
+
+.irs--shiny .irs-handle{
+  background-color: #C0BFBB;
+}
+
+.irs--shiny .irs-from, .irs--shiny .irs-to, .irs--shiny .irs-single{
+  top: -5px;
+  background: #435961;
+}
+
+.irs--shiny .irs-from:after,
+.irs--shiny .irs-to:after,
+.irs--shiny .irs-single:after{
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: calc(50% - 3px);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 3px 0 3px;
+  border-color: #435961 transparent transparent transparent;
+}
+
 /* Infobox */
 #wiki_infobox .infobox tr{
   border-top-color: CCC;
