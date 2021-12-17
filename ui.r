@@ -20,7 +20,7 @@ ui <- dashboardPage(
               h1("H.M. The Queen topic analyzer"),
               h2("Welcome and about"),
               fluidRow(
-                box(width=8,
+                box(width=12,
                     title = "You are hereby invited to a look into the new year eve speeches of the royal majesty herself",
                     div(id = "intoduction",
                         p(class="what", "This is a dashboard. The dashboard is a tool to analyze topics in speeches."),
@@ -28,81 +28,7 @@ ui <- dashboardPage(
                         p(class="how", "This is an interactive dashboard. You can select tabs in the sidebar on the left to navigate to different sections. When sidebar is expanded (see toggle button in top left corner), you can apply filters and settings for your liking."),
                         p(class="bold", "GUD BEVARE DANMARK.")
                     )
-                ),
-                box(width=4, title = "Info",
-                    p("Stopwords are filtered. This is done to avoid the most common words (like \"the\") to dominate the statistics."),
-                    p("Words have been stemmed, to get better data for topics. This does remove information about word forms."),
-                    p("Words have been lemmatized (replacing words with identical meaning with a headword), to improve topic analysis.")
                 )
-              ),
-              fluidRow(class="box_align_layout",
-                       box(width=4, title="How to interpret visualizations and information",
-                           p("If you wish to have some guidance in your data journey, we have prepared assisting labels for each visualization."),
-                           p("These labels will be located directly beneath the point of interest."),
-                           hr(),
-                           p("Click the icon in the top right cornor to hide/expand section."),
-                           whatViz("What marking: A blue dot with bold dark-blue text indicates what kind of visualization/information is depicted."),
-                           whyViz("Why marking: A Yellow circle with dark-yellow bold text indicates why and when to use you could use the visualization/information you can observe."),
-                           box(width = 12, class="infoViz", title = "How to use",
-                               collapsible = T, collapsed = F,
-                               howViz("How marking: A light-brown triangle with brown bold text indicates how you can interpret information in the visualization."),
-                               p(helpText("Grey italic/slanted text indicates other kinds of help text. This could be descriptions on how operate inputs, information about limitations and bugs.")),
-                               p("Black text is other kinds of information. It would usually be practical information.")
-                           )
-                       ),
-                       box(width=4,
-                           title = "Speeches covered",
-                           whatViz("This are the speeches that are covered in the dashboard, with your current filter."),
-                           whyViz("You can use this to see the source from what you filtered."),
-                           uiOutput("Covered_speech"),
-                           box(width = 12, class="infoViz", title = "How to use",
-                               collapsible = T, collapsed = T,
-                               howViz("You can use language and year filters. To see all text in a language selected language, select all possible years."),
-                               p(helpText("Notice: English version of speech are translations. Not all Danish speeches are translated. Some years are therefore not available."))
-                           )
-                       ),
-                       box(width=4,
-                           div(id="wiki_infobox_wrap",
-                               uiOutput("scrabing_info"),
-                               whatViz("This is the info box from Wikipedia about the queen."),
-                               whyViz("You can use this to familiarize yourself with the subject, or just want a quick read-up."),
-                               htmlOutput("wiki_infobox")
-                           ),
-                           box(width = 12, class="infoViz", title = "How to use",
-                               collapsible = T, collapsed = T,
-                               howViz("You can read the table, or visit the source, above the table.")
-                           )
-                       )
-              ),
-              hr(),
-              fluidRow(
-                box(width=12, title="Filters",
-                    whatViz("This dashboard utilizes filtering systems. The main filters are in the sidebar when expanded. Some visualizations have custom filters. They are documented when needed."),
-                    whyViz("The filters can be used to filter the data you see. You can do this to inspect a certain subset of data. E.g., to look data relevant to you."),
-                    howViz("To expand the sidebar, press the expand button in the top left corner."),
-                )
-              ),
-              fluidRow(class="box_align_layout",
-                       box(width=4, title="Language filter",
-                           whatViz("The language filter set's what language/translation of speeches you inspect, and what language to display the Wikipedia info box."),
-                           whyViz("For this dashboard, Danish would be optimal. It is the original language of the speeches. If you don't understand Danish, you can still use a limited set of speeches in English."),
-                           howViz("Push the text or dot next to the language you want to use."),
-                       ),
-                       box(width=4, title="Year filters",
-                           whatViz("Year filter refers to the group of filters affecting year. These are: the year input, the year slider and the year selector."),
-                           whyViz("Filtering years can help you limit the data relevant to the topic you are researching."),
-                           howViz("Year input: Push the text or dot next to the year input method you need or prefer"),
-                           howViz("Year range: select the start year and end year by drag 'n drop the round dots."),
-                           howViz("Year selector - remove year(s): click on a year and press Backspace-key or Delete-key to remove a year. Hold down Ctrl to select multiple. Alternatively, select input-field (e.g. by clicking or using tab button), and navigate the cursor with the arrow keys, and use Backspace-key or Delete-key to remove years."),
-                           howViz("Year selector - Add year: select input-field (e.g. by clicking or using tab button) and type year. Press enter to add or select suggestion by clicking on it."),
-                           p(helpText("Notice: Some visualizations will use the whole dataset as a reference regardless of your set filter.")),
-                       ),
-                       box(width=4, title="Featured words",
-                           whatViz("Featured words is a selection of words from words featured in the speeches, that is used to filter or feature words in different kinds of ways."),
-                           whyViz("When you are inspecting a topic, some words might seem important. So, you can filter for these words using the filter."),
-                           howViz("Select word: Type word and press enter when done or click suggestion pop up."),
-                           howViz("Remove word(s): click on a word and press Backspace-key or Delete-key to remove word Hold down Ctrl to select multiple. Alternatively, select input-field (e.g. by clicking or using tab button), and navigate the cursor with the arrow keys, and use Backspace-key or Delete-key to remove words.")
-                       )
               )
       ),
       # Topic Model ----
@@ -492,7 +418,98 @@ ui <- dashboardPage(
                        )
                 )
               )
+      ),
+      # Data ----
+      tabItem(tabName = "data",
+              h2("Data source and handling"),
+              fluidRow(class="box_align_layout",
+                box(width=4, title = "Data preparetaion",
+                    p("Stopwords are filtered. This is done to avoid the most common words (like \"the\") to dominate the statistics. This is done with stopwords defined by Bertel Torp, stopwords defined by snowball and custom stopwords found from interacting with data."),
+                    p("Words have been stemmed, to get better data for topics. This does remove information about word forms. this is done with snowballC for R"),
+                    p("Words have been lemmatized (replacing words with identical meaning with a headword), to improve topic analysis, by using udpipe for R.")
+                ),
+                box(width=4, title = "Topics",
+                    p("Todo")
+                ),
+                box(width=4, title="Sentiment analysis",
+                  p("For danish: Sentiment analysis is done by getting sentiment values from \"Det Danske Sprog- og Litteraturselskab (DSL, Society for Danish Language and Literature) and Center for Sprogteknologi, Københavns Universitet (CST, Centre for Language Technology, University of Copenhagen)\", and adding the the values to the words we collected on word level, stem level and lemmatized values."), 
+                  p("For danish: Sentiment analysis is done by getting sentiment values from \"todo\", and adding the the values to the words we collected on word level, stem level and lemmatized values.")  
+                )
+              ),
+              fluidRow(class="box_align_layout",
+                       box(width=6,
+                           title = "Speeches covered",
+                           whatViz("This are the speeches that are covered in the dashboard, with your current filter."),
+                           whyViz("You can use this to see the source from what you filtered."),
+                           uiOutput("Covered_speech"),
+                           box(width = 12, class="infoViz", title = "How to use",
+                               collapsible = T, collapsed = T,
+                               howViz("You can use language and year filters. To see all text in a language selected language, select all possible years.")
+                           ),
+                           p(helpText("Notice: English version of speech are translations. Not all Danish speeches are translated. Some years are therefore not available."))
+                       ),
+                       box(width=6,
+                           div(id="wiki_infobox_wrap",
+                               uiOutput("scrabing_info"),
+                               whatViz("This is the info box from Wikipedia about the queen."),
+                               whyViz("You can use this to familiarize yourself with the subject, or just want a quick read-up."),
+                               htmlOutput("wiki_infobox")
+                           ),
+                           box(width = 12, class="infoViz", title = "How to use",
+                               collapsible = T, collapsed = T,
+                               howViz("You can read the table, or visit the source, above the table.")
+                           )
+                       )
+              )
+      ),
+      # How to ----
+      tabItem(tabName = "howto",
+              h2("How to operate dashboard"),
+              fluidRow(class="box_align_layout",
+                box(width=6, title="How to interpret visualizations and information",
+                    p("If you wish to have some guidance in your data journey, we have prepared assisting labels for each visualization."),
+                    p("These labels will be located directly beneath the point of interest."),
+                    hr(),
+                    p("Click the icon in the top right cornor to hide/expand section."),
+                    whatViz("What marking: A blue dot with bold dark-blue text indicates what kind of visualization/information is depicted."),
+                    whyViz("Why marking: A Yellow circle with dark-yellow bold text indicates why and when to use you could use the visualization/information you can observe."),
+                    box(width = 12, class="infoViz", title = "How to use",
+                        collapsible = T, collapsed = F,
+                        howViz("How marking: A light-brown triangle with brown bold text indicates how you can interpret information in the visualization."),
+                    ),
+                    p(helpText("Grey italic/slanted text indicates other kinds of help text. This could be descriptions on how operate inputs, information about limitations and bugs.")),
+                    p("Black text is other kinds of information. It would usually be practical information.")
+                ),
+                box(width=6, title="Filters",
+                    whatViz("This dashboard utilizes filtering systems. The main filters are in the sidebar when expanded. Some visualizations have custom filters. They are documented when needed."),
+                    whyViz("The filters can be used to filter the data you see. You can do this to inspect a certain subset of data. E.g., to look data relevant to you."),
+                    howViz("To expand the sidebar, press the expand button in the top left corner."),
+                )
+              ),
+              fluidRow(class="box_align_layout",
+                       box(width=4, title="Language filter",
+                           whatViz("The language filter set's what language/translation of speeches you inspect, and what language to display the Wikipedia info box."),
+                           whyViz("For this dashboard, Danish would be optimal. It is the original language of the speeches. If you don't understand Danish, you can still use a limited set of speeches in English."),
+                           howViz("Push the text or dot next to the language you want to use."),
+                       ),
+                       box(width=4, title="Year filters",
+                           whatViz("Year filter refers to the group of filters affecting year. These are: the year input, the year slider and the year selector."),
+                           whyViz("Filtering years can help you limit the data relevant to the topic you are researching."),
+                           howViz("Year input: Push the text or dot next to the year input method you need or prefer"),
+                           howViz("Year range: select the start year and end year by drag 'n drop the round dots."),
+                           howViz("Year selector - remove year(s): click on a year and press Backspace-key or Delete-key to remove a year. Hold down Ctrl to select multiple. Alternatively, select input-field (e.g. by clicking or using tab button), and navigate the cursor with the arrow keys, and use Backspace-key or Delete-key to remove years."),
+                           howViz("Year selector - Add year: select input-field (e.g. by clicking or using tab button) and type year. Press enter to add or select suggestion by clicking on it."),
+                           p(helpText("Notice: Some visualizations will use the whole dataset as a reference regardless of your set filter.")),
+                       ),
+                       box(width=4, title="Featured words",
+                           whatViz("Featured words is a selection of words from words featured in the speeches, that is used to filter or feature words in different kinds of ways."),
+                           whyViz("When you are inspecting a topic, some words might seem important. So, you can filter for these words using the filter."),
+                           howViz("Select word: Type word and press enter when done or click suggestion pop up."),
+                           howViz("Remove word(s): click on a word and press Backspace-key or Delete-key to remove word Hold down Ctrl to select multiple. Alternatively, select input-field (e.g. by clicking or using tab button), and navigate the cursor with the arrow keys, and use Backspace-key or Delete-key to remove words.")
+                       )
+              )
       )
     )
+              
   )
 )
