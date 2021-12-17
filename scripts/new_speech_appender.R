@@ -3,6 +3,8 @@ library(dplyr)
 library(rvest)
 library(stringr)
 
+setwd("../")
+
 # Extracting urls of speeches
 link <- "https://www.kongehuset.dk/monarkiet-i-danmark/nytarstaler/#laes-de-seneste-nytaarstaler"
 last_year <- as.integer(format(Sys.Date(), "%Y")) - 1 # Last year i.e., the year of the lastest speech
