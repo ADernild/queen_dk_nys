@@ -23,8 +23,6 @@ See live on: https://app.dernild.com/
 - [ ] Create custom stopwords list for enlish speeches (A).
 - [x] Preprocessing: Tokenization, stemming, lemmatization etc.
 - [ ] Preprocessing: Tokenization, stemming, lemmatization etc. for english speeches (A).
-- [ ] Simulate steps to do when a new speach is relased (A)
-- [ ] Run scripts for all speaches again (A).
 - [x] Build Structural Topic Model (STM).
 - [ ] Add sentiment scores to Topic Models (A).
 - [x] Calculate Polarity scores (Sentiment Analysis).
@@ -32,27 +30,22 @@ See live on: https://app.dernild.com/
 - [x] Implement worldmap and map placese the queens mentions.
 - [x] Implement visualizations of the most used words.
 - [x] Analyse sentiment by year.
-- [R] Fix sentiment data values (M).
-- [R] Fix filtering in word statistics (M).
-- [R] Limit word frequency columns to 30, piechart to 65, scatterplot to 20 (M).
-- [R] Consitantly use stem form instead of headword (M)
 - [ ] Format data for display (M).
 - [ ] Optimize visualisations for english speech data (A/M).
 - [x] Create interactive dashboard to interact with findings.
 - [ ] Implement consistent colorpalette for data (M).
-- \* Add filtering by year and words - and implement in visualization data (M).
+- [x] Add filtering by year and words.
 - [x] Create list of data sources in dashboard.
 - [x] Feature information about the queen that is scraped from wikipedia.
 - \* Implement language option for dahsboard, and reactively update data sources (M).
-- \* Finalize design of dashboard (M)
+- [ ] Finalize design of dashboard (M)
 - [ ] Optimize user experience
-- [ ] Split Index tab into: index, data subject and about tabs.
+- [ ] Split Index tab into: index, How-to and about tabs (M).
 - [ ] Improve ussage description to dashboard on index tab.
-- [ ] Analyze topics, or describe how to do so.
-- [ ] Move What an Why above models.
+- [ ] Move What an Why above charts.
 - [ ] Rename Expl. to How (to use).
+- [ ] Analyze topics, or describe how to do so.
 - [ ] Remove comma from integer sliders.
-- [R] Remove unfinished implementations from dashboard - lda (A).
 - [ ] Write 4 page report.
 
 [ ] = To do
@@ -65,6 +58,7 @@ x = Done
 
 ### Task... Maybe
 - [ ] Use CRON script to automize datacollection (A).
+- [ ] Simulate steps to do when a new speach is relased (A)
 - [ ] Add logic to update filter inputs by data clicked in models.
 - \* Implement checkbox to ignore filter updates by clicked data in models (M).
 - [ ] Use ai to generate speeches.
