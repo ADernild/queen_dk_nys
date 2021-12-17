@@ -810,9 +810,14 @@ server <- function(input, output, session) {
     df <- data.frame(year = unlist(data@data$year), n_year = unlist(data@data$n_year)) %>% 
       group_by(year) %>% 
       summarise(n_year = sum(n_year)) %>% 
-      hchart("bar", hcaes(x="year", y="n_year")) %>% 
+      hchart("bar", name="All", hcaes(x="year", y="n_year")) %>% 
       hc_yAxis(title = list(text = "Mentions per year")) %>% 
       hc_xAxis(title = list(text = "Year")) %>% 
+      hc_tooltip(
+        shared = TRUE,
+        headerFormat = "<b>{point.key}</b>",
+        pointFormat = "<br><span style=\"color: {point.color} \">\u25CF</span> Mentions in year: {point.y}"
+      ) %>% 
       hc_dualcol()
   })
   
@@ -856,6 +861,11 @@ server <- function(input, output, session) {
           hc_yAxis(title = list(text = "Mentions per year")) %>% 
           hc_xAxis(title = list(text = "Year")) %>% 
           hc_title(text = click$id) %>% 
+          hc_tooltip(
+            shared = TRUE,
+            headerFormat = "<b>{point.key}</b><br>Total mentions: {point.total}",
+            pointFormat = "<br><span style=\"color: {point.color} \">\u25CF</span> Mentions in year: {point.y}"
+          ) %>% 
           hc_dualcol()
         }) 
       
@@ -981,13 +991,18 @@ server <- function(input, output, session) {
       arrange(year, desc(n_stem_year), stemmed)
 
     hchart(data, "streamgraph", hcaes(year, n_stem_year, group = stemmed)) %>% 
-        hc_yAxis(
-          visible = F
-        ) %>% 
-        hc_norevese() %>% 
-        hc_tooltip(
-          shared = T
-        ) %>% 
+      hc_yAxis(
+        visible = F
+      ) %>% 
+      hc_xAxis(
+        title = list(
+          text="Year"
+        )
+      ) %>% 
+      hc_norevese() %>% 
+      hc_tooltip(
+        shared = T
+      ) %>% 
       hc_multicol()
   })
   
@@ -1009,8 +1024,16 @@ server <- function(input, output, session) {
         )
       ) %>% 
       hc_norevese() %>% 
+      hc_yAxis(
+        title = list(
+          text="Frequency"
+        )
+      ) %>% 
       hc_xAxis(
-        categories = min(data$year):max(data$year)
+        categories = min(data$year):max(data$year),
+        title = list(
+          text="Year"
+        )
       ) %>% 
       hc_tooltip(
         shared = T,
@@ -1111,10 +1134,18 @@ server <- function(input, output, session) {
           )
         )
       ) %>% 
+      hc_yAxis(
+        title = list(
+          text="Frequency"
+        )
+      ) %>% 
       hc_xAxis(
         startOnTick = T,
         endOnTick = T,
-        showLastLabel = T
+        showLastLabel = T,
+        title = list(
+          text="Year"
+        )
       ) %>% 
       hc_tooltip(
         shared = T,
