@@ -22,7 +22,7 @@ See live on: https://app.dernild.com/
 - [x] Create custom stopwords list.
 - [ ] Create custom stopwords list for enlish speeches (A).
 - [x] Preprocessing: Tokenization, stemming, lemmatization etc.
-- [ ] Preprocessing: Tokenization, stemming, lemmatization etc. for english speeches (A).
+- [R] Preprocessing: Tokenization, stemming, lemmatization etc. for english speeches (A).
 - [x] Build Structural Topic Model (STM).
 - [ ] Add sentiment scores to Topic Models (A).
 - [x] Calculate Polarity scores (Sentiment Analysis).
