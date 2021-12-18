@@ -284,11 +284,12 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$topicVis_term_click, {
+    chosen <- c(input$words, input$topicVis_term_click)
+    
     updateSelectizeInput(session, 
                          "words", 
                          "Featured words",
-                         selected = c(input$words, input$topicVis_term_click)
-                         )
+                         selected = chosen)
   })
   
   output$topics_sentce_title <-  renderText({
