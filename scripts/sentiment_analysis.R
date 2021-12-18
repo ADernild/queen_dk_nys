@@ -172,7 +172,7 @@ saveRDS(sentiments, "data/sentiments.rds")
 tokens_en <- readRDS("data/tokens_en.rds")
 
 sentiment_en <- function(tokens) {
-  afinn <- get_sentiments("afinn") 
+  afinn <- read.csv("utils/afinn.csv")
   
   matches <- tokens %>% 
     left_join(afinn, by=c("lemma" = "word")) %>% 
