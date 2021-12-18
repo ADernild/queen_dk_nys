@@ -268,13 +268,16 @@ server <- function(input, output, session) {
                         polarity = c(polarity_topic, polarity_rest),
                         years = c(topic_year, rest_year))
       
-      dat <- data_to_boxplot(dat, polarity, group_var2 = topic)
+      dat <- data_to_boxplot(dat, polarity, group_var = topic, group_var2 = topic)
       
       highchart() %>%
         hc_xAxis(title = list(text = "Topic"), type = "category") %>%
         hc_yAxis(title = list(text = "Average sentence sentiment")) %>%
         hc_title(text = paste("Average sentiment in topic", topic)) %>%
         hc_add_series_list(dat) %>%
+        hc_tooltip(
+          headerFormat = ""
+        ) %>% 
         hc_dualcol()
     })
     
