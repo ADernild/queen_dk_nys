@@ -29,7 +29,7 @@ server <- function(input, output, session) {
     n_dist_t_headword <<- nrow(distinct(tokens, stemmed))
 
     updateSelectizeInput(
-      session, 'words', choices = words_tokens_all, selected = "", server = TRUE
+      session, 'words', choices = words_tokens_all, selected = ""
     )
     
     updateSliderInput(
@@ -118,7 +118,7 @@ server <- function(input, output, session) {
   })
   
   updateSelectizeInput(
-    session, 'words', choices = words_tokens_all, server = TRUE
+    session, 'words', choices = words_tokens_all
     )
   
   # Date data --------------------------------------------------------------
@@ -295,8 +295,8 @@ server <- function(input, output, session) {
       chosen <- c(input$words, word)
     }
 
-    updateSelectizeInput(session, 
-                         "words", 
+    updateSelectizeInput(session,
+                         "words",
                          "Featured words",
                          selected = chosen)
   })
