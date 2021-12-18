@@ -332,7 +332,7 @@ ui <- dashboardPage(
                                     howViz("Year filter: Setting the year filter will filter for the words used in those years."),
                                     howViz("Featured words: Setting featured words will filter for the words set in selection.")
                                 ),
-                                helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 65. Any number set above, will result in 65 being featured.")
+                                helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 40. Any number set above, will result in 40 being featured.")
                        ),
                        tabPanel("Word frequency by year (Stream graph)",
                                 collapsible = T, collapsed = T,

@@ -1173,7 +1173,7 @@ server <- function(input, output, session) {
   output$word_ussage_pie <- renderHighchart({
     data <-  speech_data_como_filt()
     
-    common_opt <- unique(arrange(data, desc(n_stem_total))$n_stem_total)[ifelse(input$slider_word_ussage>65, 65, input$slider_word_ussage)]
+    common_opt <- unique(arrange(data, desc(n_stem_total))$n_stem_total)[ifelse(input$slider_word_ussage>40, 40, input$slider_word_ussage)]
     
     if(!is.na(common_opt)){
       data <- filter(data, n_stem_total >= common_opt) %>% 
