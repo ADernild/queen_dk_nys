@@ -395,6 +395,8 @@ server <- function(input, output, session) {
   output$sentiment_of_speech_bubles <- renderHighchart({
     data <- sentiment_of_speech_data()
     if("fwords" %in% colnames(data)){
+      data <- data %>% 
+        arrange(fwords)
       hc <- hchart(data,
                    type="bubble",
                    hcaes(x = sentiment_pos, y = sentiment_neg, z = sentiment, pn = n_words, size = sentiment, l = sentiment_label, name = year, group = fwords, fwords = fwords),
@@ -410,7 +412,7 @@ server <- function(input, output, session) {
                               '<tr><th>Overall sentiment:</th><td>{point.l}</td></tr>',
                               '<tr><th>Positive sentiment (x):</th><td>{point.x}</td></tr>',
                               '<tr><th>Negative sentiment (y):</th><td>{point.y}</td></tr>',
-                              '<tr><th>Summed sentiment (size/saturation):</th><td>{point.z}</td></tr>',
+                              '<tr><th>Summed sentiment (size):</th><td>{point.z}</td></tr>',
                               '<tr><th>Words with polarity:</th><td>{point.pn}</td></tr>',
                               sep = ""),
           footerFormat = '</table>',
@@ -419,6 +421,11 @@ server <- function(input, output, session) {
           snap = 100,
           hideDelay = 500
         )
+      if(length(unique(data$fwords))>=2){
+        hc <- hc %>% hc_dualcol_rev()
+      } else{
+        hc <- hc %>% hc_dualcol()
+      }
     } else{
       hc <- hchart(data,
              type="bubble",
