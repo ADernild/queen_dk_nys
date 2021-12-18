@@ -280,7 +280,6 @@ server <- function(input, output, session) {
         ) %>% 
         hc_dualcol()
     })
-    
   })
   
   observeEvent(input$topicVis_term_click, {
@@ -1263,12 +1262,14 @@ server <- function(input, output, session) {
     common_opt <- unique(arrange(data, desc(n_stem_total))$n_stem_total)[ifelse(input$slider_word_ussage>40, 40, input$slider_word_ussage)]
     
     if(!is.na(common_opt)){
-      data <- filter(data, n_stem_total >= common_opt) %>% 
+      data <- filter(data, n_stem_total >= common_opt)
+    }
+    
+    data <- data %>% 
       ungroup() %>%
       select(stemmed, n_stem_total) %>%
       distinct() %>% 
       arrange(desc(n_stem_total))
-    }
 
     hc <- hchart(data, "pie", name="Frequency",
                  hcaes(y=n_stem_total, name = stemmed)) %>% 
