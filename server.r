@@ -51,7 +51,7 @@ server <- function(input, output, session) {
   ## Sidebar Menu -------------------------------------------------------------
   output$menu <- renderMenu({
       sidebarMenu(
-        menuItem(span("Welcome and about", title="Welcome page"), tabName = "index", icon = shiny::icon("home", title="Welcome page"), selected = T),
+        menuItem(span("Home", title="Start page"), tabName = "index", icon = shiny::icon("home", title="Start page"), selected = T),
         menuItem(span("Topics", title="Topics found, ready yo be analyzed"), tabName = "tm", icon = shiny::icon("comment-dots", title="Topics found, ready yo be analyzed")),
         menuItem(span("Sentiment", title="Sentiment analysis for speeches and word selections"), tabName = "sentiment", icon = shiny::icon("theater-masks", title="Sentiment analysis for speeches and word selections")),
         menuItem(span("Countries", title="Map of cointries mentioned during speeches"), tabName = "map", icon = shiny::icon("globe-europe", title="Map of cointries mentioned during speeches")),
