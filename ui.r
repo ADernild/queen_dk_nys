@@ -18,7 +18,7 @@ ui <- dashboardPage(
     tabItems(
       tabItem(tabName = "index",
               h1("H.M. The Queen topic analyzer"),
-              h2("Welcome and about"),
+              h2("Home"),
               fluidRow(
                 box(width=12,
                     title = "You are hereby invited to a look into the new year eve speeches of the royal majesty herself",
@@ -221,7 +221,7 @@ ui <- dashboardPage(
       ),
       # Map ----
       tabItem(tabName = "map",
-              h2("Map"),
+              h2("Countries"),
               fluidRow(class="box_align_layout",
                 box(width=8,  
                     whatViz("A world map, with countries mentioned in speeches."),
