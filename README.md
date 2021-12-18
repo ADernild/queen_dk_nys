@@ -46,7 +46,7 @@ x = Done
 [R] = Ready to review
 
 ### Task... Maybe
-- [ ] Use CRON script to automize datacollection (A).
+- [R] Use CRON script to automize datacollection (A).
 - [ ] Simulate steps to do when a new speach is relased (A)
 - [ ] Add logic to update filter inputs by data clicked in models.
 - \* Implement checkbox to ignore filter updates by clicked data in models (M).
