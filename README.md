@@ -27,7 +27,6 @@ See live on: https://app.dernild.com/
 - [x] Implement worldmap and map placese the queens mentions.
 - [x] Implement visualizations of the most used words.
 - [x] Analyse sentiment by year.
-- [ ] Format data for display - Color piechart, remove 0 from topics means, fix 2011 bug, year filter bug on word statistics (M).
 - [x] Create interactive dashboard to interact with findings.
 - [x] Add filtering by year and words.
 - [x] Create list of data sources in dashboard.
@@ -35,7 +34,7 @@ See live on: https://app.dernild.com/
 - [x] Implement language option for dahsboard data.
 - [ ] Improve ussage description to dashboard on index tab.
 - [ ] Analyze topics, or describe how to do so.
-- [ ] Optimize user experience
+- [ ] Optimize user experience.
 - [ ] Write 4 page report.
 
 [ ] = To do
