@@ -20,7 +20,7 @@ df_eng_lemmatized$sentence_id <- as.numeric(str_replace(df_eng_lemmatized$doc_id
 
 sentence_sentiment <- function(df, df_lemmatized, lang="en"){
   if(lang == "en"){
-    afinn <- get_sentiments("afinn")
+    afinn <- read.csv("utils/afinn.csv")
     df_match <- df_lemmatized %>% 
       inner_join(afinn, by=c("lemma" = "word")) %>% 
       inner_join(afinn, by=c("token" = "word")) %>% 
