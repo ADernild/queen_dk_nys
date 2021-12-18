@@ -9,7 +9,8 @@ ui <- dashboardPage(
       tags$link(rel = "stylesheet", type = "text/css", href = "sizes_n_stuff.css"),
       tags$link(rel = "stylesheet", type = "text/css", href = "design2.css"),
       uiOutput("royall_beautyfication"),
-      tags$link(rel = "shortcut icon", href = "favicon.ico")
+      tags$link(rel = "shortcut icon", href = "favicon.ico"),
+      tags$script(src = "js.js")
     ),
     conditionalPanel(condition = "$('html').hasClass('shiny-busy')",
                      tags$div(span("Loading..."), id = "loadmessage")
@@ -45,8 +46,15 @@ ui <- dashboardPage(
                 radioButtons ("topic_r",
                               label = "Update featured words with topics content",
                               selected = 1,
-                              choiceNames = c("Update on topic selection", "Update on word selection", "Do not update"),
-                              choiceValues = c(1,2,F)
+                              choiceNames = c(
+                                # "Update on topic selection", 
+                                "Update on word selection", 
+                                "Do not update"),
+                              choiceValues = c(
+                                1,
+                                # 2,
+                                F
+                                )
                 ),
                 p(helpText("Notice: \"Update on topic selection\" will clear previous selections.")),
                 whatViz("Number of terms to display sets the number of terms used in the topic model, by size of topic."),
