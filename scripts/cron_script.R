@@ -9,7 +9,8 @@ detachAllPackages <- function() {
   package.list <- setdiff(package.list,basic.packages)
   
   if (length(package.list)>0)  for (package in package.list) detach(package, character.only=TRUE)
-  
+  setwd("scripts/")
+  remove(list=ls())
 }
 
 source("new_speech_appender.R")
