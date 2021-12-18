@@ -28,7 +28,7 @@ thoughts_da <- readRDS("data/thoughts.rds") # sentences belonging to topics (top
 thoughts_en <- readRDS("data/thoughts_en.rds") # sentences belonging to topics (topic proportion 45%)
 lemma_dk <- readRDS("data/lemma.rds") # All lematized values unfiltered
 lemma_en <- readRDS("data/lemma.rds") # All lematized values unfiltered
-sentiment <- readRDS("data/sentiments.rds") # Sentiment for year
+sentiment_dk <- readRDS("data/sentiments.rds") # Sentiment for year
 sentiment_en <- readRDS("data/sentiments_en.rds") # Sentiment for year
 countries <- readRDS("data/country_speech.rds") # Countries, country code, lat, lon and # mentions
 countries_en <- readRDS("data/country_speech_eng.rds") # Countries, country code, lat, lon and # mentions
@@ -39,6 +39,7 @@ geojson <- readRDS("data/countries.rds") # Library containing geographic informa
 # Formatting data ---------------------------------------------------------
 tokens <- tokens_dk
 lemma <- lemma_dk
+sentiment <- sentiment_dk
 
 # Number of distinct headwords
 n_dist_t_headword <- nrow(distinct(tokens, stemmed))

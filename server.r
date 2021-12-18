@@ -6,10 +6,13 @@ server <- function(input, output, session) {
     if(input$l == "DK"){
       tokens<<-tokens_dk
       lemma<<-lemma_dk
+      sentiment <<- sentiment_dk
+      
       val <- "DK"
     } else{
       tokens<<-tokens_en
       lemma<<-lemma_en
+      sentiment <<- sentiment_en
       val <- "EN"
     }
     
@@ -294,6 +297,9 @@ server <- function(input, output, session) {
   sentiment_of_speech_data <- reactive({
     req(y())
     data <- sentiment %>%
+      mutate(sentiment = round(sentiment),
+             sentiment_pos = round(sentiment_pos),
+             sentiment_neg = round(sentiment_neg)) %>% 
       group_by(year) %>% 
       arrange(year)
     if(length(input$words) > 0){
@@ -376,7 +382,10 @@ server <- function(input, output, session) {
                 n_pos = sum(n_in_year_pos),
                 n_neg = sum(n_in_year_neg)
       ) %>% 
-      mutate(n_words = n_pos+n_neg) %>% 
+      mutate(sentiment = round(sentiment),
+             sentiment_pos = round(sentiment_pos),
+             sentiment_neg = round(sentiment_neg),
+             n_words = n_pos+n_neg) %>% 
       arrange(year)
     return(data)
   })
