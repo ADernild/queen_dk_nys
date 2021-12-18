@@ -165,7 +165,11 @@ server <- function(input, output, session) {
     req(y())
     source <- source %>% 
       filter(year %in% y())
-
+    
+    validate(
+      need(nrow(source) != 0, "No avilable data")
+    )
+    
     content <- tags$ul(
       lapply(1:nrow(source), function(i) {
         tags$li(a(href=source$urls[i],
@@ -394,6 +398,11 @@ server <- function(input, output, session) {
   ### Bubles ---------------------------------------------------------------
   output$sentiment_of_speech_bubles <- renderHighchart({
     data <- sentiment_of_speech_data()
+    
+    validate(
+      need(nrow(data) != 0, "Dataset is empty")
+    )
+    
     if("fwords" %in% colnames(data)){
       data <- data %>% 
         arrange(fwords)
@@ -506,6 +515,11 @@ server <- function(input, output, session) {
   ### Column compare -------------------------------------------------------
   output$sentiment_of_speech_col_compare <- renderHighchart({
     data <- sentiment_of_speech_data() 
+    
+    validate(
+      need(nrow(data) != 0, "Dataset is empty")
+    )
+    
     hc <- highchart() %>% 
       hc_add_series(
         type = "bar",
@@ -588,6 +602,11 @@ server <- function(input, output, session) {
   ### Shankey compare -------------------------------------------------------
   output$sentiment_of_speech_sha_compare <- renderHighchart({
     data <- sentiment_of_speech_data()
+    
+    validate(
+      need(nrow(data) != 0, "Dataset is empty")
+    )
+    
     hc <- highchart() %>% 
       hc_add_series(
         name = "Total sentiment",
@@ -626,6 +645,11 @@ server <- function(input, output, session) {
   ### Column average -------------------------------------------------------
   output$sentiment_of_speech_avg <- renderHighchart({
     data <- sentiment_of_speech_data()
+    
+    validate(
+      need(nrow(data) != 0, "Dataset is empty")
+    )
+    
     hchart(data,
            hcaes(x = year, y = round(average_sentiment,2), group = sentiment_label),
            type="column",
@@ -639,7 +663,13 @@ server <- function(input, output, session) {
   ## sentiment_of_words ----------------------------------------------------
   ### Sentiment comparison -------------------------------------------------
   output$sentiment_of_words <- renderHighchart({
-    data <- sentiment_of_words_data() %>% 
+    data <- sentiment_of_words_data()
+    
+    validate(
+      need(nrow(data) != 0, "Dataset is empty")
+    )
+    
+    data <- data %>% 
       distinct(stemmed, .keep_all = TRUE) %>% 
       arrange(polarity, n_stem_total)
     
@@ -684,7 +714,13 @@ server <- function(input, output, session) {
 
   ### Word comparison ------------------------------------------------------
   output$sentiment_of_words_freq <- renderHighchart({
-    data <- sentiment_of_words_data() %>% 
+    data <- sentiment_of_words_data() 
+    
+    validate(
+      need(nrow(data) != 0, "Dataset is empty")
+    )
+    
+    data <- data %>% 
       distinct(stemmed, .keep_all = TRUE) %>% 
       arrange(n_stem_total, polarity)
     
@@ -885,6 +921,9 @@ server <- function(input, output, session) {
   ## Creating a map ---------------------------------------------------------
   output$map <- renderLeaflet({
     data <- mapData()
+    validate(
+      need(nrow(data) != 0, "Dataset is empty")
+    )
     leaflet(data,
             options = leafletOptions(worldCopyJump = T,
                                      minZoom = 1.8,
@@ -913,6 +952,11 @@ server <- function(input, output, session) {
   ## Bar chart --------------------------------------------------------------
   output$n_hist <- renderHighchart({
     data <- mapData()
+    
+    validate(
+      need(nrow(data) != 0, "Dataset is empty")
+    )
+    
     df <- data.frame(year = unlist(data@data$year), n_year = unlist(data@data$n_year)) %>% 
       group_by(year) %>% 
       summarise(n_year = sum(n_year)) %>% 
@@ -930,6 +974,9 @@ server <- function(input, output, session) {
   ## Sentences --------------------------------------------------------------
   output$sentences <- renderUI({
     data <- mapData()
+    if(nrow(data)==0){
+      return("")
+    }
     data <- tidyr::unnest(tidyr::unnest(data@data, cols = c(year, sentence)), cols=c(sentence)) %>% 
       unique() %>% 
       select(sentence, year)
@@ -1025,6 +1072,8 @@ server <- function(input, output, session) {
       group_by(stemmed, year) %>% 
       arrange(year, stemmed)
     
+    data <- filter(data, year %in% y())
+    
     return(data)
   })
   
@@ -1079,7 +1128,11 @@ server <- function(input, output, session) {
 
   ## Word cloud ------------------------------------------------------------
   output$wordcloud <- renderWordcloud2({
-    data <-  speech_data_como_filt() %>% 
+    data <- speech_data_como_filt() 
+    validate(
+      need(nrow(data) != 0, "Dataset is empty")
+    )
+    data <- data %>% 
       ungroup() %>% 
       select(stemmed, n_stem_total) %>% 
       distinct() %>% 
@@ -1090,7 +1143,12 @@ server <- function(input, output, session) {
   
   ## Stream Graph ----------------------------------------------------------
   output$word_ussage_streamgraph <- renderHighchart({
-    data <-  speech_data_como_filt_max() %>% 
+    data <-  speech_data_como_filt_max()
+    validate(
+      need(nrow(data) != 0, "Dataset is empty")
+    )
+    
+    data <-  data %>% 
       ungroup() %>% 
       select(year, n_stem_year, stemmed)
 
@@ -1125,6 +1183,9 @@ server <- function(input, output, session) {
   ## Columns ---------------------------------------------------------------
   output$word_ussage_col <- renderHighchart({
     data <-  speech_data_como_filt()
+    validate(
+      need(nrow(data) != 0, "Dataset is empty")
+    )
     
     common_opt <- unique(arrange(data, desc(n_stem_total))$n_stem_total)[ifelse(input$slider_word_ussage>30, 30, input$slider_word_ussage)]
     
@@ -1163,6 +1224,9 @@ server <- function(input, output, session) {
   ## Columns percent ------------------------------------------------------
   output$word_ussage_col_per <- renderHighchart({
     data <-  speech_data_como_filt()
+    validate(
+      need(nrow(data) != 0, "Dataset is empty")
+    )
     
     common_opt <- unique(arrange(data, desc(n_stem_total))$n_stem_total)[ifelse(input$slider_word_ussage>30, 30, input$slider_word_ussage)]
     
@@ -1188,6 +1252,9 @@ server <- function(input, output, session) {
   ## Pie ------------------------------------------------------------------
   output$word_ussage_pie <- renderHighchart({
     data <-  speech_data_como_filt()
+    validate(
+      need(nrow(data) != 0, "Dataset is empty")
+    )
     
     common_opt <- unique(arrange(data, desc(n_stem_total))$n_stem_total)[ifelse(input$slider_word_ussage>40, 40, input$slider_word_ussage)]
     
@@ -1227,6 +1294,9 @@ server <- function(input, output, session) {
   ## Scatter --------------------------------------------------------------
   output$word_ussage_scatter <- renderHighchart({
     data <-  speech_data_como_filt_max()
+    validate(
+      need(nrow(data) != 0, "Dataset is empty")
+    )
     
     hc <- hchart(data, "scatter",
                  hcaes(x=year, y=n_stem_year, total = n_stem_total, group = stemmed)) %>% 
@@ -1274,7 +1344,6 @@ server <- function(input, output, session) {
   
   ## Table ----------------------------------------------------------------
   output$word_ussage_tbl <- renderDT({
-    warning(names(speech_data_como_filt()))
     speech_data_como_filt() %>%
       ungroup() %>% 
       transmute(`Year` = year, `Word` = stemmed, `Total frequency` = n_stem_total,
