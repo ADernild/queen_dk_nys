@@ -59,6 +59,15 @@ ui <- dashboardPage(
             )
           ),
           fluidRow(class="box_align_layout",
+                   box(width = 3, id="map_sentece_slider_wrapper", title = "Sentence options",
+                       whatViz("A slider to set the maxium amount of sample sentences."),
+                       whyViz("To adjust how many sentece samples you want to see."),
+                       sliderInput("topis_sentence_slider", label = "Senteces allowed", min=1, max=10, value=5, step=1, sep=""),
+                       box(width = 12, class="infoViz", title = "How to use",
+                           collapsible = T, collapsed = T,
+                           howViz("Drag the cirkle on the slider to any number.")
+                       )
+                   ),
                    box(width=5, title = textOutput("topics_sentce_title"),
                        whatViz("Samples of mentions."),
                        whyViz("To see examples of mentions."),
@@ -68,16 +77,14 @@ ui <- dashboardPage(
                            howViz("Click on a a topic in the topic map above.")
                        )
                    ),
-                    box(width=4, title = textOutput("topics_means_title"),
-                      highchartOutput("sent_topic")
-                    ),
-                   box(width = 3, id="map_sentece_slider_wrapper", title = "Sentence options",
-                       whatViz("A slider to set the maxium amount of sample sentences."),
-                       whyViz("To adjust how many sentece samples you want to see."),
-                       sliderInput("topis_sentence_slider", label = "Senteces allowed", min=1, max=10, value=5, step=1, sep=""),
+                   box(width=4, title = textOutput("topics_means_title"),
+                       whatViz(""),
+                       whyViz(""),
+                       highchartOutput("sent_topic"),
                        box(width = 12, class="infoViz", title = "How to use",
                            collapsible = T, collapsed = T,
-                           howViz("Drag the cirkle on the slider to any number.")
+                           howViz("Click on a a topic in the topic map above to make it appear."),
+                           howViz("")
                        )
                    )
           )
@@ -332,7 +339,7 @@ ui <- dashboardPage(
                                     howViz("Year filter: Setting the year filter will filter for the words used in those years."),
                                     howViz("Featured words: Setting featured words will filter for the words set in selection.")
                                 ),
-                                helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 65. Any number set above, will result in 65 being featured.")
+                                helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 40. Any number set above, will result in 40 being featured.")
                        ),
                        tabPanel("Word frequency by year (Stream graph)",
                                 collapsible = T, collapsed = T,

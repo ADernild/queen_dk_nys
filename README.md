@@ -9,9 +9,9 @@ You could also do your own thing and look at pretty graphs and statistics. We wo
 
 See live on: https://app.dernild.com/
 
-|████████░░░░░|
+|████████░░|
 
-62% complete.
+81% complete.
 
 ### Tasks
 
@@ -20,31 +20,21 @@ See live on: https://app.dernild.com/
 - [x] Generate file with meta info about speeches.
 - [x] Clean speech text.
 - [x] Create custom stopwords list.
-- [ ] Create custom stopwords list for enlish speeches (A).
 - [x] Preprocessing: Tokenization, stemming, lemmatization etc.
-- [R] Preprocessing: Tokenization, stemming, lemmatization etc. for english speeches (A).
 - [x] Build Structural Topic Model (STM).
-- [ ] Add sentiment scores to Topic Models (A).
 - [x] Calculate Polarity scores (Sentiment Analysis).
 - [x] Rebuild Structural Topic Model using Polarity scores as another co-variate.
 - [x] Implement worldmap and map placese the queens mentions.
 - [x] Implement visualizations of the most used words.
 - [x] Analyse sentiment by year.
-- [R] Format data for display (M).
-- [R] Optimize visualisations for english speech data.
+- [ ] Format data for display - Color piechart, remove 0 from topics means, fix 2011 bug, year filter bug on word statistics (M).
 - [x] Create interactive dashboard to interact with findings.
-- [R] Implement consistent colorpalette for data (M).
 - [x] Add filtering by year and words.
 - [x] Create list of data sources in dashboard.
 - [x] Feature information about the queen that is scraped from wikipedia.
-- [R] Implement language option for dahsboard, and reactively update data sources (M).
-- [R] Finalize design of dashboard (M)
-- [R] Split Index tab into: index, How-to and about tabs (M).
+- [x] Implement language option for dahsboard data.
 - [ ] Improve ussage description to dashboard on index tab.
-- [R] Move What an Why above charts (M).
-- [R] Rename Expl. to "How (to use)" (M).
 - [ ] Analyze topics, or describe how to do so.
-- [R] Remove comma from integer sliders (A/M).
 - [ ] Optimize user experience
 - [ ] Write 4 page report.
 
