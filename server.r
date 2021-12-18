@@ -284,8 +284,17 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$topicVis_term_click, {
-    chosen <- c(input$words, input$topicVis_term_click)
-    
+    chosen <- input$words
+    if(input$topicVis_term_click %in% tokens$stemmed){
+      chosen <- c(input$words, input$topicVis_term_click)
+    } else if(input$topicVis_term_click %in% tokens$word){
+      word <- tokens[tokens$word == input$topicVis_term_click,]$stemmed[1]
+      chosen <- c(input$words, word)
+    } else if(input$topicVis_term_click %in% tokens$headword){
+      word <- tokens[tokens$headword == input$topicVis_term_click,]$stemmed[1]
+      chosen <- c(input$words, word)
+    }
+
     updateSelectizeInput(session, 
                          "words", 
                          "Featured words",
