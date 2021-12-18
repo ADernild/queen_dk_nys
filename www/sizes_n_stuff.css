@@ -265,6 +265,10 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
   border-radius: 4px;
 }
 
+.box img{
+  max-width: 100%;
+}
+
 .box .box,
 .tab-content .box {
   margin-right: 2%;

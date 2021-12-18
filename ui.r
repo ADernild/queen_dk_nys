@@ -20,7 +20,7 @@ ui <- dashboardPage(
               h1("H.M. The Queen topic analyzer"),
               h2("Home"),
               fluidRow(class="box_align_layout",
-                box(width=9,
+                box(width=10,
                     title = "You are hereby invited to a look into the new year eve speeches of the royal majesty",
                     div(id = "intoduction",
                         p(class="what", "This is a dashboard. The dashboard is a tool to analyze topics in speeches."),
@@ -29,7 +29,7 @@ ui <- dashboardPage(
                         p(class="bold", "GUD BEVARE DANMARK.")
                     )
                 ),
-                box(width=3,
+                box(width=2,
                     img(src='queen_logo.png', align="right")
                 )
               )
