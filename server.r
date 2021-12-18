@@ -237,7 +237,8 @@ server <- function(input, output, session) {
     return(data)
   })
   
-  observeEvent(input$topicVis_topic_click, {
+  observe({
+    req(input$topicVis_topic_click)
     req(input$topis_sentence_slider)
     slide_num <- input$topis_sentence_slider
     topic <- input$topicVis_topic_click
@@ -999,7 +1000,8 @@ server <- function(input, output, session) {
   })
   
   ## Making visualization based on clicked country --------------------------
-  observeEvent(input$map_shape_click, {
+  observe({
+    req(input$map_shape_click)
     data <- mapData()
     click <- input$map_shape_click
     selected <- data@data[data@data$ADMIN == click$id,]

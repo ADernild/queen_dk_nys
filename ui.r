@@ -47,7 +47,6 @@ ui <- dashboardPage(
                     collapsible = T, collapsed = T,
                     howViz("Use the slider to select a number for your liking.")
                 ),
-                helpText("Notice: Topic model selector will result in a failure if LDA is selected.")
             ),
             box(width=10, title = "Topic model",
                 whatViz("Topic model is a tool that maps topics. It does so by analyzing word relations by analyzing all speeches and mapping the relations as word matrixes. Then the model displays the topics to the left, and the words within on the right. Frequency of use is depicted by size for topics, and bar length for words. Topics are named 1:n, where 1 is the largest topic."),
@@ -68,12 +67,12 @@ ui <- dashboardPage(
                        sliderInput("topis_sentence_slider", label = "Senteces allowed", min=1, max=10, value=5, step=1, sep=""),
                        box(width = 12, class="infoViz", title = "How to use",
                            collapsible = T, collapsed = T,
-                           howViz("Drag the cirkle on the slider to any number.")
+                           howViz("Drag the circle on the slider to any number.")
                        )
                    ),
                    box(width=5, title = textOutput("topics_sentce_title"),
-                       whatViz("Samples of mentions."),
-                       whyViz("To see examples of mentions."),
+                       whatViz("Samples of sentences belonging to chosen topic."),
+                       whyViz("To see examples of sentences in chosen topic."),
                        uiOutput("topicText"),
                        box(width = 12, class="infoViz", title = "How to use",
                            collapsible = T, collapsed = T,
@@ -81,13 +80,13 @@ ui <- dashboardPage(
                        )
                    ),
                    box(width=4, title = textOutput("topics_means_title"),
-                       whatViz(""),
-                       whyViz(""),
+                       whatViz("This boxplot shows the average sentiment of sentences belonging to a specific topic, compared to the rest of the topics."),
+                       whyViz("To compare a specific topics sentiment to the rest of the topics."),
                        highchartOutput("sent_topic"),
                        box(width = 12, class="infoViz", title = "How to use",
                            collapsible = T, collapsed = T,
                            howViz("Click on a a topic in the topic map above to make it appear."),
-                           howViz("")
+                           howViz("Hover over a box in the boxplot to see descriptive statistics.")
                        )
                    )
           )
