@@ -31,7 +31,7 @@ clean_sentences_less <- function(x) {
 
 new_year_en <- function(x){
   x %>% 
-    str_replace_all("new year", "new-year")
+    str_replace_all("new year", "newyear")
 }
 
 # Importing data

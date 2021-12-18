@@ -267,7 +267,7 @@ server <- function(input, output, session) {
       dat <- data_to_boxplot(dat, polarity, group_var2 = topic)
       
       highchart() %>%
-        hc_xAxis(title = list(text = "Topic"), type = "category") %>%
+        hc_xAxis(title = list(text = "Topic chosen vs. rest"), type = "category") %>%
         hc_yAxis(title = list(text = "Average sentence sentiment")) %>%
         hc_title(text = paste("Average sentiment in topic", topic)) %>%
         hc_add_series_list(dat) %>%
@@ -982,7 +982,7 @@ server <- function(input, output, session) {
         df <- df %>% 
           group_by(ISO_A2, year) %>% 
           summarise(sentiment = mean(sentiment_year))
-        dat <- data_to_boxplot(df, sentiment, ISO_A2, year)
+        dat <- data_to_boxplot(df, sentiment, ISO_A2, ISO_A2)
         
         highchart() %>% 
           hc_xAxis(title = list(text = "Country"), type = "category") %>% 
@@ -990,7 +990,7 @@ server <- function(input, output, session) {
           hc_title(text = paste("Average sentiment when", click$id, "is mentioned")) %>% 
           hc_add_series_list(dat) %>% 
           hc_dualcol()
-      }) 
+      })
       
       output$sentences <- renderUI({ # Showing sentences of country mentioned
         req(input$map_sentence_slider)
