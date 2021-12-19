@@ -267,7 +267,7 @@ server <- function(input, output, session) {
       )
     )
     
-    topics <- str_split(input$tippertoppertopicspopper, ",")
+    topics <- unlist(str_split(input$tippertoppertopicspopper, ","))
     
     chosen <- c()
     for(t in topics){
