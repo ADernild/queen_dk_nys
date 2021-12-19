@@ -258,6 +258,33 @@ server <- function(input, output, session) {
     output$topics_means_title <-  renderText({
       paste("Average sentiment in topic", topic)
     })
+
+    golem::invoke_js(
+      "getTopics",
+      list(
+        ok = "ok"
+      )
+    )
+    
+    topics <- str_split(input$tippertoppertopicspopper, ",")
+    
+    chosen <- c()
+    for(t in topics){
+      if(t %in% tokens$stemmed){
+        chosen <- c(chosen, t)
+      } else if(t %in% tokens$word){
+        word <- tokens[tokens$word == t,]$stemmed[1]
+        chosen <- c(chosen, word)
+      } else if(t %in% tokens$headword){
+        word <- tokens[tokens$headword == input$topicVis_term_click,]$stemmed[1]
+        chosen <- c(chosen, word)
+      }
+    }
+    
+    updateSelectizeInput(session,
+                         "words",
+                         "Featured words",
+                         selected = chosen)
     
     output$sent_topic <- renderHighchart({
       df <- thoughts()
@@ -294,7 +321,7 @@ server <- function(input, output, session) {
       word <- tokens[tokens$headword == input$topicVis_term_click,]$stemmed[1]
       chosen <- c(input$words, word)
     }
-
+    
     updateSelectizeInput(session,
                          "words",
                          "Featured words",
