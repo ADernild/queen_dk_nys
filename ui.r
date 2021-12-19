@@ -532,7 +532,9 @@ ui <- dashboardPage(
                            whatViz("Featured words is a selection of words from words featured in the speeches, that is used to filter or feature words in different kinds of ways."),
                            whyViz("When you are inspecting a topic, some words might seem important. So, you can filter for these words using the filter."),
                            howViz("Select word: Type word and press enter when done or click suggestion pop up."),
-                           howViz("Remove word(s): click on a word and press Backspace-key or Delete-key to remove word Hold down Ctrl to select multiple. Alternatively, select input-field (e.g. by clicking or using tab button), and navigate the cursor with the arrow keys, and use Backspace-key or Delete-key to remove words.")
+                           howViz("Remove word(s): click on a word and press Backspace-key or Delete-key to remove word Hold down Ctrl to select multiple. Alternatively, select input-field (e.g. by clicking or using tab button), and navigate the cursor with the arrow keys, and use Backspace-key or Delete-key to remove words."),
+                           howViz("Remove words by filter: Click button labled: \"Clear words\""),
+                           howViz("Regret removal by clear words: Click button labled: \"Regret clear\". It only works for last clearning.")
                        )
               )
       )
