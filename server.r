@@ -241,6 +241,7 @@ server <- function(input, output, session) {
   observe({
     req(input$topicVis_topic_click)
     req(input$topis_sentence_slider)
+    req(input$topic_r)
     slide_num <- input$topis_sentence_slider
     topic <- input$topicVis_topic_click
     output$topicText <- renderUI({
@@ -260,32 +261,34 @@ server <- function(input, output, session) {
       paste("Average sentiment in topic", topic)
     })
 
-    golem::invoke_js(
-      "getTopics",
-      list(
-        ok = "ok"
+    if(input$topic_r == 1){
+      golem::invoke_js(
+        "getTopics",
+        list(
+          ok = "ok"
+        )
       )
-    )
-    
-    topics <- unlist(str_split(input$tippertoppertopicspopper, ","))
-    
-    chosen <- c()
-    for(t in topics){
-      if(t %in% tokens$stemmed){
-        chosen <- c(chosen, t)
-      } else if(t %in% tokens$word){
-        word <- tokens[tokens$word == t,]$stemmed[1]
-        chosen <- c(chosen, word)
-      } else if(t %in% tokens$headword){
-        word <- tokens[tokens$headword == input$topicVis_term_click,]$stemmed[1]
-        chosen <- c(chosen, word)
+      
+      topics <- unlist(str_split(input$tippertoppertopicspopper, ","))
+      
+      chosen <- c()
+      for(t in topics){
+        if(t %in% tokens$stemmed){
+          chosen <- c(chosen, t)
+        } else if(t %in% tokens$word){
+          word <- tokens[tokens$word == t,]$stemmed[1]
+          chosen <- c(chosen, word)
+        } else if(t %in% tokens$headword){
+          word <- tokens[tokens$headword == input$topicVis_term_click,]$stemmed[1]
+          chosen <- c(chosen, word)
+        }
       }
+      
+      updateSelectizeInput(session,
+                           "words",
+                           "Featured words",
+                           selected = chosen)
     }
-    
-    updateSelectizeInput(session,
-                         "words",
-                         "Featured words",
-                         selected = chosen)
     
     output$sent_topic <- renderHighchart({
       df <- thoughts()
@@ -312,21 +315,24 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$topicVis_term_click, {
-    chosen <- input$words
-    if(input$topicVis_term_click %in% tokens$stemmed){
-      chosen <- c(chosen, input$topicVis_term_click)
-    } else if(input$topicVis_term_click %in% tokens$word){
-      word <- tokens[tokens$word == input$topicVis_term_click,]$stemmed[1]
-      chosen <- c(chosen, word)
-    } else if(input$topicVis_term_click %in% tokens$headword){
-      word <- tokens[tokens$headword == input$topicVis_term_click,]$stemmed[1]
-      chosen <- c(chosen, word)
-    }
+    req(input$topic_r)
+    if(input$topic_r == 2){
+      chosen <- input$words
+      if(input$topicVis_term_click %in% tokens$stemmed){
+        chosen <- c(chosen, input$topicVis_term_click)
+      } else if(input$topicVis_term_click %in% tokens$word){
+        word <- tokens[tokens$word == input$topicVis_term_click,]$stemmed[1]
+        chosen <- c(chosen, word)
+      } else if(input$topicVis_term_click %in% tokens$headword){
+        word <- tokens[tokens$headword == input$topicVis_term_click,]$stemmed[1]
+        chosen <- c(chosen, word)
+      }
     
-    updateSelectizeInput(session,
-                         "words",
-                         "Featured words",
-                         selected = chosen)
+      updateSelectizeInput(session,
+                           "words",
+                           "Featured words",
+                           selected = chosen)
+    }
   })
   
   output$topics_sentce_title <-  renderText({
