@@ -49,6 +49,13 @@ h2, h3{
   cursor: help;
 }
 
+/* Buttons */
+section.sidebar .shiny-bound-input.action-button,
+section.sidebar .shiny-bound-input.action-link{
+  margin: 6px auto 8px auto;
+}
+
+
 /* Shiny dashboard */
 /* Main header */
 .main-header{

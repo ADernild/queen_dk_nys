@@ -124,9 +124,13 @@ server <- function(input, output, session) {
     )
   
   observeEvent(input$clear, {
-    if(length(input$words)>0){
-      regrets <<-input$words
-    }
+    # if(length(regrets)>1){
+    #   regrets <<- regrets[1:length(regrets)]
+    # }
+    # if(length(input$words)>0 && !allmatch(input$words, regrets[1])){
+    #   regrets <<- list(input$words, regrets[1])
+    # }
+    regrets <<- input$words
     updateSelectizeInput(
       session,
       'words',
@@ -135,10 +139,19 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$regret, {
+    val <- regrets
+    # val <- regrets[length(regrets)]
+    # warning(regrets)
+    # if(length(regrets)>1){
+    #   regrets <<- regrets[1:length(regrets)-1]
+    # } else{
+    #   regrets <<- list()
+    # }
+    # warning(regrets)
     updateSelectizeInput(
       session,
       'words',
-      selected = regrets
+      selected = val
     )
   })
   
