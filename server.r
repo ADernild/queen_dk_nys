@@ -79,6 +79,8 @@ server <- function(input, output, session) {
             uiOutput("year"),
             selectizeInput("words", label="Featured words", choices = NULL,
                            multiple = TRUE),
+            actionButton("clear", "Clear featured words"),
+            actionButton("regret", "Regret clear", title="Regret clearing by clear button."),
             uiOutput("source")
           )
         )
@@ -120,6 +122,25 @@ server <- function(input, output, session) {
   updateSelectizeInput(
     session, 'words', choices = words_tokens_all
     )
+  
+  observeEvent(input$clear, {
+    if(length(input$words)>0){
+      regrets <<-input$words
+    }
+    updateSelectizeInput(
+      session,
+      'words',
+      selected = c("")
+    )
+  })
+  
+  observeEvent(input$regret, {
+    updateSelectizeInput(
+      session,
+      'words',
+      selected = regrets
+    )
+  })
   
   # Date data --------------------------------------------------------------
   y <- reactive({
@@ -270,7 +291,7 @@ server <- function(input, output, session) {
       )
       
       topics <- unlist(str_split(input$tippertoppertopicspopper, ","))
-      
+
       chosen <- c()
       for(t in topics){
         if(t %in% tokens$stemmed){
