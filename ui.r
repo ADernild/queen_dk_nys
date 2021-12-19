@@ -9,7 +9,8 @@ ui <- dashboardPage(
       tags$link(rel = "stylesheet", type = "text/css", href = "sizes_n_stuff.css"),
       tags$link(rel = "stylesheet", type = "text/css", href = "design2.css"),
       uiOutput("royall_beautyfication"),
-      tags$link(rel = "shortcut icon", href = "favicon.ico")
+      tags$link(rel = "shortcut icon", href = "favicon.ico"),
+      tags$script(src = "js.js")
     ),
     conditionalPanel(condition = "$('html').hasClass('shiny-busy')",
                      tags$div(span("Loading..."), id = "loadmessage")
@@ -40,13 +41,30 @@ ui <- dashboardPage(
           fluidRow(class="box_align_layout",
             box(width=2, title = "Topic model parameters",
                 # Sidebar with a slider input for number of bins
+                whatViz("Options to set prefference to update featured words from topic model."),
+                whyViz("You can more easily inspect topic in other tabs by quicly obtaining their values."),
+                radioButtons ("topic_r",
+                              label = "Update featured words with topics content",
+                              selected = 1,
+                              choiceNames = c(
+                                # "Update on topic selection", 
+                                "Update on word selection", 
+                                "Do not update"),
+                              choiceValues = c(
+                                1,
+                                # 2,
+                                F
+                                )
+                ),
+                p(helpText("Notice: \"Update on topic selection\" will clear previous selections.")),
                 whatViz("Number of terms to display sets the number of terms used in the topic model, by size of topic."),
                 whyViz("Limiting the number of terms makes the topic model easier to interpret. Adding more, gives more information."),
                 fluidRow(sliderInput("nTerms", "Number of terms to display", min = 10, max = 50, value = 30, sep="")),
                 box(width = 12, class="infoViz", title = "How to use",
                     collapsible = T, collapsed = T,
-                    howViz("Use the slider to select a number for your liking.")
-                ),
+                    howViz("Setting featured words update prefferece: Click a a setting that fits your needs the most."),
+                    howViz("Choose terms to display: Use the slider to select a number by dragging the dot to any number.")
+                )
             ),
             box(width=10, title = "Topic model",
                 whatViz("Topic model is a tool that maps topics. It does so by analyzing word relations by analyzing all speeches and mapping the relations as word matrixes. Then the model displays the topics to the left, and the words within on the right. Frequency of use is depicted by size for topics, and bar length for words. Topics are named 1:n, where 1 is the largest topic."),
