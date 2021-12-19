@@ -60,11 +60,6 @@ server <- function(input, output, session) {
         menuItem(span("How to operate", class="help-me", title="Help and how to operate dashboard"), tabName = "howto", icon=shiny::icon("question-circle", class="help-me", title="Help and how to operate dashboard")),
         div(id="sidebar-input",
             h3("Filters"),
-            # checkboxGroupInput("re",
-            #                    label = "Options",
-            #                    choices = "Allow reactive choises",
-            #                    selected = "Allow reactive choises"
-            # ),
             radioButtons ("l",
                           label = "Language",
                           selected = languages[1],
