@@ -437,3 +437,6 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
 #map_sentece_slider_wrapper .shiny-input-container{
   float: none;
 }
+/* Wordcloud */
+.wordcloud{
+	margin-bottom: 2em;
