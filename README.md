@@ -49,7 +49,7 @@ x = Done
 - [R] Use CRON script to automize datacollection (A).
 - [ ] Simulate steps to do when a new speach is relased (A)
 - [ ] Add logic to update filter inputs by data clicked in models.
-- \* Implement checkbox to ignore filter updates by clicked data in models (M).
+- [R] Implement checkbox to ignore filter updates by clicked data in models (M).
 - [ ] Use ai to generate speeches.
 - [ ] Translate dashboard to Danish, and give option to use Danish/English.
 - [ ] Remove unsatasfactory models.

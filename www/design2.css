@@ -52,6 +52,22 @@ body, .content-wrapper, .skin-blue .wrapper{
   color: #9C5C52; /* Lighter version of parrent */
 }
 
+/* Buttons */
+section.sidebar .shiny-bound-input.action-button,
+section.sidebar .shiny-bound-input.action-link{
+  background-color: #435961;
+  color: #fff;
+  border-top-color: #35474d;
+  border-left-color: #35474d;
+  border-right-color: #687a80;
+  border-bottom-color: #687a80;
+}
+
+section.sidebar .shiny-bound-input.action-button:hover,
+section.sidebar .shiny-bound-input.action-link:hover{
+  background-color: #35474d;
+}
+
 /* Titles */
 h1{
   position: relative;

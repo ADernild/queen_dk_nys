@@ -202,11 +202,24 @@ hc_quadcolsum <- function(x){
 }
 
 # Sorting ----
-cmatch <- function(left, right){
-  for(item in left){
-    if(item %in% right){
+cmatch <- function(needle, haistack){
+  for(item in needle){
+    if(item %in% haistack){
       return(T)
     }
+  }
+  return(F)
+}
+
+allmatch <- function(needles, haistack){
+  check <- c()
+  for(item in needles){
+    if(item %in% haistack){
+      check <- c(T, check)
+    }
+  }
+  if(length(check) == length(needles)){
+    return(T)
   }
   return(F)
 }
@@ -257,3 +270,4 @@ howViz <- function(text){
     text
   )
 }
+regrets <- list()

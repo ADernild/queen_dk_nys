@@ -60,11 +60,6 @@ server <- function(input, output, session) {
         menuItem(span("How to operate", class="help-me", title="Help and how to operate dashboard"), tabName = "howto", icon=shiny::icon("question-circle", class="help-me", title="Help and how to operate dashboard")),
         div(id="sidebar-input",
             h3("Filters"),
-            # checkboxGroupInput("re",
-            #                    label = "Options",
-            #                    choices = "Allow reactive choises",
-            #                    selected = "Allow reactive choises"
-            # ),
             radioButtons ("l",
                           label = "Language",
                           selected = languages[1],
@@ -124,9 +119,13 @@ server <- function(input, output, session) {
     )
   
   observeEvent(input$clear, {
-    if(length(input$words)>0){
-      regrets <<-input$words
-    }
+    # if(length(regrets)>1){
+    #   regrets <<- regrets[1:length(regrets)]
+    # }
+    # if(length(input$words)>0 && !allmatch(input$words, regrets[1])){
+    #   regrets <<- list(input$words, regrets[1])
+    # }
+    regrets <<- input$words
     updateSelectizeInput(
       session,
       'words',
@@ -135,10 +134,19 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$regret, {
+    val <- regrets
+    # val <- regrets[length(regrets)]
+    # warning(regrets)
+    # if(length(regrets)>1){
+    #   regrets <<- regrets[1:length(regrets)-1]
+    # } else{
+    #   regrets <<- list()
+    # }
+    # warning(regrets)
     updateSelectizeInput(
       session,
       'words',
-      selected = regrets
+      selected = val
     )
   })
   
