@@ -703,18 +703,47 @@ server <- function(input, output, session) {
     
     hc <- highchart() %>% 
       hc_add_series(
+        name = "Positive sentiment",
+        type = "line",
+        data = data,
+        hcaes(x = year, y = sentiment_pos)
+        # showInLegend = F
+      ) %>% 
+      hc_add_series(
         name = "Total sentiment",
+        type = "line",
+        data = data,
+        hcaes(x = year, y = sentiment)
+        # showInLegend = F
+      ) %>% 
+      hc_add_series(
+        name = "Negative sentiment",
+        type = "line",
+        data = data,
+        hcaes(x = year, y = sentiment_neg)
+        # showInLegend = F
+      ) %>% 
+      hc_add_series(
+        name = "Sentiment Range",
         type = "arearange",
         data = data,
-        hcaes(x = year, low = sentiment, high = sentiment_pos, neg = sentiment_neg),
-        showInLegend = F
+        hcaes(x = year, low = sentiment, high = sentiment_pos, neg = sentiment_neg)
+        # enableMouseTracking =F
+        # showInLegend = F
       ) %>% 
       hc_norevese() %>% 
       hc_tooltip(
         shared = T,
-        headerFormat = "<b>{point.x}</b><br>",
-        pointFormat = "Positive (high): {point.high}<br>Negative (difference): {point.neg}<br>Sentiment (low): {point.low}<br>"
-      ) %>% 
+        headerFormat = "<b>{point.x}</b><br>"#,
+        # pointFormat = "Positive (high): {point.high}<br>Negative (difference): {point.neg}<br>Sentiment (low): {point.low}<br>"
+        # formatter = JS(paste0('function (){
+        # return "<b>"+this.points[0].x+"</b><br>" +
+        # "Positive (high): "+this.points[0].high+"<br>"+
+        # "Negative (difference): "+this.points[0].y+"<br>"+
+        # "Sentiment (low): "+this.points[0].low
+        #                       }')
+        # )
+      ) %>%
       hc_yAxis(
         softMin = 0,
         startOnTick = T
@@ -732,7 +761,36 @@ server <- function(input, output, session) {
           text = "Sentiment"
         )
       ) %>% 
-      hc_multicol()
+      hc_plotOptions(
+        arearange = list(
+          marker = F
+        )
+      ) %>% 
+      hc_fivecolsum()
+    if(length(input$words)>0){
+      selection <- sentiment_of_speech_data_filtered() %>% 
+        select(sentiment, year, stemmed) %>% 
+        ungroup()
+      for(word in unique(selection$stemmed)){
+        for(year in unique(data$year)){
+          if(!(word %in% selection[selection$year == year,]$stemmed)){
+            selection <-  selection %>%
+              add_row(stemmed = word, year=year, sentiment=0)
+          }
+        }
+      }
+      selection <-  selection %>%
+        group_by(year) %>% 
+        summarise(sentiment = sum(sentiment)) %>% 
+        arrange(year, sentiment)
+      hc <- hc %>%
+        hc_add_series(
+          type = "line",
+          name= "Sentiment of selection",
+          data = selection,
+          hcaes(x = year, y = sentiment)
+        )
+    }
     return(hc)
   })
   
