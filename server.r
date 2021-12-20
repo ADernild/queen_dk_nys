@@ -335,6 +335,24 @@ server <- function(input, output, session) {
     })
   })
   
+  output$sent_topic <- renderHighchart({
+    df <- thoughts()
+    polarity_list <- thoughts_da$polarity
+    polarity <- unnest(data.frame(t(rbind(paste("Topic", 1:length(polarity_list)), data.frame(t(sapply(1:length(polarity_list), function(i) polarity_list[i][1])))))), cols=c(X1, X2))
+    polarity$X1 <- factor(polarity$X1, levels = c(paste("Topic", 1:length(polarity_list))))
+    dat <- data_to_boxplot(polarity, X2, group_var = X1, group_var2 = X1)
+    
+    highchart() %>%
+      hc_xAxis(title = list(text = "Topics"), type = "category") %>%
+      hc_yAxis(title = list(text = "Average sentence sentiment")) %>%
+      #hc_title(text = paste("Average sentiment in topic", topic)) %>%
+      hc_add_series_list(dat) %>%
+      hc_tooltip(
+        headerFormat = ""
+      ) %>% 
+      hc_multicol()
+  })
+  
   observeEvent(input$topicVis_term_click, {
     req(input$topic_r)
     if(input$topic_r == 2){
