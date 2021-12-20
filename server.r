@@ -345,7 +345,7 @@ server <- function(input, output, session) {
   
   output$sent_topic <- renderHighchart({
     df <- thoughts()
-    polarity_list <- thoughts_da$polarity
+    polarity_list <- df$polarity
     polarity <- unnest(data.frame(t(rbind(paste("Topic", 1:length(polarity_list)), data.frame(t(sapply(1:length(polarity_list), function(i) polarity_list[i][1])))))), cols=c(X1, X2))
     polarity$X1 <- factor(polarity$X1, levels = c(paste("Topic", 1:length(polarity_list))))
     dat <- data_to_boxplot(polarity, X2, group_var = X1, group_var2 = X1)
