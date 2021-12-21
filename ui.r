@@ -456,11 +456,13 @@ ui <- dashboardPage(
                     p("Words have been lemmatized (replacing words with identical meaning with a headword), to improve topic analysis, by using udpipe for R.")
                 ),
                 box(width=4, title = "Topics",
-                    p("Todo")
+                    p("Topics have been derived with a Structural Topic Model (STM) that is characterized by estimating topic distributions using a covariate matrix as well as a document-term matrix."),
+                    p("The covariates used for estimating topic distributions in the Queen's new year's addresses is year of speech and average sentiment on sentence level.")
                 ),
                 box(width=4, title="Sentiment analysis",
                   p("For danish: Sentiment analysis is done by getting sentiment values from \"Det Danske Sprog- og Litteraturselskab (DSL, Society for Danish Language and Literature) and Center for Sprogteknologi, Københavns Universitet (CST, Centre for Language Technology, University of Copenhagen)\", and adding the the values to the words we collected on word level, stem level and lemmatized values."), 
-                  p("For danish: Sentiment analysis is done by getting sentiment values from \"todo\", and adding the the values to the words we collected on word level, stem level and lemmatized values.")  
+                  p("For danish: Sentiment analysis is done by getting sentiment values from \"todo\", and adding the the values to the words we collected on word level, stem level and lemmatized values."),
+                  p("For english: Sentiment analysis is done by getting sentiment values from the AFINN-111 sentiment dataset and adding to the words we collected on word-, stem- and lemmatized-level.")
                 )
               ),
               fluidRow(class="box_align_layout",
