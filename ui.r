@@ -462,7 +462,7 @@ ui <- dashboardPage(
                 ),
                 box(width=4, title="Sentiment analysis",
                   p("For danish: Sentiment analysis is done by getting sentiment values from \"Det Danske Sprog- og Litteraturselskab (DSL, Society for Danish Language and Literature) and Center for Sprogteknologi, Københavns Universitet (CST, Centre for Language Technology, University of Copenhagen)\", and adding the the values to the words we collected on word level, stem level and lemmatized values."), 
-                  p("For danish: Sentiment analysis is done by getting sentiment values from \"todo\", and adding the the values to the words we collected on word level, stem level and lemmatized values."),
+                  p("For danish: Sentiment analysis is done by getting sentiment values from \"Det Danske Sprog- og Litteraturselskab (DSL, Society for Danish Language and Literature) and Center for Sprogteknologi, Københavns Universitet (CST, Centre for Language Technology, University of Copenhagen)\", and adding the the values to the words we collected on word level, stem level and lemmatized values."),
                   p("For english: Sentiment analysis is done by getting sentiment values from the AFINN-111 sentiment dataset and adding to the words we collected on word-, stem- and lemmatized-level.")
                 )
               ),
