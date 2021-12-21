@@ -140,15 +140,16 @@ ui <- dashboardPage(
                                howViz("Featured words: Using featured words will show the sentiment that subset had in each year.")
                            )
                   ),
-                  tabPanel("Sentiment by year (Shankey)",
+                  tabPanel("Sentiment by year (Shankey and lines)",
                            whatViz("Sentiment by year shows the positive-, negative- and summed sentiment by year. This model does so in ranges."),
                            whyViz("Displaying sentiment in connected ranges, makes it easy to interpret the relation of sentiment between years."),
                            highchartOutput("sentiment_of_speech_sha_compare", height="75vh"),
                            box(width = 12, class="infoViz", title = "How to use",
                                collapsible = T, collapsed = T,
-                               howViz("Interpretation: Positive sentiment is the top point. Summed sentiment is the bottom point. The difference is the negative sentiment. Looking at the size of the changing sizes of the shankey can be used to observe changes in sentiment by year."),
+                               howViz("Interpretation: Positive sentiment, Summed sentiment and negative sentiment is displayed. The range between positive and summed sentiment is highlighted. The difference between postive- and summed sentiment is the same value as the is the negative sentiment. Looking at the size of the changing sizes of the shankey can be used to observe changes in sentiment by year."),
                                howViz("Tooltip: Hovering a year displays a tooltip that shows the sentiment values of the year."),
-                               howViz("Year filter: Using the year filter, will filter years featured.")
+                               howViz("Year filter: Using the year filter, will filter years featured."),
+                               howViz("Featured words: Using featured words will show the sentiment that subset had in each year.")
                            )
                   # ),
                   # tabPanel("Average sentiment",

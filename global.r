@@ -130,6 +130,15 @@ col_quad_sum <- c( # Based on colorBlindness::paletteMartin
   "#662700" # Brown - representing something unrelated to the others
 )
 
+# For comparing 2, sum, and something else ----
+col_five_sum <- c( # Based on colorBlindness::paletteMartin
+  "#662700", # Red brown
+  "#DB6D00", # Orange - representing sum (red and green combined)
+  "#A50021", # Dark red - representing false
+  "#F72735", # Midpoint of red and orrange - representing range? Yeah let's go with that
+  "#662700" # Brown - representing something unrelated to the others
+)
+
 ## For levels ----
 col_red_gradient <- c(
   "#A50021",
@@ -199,6 +208,10 @@ hc_quadcol_custom <- function(x){
 
 hc_quadcolsum <- function(x){
   x %>% hc_colors(col_quad_sum)
+}
+
+hc_fivecolsum <- function(x){
+  x %>% hc_colors(col_five_sum)
 }
 
 # Sorting ----
