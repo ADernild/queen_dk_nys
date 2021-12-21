@@ -278,12 +278,12 @@ server <- function(input, output, session) {
       sentences <- sample(sentences, ifelse(length(sentences)<slide_num, length(sentences), slide_num)) %>%
         str_to_sentence()
       
-      output$topics_sentce_title <-  renderText({
-        paste("Sentences belonging to topic", topic)
-      })
-      
       paste("<ul>", paste0("<li>", sentences, ".", "</li>", collapse = ""), "</ul>") %>%
         HTML()
+    })
+    
+    output$topics_sentce_title <-  renderText({
+      paste("Sentences belonging to topic", topic)
     })
     
     output$topics_means_title <-  renderText({
@@ -299,7 +299,7 @@ server <- function(input, output, session) {
       )
       
       topics <- unlist(str_split(input$tippertoppertopicspopper, ","))
-
+      print(topics)
       chosen <- c()
       for(t in topics){
         if(t %in% tokens$stemmed){
