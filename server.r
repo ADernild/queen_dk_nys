@@ -1418,8 +1418,9 @@ server <- function(input, output, session) {
     
     data <- data %>% 
       ungroup() %>%
-      select(stemmed, n_stem_total) %>%
-      distinct() %>% 
+      select(stemmed, n_stem_year) %>%
+      group_by(stemmed) %>% 
+      summarise(n_stem_total = sum(n_stem_year)) %>% 
       arrange(desc(n_stem_total))
 
     hc <- hchart(data, "pie", name="Frequency",
