@@ -1324,7 +1324,8 @@ server <- function(input, output, session) {
       hc_xAxis(
         title = list(
           text="Year"
-        )
+        ),
+        tickInterval=1
       ) %>% 
       hc_norevese() %>% 
       hc_tooltip(
@@ -1484,6 +1485,7 @@ server <- function(input, output, session) {
         startOnTick = T,
         endOnTick = T,
         showLastLabel = T,
+        tickInterval=1,
         title = list(
           text="Year"
         )
