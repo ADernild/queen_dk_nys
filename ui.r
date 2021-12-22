@@ -1,5 +1,5 @@
 ui <- dashboardPage(
-  dashboardHeader(title = "H.M. The Queen topic analyzer"
+  dashboardHeader(title = "H.M. the Queen's New Year's Address Analyzer"
   ),
   dashboardSidebar(
     sidebarMenuOutput("menu")
@@ -18,7 +18,7 @@ ui <- dashboardPage(
     # Index ----
     tabItems(
       tabItem(tabName = "index",
-              h1("H.M. The Queen topic analyzer"),
+              h1("H.M. the Queen's New Year's Address Analyzer"),
               h2("Home"),
               fluidRow(class="box_align_layout",
                 box(width=10,
