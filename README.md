@@ -46,14 +46,13 @@ x = Done
 [R] = Ready to review
 
 ### Task... Maybe
-- [R] Use CRON script to automize datacollection (A).
-- [ ] Simulate steps to do when a new speach is relased (A)
-- [ ] Add logic to update filter inputs by data clicked in models.
-- [R] Implement checkbox to ignore filter updates by clicked data in models (M).
+- [X] Use CRON script to automize datacollection (A).
+- [X] Simulate steps to do when a new speach is relased (A)
+- [X] Add logic to update filter inputs by data clicked in models.
+- [X] Implement checkbox to ignore filter updates by clicked data in models (M).
 - [ ] Use ai to generate speeches.
 - [ ] Translate dashboard to Danish, and give option to use Danish/English.
-- [ ] Remove unsatasfactory models.
-- [ ] Analyse speech lengths (M).
+- [ ] Analyze speech lengths (M).
 - [ ] Implement visualizations for speech lengths (M).
-- [R] Reactive word additions to featured words - from topic model
+- [X] Reactive word additions to featured words - from topic model
 - [ ] Optimize for mobile view
