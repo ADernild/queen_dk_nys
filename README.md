@@ -32,10 +32,10 @@ See live on: https://app.dernild.com/
 - [x] Create list of data sources in dashboard.
 - [x] Feature information about the queen that is scraped from wikipedia.
 - [x] Implement language option for dahsboard data.
-- [ ] Improve ussage description to dashboard on index tab.
-- [ ] Analyze topics, or describe how to do so.
-- [ ] Optimize user experience.
-- [ ] Write 4 page report.
+- [ ] Move sentiment statistics to home, and add general statistics.
+- [ ] Highlight topic words in map sentences.
+- [X] Analyze topics, or describe how to do so.
+- [X] Write 4 page report.
 
 [ ] = To do
 
