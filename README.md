@@ -36,6 +36,7 @@ See live on: https://app.dernild.com/
 - [ ] Highlight topic words in map sentences.
 - [x] Use CRON script to automize datacollection.
 - [x] Write 4 page report.
+- [ ] Create short video demonstrating the tool.
 
 [ ] = To do
 
