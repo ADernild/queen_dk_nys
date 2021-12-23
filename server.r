@@ -1071,11 +1071,21 @@ server <- function(input, output, session) {
     if(nrow(data)==0){
       return("")
     }
+    
     data <- tidyr::unnest(tidyr::unnest(data@data, cols = c(year, sentence)), cols=c(sentence)) %>% 
       unique() %>% 
       select(sentence, year)
     sentences <- data[sample.int(nrow(data), size = 5),]
-    sentences$sentence <- str_to_sentence(sentences$sentence)
+    if(!is.null(input$words)){
+           words <- str_split(sentences$sentence, " ")
+           featured_word <- paste0("\\b", input$words, "\\b")
+           test <- sapply(featured_word, function(x) paste0("<b>", str_sub(x, 3, -3), "</b>"), USE.NAMES = T)
+           words <- lapply(words, function(x) str_replace_all(x, test))
+           sentences$sentence <- lapply(words, function(x) paste(x, collapse=" "))
+           sentences$sentence <- str_to_sentence(sentences$sentence)
+    }else{
+      sentences$sentence <- str_to_sentence(sentences$sentence)
+           }
     paste("<ul>", paste0("<li>", sentences$sentence, ".", " (", sentences$year, ")", "</li>", collapse=""),"</ul>") %>% 
       HTML()
   })
@@ -1134,6 +1144,10 @@ server <- function(input, output, session) {
           hc_dualcol()
       })
       
+      output$map_sentce_title <-  renderText({
+        paste("Sentences mentioning", click$id)
+      })
+      
       output$sentences <- renderUI({ # Showing sentences of country mentioned
         req(input$map_sentence_slider)
         data <- tidyr::unnest(tidyr::unnest(selected, cols = c(year, sentence)), cols=c(sentence)) %>% 
@@ -1141,12 +1155,18 @@ server <- function(input, output, session) {
           select(sentence, year)
         slide_num <- input$map_sentence_slider
         sentences <- data[sample.int(nrow(data), size = ifelse(nrow(data) < slide_num, nrow(data), slide_num)),]
-        sentences$sentence <- str_to_sentence(sentences$sentence)
+        if(!is.null(input$words)){
+          words <- str_split(sentences$sentence, " ")
+          featured_word <- paste0("\\b", input$words, "\\b")
+          test <- sapply(featured_word, function(x) paste0("<b>",str_sub(x, 3, -3), "</b>"), USE.NAMES = T)
+          words <- lapply(words, function(x) str_replace_all(x, test))
+          sentences$sentence <- lapply(words, function(x) paste(x, collapse=" "))
+          sentences$sentence <- str_to_sentence(sentences$sentence)
+          print(sentences$sentence)
+        }else{
+          sentences$sentence <- str_to_sentence(sentences$sentence)
+        }
         
-        output$map_sentce_title <-  renderText({
-          paste("Sentences mentioning", click$id)
-        })
-
         paste("<ul>", paste0("<li>", sentences$sentence, ".", " (", sentences$year, ")", "</li>", collapse=""),"</ul>") %>% 
           HTML()
       })
