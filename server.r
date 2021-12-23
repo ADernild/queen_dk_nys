@@ -180,7 +180,84 @@ server <- function(input, output, session) {
   
   ## Valuebox --------------------------------------------------------------
   ### Speech ---------------------------------------------------------------
+  output$total_speech <- renderValueBox({
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
+    total_sum_sen <- sum(data$sentiment)
+    valueBox(
+      total_sum_sen, "Summed sentiment", icon = icon("equals"),
+      color = "purple"
+    )
+  })
+  
+  output$total_word <- renderValueBox({
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
+    total_sum_sen <- sum(data$sentiment)
+    valueBox(
+      total_sum_sen, "Summed sentiment", icon = icon("equals"),
+      color = "purple"
+    )
+  })
+  
+  output$total_word_unique <- renderValueBox({
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
+    total_sum_sen <- sum(data$sentiment)
+    valueBox(
+      total_sum_sen, "Summed sentiment", icon = icon("equals"),
+      color = "purple"
+    )
+  })
+  
   ### Topics ---------------------------------------------------------------
+  output$total_amount_of_topics <- renderValueBox({
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
+    total_sum_sen <- sum(data$sentiment)
+    valueBox(
+      total_sum_sen, "Summed sentiment", icon = icon("equals"),
+      color = "purple"
+    )
+  })
+  
+  output$total_countries_mentioned <- renderValueBox({
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
+    total_sum_sen <- sum(data$sentiment)
+    valueBox(
+      total_sum_sen, "Summed sentiment", icon = icon("equals"),
+      color = "purple"
+    )
+  })
+  
+  output$total_sentences <- renderValueBox({
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
+    total_sum_sen <- sum(data$sentiment)
+    valueBox(
+      total_sum_sen, "Summed sentiment", icon = icon("equals"),
+      color = "purple"
+    )
+  })
   ### Sentiment ------------------------------------------------------------
   output$total_sum_sen <- renderValueBox({
     if(length(input$words) > 0){
