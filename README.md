@@ -9,9 +9,9 @@ You could also do your own thing and look at pretty graphs and statistics. We wo
 
 See live on: https://app.dernild.com/
 
-|████████░░|
+|█████████░|
 
-81% complete.
+90% complete.
 
 ### Tasks
 
@@ -32,6 +32,7 @@ See live on: https://app.dernild.com/
 - [x] Create list of data sources in dashboard.
 - [x] Feature information about the queen that is scraped from wikipedia.
 - [x] Implement language option for dahsboard data.
+- [X] Reactive word additions to featured words from topic model
 - [ ] Move sentiment statistics to home, and add general statistics.
 - [ ] Highlight topic words in map sentences.
 - [X] Analyze topics, or describe how to do so.
@@ -46,13 +47,12 @@ x = Done
 [R] = Ready to review
 
 ### Task... Maybe
-- [X] Use CRON script to automize datacollection (A).
-- [X] Simulate steps to do when a new speach is relased (A)
+- [X] Use CRON script to automize datacollection.
+- [X] Simulate steps to do when a new speach is relased.
 - [X] Add logic to update filter inputs by data clicked in models.
-- [X] Implement checkbox to ignore filter updates by clicked data in models (M).
+- [X] Implement checkbox to ignore filter updates by clicked data in models.
 - [ ] Use ai to generate speeches.
 - [ ] Translate dashboard to Danish, and give option to use Danish/English.
-- [ ] Analyze speech lengths (M).
-- [ ] Implement visualizations for speech lengths (M).
-- [X] Reactive word additions to featured words - from topic model
+- [ ] Analyze speech lengths.
+- [ ] Implement visualizations for speech lengths.
 - [ ] Optimize for mobile view
