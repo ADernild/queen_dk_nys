@@ -415,10 +415,12 @@ server <- function(input, output, session) {
     topic <- input$topicVis_topic_click
     output$topicText <- renderUI({
       sentences <- unlist(thoughts()$docs[topic])
-      sentences <- sample(sentences, ifelse(length(sentences)<slide_num, length(sentences), slide_num)) %>%
-        str_to_sentence()
+      years <- unlist(thoughts()$years[topic])
+      df <- data.frame(sentences, years)
+      df <- df[sample.int(nrow(df), ifelse(nrow(df)<slide_num, nrow(df), slide_num)),]
+      df$sentences <- str_to_sentence(df$sentences)
       
-      paste("<ul>", paste0("<li>", sentences, ".", "</li>", collapse = ""), "</ul>") %>%
+      paste("<ul>", paste0("<li>", df$sentences, ".", " (", df$years, ")", "</li>", collapse = ""), "</ul>") %>%
         HTML()
     })
     
