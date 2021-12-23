@@ -115,14 +115,24 @@ ui <- dashboardPage(
                   whyViz("Total values can give a idea about what is about to be covered.")
                 ),
                 fluidRow(
-                  valueBoxOutput("total_sum_sen"),
-                  valueBoxOutput("total_pos_sen"),
-                  valueBoxOutput("total_neg_sen")
+                  valueBoxOutput("total_speech"), # Amount of speeches covered
+                  valueBoxOutput("total_word_amount"), # Amount of sentences covered
+                  valueBoxOutput("total_word_amount") # Amount of words covered
                 ),
                 fluidRow(
-                  valueBoxOutput("total_num_wor"),
-                  valueBoxOutput("num_pos_sen"),
-                  valueBoxOutput("num_neg_sen")
+                  valueBoxOutput("total_amount_of_topics"), # Amount of topics covered
+                  valueBoxOutput("total_countries_mentioned"), # Amount of countries mentioned
+                  valueBoxOutput("total_xx") # Amount of xx
+                ),
+                fluidRow(
+                  valueBoxOutput("total_sum_sen"), # Amount of total sentiment
+                  valueBoxOutput("total_pos_sen"), # Amount of positive sentiment
+                  valueBoxOutput("total_neg_sen") # Amount of negative sentiment
+                ),
+                fluidRow(
+                  valueBoxOutput("total_num_wor"), # Amount of words with sentiment
+                  valueBoxOutput("num_pos_sen"), # Amount of words with positive sentiment
+                  valueBoxOutput("num_neg_sen") # Amount of words with negative sentiment
                 ),
                 # fluidRow(
                 #   valueBoxOutput("mean_sum_sen"),
