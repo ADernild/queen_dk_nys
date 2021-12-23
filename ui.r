@@ -107,6 +107,40 @@ ui <- dashboardPage(
                            howViz("Hover over a box in the boxplot to see descriptive statistics.")
                        )
                    )
+          ),
+          fluidRow(
+            box(width = 12, title = "Statistics included",
+                fluidRow(
+                  whatViz("Statistics included displays the aggregated statistics for various covered topics."),
+                  whyViz("Total values can give a idea about what is about to be covered.")
+                ),
+                fluidRow(
+                  valueBoxOutput("total_sum_sen"),
+                  valueBoxOutput("total_pos_sen"),
+                  valueBoxOutput("total_neg_sen")
+                ),
+                fluidRow(
+                  valueBoxOutput("total_num_wor"),
+                  valueBoxOutput("num_pos_sen"),
+                  valueBoxOutput("num_neg_sen")
+                ),
+                # fluidRow(
+                #   valueBoxOutput("mean_sum_sen"),
+                #   valueBoxOutput("mean_pos_sen"),
+                #   valueBoxOutput("mean_neg_sen")
+                # ),
+                # fluidRow(
+                #   valueBoxOutput("mean_num_wor")
+                # ),
+                fluidRow(
+                  box(width = 12, class="infoViz", title = "How to use",
+                      collapsible = T, collapsed = T,
+                      howViz("Interpretation: Values are summed for different categories."),
+                      howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+                      howViz("Featured words: Setting featured words will filter for the words used in that selection.")
+                  )
+                )
+            )
           )
       ),
       # Sentiment ----
@@ -202,40 +236,6 @@ ui <- dashboardPage(
                     box(width = 12, class="infoViz", title = "How to use",
                         collapsible = T, collapsed = T,
                         howViz("Set a number by using the slider.")
-                    )
-                )
-              ),
-              fluidRow(
-                box(width = 12, title = "Total sentiment",
-                    fluidRow(
-                      whatViz("Total sentiment displays the total sentiment statistics."),
-                      whyViz("Total values can be useful to interpret for selections.")
-                    ),
-                    fluidRow(
-                      valueBoxOutput("total_sum_sen"),
-                      valueBoxOutput("total_pos_sen"),
-                      valueBoxOutput("total_neg_sen")
-                    ),
-                    fluidRow(
-                      valueBoxOutput("total_num_wor"),
-                      valueBoxOutput("num_pos_sen"),
-                      valueBoxOutput("num_neg_sen")
-                    ),
-                    # fluidRow(
-                    #   valueBoxOutput("mean_sum_sen"),
-                    #   valueBoxOutput("mean_pos_sen"),
-                    #   valueBoxOutput("mean_neg_sen")
-                    # ),
-                    # fluidRow(
-                    #   valueBoxOutput("mean_num_wor")
-                    # ),
-                    fluidRow(
-                      box(width = 12, class="infoViz", title = "How to use",
-                          collapsible = T, collapsed = T,
-                          howViz("Interpretation: Values are summed for different categories."),
-                          howViz("Year filter: Setting the year filter will filter for the words used in those years."),
-                          howViz("Featured words: Setting featured words will filter for the words used in that selection.")
-                      )
                     )
                 )
               )
