@@ -220,11 +220,7 @@ server <- function(input, output, session) {
   
   ### Topics ---------------------------------------------------------------
   output$total_amount_of_topics <- renderValueBox({
-    if(input$l=="DK"){
-      data <- 13
-    } else{
-      data <- 15
-    }
+      data <- stm_models()$mod$settings$dim$K
     valueBox(
       data, "Topics", icon = icon("comment-dots"),
       color = "yellow"
