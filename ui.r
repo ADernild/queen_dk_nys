@@ -33,6 +33,51 @@ ui <- dashboardPage(
                 box(width=2,
                     img(src='queen_logo.png', align="right")
                 )
+              ),
+              fluidRow(
+                box(width = 12, title = "Statistics included",
+                    fluidRow(
+                      whatViz("Statistics included displays the aggregated statistics for various covered topics."),
+                      whyViz("Total values can give a idea about what is about to be covered.")
+                    ),
+                    fluidRow(
+                      valueBoxOutput("total_speech"), # Amount of speeches covered
+                      # valueBoxOutput("total_sentences"), # Amount of words covered
+                      valueBoxOutput("total_word"), # Amount of unique words covered
+                      valueBoxOutput("total_word_unique") # Amount of unique words covered
+                    ),
+                    fluidRow(
+                      valueBoxOutput("total_amount_of_topics"), # Amount of topics covered
+                      valueBoxOutput("total_countries_mentioned"), # Amount of countries mentioned
+                      valueBoxOutput("total_featured_words") # Amount of featured words
+                    ),
+                    fluidRow(
+                      valueBoxOutput("total_sum_sen"), # Amount of total sentiment
+                      valueBoxOutput("total_pos_sen"), # Amount of positive sentiment
+                      valueBoxOutput("total_neg_sen") # Amount of negative sentiment
+                    ),
+                    fluidRow(
+                      valueBoxOutput("total_num_wor"), # Amount of words with sentiment
+                      valueBoxOutput("num_pos_sen"), # Amount of words with positive sentiment
+                      valueBoxOutput("num_neg_sen") # Amount of words with negative sentiment
+                    ),
+                    # fluidRow(
+                    #   valueBoxOutput("mean_sum_sen"),
+                    #   valueBoxOutput("mean_pos_sen"),
+                    #   valueBoxOutput("mean_neg_sen")
+                    # ),
+                    # fluidRow(
+                    #   valueBoxOutput("mean_num_wor")
+                    # ),
+                    fluidRow(
+                      box(width = 12, class="infoViz", title = "How to use",
+                          collapsible = T, collapsed = T,
+                          howViz("Interpretation: Values are summed for different categories."),
+                          howViz("Year filter: Setting the year filter will filter for the words used in those years."),
+                          howViz("Featured words: Setting featured words will filter for the words used in that selection.")
+                      )
+                    )
+                )
               )
       ),
       # Topic Model ----
@@ -107,50 +152,6 @@ ui <- dashboardPage(
                            howViz("Hover over a box in the boxplot to see descriptive statistics.")
                        )
                    )
-          ),
-          fluidRow(
-            box(width = 12, title = "Statistics included",
-                fluidRow(
-                  whatViz("Statistics included displays the aggregated statistics for various covered topics."),
-                  whyViz("Total values can give a idea about what is about to be covered.")
-                ),
-                fluidRow(
-                  valueBoxOutput("total_speech"), # Amount of speeches covered
-                  valueBoxOutput("total_word_amount"), # Amount of sentences covered
-                  valueBoxOutput("total_word_amount") # Amount of words covered
-                ),
-                fluidRow(
-                  valueBoxOutput("total_amount_of_topics"), # Amount of topics covered
-                  valueBoxOutput("total_countries_mentioned"), # Amount of countries mentioned
-                  valueBoxOutput("total_xx") # Amount of xx
-                ),
-                fluidRow(
-                  valueBoxOutput("total_sum_sen"), # Amount of total sentiment
-                  valueBoxOutput("total_pos_sen"), # Amount of positive sentiment
-                  valueBoxOutput("total_neg_sen") # Amount of negative sentiment
-                ),
-                fluidRow(
-                  valueBoxOutput("total_num_wor"), # Amount of words with sentiment
-                  valueBoxOutput("num_pos_sen"), # Amount of words with positive sentiment
-                  valueBoxOutput("num_neg_sen") # Amount of words with negative sentiment
-                ),
-                # fluidRow(
-                #   valueBoxOutput("mean_sum_sen"),
-                #   valueBoxOutput("mean_pos_sen"),
-                #   valueBoxOutput("mean_neg_sen")
-                # ),
-                # fluidRow(
-                #   valueBoxOutput("mean_num_wor")
-                # ),
-                fluidRow(
-                  box(width = 12, class="infoViz", title = "How to use",
-                      collapsible = T, collapsed = T,
-                      howViz("Interpretation: Values are summed for different categories."),
-                      howViz("Year filter: Setting the year filter will filter for the words used in those years."),
-                      howViz("Featured words: Setting featured words will filter for the words used in that selection.")
-                  )
-                )
-            )
           )
       ),
       # Sentiment ----
