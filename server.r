@@ -163,7 +163,8 @@ server <- function(input, output, session) {
     return(year)
   })
   
-  # Index ------------------------------------------------------------------
+  # Home ------------------------------------------------------------------
+  ## CSS ------------------------------------------------------------------
   output$royall_beautyfication <- renderUI({
     req(input$l)
     req(input$words)
@@ -177,68 +178,144 @@ server <- function(input, output, session) {
     }
   })
   
-  ## Covered speeches ------------------------------------------------------
-  output$Covered_speech <- renderUI({
-    req(input$l)
-    if(input$l == "DK"){
-      title <- "Hendes Majestæt Dronningens nytårstale"
-      source <- source_year
-    } else if(input$l == "EN"){
-      source <- source_year_en
-      title <- "Her Majesty The Queen’s New Year Address"
+  ## Valuebox --------------------------------------------------------------
+  ### Speech ---------------------------------------------------------------
+  ### Topics ---------------------------------------------------------------
+  ### Sentiment ------------------------------------------------------------
+  output$total_sum_sen <- renderValueBox({
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
     } else{
-      warning("Invallid country setting")
-      return(p("Content could not load due to invallid country setting."))
+      data <- sentiment_of_speech_data()
     }
-    
-    req(y())
-    source <- source %>% 
-      filter(year %in% y())
-    
-    validate(
-      need(nrow(source) != 0, "No avilable data")
-    )
-    
-    content <- tags$ul(
-      lapply(1:nrow(source), function(i) {
-        tags$li(a(href=source$urls[i],
-                  target = "_blank",
-                  paste(title, source$year[i])))
-      })
-    )
-    return(content)
-  })
-    
-  ## wiki_infobox ----------------------------------------------------------
-  output$scrabing_info <- renderUI({
-    req(input$l)
-    if(input$l == "DK"){
-      source <- "https://da.wikipedia.org/wiki/Margrethe_2."
-      date <- "08/12/2021"
-    } else if(input$l == "EN"){
-      source <- "https://en.wikipedia.org/wiki/Margrethe_II_of_Denmark"
-      date <- "12/12/2021"
-    } else{
-      warning("Invallid country setting")
-      return(p("Content could not load due to invallid country setting."))
-    }
-    a(href=source,
-      target= "_blank",
-      paste("Info scarped from Wikipedia (", date, ").", sep = "")
+    total_sum_sen <- sum(data$sentiment)
+    valueBox(
+      total_sum_sen, "Summed sentiment", icon = icon("equals"),
+      color = "purple"
     )
   })
   
-  output$wiki_infobox <- renderUI({
-    req(input$l)
-    if(input$l == "DK"){
-      includeHTML("www/queen_info_table.html")
-    } else if(input$l == "EN"){
-      includeHTML("www/queen_info_table_en.html")
+  output$total_pos_sen <- renderValueBox({
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
     } else{
-      warning("Invallid country setting")
-      return(p("Content could not load due to invallid country setting."))
+      data <- sentiment_of_speech_data()
     }
+    total_pos_sen <- sum(data$sentiment_pos)
+    valueBox(
+      total_pos_sen, "Summed positive sentiment", icon = icon("plus"),
+      color = "green"
+    )
   })
+  
+  output$total_neg_sen <- renderValueBox({
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
+    total_neg_sen <- sum(data$sentiment_neg)
+    valueBox(
+      total_neg_sen, "Summed negative sentiment", icon = icon("minus"),
+      color = "red"
+    )
+  })
+  
+  output$total_num_wor <- renderValueBox({
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
+    total_num_wor <- sum(data$n_words)
+    valueBox(
+      total_num_wor, "Number of words that carried sentiment", icon = icon("hashtag"),
+      color = "blue"
+    )
+  })
+  
+  output$num_pos_sen <- renderValueBox({
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
+    num_pos_sen <- sum(data$n_pos)
+    valueBox(
+      num_pos_sen, "Number of words that carried positive sentiment", icon = icon("plus-circle"),
+      color = "green"
+    )
+  })
+  
+  output$num_neg_sen <- renderValueBox({
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
+    num_neg_sen <- sum(data$n_neg)
+    valueBox(
+      num_neg_sen, "Number of words that had negative sentiment", icon = icon("minus-circle"),
+      color = "red"
+    )
+  })
+  
+  output$mean_sum_sen <- renderValueBox({
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
+    mean_sum_sen <- round(mean(data$sentiment),2)
+    mean_sum_sen <- ifelse(is.nan(mean_sum_sen), 0, mean_sum_sen)
+    valueBox(
+      mean_sum_sen, "Average sentiment", icon = icon("equals"),
+      color = "purple"
+    )
+  })
+  
+  output$mean_pos_sen <- renderValueBox({
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
+    mean_pos_sen <- round(mean(data$sentiment_pos),2)
+    mean_pos_sen <- ifelse(is.nan(mean_pos_sen), 0, mean_pos_sen)
+    valueBox(
+      mean_pos_sen, "Average positive sentiment", icon = icon("plus"),
+      color = "green"
+    )
+  })
+  
+  output$mean_neg_sen <- renderValueBox({
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
+    mean_neg_sen <- round(mean(data$sentiment_neg),2)
+    mean_neg_sen <- ifelse(is.nan(mean_neg_sen), 0, mean_neg_sen)
+    valueBox(
+      mean_neg_sen, "Average negative sentiment", icon = icon("minus"),
+      color = "red"
+    )
+  })
+  
+  output$mean_num_wor <- renderValueBox({
+    if(length(input$words) > 0){
+      data <- sentiment_of_speech_data_filtered()
+    } else{
+      data <- sentiment_of_speech_data()
+    }
+    mean_num_wor <- round(mean(data$n_words),2)
+    mean_num_wor <- ifelse(is.nan(mean_num_wor), 0, mean_num_wor)
+    valueBox(
+      mean_num_wor, "Average number of words that carried sentiment", icon = icon("hashtag"),
+      color = "blue"
+    )
+  })
+  
   
   # topicVis ----------------------------------------------------------------
   stm_models <- reactive({
@@ -924,141 +1001,6 @@ server <- function(input, output, session) {
   })
   
 
-  ## Sentiment valuebox's ---------------------------------------------------
-  output$total_sum_sen <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
-      data <- sentiment_of_speech_data()
-    }
-    total_sum_sen <- sum(data$sentiment)
-    valueBox(
-      total_sum_sen, "Summed sentiment", icon = icon("equals"),
-      color = "purple"
-    )
-  })
-  
-  output$total_pos_sen <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
-      data <- sentiment_of_speech_data()
-    }
-    total_pos_sen <- sum(data$sentiment_pos)
-    valueBox(
-      total_pos_sen, "Summed positive sentiment", icon = icon("plus"),
-      color = "green"
-    )
-  })
-  
-  output$total_neg_sen <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
-      data <- sentiment_of_speech_data()
-    }
-    total_neg_sen <- sum(data$sentiment_neg)
-    valueBox(
-      total_neg_sen, "Summed negative sentiment", icon = icon("minus"),
-      color = "red"
-    )
-  })
-  
-  output$total_num_wor <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
-      data <- sentiment_of_speech_data()
-    }
-    total_num_wor <- sum(data$n_words)
-    valueBox(
-      total_num_wor, "Number of words that carried sentiment", icon = icon("hashtag"),
-      color = "blue"
-    )
-  })
-  
-  output$num_pos_sen <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
-      data <- sentiment_of_speech_data()
-    }
-    num_pos_sen <- sum(data$n_pos)
-    valueBox(
-      num_pos_sen, "Number of words that carried positive sentiment", icon = icon("plus-circle"),
-      color = "green"
-    )
-  })
-  
-  output$num_neg_sen <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
-      data <- sentiment_of_speech_data()
-    }
-    num_neg_sen <- sum(data$n_neg)
-    valueBox(
-      num_neg_sen, "Number of words that had negative sentiment", icon = icon("minus-circle"),
-      color = "red"
-    )
-  })
-  
-  output$mean_sum_sen <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
-      data <- sentiment_of_speech_data()
-    }
-    mean_sum_sen <- round(mean(data$sentiment),2)
-    mean_sum_sen <- ifelse(is.nan(mean_sum_sen), 0, mean_sum_sen)
-    valueBox(
-      mean_sum_sen, "Average sentiment", icon = icon("equals"),
-      color = "purple"
-    )
-  })
-  
-  output$mean_pos_sen <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
-      data <- sentiment_of_speech_data()
-    }
-    mean_pos_sen <- round(mean(data$sentiment_pos),2)
-    mean_pos_sen <- ifelse(is.nan(mean_pos_sen), 0, mean_pos_sen)
-    valueBox(
-      mean_pos_sen, "Average positive sentiment", icon = icon("plus"),
-      color = "green"
-    )
-  })
-  
-  output$mean_neg_sen <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
-      data <- sentiment_of_speech_data()
-    }
-    mean_neg_sen <- round(mean(data$sentiment_neg),2)
-    mean_neg_sen <- ifelse(is.nan(mean_neg_sen), 0, mean_neg_sen)
-    valueBox(
-      mean_neg_sen, "Average negative sentiment", icon = icon("minus"),
-      color = "red"
-    )
-  })
-  
-  output$mean_num_wor <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
-      data <- sentiment_of_speech_data()
-    }
-    mean_num_wor <- round(mean(data$n_words),2)
-    mean_num_wor <- ifelse(is.nan(mean_num_wor), 0, mean_num_wor)
-    valueBox(
-      mean_num_wor, "Average number of words that carried sentiment", icon = icon("hashtag"),
-      color = "blue"
-    )
-  })
-  
   # Map ---------------------------------------------------------------------
   ## Map data ---------------------------------------------------------------
   mapData <- reactive({
@@ -1512,4 +1454,71 @@ server <- function(input, output, session) {
     
     )
   )
+  
+
+  # Data -------------------------------------------------------------------
+  ## Covered speeches ------------------------------------------------------
+  output$Covered_speech <- renderUI({
+    req(input$l)
+    if(input$l == "DK"){
+      title <- "Hendes Majestæt Dronningens nytårstale"
+      source <- source_year
+    } else if(input$l == "EN"){
+      source <- source_year_en
+      title <- "Her Majesty The Queen’s New Year Address"
+    } else{
+      warning("Invallid country setting")
+      return(p("Content could not load due to invallid country setting."))
+    }
+    
+    req(y())
+    source <- source %>% 
+      filter(year %in% y())
+    
+    validate(
+      need(nrow(source) != 0, "No avilable data")
+    )
+    
+    content <- tags$ul(
+      lapply(1:nrow(source), function(i) {
+        tags$li(a(href=source$urls[i],
+                  target = "_blank",
+                  paste(title, source$year[i])))
+      })
+    )
+    return(content)
+  })
+  
+  ## wiki_infobox ----------------------------------------------------------
+  output$scrabing_info <- renderUI({
+    req(input$l)
+    if(input$l == "DK"){
+      source <- "https://da.wikipedia.org/wiki/Margrethe_2."
+      date <- "08/12/2021"
+    } else if(input$l == "EN"){
+      source <- "https://en.wikipedia.org/wiki/Margrethe_II_of_Denmark"
+      date <- "12/12/2021"
+    } else{
+      warning("Invallid country setting")
+      return(p("Content could not load due to invallid country setting."))
+    }
+    a(href=source,
+      target= "_blank",
+      paste("Info scarped from Wikipedia (", date, ").", sep = "")
+    )
+  })
+  
+  output$wiki_infobox <- renderUI({
+    req(input$l)
+    if(input$l == "DK"){
+      includeHTML("www/queen_info_table.html")
+    } else if(input$l == "EN"){
+      includeHTML("www/queen_info_table_en.html")
+    } else{
+      warning("Invallid country setting")
+      return(p("Content could not load due to invallid country setting."))
+    }
+  })
+  
+  
 }
