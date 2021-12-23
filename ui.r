@@ -42,13 +42,14 @@ ui <- dashboardPage(
                     ),
                     fluidRow(
                       valueBoxOutput("total_speech"), # Amount of speeches covered
-                      valueBoxOutput("total_word"), # Amount of words covered
+                      # valueBoxOutput("total_sentences"), # Amount of words covered
+                      valueBoxOutput("total_word"), # Amount of unique words covered
                       valueBoxOutput("total_word_unique") # Amount of unique words covered
                     ),
                     fluidRow(
                       valueBoxOutput("total_amount_of_topics"), # Amount of topics covered
                       valueBoxOutput("total_countries_mentioned"), # Amount of countries mentioned
-                      valueBoxOutput("total_sentences") # Amount of sentences
+                      valueBoxOutput("total_featured_words") # Amount of featured words
                     ),
                     fluidRow(
                       valueBoxOutput("total_sum_sen"), # Amount of total sentiment

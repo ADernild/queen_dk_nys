@@ -181,83 +181,73 @@ server <- function(input, output, session) {
   ## Valuebox --------------------------------------------------------------
   ### Speech ---------------------------------------------------------------
   output$total_speech <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
-      data <- sentiment_of_speech_data()
-    }
-    total_sum_sen <- sum(data$sentiment)
+    years_covered <- length(unique(speech_data()$year))
     valueBox(
-      total_sum_sen, "Summed sentiment", icon = icon("equals"),
-      color = "purple"
+      years_covered, "Speeches (and years) covered", icon = icon("glass-cheers"),
+      color = "light-blue"
     )
   })
   
+  # output$total_sentences <- renderValueBox({
+  #   sentences <- length(unique(lemma$sentence))
+  #   valueBox(
+  #     sentences, "Unique sentences said", icon = icon("comments"),
+  #     color = "light-blue"
+  #   )
+  # })
+  
   output$total_word <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
-      data <- sentiment_of_speech_data()
-    }
-    total_sum_sen <- sum(data$sentiment)
+    data <- speech_data_word_filt() %>% 
+      ungroup() %>% 
+      select(stemmed, n_stem_total) %>% 
+      summarise(n = sum(n_stem_total))
+    total_words <- sum(data$n)
     valueBox(
-      total_sum_sen, "Summed sentiment", icon = icon("equals"),
-      color = "purple"
+      total_words, span("Words said", title="After stopwords are filtered."), icon = icon("hashtag"),
+      color = "light-blue"
     )
   })
   
   output$total_word_unique <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
-      data <- sentiment_of_speech_data()
-    }
-    total_sum_sen <- sum(data$sentiment)
+    data <- speech_data_word_filt()$stemmed %>% 
+      unique()
+    total_unique_words <- length(data)
     valueBox(
-      total_sum_sen, "Summed sentiment", icon = icon("equals"),
-      color = "purple"
+      total_unique_words, span("Unique Words said", title="After stopwords are filtered."), icon = icon("hashtag"),
+      color = "light-blue"
     )
   })
   
   ### Topics ---------------------------------------------------------------
   output$total_amount_of_topics <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
+    if(input$l=="DK"){
+      data <- 13
     } else{
-      data <- sentiment_of_speech_data()
+      data <- 15
     }
-    total_sum_sen <- sum(data$sentiment)
     valueBox(
-      total_sum_sen, "Summed sentiment", icon = icon("equals"),
-      color = "purple"
+      data, "Topics", icon = icon("comment-dots"),
+      color = "yellow"
     )
   })
   
   output$total_countries_mentioned <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
-      data <- sentiment_of_speech_data()
-    }
-    total_sum_sen <- sum(data$sentiment)
+    req(mapData())
+    countries_mentioned <- length(mapData()$countries)
     valueBox(
-      total_sum_sen, "Summed sentiment", icon = icon("equals"),
-      color = "purple"
+      countries_mentioned, "Countries mentioned", icon = icon("globe-europe"),
+      color = "blue"
     )
   })
   
-  output$total_sentences <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
-      data <- sentiment_of_speech_data()
-    }
-    total_sum_sen <- sum(data$sentiment)
+  output$total_featured_words <- renderValueBox({
+    n_featured_words <- length(input$words)
     valueBox(
-      total_sum_sen, "Summed sentiment", icon = icon("equals"),
-      color = "purple"
+      n_featured_words, "Featured words", icon = icon("hashtag"),
+      color = "light-blue"
     )
   })
+  
   ### Sentiment ------------------------------------------------------------
   output$total_sum_sen <- renderValueBox({
     if(length(input$words) > 0){
@@ -267,7 +257,7 @@ server <- function(input, output, session) {
     }
     total_sum_sen <- sum(data$sentiment)
     valueBox(
-      total_sum_sen, "Summed sentiment", icon = icon("equals"),
+      total_sum_sen, "Summed sentiment", icon = icon("theater-masks"),
       color = "purple"
     )
   })
@@ -280,7 +270,7 @@ server <- function(input, output, session) {
     }
     total_pos_sen <- sum(data$sentiment_pos)
     valueBox(
-      total_pos_sen, "Summed positive sentiment", icon = icon("plus"),
+      total_pos_sen, "Summed positive sentiment", icon = icon("smile"),
       color = "green"
     )
   })
@@ -293,7 +283,7 @@ server <- function(input, output, session) {
     }
     total_neg_sen <- sum(data$sentiment_neg)
     valueBox(
-      total_neg_sen, "Summed negative sentiment", icon = icon("minus"),
+      total_neg_sen, "Summed negative sentiment", icon = icon("frown"),
       color = "red"
     )
   })
@@ -306,8 +296,8 @@ server <- function(input, output, session) {
     }
     total_num_wor <- sum(data$n_words)
     valueBox(
-      total_num_wor, "Number of words that carried sentiment", icon = icon("hashtag"),
-      color = "blue"
+      total_num_wor, "Number of words that carried sentiment", icon = icon("equals"),
+      color = "purple"
     )
   })
   
@@ -389,7 +379,7 @@ server <- function(input, output, session) {
     mean_num_wor <- ifelse(is.nan(mean_num_wor), 0, mean_num_wor)
     valueBox(
       mean_num_wor, "Average number of words that carried sentiment", icon = icon("hashtag"),
-      color = "blue"
+      color = "purple"
     )
   })
   
@@ -1081,14 +1071,17 @@ server <- function(input, output, session) {
   # Map ---------------------------------------------------------------------
   ## Map data ---------------------------------------------------------------
   mapData <- reactive({
+    req(input$l)
+    req(y())
     if(input$l == "DK"){
-      data <- poly_prep(geojson, countries, req(y()))
+      data <- poly_prep(geojson, countries, y())
     }else if(input$l == "EN"){
-      data <- poly_prep(geojson, countries_en, req(y()))
+      data <- poly_prep(geojson, countries_en, y())
     }
+    dis <<- data
     return(data)
   })
-  
+
   ## Creating a map ---------------------------------------------------------
   output$map <- renderLeaflet({
     data <- mapData()
@@ -1533,7 +1526,7 @@ server <- function(input, output, session) {
   )
   
 
-  # Data -------------------------------------------------------------------
+  # Data UI ----------------------------------------------------------------
   ## Covered speeches ------------------------------------------------------
   output$Covered_speech <- renderUI({
     req(input$l)
