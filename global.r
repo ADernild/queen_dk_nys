@@ -215,27 +215,32 @@ hc_fivecolsum <- function(x){
 }
 
 # Sorting ----
-cmatch <- function(needle, haistack){
-  for(item in needle){
-    if(item %in% haistack){
-      return(T)
-    }
-  }
-  return(F)
+# cmatch <- function(needle, haistack){ # faster solution
+#   for(item in needle){
+#     if(item %in% haistack){
+#       return(T)
+#     }
+#   }
+#   return(F)
+# }
+
+cmatch <- function(needle, haistack){ # faster solution
+  ifelse(length(needle[needle %in% haistack]) > 0, T, F)
 }
 
-allmatch <- function(needles, haistack){
-  check <- c()
-  for(item in needles){
-    if(item %in% haistack){
-      check <- c(T, check)
-    }
-  }
-  if(length(check) == length(needles)){
-    return(T)
-  }
-  return(F)
-}
+# allmatch <- function(needles, haistack){ # not used
+#   check <- c()
+#   for(item in needles){
+#     if(item %in% haistack){
+#       check <- c(T, check)
+#     }
+#   }
+#   if(length(check) == length(needles)){
+#     return(T)
+#   }
+#   return(F)
+# }
+
 
 # Map ----------------------------------------------------------------------
 
