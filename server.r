@@ -443,17 +443,20 @@ server <- function(input, output, session) {
       topics <- unlist(str_split(input$tippertoppertopicspopper, ","))
       print(topics)
       chosen <- c()
-      for(t in topics){
-        if(t %in% tokens$stemmed){
-          chosen <- c(chosen, t)
-        } else if(t %in% tokens$word){
-          word <- tokens[tokens$word == t,]$stemmed[1]
-          chosen <- c(chosen, word)
-        } else if(t %in% tokens$headword){
-          word <- tokens[tokens$headword == input$topicVis_term_click,]$stemmed[1]
-          chosen <- c(chosen, word)
-        }
-      }
+      # for(t in topics){ # Slower way of doing it
+      #   if(t %in% tokens$stemmed){
+      #     chosen <- c(chosen, t)
+      #   } else if(t %in% tokens$word){
+      #     word <- tokens[tokens$word == t,]$stemmed[1]
+      #     chosen <- c(chosen, word)
+      #   } else if(t %in% tokens$headword){
+      #     word <- tokens[tokens$headword == input$topicVis_term_click,]$stemmed[1]
+      #     chosen <- c(chosen, word)
+      #   }
+      # }
+      chosen <- c(unique(c(topics[topics %in% tokens$stemmed],
+                           unique(tokens$stemmed[tokens$word %in% topics]),
+                           unique(tokens$stemmed[tokens$headword %in% topics])))) # Much faster
       
       updateSelectizeInput(session,
                            "words",
