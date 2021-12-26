@@ -33,10 +33,10 @@ See live on: https://app.dernild.com/
 - [x] Create reative list of data sources.
 - [x] Scrape information about the Queen from wikipedia.
 - [x] Reactive word additions to featured words from topic model
-- [ ] Highlight topic words in map sentences.
+- [x] Highlight topic words in map sentences.
 - [x] Use CRON script to automize datacollection.
 - [x] Write 4 page report.
-- [ ] Create short video demonstrating the tool.
+- [x] Create short video demonstrating the tool.
 
 [ ] = To do
 
@@ -51,3 +51,4 @@ x = Done
 - [ ] Use ai to generate speeches.
 - [ ] Analyze speech lengths, sentences said and feature relevant charts.
 - [ ] Optimize for mobile view
+- [ ] Optimize performance (make vectorized solutions rather than for loops)
