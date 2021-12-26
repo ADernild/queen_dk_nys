@@ -9,9 +9,9 @@ You could also do your own thing and look at pretty graphs and statistics. We wo
 
 See live on: https://app.dernild.com/
 
-|████████████░|
+|██████████|
 
-95% complete.
+100% complete.
 
 ### Tasks
 
@@ -33,7 +33,6 @@ See live on: https://app.dernild.com/
 - [x] Create reative list of data sources.
 - [x] Scrape information about the Queen from wikipedia.
 - [x] Reactive word additions to featured words from topic model
-- [x] Highlight topic words in map sentences.
 - [x] Use CRON script to automize datacollection.
 - [x] Write 4 page report.
 - [x] Create short video demonstrating the tool.
