@@ -1534,17 +1534,17 @@ server <- function(input, output, session) {
   })
   
   ## Table ----------------------------------------------------------------
-  output$word_ussage_tbl <- renderDT({
-    speech_data_como_filt() %>%
-      ungroup() %>% 
-      transmute(`Year` = year, `Word` = stemmed, `Total frequency` = n_stem_total,
-                `Frequency in year` = n_stem_year,
-                `Frequency in selection in year` = n_sel)
-  }, rownames = FALSE, filter = 'top',
-  options = list(
-    
-    )
-  )
+  # output$word_ussage_tbl <- renderDT({ # unused
+  #   speech_data_como_filt() %>%
+  #     ungroup() %>% 
+  #     transmute(`Year` = year, `Word` = stemmed, `Total frequency` = n_stem_total,
+  #               `Frequency in year` = n_stem_year,
+  #               `Frequency in selection in year` = n_sel)
+  # }, rownames = FALSE, filter = 'top',
+  # options = list(
+  #   
+  #   )
+  # )
   
 
   # Data UI ----------------------------------------------------------------

@@ -3,7 +3,7 @@ library(shinydashboard)
 library(plyr) # For data manipulation
 library(dplyr) # For data manipulation
 library(tidyr) # For data manipulation
-library(DT) # For table visualizations
+# library(DT) # For table visualizations
 # library(highcharter) # for interactive plots
 library(plotly) # for interactive plots
 #library(r2d3) # for advanced interactive plots
