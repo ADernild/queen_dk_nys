@@ -1,5 +1,5 @@
 ui <- dashboardPage(
-  dashboardHeader(title = "H.M. the Queen's New Year's Address Analyzer"
+  dashboardHeader(title = "Tool to analyze articles on TV2 Fyn"
   ),
   dashboardSidebar(
     sidebarMenuOutput("menu")
