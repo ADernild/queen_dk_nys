@@ -18,16 +18,16 @@ ui <- dashboardPage(
     # Index ----
     tabItems(
       tabItem(tabName = "index",
-              h1("H.M. the Queen's New Year's Address Analyzer"),
+              h1("TV2 FYN artikkelanalyse værktøj"),
               h2("Home"),
               fluidRow(class="box_align_layout",
-                box(width=10,
-                    title = "You are hereby invited to a look into the new year eve speeches of the royal majesty",
+                box(width=12,
+                    title = "Tool to analyze articles on TV2 Fyn",
                     div(id = "intoduction",
-                        p(class="what", "This is a dashboard. The dashboard is a tool to analyze topics in speeches."),
-                        p(class="why", "Topics can be hard to document correctly. By using this tool, you can find relevant topics and the words within on the topics tab. From there you can then choose to explore the sentiment, countries, or statistics to get a better understanding of the topic. You could also do your own thing and look at pretty graphs and statistics. We won't judge."),
+                        p(class="what", "This is a tool to analyze articles on TV2 Fyn, with emphasis on unseen categories (LDA), sentiment, words and positional data."),
+                        p(class="why", "The tool can be used to analyze articles and detect patterns."),
                         p(class="how", "This is an interactive dashboard. You can select tabs in the sidebar on the left to navigate to different sections. When sidebar is expanded (see toggle button in top left corner), you can apply filters and settings for your liking."),
-                        p(class="bold", "GUD BEVARE DANMARK.")
+                        p(class="bold", "Together we make Funen better - Esben Seerup.")
                     )
                 )#,
                 # box(width=2,
