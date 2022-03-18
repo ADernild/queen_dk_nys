@@ -60,12 +60,6 @@ server <- function(input, output, session) {
         menuItem(span("How to operate", class="help-me", title="Help and how to operate dashboard"), tabName = "howto", icon=shiny::icon("question-circle", class="help-me", title="Help and how to operate dashboard")),
         div(id="sidebar-input",
             h3("Filters"),
-            radioButtons ("l",
-                          label = "Language",
-                          selected = languages[1],
-                          choiceNames = c("Danish", "English"),
-                          choiceValues = languages
-            ),
             radioButtons ("yearopt",
                           label = "Year input",
                           choices = c("Range", "Select inputs"),
@@ -87,19 +81,9 @@ server <- function(input, output, session) {
   
   output$year <- renderUI({
     req(input$yearopt)
-    req(input$l)
-    if(input$l == "DK"){
-      year_min <- year_min
-      year_max <- year_max
-      years <- years
-    } else if(input$l == "EN"){
-      year_min <- year_min_en
-      year_max <- year_max_en
-      years <- years_en
-    } else{
-      warning("Invallid country setting")
-      return(p("Filter could not load due to invallid country setting."))
-    }
+    year_min <- year_min
+    year_max <- year_max
+    years <- years
     if(input$yearopt == "Range"){
       sliderInput("year_r", "Years",
                   min = year_min, max = year_max,
@@ -165,18 +149,7 @@ server <- function(input, output, session) {
   
   # Home ------------------------------------------------------------------
   ## CSS ------------------------------------------------------------------
-  # output$royall_beautyfication <- renderUI({
-  #   req(input$l)
-  #   req(input$words)
-  #   if(input$l == "DK"
-  #      && length(input$words) == 3
-  #      && "danmark" %in% input$words
-  #      && "dansk" %in% input$words
-  #      && "dannebrog" %in% input$words){
-  #     tags$link(rel = "stylesheet", type = "text/css", href = "royall_beautyfication.css") %>% 
-  #       return()
-  #   }
-  # })
+  # Nothing here yet
   
   ## Valuebox --------------------------------------------------------------
   ### Speech ---------------------------------------------------------------
@@ -382,11 +355,7 @@ server <- function(input, output, session) {
   
   # topicVis ----------------------------------------------------------------
   stm_models <- reactive({
-    if(input$l == "DK"){
-      data <- stm_model_da
-    }else if(input$l == "EN"){
-      data <- stm_model_en
-    }
+    data <- stm_model_da
     return(data)
   })
   
@@ -399,11 +368,7 @@ server <- function(input, output, session) {
   ## Show sentences based on topic clicked ----------------------------------
   
   thoughts <- reactive({
-    if(input$l == "DK"){
-      data <- thoughts_da
-    }else if(input$l == "EN"){
-      data <- thoughts_en
-    }
+    data <- thoughts_da
     return(data)
   })
   
@@ -1072,13 +1037,8 @@ server <- function(input, output, session) {
   # Map ---------------------------------------------------------------------
   ## Map data ---------------------------------------------------------------
   mapData <- reactive({
-    req(input$l)
     req(y())
-    if(input$l == "DK"){
-      data <- poly_prep(geojson, countries, y())
-    }else if(input$l == "EN"){
-      data <- poly_prep(geojson, countries_en, y())
-    }
+    data <- poly_prep(geojson, countries, y())
     dis <<- data
     return(data)
   })
@@ -1550,18 +1510,9 @@ server <- function(input, output, session) {
   # Data UI ----------------------------------------------------------------
   ## Covered speeches ------------------------------------------------------
   output$Covered_speech <- renderUI({
-    req(input$l)
-    if(input$l == "DK"){
-      title <- "Hendes Majestæt Dronningens nytårstale"
-      source <- source_year
-    } else if(input$l == "EN"){
-      source <- source_year_en
-      title <- "Her Majesty The Queen’s New Year Address"
-    } else{
-      warning("Invallid country setting")
-      return(p("Content could not load due to invallid country setting."))
-    }
-    
+    title <- "Hendes Majestæt Dronningens nytårstale"
+    source <- source_year
+
     req(y())
     source <- source %>% 
       filter(year %in% y())
@@ -1582,34 +1533,12 @@ server <- function(input, output, session) {
   
   ## wiki_infobox ----------------------------------------------------------
   output$scrabing_info <- renderUI({
-    req(input$l)
-    if(input$l == "DK"){
-      source <- "https://da.wikipedia.org/wiki/Margrethe_2."
-      date <- "08/12/2021"
-    } else if(input$l == "EN"){
-      source <- "https://en.wikipedia.org/wiki/Margrethe_II_of_Denmark"
-      date <- "12/12/2021"
-    } else{
-      warning("Invallid country setting")
-      return(p("Content could not load due to invallid country setting."))
-    }
-    a(href=source,
-      target= "_blank",
-      paste("Info scarped from Wikipedia (", date, ").", sep = "")
-    )
+    source <- "https://da.wikipedia.org/wiki/Margrethe_2."
+    date <- "08/12/2021"
   })
   
   output$wiki_infobox <- renderUI({
-    req(input$l)
-    if(input$l == "DK"){
-      includeHTML("www/queen_info_table.html")
-    } else if(input$l == "EN"){
-      includeHTML("www/queen_info_table_en.html")
-    } else{
-      warning("Invallid country setting")
-      return(p("Content could not load due to invallid country setting."))
-    }
+    includeHTML("www/queen_info_table.html")
   })
-  
   
 }
