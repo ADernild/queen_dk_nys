@@ -18,7 +18,7 @@ ui <- dashboardPage(
     # Index ----
     tabItems(
       tabItem(tabName = "index",
-              h1("TV2 FYN artikkelanalyse værktøj"),
+              h1("Tool to analyze articles on TV2 Fyn"),
               h2("Home"),
               fluidRow(class="box_align_layout",
                 box(width=12,
