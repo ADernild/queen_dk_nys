@@ -1509,8 +1509,8 @@ server <- function(input, output, session) {
 
   # Data UI ----------------------------------------------------------------
   ## Covered speeches ------------------------------------------------------
-  output$Covered_speech <- renderUI({
-    title <- "Hendes Majestæt Dronningens nytårstale"
+  output$Covered <- renderUI({
+    title <- "Name: "
     source <- source_year
 
     req(y())
@@ -1530,15 +1530,5 @@ server <- function(input, output, session) {
     )
     return(content)
   })
-  
-  ## wiki_infobox ----------------------------------------------------------
-  output$scrabing_info <- renderUI({
-    source <- "https://da.wikipedia.org/wiki/Margrethe_2."
-    date <- "08/12/2021"
-  })
-  
-  output$wiki_infobox <- renderUI({
-    includeHTML("www/queen_info_table.html")
-  })
-  
+
 }

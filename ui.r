@@ -472,33 +472,18 @@ ui <- dashboardPage(
                     p("The covariates used for estimating topic distributions in the Queen's new year's addresses is year of speech and average sentiment on sentence level.")
                 ),
                 box(width=4, title="Sentiment analysis",
-                  p("For danish: Sentiment analysis is done by getting sentiment values from \"Det Danske Sprog- og Litteraturselskab (DSL, Society for Danish Language and Literature) and Center for Sprogteknologi, Københavns Universitet (CST, Centre for Language Technology, University of Copenhagen)\", and adding the the values to the words we collected on word level, stem level and lemmatized values."), 
-                  p("For danish: Sentiment analysis is done by getting sentiment values from \"Det Danske Sprog- og Litteraturselskab (DSL, Society for Danish Language and Literature) and Center for Sprogteknologi, Københavns Universitet (CST, Centre for Language Technology, University of Copenhagen)\", and adding the the values to the words we collected on word level, stem level and lemmatized values."),
-                  p("For english: Sentiment analysis is done by getting sentiment values from the AFINN-111 sentiment dataset and adding to the words we collected on word-, stem- and lemmatized-level.")
+                  p("Sentiment analysis is done by getting sentiment values from \"Det Danske Sprog- og Litteraturselskab (DSL, Society for Danish Language and Literature) and Center for Sprogteknologi, Københavns Universitet (CST, Centre for Language Technology, University of Copenhagen)\", and adding the the values to the words we collected on word level, stem level and lemmatized values."), 
                 )
               ),
               fluidRow(class="box_align_layout",
                        box(width=6,
                            title = "Speeches covered",
-                           whatViz("This are the speeches that are covered in the dashboard, with your current filter."),
+                           whatViz("This are the articles that are covered in the dashboard, with your current filter."),
                            whyViz("You can use this to see the source from what you filtered."),
-                           uiOutput("Covered_speech"),
+                           uiOutput("Covered"),
                            box(width = 12, class="infoViz", title = "How to use",
                                collapsible = T, collapsed = T,
-                               howViz("You can use language and year filters. To see all text in a language selected language, select all possible years.")
-                           ),
-                           p(helpText("Notice: English version of speech are translations. Not all Danish speeches are translated. Some years are therefore not available."))
-                       ),
-                       box(width=6,
-                           div(id="wiki_infobox_wrap",
-                               uiOutput("scrabing_info"),
-                               whatViz("This is the info box from Wikipedia about the queen."),
-                               whyViz("You can use this to familiarize yourself with the subject, or just want a quick read-up."),
-                               htmlOutput("wiki_infobox")
-                           ),
-                           box(width = 12, class="infoViz", title = "How to use",
-                               collapsible = T, collapsed = T,
-                               howViz("You can read the table, or visit the source, above the table.")
+                               howViz("Any changes to the filter is applied to the list.")
                            )
                        )
               )
@@ -528,11 +513,6 @@ ui <- dashboardPage(
                 )
               ),
               fluidRow(class="box_align_layout",
-                       box(width=4, title="Language filter",
-                           whatViz("The language filter set's what language/translation of speeches you inspect, and what language to display the Wikipedia info box."),
-                           whyViz("For this dashboard, Danish would be optimal. It is the original language of the speeches. If you don't understand Danish, you can still use a limited set of speeches in English."),
-                           howViz("Push the text or dot next to the language you want to use."),
-                       ),
                        box(width=4, title="Year filters",
                            whatViz("Year filter refers to the group of filters affecting year. These are: the year input, the year slider and the year selector."),
                            whyViz("Filtering years can help you limit the data relevant to the topic you are researching."),
