@@ -7,9 +7,9 @@ ui <- dashboardPage(
   dashboardBody(
     tags$head(
       tags$link(rel = "stylesheet", type = "text/css", href = "sizes_n_stuff.css"),
-      tags$link(rel = "stylesheet", type = "text/css", href = "design2.css"),
-      uiOutput("royall_beautyfication"),
-      tags$link(rel = "shortcut icon", href = "favicon.ico"),
+      # tags$link(rel = "stylesheet", type = "text/css", href = "design2.css"),
+      # uiOutput("royall_beautyfication"),
+      # tags$link(rel = "shortcut icon", href = "favicon.ico"),
       tags$script(src = "js.js")
     ),
     conditionalPanel(condition = "$('html').hasClass('shiny-busy')",
@@ -29,10 +29,10 @@ ui <- dashboardPage(
                         p(class="how", "This is an interactive dashboard. You can select tabs in the sidebar on the left to navigate to different sections. When sidebar is expanded (see toggle button in top left corner), you can apply filters and settings for your liking."),
                         p(class="bold", "GUD BEVARE DANMARK.")
                     )
-                ),
-                box(width=2,
-                    img(src='queen_logo.png', align="right")
-                )
+                )#,
+                # box(width=2,
+                #     img(src='queen_logo.png', align="right")
+                # )
               ),
               fluidRow(
                 box(width = 12, title = "Statistics included",
