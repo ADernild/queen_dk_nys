@@ -4,19 +4,14 @@ library(plyr) # For data manipulation
 library(dplyr) # For data manipulation
 library(tidyr) # For data manipulation
 # library(DT) # For table visualizations
-# library(highcharter) # for interactive plots
 library(plotly) # for interactive plots
-#library(r2d3) # for advanced interactive plots
 library(LDAvis) # For topic models
 library(stm) # for stm models
 library(highcharter) # for plot display
 library(leaflet)
 library(stringr)
-# library(RColorBrewer) # To color worldclouds. Requirement of wordlclouds
-# library(wordcloud) # To create wordclouds
 library(wordcloud2) # Two create wordclouds
 library(colorBlindness) # For colors
-# library(cartography) # For colors
 
 # Load data ---------------------------------------------------------------
 tokens_dk <- readRDS("data/tokens.rds") # All tokens, filtered
@@ -212,32 +207,9 @@ hc_fivecolsum <- function(x){
 }
 
 # Sorting ----
-# cmatch <- function(needle, haistack){ # faster solution
-#   for(item in needle){
-#     if(item %in% haistack){
-#       return(T)
-#     }
-#   }
-#   return(F)
-# }
-
 cmatch <- function(needle, haistack){ # faster solution
   ifelse(length(needle[needle %in% haistack]) > 0, T, F)
 }
-
-# allmatch <- function(needles, haistack){ # not used
-#   check <- c()
-#   for(item in needles){
-#     if(item %in% haistack){
-#       check <- c(T, check)
-#     }
-#   }
-#   if(length(check) == length(needles)){
-#     return(T)
-#   }
-#   return(F)
-# }
-
 
 # Map ----------------------------------------------------------------------
 
