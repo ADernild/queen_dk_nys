@@ -1,5 +1,5 @@
-library(shiny)
-library(shinydashboard)
+library(shiny) # For interactive interface
+library(shinydashboard) # For dasghboard design and structure - enables tabs and various html elements
 library(plyr) # For data manipulation
 library(dplyr) # For data manipulation
 library(tidyr) # For data manipulation
