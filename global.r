@@ -14,27 +14,18 @@ library(wordcloud2) # Two create wordclouds
 library(colorBlindness) # For colors
 
 # Load data ---------------------------------------------------------------
-tokens_dk <- readRDS("data/tokens.rds") # All tokens, filtered
-tokens_en <- readRDS("data/tokens_en.rds") # All tokens, filtered
+tokens <- readRDS("data/tokens.rds") # All tokens, filtered
 lda_model <- readRDS("data/lda_model.rds") # LDA model
 stm_model_da <- readRDS("data/stm_model.rds") # STM model
-stm_model_en <- readRDS("data/stm_model_en.rds") # STM model
 thoughts_da <- readRDS("data/thoughts.rds") # sentences belonging to topics (topic proportion 45%)
-thoughts_en <- readRDS("data/thoughts_en.rds") # sentences belonging to topics (topic proportion 45%)
-lemma_dk <- readRDS("data/lemma.rds") # All lematized values unfiltered
-lemma_en <- readRDS("data/lemma.rds") # All lematized values unfiltered
-sentiment_dk <- readRDS("data/sentiments.rds") # Sentiment for year
-sentiment_en <- readRDS("data/sentiments_en.rds") # Sentiment for year
+lemma <- readRDS("data/lemma.rds") # All lematized values unfiltered
+sentiment <- readRDS("data/sentiments.rds") # Sentiment for year
 countries <- readRDS("data/country_speech.rds") # Countries, country code, lat, lon and # mentions
-countries_en <- readRDS("data/country_speech_eng.rds") # Countries, country code, lat, lon and # mentions
 source_year <- readRDS("data/source_year.rds") # Sources and year of source
-source_year_en <- readRDS("data/source_year_eng.rds") # Sources and year of source
 geojson <- readRDS("data/countries.rds") # Library containing geographic information
 
 # Formatting data ---------------------------------------------------------
-tokens <- tokens_dk
-lemma <- lemma_dk
-sentiment <- sentiment_dk
+# Nothing yet
 
 # Number of distinct headwords
 n_dist_t_headword <- nrow(distinct(tokens, stemmed))
