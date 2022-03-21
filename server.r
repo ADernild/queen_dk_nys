@@ -60,12 +60,6 @@ server <- function(input, output, session) {
         menuItem(span("How to operate", class="help-me", title="Help and how to operate dashboard"), tabName = "howto", icon=shiny::icon("question-circle", class="help-me", title="Help and how to operate dashboard")),
         div(id="sidebar-input",
             h3("Filters"),
-            radioButtons ("yearopt",
-                          label = "Year input",
-                          choices = c("Range", "Select inputs"),
-                          selected = "Range"
-            ),
-            uiOutput("year"),
             selectizeInput("words", label="Featured words", choices = NULL,
                            multiple = TRUE),
             actionButton("clear", "Clear featured words"),
@@ -79,36 +73,12 @@ server <- function(input, output, session) {
     HTML(paste("<input type='hiden' name='source', value='", tokens_source(), "'>"))
   })
   
-  output$year <- renderUI({
-    req(input$yearopt)
-    year_min <- year_min
-    year_max <- year_max
-    years <- years
-    if(input$yearopt == "Range"){
-      sliderInput("year_r", "Years",
-                  min = year_min, max = year_max,
-                  value = range(year_min,year_max),
-                  step = 1,
-                  sep = ""
-      )
-      
-    } else{
-      selectizeInput("year_si", label="Years", choices = years, selected = years,
-                     multiple = TRUE)
-    }
-  })
-  
+
   updateSelectizeInput(
     session, 'words', choices = words_tokens_all
     )
   
   observeEvent(input$clear, {
-    # if(length(regrets)>1){
-    #   regrets <<- regrets[1:length(regrets)]
-    # }
-    # if(length(input$words)>0 && !allmatch(input$words, regrets[1])){
-    #   regrets <<- list(input$words, regrets[1])
-    # }
     regrets <<- input$words
     updateSelectizeInput(
       session,
@@ -135,28 +105,17 @@ server <- function(input, output, session) {
   })
   
   # Date data --------------------------------------------------------------
-  y <- reactive({
-    req(input$yearopt)
-    if(input$yearopt == "Range"){
-      req(input$year_r)
-      year <- input$year_r[1]:input$year_r[2]
-    } else{
-      req(input$year_si)
-      year <- input$year_si
-    }
-    return(year)
-  })
-  
+
   # Home ------------------------------------------------------------------
   ## CSS ------------------------------------------------------------------
   # Nothing here yet
   
   ## Valuebox --------------------------------------------------------------
   ### Speech ---------------------------------------------------------------
-  output$total_speech <- renderValueBox({
-    years_covered <- length(unique(speech_data()$year))
+  output$total_covered <- renderValueBox({
+    covered <- 0
     valueBox(
-      years_covered, "Speeches (and years) covered", icon = icon("glass-cheers"),
+      covered, "Articles covered (todo)", icon = icon("glass-cheers"),
       color = "light-blue"
     )
   })
@@ -503,7 +462,6 @@ server <- function(input, output, session) {
   # Sentiment ---------------------------------------------------------------
   ## sentiment data ---------------------------------------------------------
   sentiment_of_speech_data <- reactive({
-    req(y())
     data <- sentiment %>%
       mutate(sentiment = round(sentiment),
              sentiment_pos = round(sentiment_pos),
@@ -521,11 +479,9 @@ server <- function(input, output, session) {
         mutate(fwords = ifelse(year %in% token_data, "Yes", "No"))
     }
     
-    filter(data, year %in% y())
   })
   
   sentiment_of_words_data <- reactive({
-    req(y())
     req(input$slider_sentiment_of_words_n_words)
     data <- tokens %>%
       filter(polarity != 0) %>% 
@@ -539,8 +495,6 @@ server <- function(input, output, session) {
         mutate(sentiment_true = ifelse(stemmed %in% input$words, paste(sentiment_true, fwords, sep=" | "), sentiment_true))
     }
     
-    data <- data %>% filter(year %in% y())
-
     if("fwords" %in% colnames(data)){
       data <- data %>% 
         arrange(desc(fwords), desc(n_stem_total))
@@ -564,7 +518,6 @@ server <- function(input, output, session) {
   })
   
   sentiment_of_speech_data_filtered <- reactive({
-    req(y())
     req(input$words)
     
     data <- tokens %>%
@@ -579,9 +532,7 @@ server <- function(input, output, session) {
       data <- data %>%
         filter(stemmed %in% input$words)
     }
-    
-    data <- data %>% filter(year %in% y())
-    
+
     data <- data %>%
       summarise(sentiment = sum(n_in_year*polarity),
                 sentiment_pos = sum(n_in_year*polarity_pos),
@@ -1037,9 +988,7 @@ server <- function(input, output, session) {
   # Map ---------------------------------------------------------------------
   ## Map data ---------------------------------------------------------------
   mapData <- reactive({
-    req(y())
-    data <- poly_prep(geojson, countries, y())
-    dis <<- data
+    data <- poly_prep(geojson, countries)
     return(data)
   })
 
@@ -1211,14 +1160,11 @@ server <- function(input, output, session) {
   # Word statistics ---------------------------------------------------------
   ## Word data --------------------------------------------------------------
   speech_data <- reactive({
-    req(y())
     data <- tokens %>%
       select(year, stemmed, n_stem_total, n_stem_year) %>% 
       distinct() %>% 
       group_by(stemmed, year) %>% 
       arrange(year, stemmed)
-    
-    data <- filter(data, year %in% y())
     
     return(data)
   })
@@ -1513,10 +1459,6 @@ server <- function(input, output, session) {
     title <- "Name: "
     source <- source_year
 
-    req(y())
-    source <- source %>% 
-      filter(year %in% y())
-    
     validate(
       need(nrow(source) != 0, "No avilable data")
     )

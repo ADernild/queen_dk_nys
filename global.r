@@ -54,9 +54,6 @@ year_min_en <-  min(source_year_en$year)
 year_max_en <-  max(source_year_en$year)
 year_span_en <-  year_max_en-year_min_en+1
 
-## Languages ----
-languages <- c("DK", "EN")
-
 ## Words ----
 words_all <-  unique(lemma$token) %>% sort()
 words_tokens_all <- tokens %>%

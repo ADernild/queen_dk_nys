@@ -41,7 +41,7 @@ ui <- dashboardPage(
                       whyViz("Total values can give a idea about what is about to be covered.")
                     ),
                     fluidRow(
-                      valueBoxOutput("total_speech"), # Amount of speeches covered
+                      # valueBoxOutput("total_covered"), # Amount of speeches covered
                       # valueBoxOutput("total_sentences"), # Amount of words covered
                       valueBoxOutput("total_word"), # Amount of unique words covered
                       valueBoxOutput("total_word_unique") # Amount of unique words covered
