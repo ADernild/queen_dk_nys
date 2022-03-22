@@ -6,9 +6,8 @@ library(tidytext)
 library(udpipe)
 
 # Importing cleanned speaches ----
-last_year <- as.integer(format(Sys.Date(), "%Y")) - 1 # Last year i.e., the year of the lastest speech
-df <- read.csv(paste0("data/nys_1972-", last_year, "_cleaned.csv"), encoding = "UTF-8")
-
+# df <- read.csv("data/sentences_cleaned.csv", encoding = "UTF-8")
+df <- readRDS("data/sentences_cleaned.rds")
 
 # Tokenization ----
 # Removing stopwords and stemming
@@ -23,20 +22,20 @@ snowball_stopwords <- stopwords(language = "da", source = "snowball") %>%  # Sto
 names(snowball_stopwords) <- "V1"
 
 ### ... from stopwords defined by Max Festersen Hansen & Alexander Ibsen Dernild ----
-custom_stop_words <- read.table("utils/custom_stopwords.txt", encoding = "UTF-8") # Custom stopwords defined by Max F.H. & Alexander I.D.
+#custom_stop_words <- read.table("utils/custom_stopwords.txt", encoding = "UTF-8") # Custom stopwords defined by Max F.H. & Alexander I.D.
 
 ## Combining stopwords ----
 stop_words <- full_join(berteltorp_stopwords, snowball_stopwords, by = "V1") %>% # Combine lists
-  full_join(custom_stop_words, by = "V1") %>% 
+  # full_join(custom_stop_words, by = "V1") %>% 
   arrange(V1) %>%  # Sort alphabetically
   rename(word = V1)
 
 ## Filter stopwords ----
-### ... and count occurrences by year ----
+### ... and count occurrences by uuid ----
 tokens <- tibble(df) %>%
-  unnest_tokens(word, speech) %>% #tokenization
+  unnest_tokens(word, content) %>% #tokenization
   anti_join(stop_words, by = "word") %>% #removing stopwords 
-  count(year, word, sort = T) # frequency count each year
+  count(uuid, word, sort = T) # frequency count each uuid
 
 ### ... and count total occurrences ----
 total_tokens <- tokens %>%
@@ -45,8 +44,8 @@ total_tokens <- tokens %>%
 
 tokens <- tokens %>% 
   left_join(total_tokens, by="word") %>% 
-  rename(n_in_year = n) %>% 
-  arrange(desc(n_total), word, desc(year), desc(n_in_year)) # arrange by largest n_total, word alphabetically, largest year and lastly largest n_in_year.
+  rename(n_in = n) %>% 
+  arrange(desc(n_total), word) # arrange
 
 # Stemming ----
 tokens$stemmed <- wordStem(tokens$word, language = "danish") # stemming
@@ -57,15 +56,28 @@ tokens$stemmed <- wordStem(tokens$word, language = "danish") # stemming
 # Count total usage of stemmed values
 total_tokens <- tokens %>%
   group_by(stemmed) %>%
-  summarise(n_stem_total = sum(n_in_year))
+  summarise(n_stem_total = sum(n_in))
 
 tokens <- tokens %>%
   left_join(total_tokens, by="stemmed") %>% 
-  arrange(desc(n_stem_total), word, desc(n_total), desc(year), desc(n_in_year)) # arrange by largest n_total, word alphabetically, largest year and lastly largest n_in_year.
+  arrange(desc(n_stem_total), word, desc(n_total)) # arrange
 
 # Lemmatization ----
-lemmi <- udpipe(df$speech, "danish")
-lemmi <- lemmi[colSums(!is.na(lemmi)) > 0]
+model <- udpipe_download_model(language = "danish")
+if(!model$download_failed){
+  ud <- udpipe_load_model(model)
+  
+  ## Tokenise, Tag and Dependency Parsing Annotation. Output is in CONLL-U format.
+  txt <- df$content
+  # txt <- paste(df$content, collapse = ' ')
+  names(txt) <- df$uuid
+  lemmi <- udpipe(txt, object = ud)
+  lemmi <- udpipe(data.frame(doc_id = names(txt), text = txt, stringsAsFactors = FALSE), 
+              object = ud)
+  lemmi <- udpipe(strsplit(txt, "[[:space:][:punct:][:digit:]]+"), 
+              object = ud)
+  lemmi <- lemmi[colSums(!is.na(lemmi)) > 0]
+}
 
 saveRDS(lemmi, "data/lemma.rds")
 
@@ -77,11 +89,11 @@ tokens <- tokens %>%
 ## Count total occurrences of limmitized words ----
 total_tokens <- tokens %>%
   group_by(lemma) %>%
-  summarise(n_lemma_total = sum(n_in_year))
+  summarise(n_lemma_total = sum(n_in))
 
 tokens <- tokens %>%
-  left_join(total_tokens, by="lemma") %>% 
-  arrange(desc(n_lemma_total), word, desc(n_stem_total), desc(n_total), desc(year), desc(n_in_year)) # arrange by largest n_lemma_total, word alphabetically, largest n_stem_total, largest year and lastly largest n_in_year.
+  left_join(total_tokens, by="lemma")
+  arrange(desc(n_lemma_total), word, desc(n_stem_total), desc(n_total)) # arrange
 
 
 # Save tokens ----
