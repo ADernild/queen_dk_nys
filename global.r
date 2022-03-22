@@ -12,39 +12,6 @@ library(leaflet)
 library(stringr)
 library(wordcloud2) # Two create wordclouds
 library(colorBlindness) # For colors
-library(httr) # API stuff
-library(jsonlite) # API stuff
-
-# Connect to bazo
-# Documentation: https://developer.bazo.dk/
-# API: public.fyn.bazo.dk
-
-public <- "https://public.fyn.bazo.dk"
-# article_list_call <- paste(public, "/v1/articles?page[size]=1000&page[number]=", sep="")
-if(file.exists("data/article_list.rds")){
-  articles <- readRDS("data/article_list.rds")
-} else {
-  columns= c("uuid", "trumpet", "title", "date_published_at", "date_updated_at") 
-  articles <- data.frame(matrix(nrow = 0, ncol = length(columns))) 
-  colnames(articles) = columns
-  articles <- articles %>% 
-    mutate(uuid = as.character(uuid),
-           trumpet = as.character(trumpet),
-           title = as.character(title),
-           date_published_at = as.character(date_published_at),
-           date_updated_at = as.character(date_updated_at)
-           )
-}
-for(i in 1:10){
-  article_list_call <- paste(public, "/v1/articles?page[size]=1000&page[number]=", i, sep="")
-  api_articles <- fromJSON(article_list_call, flatten = TRUE)
-  api_articles <- as.data.frame(api_articles$data) %>% 
-    select(uuid, trumpet, title, date_published_at, date_updated_at)
-  articles <- full_join(articles, api_articles, by = c("uuid"))
-}
-saveRDS(articles, "data/article_list.rds")
-# api_articles2 <- GET(article_call2, authenticate('','', type = "basic"))
-
 
 # Load data ---------------------------------------------------------------
 tokens <- readRDS("data/tokens.rds") # All tokens, filtered
