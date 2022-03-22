@@ -18,9 +18,9 @@ ver <- "/v1/"
 public <- paste(public, ver, sep="")
 
 # Load or create library of articles ----
-if(file.exists("data/article_list.rds")){
+if(file.exists("data/article_library.rds")){
   # Load library if it exists
-  library <- readRDS("data/article_list.rds")
+  library <- readRDS("data/article_library.rds")
 } else {
   # Create library if it doesn't exist
   columns= c("uuid", "title", "date_published_at", "date_updated_at", "link", "content") # Define names
