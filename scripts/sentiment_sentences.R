@@ -4,19 +4,15 @@ library(tidytext)
 library(stringr)
 library(dplyr)
 
-setwd("../")
-
 # sentences
 df <- read.csv("data/nys_sentences.csv")
 df_eng <- read.csv("data/nys_sentences_eng.csv")
 
 # Lemmatizing sentences
 df_lemmatized <- udpipe(df$sentences, "danish")
-df_eng_lemmatized <- udpipe(df_eng$sentences, "english")
 
 # Correcting sentence_id to match rownumber for sentences in df
 df_lemmatized$sentence_id <- as.numeric(str_replace(df_lemmatized$doc_id, "doc", ""))
-df_eng_lemmatized$sentence_id <- as.numeric(str_replace(df_eng_lemmatized$doc_id, "doc", ""))
 
 sentence_sentiment <- function(df, df_lemmatized, lang="en"){
   if(lang == "en"){
@@ -62,9 +58,7 @@ sentence_sentiment <- function(df, df_lemmatized, lang="en"){
   }
 }
 
-df_eng <- sentence_sentiment(df_eng, df_eng_lemmatized, lang="en")
 df_da <- sentence_sentiment(df, df_lemmatized, lang = "da")
 
 
 write.csv(df_da, "data/nys_sentences.csv", row.names = F)
-write.csv(df_eng, "data/nys_sentences_eng.csv", row.names = F)
