@@ -92,16 +92,15 @@ for (i_word in unique(tokens$word)) {
   }
 }
 
-
-year_tokens <- tokens %>%
-  group_by(stemmed, year) %>%
-  summarise(n_stem_year = sum(n_in_year))
+n_tokens <- tokens %>%
+  group_by(stemmed, uuid) %>%
+  summarise(n_stem = sum(n_in))
 
 tokens <- tokens %>%
-  left_join(year_tokens, by=c("year", "stemmed")) %>% 
+  left_join(n_tokens, by=c("uuid", "stemmed")) %>% 
   arrange(desc(n_stem_total), word, desc(n_lemma_total),
-          desc(n_total), desc(year),
-          desc(n_in_year)) # arrange by largest n_hword_total
+          desc(n_total), desc(uuid),
+          desc(n_in)) # arrange by largest n_hword_total
 
 ## Add sentiment labels ----
 tokens <- tokens %>%
@@ -113,20 +112,20 @@ tokens <- tokens %>%
 ## Save Token ----
 saveRDS(tokens,"data/tokens.rds")
 
-# Calculate sentiment of each year ----
+# Calculate sentiment of each instance ----
 sentiments <- tokens %>% 
   rowwise() %>% 
   mutate(polarity_pos = as.numeric(ifelse(polarity > 0, polarity, 0)),
          polarity_neg = as.numeric(ifelse(polarity < 0, polarity, 0)),
-         n_in_year_pos = as.numeric(ifelse(polarity > 0, n_in_year, 0)),
-         n_in_year_neg = as.numeric(ifelse(polarity < 0, n_in_year, 0))) %>% 
-  group_by(year) %>%
-  summarise(sentiment = sum(n_in_year*polarity),
-            sentiment_pos = sum(n_in_year*polarity_pos),
-            sentiment_neg = sum(n_in_year*polarity_neg),
-            average_sentiment = mean(n_in_year*polarity),
-            n_pos = sum(n_in_year_pos),
-            n_neg = sum(n_in_year_neg)
+         n_in_pos = as.numeric(ifelse(polarity > 0, n_in, 0)),
+         n_in_neg = as.numeric(ifelse(polarity < 0, n_in, 0))) %>% 
+  group_by(uuid) %>%
+  summarise(sentiment = sum(n_in*polarity),
+            sentiment_pos = sum(n_in*polarity_pos),
+            sentiment_neg = sum(n_in*polarity_neg),
+            average_sentiment = mean(n_in*polarity),
+            n_pos = sum(n_in_pos),
+            n_neg = sum(n_in_neg)
   ) %>% 
   mutate(n_words = n_pos+n_neg) %>% 
   rowwise() %>% 
