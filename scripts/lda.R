@@ -5,8 +5,7 @@ library(LDAvis)
 library(ggplot2)
 library(ldatuning)
 
-# df <- read.csv("data/nys_2001-2020_cleaned.csv")
-df <- read.csv("data/nys_sentences.csv")
+df <- read.csv("data/sentences.csv")
 
 stop_words <- read.csv("utils/custom_stopwords.txt", header=F) %>% 
   rbind(read.csv("utils/stopord.txt", header=F)) %>% 
