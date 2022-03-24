@@ -1,8 +1,5 @@
 library(tidyverse)
 library(tidytext)
-# library(SentimentAnalysis) # for sentiment analysis
-
-setwd("../")
 
 # Get sentiments from a sentiment library ----
 dk_sentiment <- read.csv("https://raw.githubusercontent.com/dsldk/danish-sentiment-lexicon/main/2a_fullform_headword_polarity.csv", encoding = "UTF-8", header = FALSE, sep = "\t")
@@ -95,35 +92,6 @@ for (i_word in unique(tokens$word)) {
   }
 }
 
-# ... Through left join. ----
-# Note: Does not work. Words in either dataset are not unique and will result in
-#       large amount of redundancy.
-# tokens <- tokens %>%
-#   left_join(dk_sentiment_min, by=c("stemmed" = "word_form")) %>%
-#   left_join(dk_sentiment_min, by=c("word" = "word_form")) %>%
-#   rowwise() %>%
-#   mutate(polarity.x = as.numeric(ifelse(is.numeric(polarity.x), polarity.x, polarity.y)),
-#          headword.x = ifelse(!is.na(headword.x), headword.x, headword.y)) %>%
-#   select(-c(polarity.y, headword.y)) %>%
-#   rename(polarity = polarity.x, headword = headword.x) %>%
-#   left_join(dk_sentiment_min, by=c("stemmed" = "headword")) %>%
-#   select(-c(word_form)) %>%
-#   mutate(polarity.x = as.numeric(ifelse(is.numeric(polarity.x), polarity.x, polarity.y))) %>%
-#   select(-c(polarity.y)) %>%
-#   left_join(dk_sentiment_min, by=c("word" = "headword")) %>%
-#   select(-c(word_form)) %>%
-#   mutate(polarity = as.numeric(ifelse(is.numeric(polarity), polarity, polarity.x))) %>%
-#   select(-c(polarity.x)) %>%
-#   mutate(polarity = as.numeric(ifelse(!is.na(polarity), polarity, 0)))
-
-## ... Throuh analyzeSentiment from SentimentAnalysis package ----
-# tokens <- tokens %>%
-#   mutate(sentiment = analyzeSentiment(word, removeStopwords = FALSE, language = "danish")[["SentimentGI"]])
-
-## Count total occurrences of headword words ----
-# total_tokens <- tokens %>%
-#   group_by(headword) %>%
-#   summarise(n_hword_total = sum(n_in_year))
 
 year_tokens <- tokens %>%
   group_by(stemmed, year) %>%
@@ -166,72 +134,4 @@ sentiments <- tokens %>%
 
 ## Save sentiments ----
 saveRDS(sentiments, "data/sentiments.rds")
-
-# English sentiments ----
-
-tokens_en <- readRDS("data/tokens_en.rds")
-
-sentiment_en <- function(tokens) {
-  afinn <- read.csv("utils/afinn.csv")
-  
-  matches <- tokens %>% 
-    left_join(afinn, by=c("lemma" = "word")) %>% 
-    left_join(afinn, by="word") %>% 
-    left_join(afinn, by=c("stemmed" = "word")) %>% 
-    group_by(year, word) %>% 
-    summarise(
-      n_in_year = n_in_year,
-      n_total = n_total,
-      stemmed = stemmed,
-      n_stem_total = n_stem_total,
-      lemma = lemma,
-      n_lemma_total = n_lemma_total,
-      polarity = (value + value.x + value.y)/3,
-    )
-  
-  tokens <- tokens %>% 
-    right_join(matches)
-  tokens$polarity[is.na(tokens$polarity)] <- 0
-  
-  year_tokens <- tokens %>%
-    group_by(stemmed, year) %>%
-    summarise(n_stem_year = sum(n_in_year))
-  
-  tokens <- tokens %>%
-    left_join(year_tokens, by=c("year", "stemmed")) %>% 
-    arrange(desc(n_stem_total), word, desc(n_lemma_total),
-            desc(n_total), desc(year),
-            desc(n_in_year)) # arrange by largest n_hword_total
-  
-  ## Add sentiment labels ----
-  tokens <- tokens %>%
-    mutate(sentiment = ifelse(polarity>= 2, "Positive",
-                              ifelse(polarity <= -2, "Negative", "Neutral"))) %>%
-    mutate(sentiment_true = ifelse(polarity > 0, "Positive",
-                                   ifelse(polarity < 0, "Negative", "Neutral")))
-  
-  sentiments <- tokens %>% 
-    rowwise() %>% 
-    mutate(polarity_pos = as.numeric(ifelse(polarity > 0, polarity, 0)),
-           polarity_neg = as.numeric(ifelse(polarity < 0, polarity, 0)),
-           n_in_year_pos = as.numeric(ifelse(polarity > 0, n_in_year, 0)),
-           n_in_year_neg = as.numeric(ifelse(polarity < 0, n_in_year, 0))) %>% 
-    group_by(year) %>%
-    summarise(sentiment = sum(n_in_year*polarity),
-              sentiment_pos = sum(n_in_year*polarity_pos),
-              sentiment_neg = sum(n_in_year*polarity_neg),
-              average_sentiment = mean(n_in_year*polarity),
-              n_pos = sum(n_in_year_pos),
-              n_neg = sum(n_in_year_neg)
-    ) %>% 
-    mutate(n_words = n_pos+n_neg) %>% 
-    rowwise() %>% 
-    mutate(sentiment_label = ifelse(sentiment>0, "Positive", "Negative"))
-  list(tokens = tokens, sentiments = sentiments)
-}
-
-english_sent <- sentiment_en(tokens_en)
-
-saveRDS(english_sent$tokens, "data/tokens_en.rds")
-saveRDS(english_sent$sentiments, "data/sentiments_en.rds")
 
