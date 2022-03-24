@@ -5,8 +5,7 @@ library(stringr)
 library(dplyr)
 
 # sentences
-df <- read.csv("data/nys_sentences.csv")
-df_eng <- read.csv("data/nys_sentences_eng.csv")
+df <- read.csv("data/sentences.csv")
 
 # Lemmatizing sentences
 df_lemmatized <- udpipe(df$sentences, "danish")
