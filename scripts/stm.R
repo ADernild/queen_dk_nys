@@ -7,7 +7,7 @@ library(stopwords)
 library(SnowballC)
 
 # Reading data
-df <- read.csv("data/nys_sentences.csv", encoding = "UTF-8")
+df <- read.csv("data/sentences.csv", encoding = "UTF-8")
 
 # Making stopwords list
 stop_words <- read.csv("utils/stopord.txt", header=F) %>% 
