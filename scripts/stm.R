@@ -50,5 +50,6 @@ make_stm_model <- function(docs, df, covariates, stop_words, language="danish") 
 
 stm_da <- make_stm_model(df$sentences, df, covariates=formula(~uuid + polarity), stop_words$word)
 # Saving model as rds
+
 saveRDS(stm_da$stm_model, file="data/stm_model.rds")
 saveRDS(stm_da$thoughts, file="data/thoughts.rds")

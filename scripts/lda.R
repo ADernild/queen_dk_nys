@@ -1,3 +1,4 @@
+# File is not used in dashboard
 library(tm)
 library(textmineR)
 library(tidytext)
