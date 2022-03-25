@@ -5,7 +5,7 @@ library(dplyr)
 # Cleaning function
 clean_speech <- function(x) {
   x %>%
-    str_replace_all("&nbsp;", " ") %>% # Replace html whitespace code with space
+    str_replace_all('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});', " ") %>% # Replace html whitespace code with space
     str_replace_all("\\\n", " ") %>% # removes linebreaks
     str_replace_all("[^[:alnum:]]", " ") %>% # removes special characters
     str_to_lower() %>% # Converts to lower case
@@ -14,7 +14,7 @@ clean_speech <- function(x) {
 
 clean_sentences <- function(x) {
   x %>%
-    str_replace_all("&nbsp;", " ") %>% # Replace html whitespace code with space
+    str_replace_all('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});', " ") %>% # Replace html whitespace code with space
     str_replace_all("\\\n", " ") %>% # removes linebreaks
     str_replace_all("[^[:alnum:].']", " ") %>% # removes special characters except .,
     str_to_lower() %>% # Converts to lower case
@@ -23,7 +23,7 @@ clean_sentences <- function(x) {
 
 clean_sentences_less <- function(x) {
   x %>%
-    str_replace_all("&nbsp;", " ") %>% # Replace html whitespace code with space
+    str_replace_all('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});', " ") %>% # Replace html whitespace code with space
     str_replace_all("\\\n", " ") %>% # removes linebreaks
     str_replace_all("[^[:alnum:].,']", " ") %>% # removes special characters except .,
     str_to_lower() %>% # Converts to lower case
