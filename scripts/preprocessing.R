@@ -92,7 +92,7 @@ total_tokens <- tokens %>%
   summarise(n_lemma_total = sum(n_in))
 
 tokens <- tokens %>%
-  left_join(total_tokens, by="lemma")
+  left_join(total_tokens, by="lemma") %>% 
   arrange(desc(n_lemma_total), word, desc(n_stem_total), desc(n_total)) # arrange
 
 
