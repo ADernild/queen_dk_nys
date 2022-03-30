@@ -29,7 +29,7 @@ server <- function(input, output, session) {
     n_dist_t_headword <<- nrow(distinct(tokens, stemmed))
 
     updateSelectizeInput(
-      session, 'words', choices = words_tokens_all, selected = ""
+      session, 'words', choices = words_tokens_all, selected = "", server = TRUE
     )
     
     updateSliderInput(
