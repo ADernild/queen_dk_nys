@@ -75,7 +75,7 @@ server <- function(input, output, session) {
   
 
   updateSelectizeInput(
-    session, 'words', choices = words_tokens_all
+    session, 'words', choices = words_tokens_all, server = TRUE
     )
   
   observeEvent(input$clear, {
@@ -83,7 +83,8 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'words',
-      selected = c("")
+      selected = c(""),
+      server = TRUE
     )
   })
   
