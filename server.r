@@ -331,8 +331,15 @@ server <- function(input, output, session) {
       df <- data.frame(sentences, uuid)
       df <- df[sample.int(nrow(df), ifelse(nrow(df)<slide_num, nrow(df), slide_num)),]
       df$sentences <- str_to_sentence(df$sentences)
-      
-      paste("<ul>", paste0("<li>", df$sentences, ".", " (", df$uuid, ")", "</li>", collapse = ""), "</ul>") %>%
+      name <- article_lib %>% 
+        filter(uuid %in% id) %>% 
+        rowwise() %>% 
+        mutate(title = ifelse(nchar(title)>50,
+               paste(strtrim(title, 47), "...", sep=""),
+               title)) %>% 
+        .$title
+
+      paste("<ul>", paste0("<li>", df$sentences, ".", " (", name, " | uuid: ", df$uuid, ")", "</li>", collapse = ""), "</ul>") %>%
       # paste("<ul>", paste0("<li>", df$sentences, ".", " (", df$years, ")", "</li>", collapse = ""), "</ul>") %>%
         HTML()
     })
