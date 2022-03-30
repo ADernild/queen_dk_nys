@@ -38,7 +38,7 @@ make_stm_model <- function(docs, df, covariates, stop_words, language="danish") 
 
   thoughts <- findThoughts(model, out$meta$sentences_full, n=200, thresh = 0.45)
 
-  thoughts$years <- lapply(thoughts$index, function(i) out$meta$years[i])
+  thoughts$uuid <- lapply(thoughts$index, function(i) out$meta$uuid[i])
   thoughts$polarity <- lapply(thoughts$index, function(i) out$meta$polarity[i])
 
 # Saving model results in list
