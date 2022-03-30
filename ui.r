@@ -104,7 +104,7 @@ ui <- dashboardPage(
                 p(helpText("Notice: \"Update on topic selection\" will clear previous selections.")),
                 whatViz("Number of terms to display sets the number of terms used in the topic model, by size of topic."),
                 whyViz("Limiting the number of terms makes the topic model easier to interpret. Adding more, gives more information."),
-                fluidRow(sliderInput("nTerms", "Number of terms to display", min = 10, max = 50, value = 30, sep="")),
+                fluidRow(sliderInput("nTerms", "Number of terms to display", min = 10, max = 100, value = 50, sep="")),
                 box(width = 12, class="infoViz", title = "How to use",
                     collapsible = T, collapsed = T,
                     howViz("Setting featured words update prefferece: Click a a setting that fits your needs the most."),
