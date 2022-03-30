@@ -24,7 +24,7 @@ server <- function(input, output, session) {
       unique()
     words_count_unique <<- length(words_all)
     most_common <<- max(tokens$n_stem_total)
-    most_common_any_year <<- max(tokens$n_stem_year)
+    most_common_any <<- max(tokens$n_stem)
     number_of_rarity <<- length(unique(arrange(tokens, desc(n_stem_total))$n_stem_total))
     n_dist_t_headword <<- nrow(distinct(tokens, stemmed))
 
@@ -332,12 +332,15 @@ server <- function(input, output, session) {
     topic <- input$topicVis_topic_click
     output$topicText <- renderUI({
       sentences <- unlist(thoughts()$docs[topic])
-      years <- unlist(thoughts()$years[topic])
-      df <- data.frame(sentences, years)
+      # years <- unlist(thoughts()$years[topic])
+      uuid <- unlist(thoughts()$uuid[topic])
+      # df <- data.frame(sentences, years)
+      df <- data.frame(sentences, uuid)
       df <- df[sample.int(nrow(df), ifelse(nrow(df)<slide_num, nrow(df), slide_num)),]
       df$sentences <- str_to_sentence(df$sentences)
       
-      paste("<ul>", paste0("<li>", df$sentences, ".", " (", df$years, ")", "</li>", collapse = ""), "</ul>") %>%
+      paste("<ul>", paste0("<li>", df$sentences, ".", " (", df$uuid, ")", "</li>", collapse = ""), "</ul>") %>%
+      # paste("<ul>", paste0("<li>", df$sentences, ".", " (", df$years, ")", "</li>", collapse = ""), "</ul>") %>%
         HTML()
     })
     
@@ -374,11 +377,11 @@ server <- function(input, output, session) {
       df <- thoughts()
       polarity_topic <- as.numeric(unlist(df$polarity[topic]))
       polarity_rest <- as.numeric(unlist(df$polarity[-topic]))
-      topic_year <- as.numeric(unlist(df$years[topic]))
-      rest_year <- as.numeric(unlist(df$years[-topic]))
+      topic_ <- as.numeric(unlist(df$uuid[topic]))
+      rest_ <- as.numeric(unlist(df$uuid[-topic]))
       dat <- data.frame(topic = c(rep(paste("Topic", topic), length(polarity_topic)), rep("Rest", length(polarity_rest))),
                         polarity = c(polarity_topic, polarity_rest),
-                        years = c(topic_year, rest_year))
+                        id = c(topic_, rest_))
       
       dat <- data_to_boxplot(dat, polarity, group_var = topic, group_var2 = topic)
       
@@ -448,17 +451,17 @@ server <- function(input, output, session) {
       mutate(sentiment = round(sentiment),
              sentiment_pos = round(sentiment_pos),
              sentiment_neg = round(sentiment_neg)) %>% 
-      group_by(year) %>% 
-      arrange(year)
+      group_by(uuid) %>% 
+      arrange(uuid)
     if(length(input$words) > 0){
       token_data <- tokens %>% 
         filter(stemmed %in% input$words) %>% 
-        .$year %>% 
+        .$uuid %>% 
         unique() %>% 
         sort()
       data <- data %>% 
         rowwise() %>% 
-        mutate(fwords = ifelse(year %in% token_data, "Yes", "No"))
+        mutate(fwords = ifelse(uuid %in% token_data, "Yes", "No"))
     }
     
   })
@@ -468,7 +471,7 @@ server <- function(input, output, session) {
     data <- tokens %>%
       filter(polarity != 0) %>% 
       group_by(stemmed) %>% 
-      distinct(year, stemmed, .keep_all = TRUE)
+      distinct(uuid, stemmed, .keep_all = TRUE)
     
     if(length(input$words) > 0 && cmatch(data$stemmed, input$words)){
       data <- data %>%
@@ -506,9 +509,9 @@ server <- function(input, output, session) {
       rowwise() %>% 
       mutate(polarity_pos = as.numeric(ifelse(polarity > 0, polarity, 0)),
              polarity_neg = as.numeric(ifelse(polarity < 0, polarity, 0)),
-             n_in_year_pos = as.numeric(ifelse(polarity > 0, n_in_year, 0)),
-             n_in_year_neg = as.numeric(ifelse(polarity < 0, n_in_year, 0))) %>% 
-      group_by(year, stemmed)
+             n_in_pos = as.numeric(ifelse(polarity > 0, n_in, 0)),
+             n_in_neg = as.numeric(ifelse(polarity < 0, n_in, 0))) %>% 
+      group_by(uuid, stemmed)
     
     if(length(input$words) > 0 && cmatch(data$stemmed, input$words)){
       data <- data %>%
@@ -516,18 +519,18 @@ server <- function(input, output, session) {
     }
 
     data <- data %>%
-      summarise(sentiment = sum(n_in_year*polarity),
-                sentiment_pos = sum(n_in_year*polarity_pos),
-                sentiment_neg = sum(n_in_year*polarity_neg),
-                average_sentiment = mean(n_in_year*polarity),
-                n_pos = sum(n_in_year_pos),
-                n_neg = sum(n_in_year_neg)
+      summarise(sentiment = sum(n_in*polarity),
+                sentiment_pos = sum(n_in*polarity_pos),
+                sentiment_neg = sum(n_in*polarity_neg),
+                average_sentiment = mean(n_in*polarity),
+                n_pos = sum(n_in_pos),
+                n_neg = sum(n_in_neg)
       ) %>% 
       mutate(sentiment = round(sentiment),
              sentiment_pos = round(sentiment_pos),
              sentiment_neg = round(sentiment_neg),
              n_words = n_pos+n_neg) %>% 
-      arrange(year)
+      arrange(uuid)
     return(data)
   })
 
@@ -545,7 +548,7 @@ server <- function(input, output, session) {
         arrange(fwords)
       hc <- hchart(data,
                    type="bubble",
-                   hcaes(x = sentiment_pos, y = sentiment_neg, z = sentiment, pn = n_words, size = sentiment, l = sentiment_label, name = year, group = fwords, fwords = fwords),
+                   hcaes(x = sentiment_pos, y = sentiment_neg, z = sentiment, pn = n_words, size = sentiment, l = sentiment_label, name = uuid, group = fwords, fwords = fwords),
                    showInLegend = F,
                    stickyTracking = F,
                    styledMode = T
@@ -554,7 +557,7 @@ server <- function(input, output, session) {
           useHTML = T,
           headerFormat = '<table>',
           pointFormat = paste('<tr><th colspan="2"><b>{point.name}</b></th></tr>',
-                              '<tr><th>Featured words in year :</th><td>{point.fwords}</td></tr>',
+                              '<tr><th>Featured words in article :</th><td>{point.fwords}</td></tr>',
                               '<tr><th>Overall sentiment:</th><td>{point.l}</td></tr>',
                               '<tr><th>Positive sentiment (x):</th><td>{point.x}</td></tr>',
                               '<tr><th>Negative sentiment (y):</th><td>{point.y}</td></tr>',
@@ -575,7 +578,7 @@ server <- function(input, output, session) {
     } else{
       hc <- hchart(data,
              type="bubble",
-             hcaes(x = sentiment_pos, y = sentiment_neg, z = sentiment, pn = n_words, size = sentiment, l = sentiment_label, name = year, group = year),
+             hcaes(x = sentiment_pos, y = sentiment_neg, z = sentiment, pn = n_words, size = sentiment, l = sentiment_label, name = uuid, group = uuid),
              showInLegend = F,
              stickyTracking = F,
              styledMode = T
@@ -663,21 +666,21 @@ server <- function(input, output, session) {
         stack = 1,
         name="Positive sentiment",
         data = data,
-        hcaes(x = year, y = sentiment_pos)
+        hcaes(x = uuid, y = sentiment_pos)
       ) %>% 
       hc_add_series(
         type = "bar",
         stack = 1,
         name="Negative sentiment",
         data = data,
-        hcaes(x = year, y = sentiment_neg)
+        hcaes(x = uuid, y = sentiment_neg)
       ) %>% 
       hc_add_series(
         type = "bar",
         stack = 2,
         name ="Summed sentiment",
         data = data,
-        hcaes(x = year, y = sentiment)
+        hcaes(x = uuid, y = sentiment)
       ) %>% 
       hc_plotOptions(
         series = list (
@@ -692,7 +695,7 @@ server <- function(input, output, session) {
         # endOnTick = T,
         # startOnTick = T,
         title = list(
-          text = "Year"
+          text = "ID"
         )
       ) %>% 
       hc_yAxis(
@@ -710,27 +713,27 @@ server <- function(input, output, session) {
       hc_quadcolsum()
     if(length(input$words)>0){
       selection <- sentiment_of_speech_data_filtered() %>% 
-        select(sentiment, year, stemmed) %>% 
+        select(sentiment, uuid, stemmed) %>% 
         ungroup()
       for(word in unique(selection$stemmed)){
-        for(year in unique(data$year)){
-          if(!(word %in% selection[selection$year == year,]$stemmed)){
+        for(uuid in unique(data$uuid)){
+          if(!(word %in% selection[selection$uuid == uuid,]$stemmed)){
             selection <-  selection %>%
-              add_row(stemmed = word, year=year, sentiment=0)
+              add_row(stemmed = word, uuid=uuid, sentiment=0)
           }
         }
       }
       selection <-  selection %>%
-        group_by(year) %>% 
+        group_by(uuid) %>% 
         summarise(sentiment = sum(sentiment)) %>% 
-        arrange(year, sentiment)
+        arrange(uuid, sentiment)
       hc <- hc %>%
         hc_add_series(
           type = "bar",
           stack = 3,
           name= "Sentiment of selection",
           data = selection,
-          hcaes(x = year, y = sentiment)
+          hcaes(x = uuid, y = sentiment)
         )
     }
     return(hc)
@@ -749,28 +752,28 @@ server <- function(input, output, session) {
         name = "Positive sentiment",
         type = "line",
         data = data,
-        hcaes(x = year, y = sentiment_pos)
+        hcaes(x = uuid, y = sentiment_pos)
         # showInLegend = F
       ) %>% 
       hc_add_series(
         name = "Total sentiment",
         type = "line",
         data = data,
-        hcaes(x = year, y = sentiment)
+        hcaes(x = uuid, y = sentiment)
         # showInLegend = F
       ) %>% 
       hc_add_series(
         name = "Negative sentiment",
         type = "line",
         data = data,
-        hcaes(x = year, y = sentiment_neg)
+        hcaes(x = uuid, y = sentiment_neg)
         # showInLegend = F
       ) %>% 
       hc_add_series(
         name = "Sentiment Range",
         type = "arearange",
         data = data,
-        hcaes(x = year, low = sentiment, high = sentiment_pos, neg = sentiment_neg)
+        hcaes(x = uuid, low = sentiment, high = sentiment_pos, neg = sentiment_neg)
         # enableMouseTracking =F
         # showInLegend = F
       ) %>% 
@@ -793,9 +796,9 @@ server <- function(input, output, session) {
       ) %>% 
       hc_xAxis(
         startOnTick = T,
-        categories = data$year,
+        categories = data$uuid,
         title = list(
-          text = "Year"
+          text = "ID"
         )
       ) %>% 
       hc_yAxis(
@@ -812,26 +815,26 @@ server <- function(input, output, session) {
       hc_fivecolsum()
     if(length(input$words)>0){
       selection <- sentiment_of_speech_data_filtered() %>% 
-        select(sentiment, year, stemmed) %>% 
+        select(sentiment, uuid, stemmed) %>% 
         ungroup()
       for(word in unique(selection$stemmed)){
-        for(year in unique(data$year)){
-          if(!(word %in% selection[selection$year == year,]$stemmed)){
+        for(uuid in unique(data$uuid)){
+          if(!(word %in% selection[selection$uuid == uuid,]$stemmed)){
             selection <-  selection %>%
-              add_row(stemmed = word, year=year, sentiment=0)
+              add_row(stemmed = word, uuid=uuid, sentiment=0)
           }
         }
       }
       selection <-  selection %>%
-        group_by(year) %>% 
+        group_by(uuid) %>% 
         summarise(sentiment = sum(sentiment)) %>% 
-        arrange(year, sentiment)
+        arrange(uuid, sentiment)
       hc <- hc %>%
         hc_add_series(
           type = "line",
           name= "Sentiment of selection",
           data = selection,
-          hcaes(x = year, y = sentiment)
+          hcaes(x = uuid, y = sentiment)
         )
     }
     return(hc)
@@ -846,7 +849,7 @@ server <- function(input, output, session) {
     )
     
     hchart(data,
-           hcaes(x = year, y = round(average_sentiment,2), group = sentiment_label),
+           hcaes(x = uuid, y = round(average_sentiment,2), group = sentiment_label),
            type="column",
            colorByPoint = T,
            styledMode = T
@@ -994,9 +997,9 @@ server <- function(input, output, session) {
         zoomSnap = 0.2)) %>% 
       addPolygons(stroke = T, weight=0.2, color="black", smoothFactor = 0.3, fillOpacity = 1,
                   fillColor=~pal(n), popup = ~paste("<b>", ADMIN, "</b>", "was said:", n, "times in total", "<br/>",
-                                                     sapply(1:length(n_year), function(i) ifelse(length(n_year[[i]])>10,
-                                                                                                 paste(n_year[[i]], "t. in:", year[[i]], collapse=", "),
-                                                                                                 paste(n_year[[i]], "times in:", year[[i]], collapse="<br/>")),
+                                                     sapply(1:length(n_), function(i) ifelse(length(n_[[i]])>10,
+                                                                                                 paste(n_[[i]], "t. in:", uuid[[i]], collapse=", "),
+                                                                                                 paste(n_[[i]], "times in:", uuid[[i]], collapse="<br/>")),
                                                             simplify=T)),
                   popupOptions = labelOptions(textsize = "8px"),
                   highlightOptions = list(weight = 0.7, fillOpacity = 0.9),
@@ -1013,16 +1016,16 @@ server <- function(input, output, session) {
       need(nrow(data) != 0, "Dataset is empty")
     )
     
-    df <- data.frame(year = unlist(data@data$year), n_year = unlist(data@data$n_year)) %>% 
-      group_by(year) %>% 
-      summarise(n_year = sum(n_year)) %>% 
-      hchart("bar", name="All", hcaes(x="year", y="n_year")) %>% 
-      hc_yAxis(title = list(text = "Mentions per year")) %>% 
-      hc_xAxis(title = list(text = "Year")) %>% 
+    df <- data.frame(uuid = unlist(data@data$uuid), n_ = unlist(data@data$n_)) %>% 
+      group_by(uuid) %>% 
+      summarise(n_ = sum(n_)) %>% 
+      hchart("bar", name="All", hcaes(x="uuid", y="n_")) %>% 
+      hc_yAxis(title = list(text = "Mentions per article")) %>% 
+      hc_xAxis(title = list(text = "ID")) %>% 
       hc_tooltip(
         shared = TRUE,
         headerFormat = "<b>{point.key}</b>",
-        pointFormat = "<br><span style=\"color: {point.color} \">\u25CF</span> Mentions in year: {point.y}"
+        pointFormat = "<br><span style=\"color: {point.color} \">\u25CF</span> Mentions in Article: {point.y}"
       ) %>% 
       hc_dualcol()
   })
@@ -1034,9 +1037,9 @@ server <- function(input, output, session) {
       return("")
     }
     
-    data <- tidyr::unnest(tidyr::unnest(data@data, cols = c(year, sentence)), cols=c(sentence)) %>% 
+    data <- tidyr::unnest(tidyr::unnest(data@data, cols = c(uuid, sentence)), cols=c(sentence)) %>% 
       unique() %>% 
-      select(sentence, year)
+      select(sentence, uuid)
     sentences <- data[sample.int(nrow(data), size = 5),]
     if(!is.null(input$words)){
            words <- str_split(sentences$sentence, " ")
@@ -1048,7 +1051,7 @@ server <- function(input, output, session) {
     }else{
       sentences$sentence <- str_to_sentence(sentences$sentence)
            }
-    paste("<ul>", paste0("<li>", sentences$sentence, ".", " (", sentences$year, ")", "</li>", collapse=""),"</ul>") %>% 
+    paste("<ul>", paste0("<li>", sentences$sentence, ".", " (", sentences$uuid, ")", "</li>", collapse=""),"</ul>") %>% 
       HTML()
   })
   
@@ -1070,32 +1073,32 @@ server <- function(input, output, session) {
     
     if(!is.null(click$id)){
       output$n_hist <- renderHighchart({ # bar chart based on number of times a country is mentioned
-        df <- tidyr::unnest(data@data, cols = c(year, n_year)) %>% 
-          select(ADMIN, ISO_A2, year, n_year)
+        df <- tidyr::unnest(data@data, cols = c(uuid, n_)) %>% 
+          select(ADMIN, ISO_A2, uuid, n_)
         df$ISO_A2[df$ADMIN != click$id] <- "*Other"
         df <- df %>% 
-          group_by(ISO_A2, year) %>% 
-          summarise(n_year = sum(n_year)) %>% 
-          hchart("bar", hcaes(x = "year", y = "n_year", group = "ISO_A2"),
+          group_by(ISO_A2, uuid) %>% 
+          summarise(n_ = sum(n_)) %>% 
+          hchart("bar", hcaes(x = "uuid", y = "n_", group = "ISO_A2"),
                 stacking = "normal") %>% 
-          hc_yAxis(title = list(text = "Mentions per year")) %>% 
-          hc_xAxis(title = list(text = "Year")) %>% 
+          hc_yAxis(title = list(text = "Mentions per Article")) %>% 
+          hc_xAxis(title = list(text = "ID")) %>% 
           hc_title(text = click$id) %>% 
           hc_tooltip(
             shared = TRUE,
             headerFormat = "<b>{point.key}</b><br>Total mentions: {point.total}",
-            pointFormat = "<br><span style=\"color: {point.color} \">\u25CF</span> Mentions in year: {point.y}"
+            pointFormat = "<br><span style=\"color: {point.color} \">\u25CF</span> Mentions in Article: {point.y}"
           ) %>% 
           hc_dualcol()
         }) 
       
       output$sent_box <- renderHighchart({# boxplot of average sentiment of sentences in which a country is mentioned
-        df <- tidyr::unnest(data@data, cols=c(year, sentiment_year)) %>% 
-          select(ADMIN, ISO_A2, year, sentiment_year)
+        df <- tidyr::unnest(data@data, cols=c(uuid, sentiment_)) %>% 
+          select(ADMIN, ISO_A2, uuid, sentiment_)
         df$ISO_A2[df$ADMIN != click$id] <- "*Other"
         df <- df %>% 
-          group_by(ISO_A2, year) %>% 
-          summarise(sentiment = mean(sentiment_year))
+          group_by(ISO_A2, uuid) %>% 
+          summarise(sentiment = mean(sentiment_))
         dat <- data_to_boxplot(df, sentiment, ISO_A2, ISO_A2)
         
         highchart() %>% 
@@ -1112,9 +1115,9 @@ server <- function(input, output, session) {
       
       output$sentences <- renderUI({ # Showing sentences of country mentioned
         req(input$map_sentence_slider)
-        data <- tidyr::unnest(tidyr::unnest(selected, cols = c(year, sentence)), cols=c(sentence)) %>% 
+        data <- tidyr::unnest(tidyr::unnest(selected, cols = c(uuid, sentence)), cols=c(sentence)) %>% 
           unique() %>% 
-          select(sentence, year)
+          select(sentence, uuid)
         slide_num <- input$map_sentence_slider
         sentences <- data[sample.int(nrow(data), size = ifelse(nrow(data) < slide_num, nrow(data), slide_num)),]
         if(!is.null(input$words)){
@@ -1129,7 +1132,7 @@ server <- function(input, output, session) {
           sentences$sentence <- str_to_sentence(sentences$sentence)
         }
         
-        paste("<ul>", paste0("<li>", sentences$sentence, ".", " (", sentences$year, ")", "</li>", collapse=""),"</ul>") %>% 
+        paste("<ul>", paste0("<li>", sentences$sentence, ".", " (", sentences$uuid, ")", "</li>", collapse=""),"</ul>") %>% 
           HTML()
       })
       }
@@ -1143,10 +1146,10 @@ server <- function(input, output, session) {
   ## Word data --------------------------------------------------------------
   speech_data <- reactive({
     data <- tokens %>%
-      select(year, stemmed, n_stem_total, n_stem_year) %>% 
+      select(uuid, stemmed, n_stem_total, n_stem) %>% 
       distinct() %>% 
-      group_by(stemmed, year) %>% 
-      arrange(year, stemmed)
+      group_by(stemmed, uuid) %>% 
+      arrange(uuid, stemmed)
     
     return(data)
   })
@@ -1173,10 +1176,10 @@ server <- function(input, output, session) {
     }
     
     total <- data %>% 
-      summarise(n_sel = sum(n_stem_year))
+      summarise(n_sel = sum(n_stem))
     
     data <- data %>% 
-      left_join(total, by= c("year", "stemmed"))
+      left_join(total, by= c("uuid", "stemmed"))
     
     return(data)
   })
@@ -1192,10 +1195,10 @@ server <- function(input, output, session) {
     }
     
     total <- data %>% 
-      summarise(n_sel = sum(n_stem_year))
+      summarise(n_sel = sum(n_stem))
     
     data <- data %>% 
-      left_join(total, by= c("year", "stemmed"))
+      left_join(total, by= c("uuid", "stemmed"))
     
     return(data)
   })
@@ -1224,27 +1227,27 @@ server <- function(input, output, session) {
     
     data <-  data %>% 
       ungroup() %>% 
-      select(year, n_stem_year, stemmed)
+      select(uuid, n_stem, stemmed)
 
     for(word in unique(data$stemmed)){
-      for(year in unique(data$year)){
-        if(!(word %in% data[data$year == year,]$stemmed)){
+      for(uuid in unique(data$uuid)){
+        if(!(word %in% data[data$uuid == uuid,]$stemmed)){
           data <-  data %>%
-            add_row(stemmed = word, year=year, n_stem_year=0)
+            add_row(stemmed = word, uuid=uuid, n_stem=0)
         }
       }
     }
 
     data <- data %>% 
-      arrange(year, desc(n_stem_year), stemmed)
+      arrange(uuid, desc(n_stem), stemmed)
 
-    hchart(data, "streamgraph", hcaes(year, n_stem_year, group = stemmed)) %>% 
+    hchart(data, "streamgraph", hcaes(uuid, n_stem, group = stemmed)) %>% 
       hc_yAxis(
         visible = F
       ) %>% 
       hc_xAxis(
         title = list(
-          text="Year"
+          text="ID"
         ),
         tickInterval=1
       ) %>% 
@@ -1269,7 +1272,7 @@ server <- function(input, output, session) {
     }
     
     hc <- hchart(data, "column",
-                 hcaes(x=year, y=n_stem_year,group = stemmed)) %>% 
+                 hcaes(x=uuid, y=n_stem,group = stemmed)) %>% 
       hc_plotOptions(
         series = list (
           stacking = 'normal'
@@ -1282,14 +1285,14 @@ server <- function(input, output, session) {
         )
       ) %>% 
       hc_xAxis(
-        categories = min(data$year):max(data$year),
+        # categories = min(data$uuid):max(data$uuid),
         title = list(
-          text="Year"
+          text="ID"
         )
       ) %>% 
       hc_tooltip(
         shared = T,
-        headerFormat = "<b>Year</b>: {point.x}<br>Total frequency: {point.total}",
+        headerFormat = "<b>ID</b>: {point.x}<br>Total frequency: {point.total}",
         pointFormat = "<br><span style=\"color: {point.color} \">\u25CF</span> {point.series.name}: {point.y}"
       ) %>% 
       hc_multicol()
@@ -1310,7 +1313,7 @@ server <- function(input, output, session) {
     }
     
     hc <- hchart(data, "column",
-                 hcaes(x=year, y=n_stem_year, group = stemmed)) %>% 
+                 hcaes(x=uuid, y=n_stem, group = stemmed)) %>% 
       hc_plotOptions(
         series = list (
           stacking = 'percent'
@@ -1339,9 +1342,9 @@ server <- function(input, output, session) {
     
     data <- data %>% 
       ungroup() %>%
-      select(stemmed, n_stem_year) %>%
+      select(stemmed, n_stem) %>%
       group_by(stemmed) %>% 
-      summarise(n_stem_total = sum(n_stem_year)) %>% 
+      summarise(n_stem_total = sum(n_stem)) %>% 
       arrange(desc(n_stem_total))
 
     hc <- hchart(data, "pie", name="Frequency",
@@ -1377,7 +1380,7 @@ server <- function(input, output, session) {
     )
     
     hc <- hchart(data, "scatter",
-                 hcaes(x=year, y=n_stem_year, total = n_stem_total, group = stemmed)) %>% 
+                 hcaes(x=uuid, y=n_stem, total = n_stem_total, group = stemmed)) %>% 
       hc_norevese() %>% 
       hc_plotOptions(
         scatter = list(
@@ -1409,13 +1412,13 @@ server <- function(input, output, session) {
         showLastLabel = T,
         tickInterval=1,
         title = list(
-          text="Year"
+          text="ID"
         )
       ) %>% 
       hc_tooltip(
         shared = T,
         headerFormat = "<span style=\"color: {point.color} \">\u25CF</span> <b>{point.series.name}</b><br>",
-        pointFormat = "Year: {point.x}<br>Frequency: {point.y}<br>Total frequency: {point.total}"
+        pointFormat = "ID: {point.x}<br>Frequency: {point.y}<br>Total frequency: {point.total}"
       ) %>% 
       hc_multicol()
     return(hc)
@@ -1425,8 +1428,8 @@ server <- function(input, output, session) {
   # output$word_ussage_tbl <- renderDT({ # unused
   #   speech_data_como_filt() %>%
   #     ungroup() %>% 
-  #     transmute(`Year` = year, `Word` = stemmed, `Total frequency` = n_stem_total,
-  #               `Frequency in year` = n_stem_year,
+  #     transmute(`uuid` = uuid, `Word` = stemmed, `Total frequency` = n_stem_total,
+  #               `Frequency in year` = n_stem,
   #               `Frequency in selection in year` = n_sel)
   # }, rownames = FALSE, filter = 'top',
   # options = list(

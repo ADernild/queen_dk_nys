@@ -38,7 +38,7 @@ words_tokens_all <- tokens %>%
   unique()
 words_count_unique <- length(words_all)
 most_common <- max(tokens$n_stem_total)
-most_common_any_year <- max(tokens$n_stem_year)
+most_common_any_year <- max(tokens$n_stem)
 number_of_rarity <- length(unique(arrange(tokens, desc(n_stem_total))$n_stem_total))
 
 
