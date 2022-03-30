@@ -6,7 +6,7 @@ library(tidytext)
 library(udpipe)
 
 # Importing cleanned speaches ----
-# df <- read.csv("data/sentences_cleaned.csv", encoding = "UTF-8")
+# df <- read.csv("data/sentences_cleaned.csv", encoding = "utf-8")
 df <- readRDS("data/sentences_cleaned.rds")
 
 # Tokenization ----
