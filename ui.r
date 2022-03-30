@@ -127,7 +127,7 @@ ui <- dashboardPage(
                    box(width = 3, id="map_sentece_slider_wrapper", title = "Sentence options",
                        whatViz("A slider to set the maxium amount of sample sentences."),
                        whyViz("To adjust how many sentece samples you want to see."),
-                       sliderInput("topis_sentence_slider", label = "Senteces allowed", min=1, max=10, value=5, step=1, sep=""),
+                       sliderInput("topis_sentence_slider", label = "Senteces allowed", min=0, max=10, value=5, step=1, sep=""),
                        box(width = 12, class="infoViz", title = "How to use",
                            collapsible = T, collapsed = T,
                            howViz("Drag the circle on the slider to any number.")
