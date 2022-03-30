@@ -54,7 +54,7 @@ server <- function(input, output, session) {
         menuItem(span("Home", title="Start page"), tabName = "index", icon = shiny::icon("home", title="Start page"), selected = T),
         menuItem(span("Topics", title="Topics found, ready yo be analyzed"), tabName = "tm", icon = shiny::icon("comment-dots", title="Topics found, ready yo be analyzed")),
         menuItem(span("Sentiment", title="Sentiment analysis for speeches and word selections"), tabName = "sentiment", icon = shiny::icon("theater-masks", title="Sentiment analysis for speeches and word selections")),
-        menuItem(span("Countries", title="Map of cointries mentioned during speeches"), tabName = "map", icon = shiny::icon("globe-europe", title="Map of cointries mentioned during speeches")),
+        # menuItem(span("Countries", title="Map of cointries mentioned during speeches"), tabName = "map", icon = shiny::icon("globe-europe", title="Map of cointries mentioned during speeches")),
         menuItem(span("Word statistics", title="Statistics for all words"), tabName = "stats", icon = shiny::icon("chart-pie", title="Statistics for all words")),
         menuItem(span("Data", title="Information about data sources and data subject"), tabName = "data", icon=shiny::icon("database", title="Information about data sources and data subject")),
         menuItem(span("How to operate", class="help-me", title="Help and how to operate dashboard"), tabName = "howto", icon=shiny::icon("question-circle", class="help-me", title="Help and how to operate dashboard")),
@@ -128,7 +128,7 @@ server <- function(input, output, session) {
       summarise(n = sum(n_stem_total))
     total_words <- sum(data$n)
     valueBox(
-      total_words, span("Words said", title="After stopwords are filtered."), icon = icon("hashtag"),
+      total_words, span("Words analyzed", title="After stopwords are filtered."), icon = icon("hashtag"),
       color = "light-blue"
     )
   })
@@ -138,7 +138,7 @@ server <- function(input, output, session) {
       unique()
     total_unique_words <- length(data)
     valueBox(
-      total_unique_words, span("Unique Words said", title="After stopwords are filtered."), icon = icon("hashtag"),
+      total_unique_words, span("Unique Words analyzed", title="After stopwords are filtered."), icon = icon("hashtag"),
       color = "light-blue"
     )
   })
@@ -152,14 +152,14 @@ server <- function(input, output, session) {
     )
   })
   
-  output$total_countries_mentioned <- renderValueBox({
-    req(mapData())
-    countries_mentioned <- length(mapData()$countries)
-    valueBox(
-      countries_mentioned, "Countries mentioned", icon = icon("globe-europe"),
-      color = "blue"
-    )
-  })
+  # output$total_countries_mentioned <- renderValueBox({
+  #   req(mapData())
+  #   countries_mentioned <- length(mapData()$countries)
+  #   valueBox(
+  #     countries_mentioned, "Countries mentioned", icon = icon("globe-europe"),
+  #     color = "blue"
+  #   )
+  # })
   
   output$total_featured_words <- renderValueBox({
     n_featured_words <- length(input$words)
@@ -463,6 +463,7 @@ server <- function(input, output, session) {
         rowwise() %>% 
         mutate(fwords = ifelse(uuid %in% token_data, "Yes", "No"))
     }
+    return(data)
     
   })
   
