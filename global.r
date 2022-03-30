@@ -22,6 +22,7 @@ lemma <- readRDS("data/lemma.rds") # All lematized values unfiltered
 sentiment <- readRDS("data/sentiments.rds") # Sentiment for year
 # countries <- readRDS("data/country_speech.rds") # Countries, country code, lat, lon and # mentions
 # geojson <- readRDS("data/countries.rds") # Library containing geographic information
+article_lib <- readRDS("data/article_library.rds") # File containing UUID, Article name
 
 # Formatting data ---------------------------------------------------------
 # Nothing yet
