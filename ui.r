@@ -87,6 +87,7 @@ ui <- dashboardPage(
                 # Sidebar with a slider input for number of bins
                 whatViz("Options to set prefference to update featured words from topic model."),
                 whyViz("You can more easily inspect topic in other tabs by quicly obtaining their values."),
+                p(helpText("Topics are automaticaly found during initilization of topics. They are not named, as automatic naming of topics has not been implemented, and no human effort has been allocated to interpret the 100 topics. :-)")),
                 radioButtons ("topic_r",
                               label = "Update featured words with topics content",
                               selected = 1,
