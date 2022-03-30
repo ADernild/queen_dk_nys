@@ -61,7 +61,7 @@ server <- function(input, output, session) {
         div(id="sidebar-input",
             h3("Filters"),
             selectizeInput("words", label="Featured words", choices = NULL,
-                           multiple = TRUE),
+                           multiple = TRUE, options = list(maxOptions = length(words_tokens_all))),
             actionButton("clear", "Clear featured words"),
             actionButton("regret", "Regret clear", title="Regret clearing by clear button."),
             uiOutput("source")
