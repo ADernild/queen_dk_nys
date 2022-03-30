@@ -319,11 +319,6 @@ server <- function(input, output, session) {
   
   ## Show sentences based on topic clicked ----------------------------------
   
-  thoughts <- reactive({
-    data <- thoughts_da
-    return(data)
-  })
-  
   observe({
     req(input$topicVis_topic_click)
     req(input$topis_sentence_slider)
@@ -331,10 +326,8 @@ server <- function(input, output, session) {
     slide_num <- input$topis_sentence_slider
     topic <- input$topicVis_topic_click
     output$topicText <- renderUI({
-      sentences <- unlist(thoughts()$docs[topic])
-      # years <- unlist(thoughts()$years[topic])
-      uuid <- unlist(thoughts()$uuid[topic])
-      # df <- data.frame(sentences, years)
+      sentences <- unlist(thoughts$docs[topic])
+      id <- unlist(thoughts$uuid[topic])
       df <- data.frame(sentences, uuid)
       df <- df[sample.int(nrow(df), ifelse(nrow(df)<slide_num, nrow(df), slide_num)),]
       df$sentences <- str_to_sentence(df$sentences)
@@ -374,7 +367,7 @@ server <- function(input, output, session) {
     }
     
     output$sent_topic <- renderHighchart({
-      df <- thoughts()
+      df <- thoughts
       polarity_topic <- as.numeric(unlist(df$polarity[topic]))
       polarity_rest <- as.numeric(unlist(df$polarity[-topic]))
       topic_ <- as.numeric(unlist(df$uuid[topic]))
@@ -398,7 +391,7 @@ server <- function(input, output, session) {
   })
   
   output$sent_topic <- renderHighchart({
-    df <- thoughts()
+    df <- thoughts
     polarity_list <- df$polarity
     polarity <- unnest(data.frame(t(rbind(paste("Topic", 1:length(polarity_list)), data.frame(t(sapply(1:length(polarity_list), function(i) polarity_list[i][1])))))), cols=c(X1, X2))
     polarity$X1 <- factor(polarity$X1, levels = c(paste("Topic", 1:length(polarity_list))))
