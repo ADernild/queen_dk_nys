@@ -29,16 +29,6 @@ sentiment <- readRDS("data/sentiments.rds") # Sentiment for year
 # Number of distinct headwords
 n_dist_t_headword <- nrow(distinct(tokens, stemmed))
 
-## Years ----
-years <- unique(source_year$year) %>% sort()
-year_min <-  min(sentiment$year)
-year_max <-  max(sentiment$year)
-year_span <-  year_max-year_min+1
-years_en <- unique(source_year_en$year) %>% sort()
-year_min_en <-  min(source_year_en$year)
-year_max_en <-  max(source_year_en$year)
-year_span_en <-  year_max_en-year_min_en+1
-
 ## Words ----
 words_all <-  unique(lemma$token) %>% sort()
 words_tokens_all <- tokens %>%
