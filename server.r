@@ -26,6 +26,7 @@ server <- function(input, output, session) {
         )
   })
 
+  ### Sidebar Menu Updates ----------------------------------------------------
   updateSelectizeInput(
     session, 'words', choices = words_tokens_all, server = TRUE
     )
@@ -48,6 +49,7 @@ server <- function(input, output, session) {
     return(val)
   })
   
+  ### Sidebar Menu Events -----------------------------------------------------
   observeEvent(input$sync, {
     val <- id_docs()
     updateSelectizeInput(
@@ -85,8 +87,6 @@ server <- function(input, output, session) {
     )
   })
   
-  # Date data --------------------------------------------------------------
-
   # Home ------------------------------------------------------------------
   ## CSS ------------------------------------------------------------------
   # Nothing here yet
