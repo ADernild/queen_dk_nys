@@ -436,6 +436,7 @@ server <- function(input, output, session) {
   ## sentiment data ---------------------------------------------------------
   sentiment_of_speech_data <- reactive({
     data <- sentiment %>%
+      filter(uuid %in% id_docs()) %>% 
       mutate(sentiment = round(sentiment),
              sentiment_pos = round(sentiment_pos),
              sentiment_neg = round(sentiment_neg)) %>% 
@@ -459,6 +460,7 @@ server <- function(input, output, session) {
     req(input$slider_sentiment_of_words_n_words)
     data <- tokens %>%
       filter(polarity != 0) %>% 
+      filter(uuid %in% id_docs()) %>% 
       group_by(stemmed) %>% 
       distinct(uuid, stemmed, .keep_all = TRUE)
     
@@ -496,6 +498,7 @@ server <- function(input, output, session) {
     
     data <- tokens %>%
       rowwise() %>% 
+      filter(uuid %in% id_docs()) %>% 
       mutate(polarity_pos = as.numeric(ifelse(polarity > 0, polarity, 0)),
              polarity_neg = as.numeric(ifelse(polarity < 0, polarity, 0)),
              n_in_pos = as.numeric(ifelse(polarity > 0, n_in, 0)),
@@ -1135,6 +1138,7 @@ server <- function(input, output, session) {
   ## Word data --------------------------------------------------------------
   speech_data <- reactive({
     data <- tokens %>%
+      filter(uuid %in% id_docs()) %>% 
       select(uuid, stemmed, n_stem_total, n_stem) %>% 
       distinct() %>% 
       group_by(stemmed, uuid) %>% 
