@@ -9,6 +9,8 @@ clean_speech <- function(x) {
     str_replace_all("\\\n", " ") %>% # removes linebreaks
     str_replace_all("[^[:alnum:]]", " ") %>% # removes special characters
     str_to_lower() %>% # Converts to lower case
+    gsub(pattern = '[[:digit:]]+', replacement =  '') %>%  # removes numbers
+    # gsub(pattern = "\\W*\\b\\w\\b\\W*", replacement = "") %>%  # Remove single character 
     str_squish() # Removes leading, trailing and middle whitespace
 }
 
@@ -17,6 +19,8 @@ clean_sentences <- function(x) {
     str_replace_all('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});', " ") %>% # Replace html whitespace code with space
     str_replace_all("\\\n", " ") %>% # removes linebreaks
     str_replace_all("[^[:alnum:].']", " ") %>% # removes special characters except .,
+    gsub(pattern = '[[:digit:]]+', replacement =  '') %>%  # removes numbers
+    # gsub(pattern = "\\W*\\b\\w\\b\\W*", replacement = "") %>%  # Remove single character 
     str_to_lower() %>% # Converts to lower case
     str_squish() # Removes leading, trailing and middle whitespace
 }
@@ -26,6 +30,8 @@ clean_sentences_less <- function(x) {
     str_replace_all('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});', " ") %>% # Replace html whitespace code with space
     str_replace_all("\\\n", " ") %>% # removes linebreaks
     str_replace_all("[^[:alnum:].,']", " ") %>% # removes special characters except .,
+    gsub(pattern = '[[:digit:]]+', replacement =  '') %>%  # removes numbers
+    # gsub(pattern = "\\W*\\b\\w\\b\\W*", replacement = "") %>%  # Remove single character 
     str_to_lower() %>% # Converts to lower case
     str_squish() # Removes leading, trailing and middle whitespace
 }
