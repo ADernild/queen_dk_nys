@@ -60,5 +60,5 @@ sentence_sentiment <- function(df, df_lemmatized, lang="en"){
 
 df_da <- sentence_sentiment(df, df_lemmatized, lang = "da")
 
-
-write.csv(df_da, "data/sentences.csv", row.names = F)
+write.csv(df_da, "data/sentences.csv", row.names = F, fileEncoding = "UTF-8")
+saveRDS(df_da, "data/sentences.rds")
