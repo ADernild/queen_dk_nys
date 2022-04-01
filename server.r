@@ -1,52 +1,5 @@
 server <- function(input, output, session) {
 
-  # Data --------------------------------------------------------------------
-  tokens_source <- reactive({
-    req(input$l)
-    if(input$l == "DK"){
-      tokens<<-tokens_dk
-      lemma<<-lemma_dk
-      sentiment <<- sentiment_dk
-      
-      val <- "DK"
-    } else{
-      tokens<<-tokens_en
-      lemma<<-lemma_en
-      sentiment <<- sentiment_en
-      val <- "EN"
-    }
-    
-    words_all <<-  unique(lemma$token) %>% sort()
-    words_tokens_all <<- tokens %>%
-      mutate(wordisnum = as.integer(suppressWarnings(ifelse(!is.na(as.numeric(stemmed)),1,0)))) %>% 
-      arrange(wordisnum, stemmed) %>% 
-      .$stemmed %>% 
-      unique()
-    words_count_unique <<- length(words_all)
-    most_common <<- max(tokens$n_stem_total)
-    most_common_any <<- max(tokens$n_stem)
-    number_of_rarity <<- length(unique(arrange(tokens, desc(n_stem_total))$n_stem_total))
-    n_dist_t_headword <<- nrow(distinct(tokens, stemmed))
-
-    updateSelectizeInput(
-      session, 'words', choices = words_tokens_all, selected = "", server = TRUE
-    )
-    
-    updateSliderInput(
-      session,
-      "slider_sentiment_of_words_n_words",
-      max=n_dist_t_headword
-    )
-    
-    updateSliderInput(
-      session,
-      "slider_word_ussage",
-      max=number_of_rarity
-    )
-    
-    return(val)
-  })
-
   # UI output -----------------------------------------------------------------
   ## Sidebar Menu -------------------------------------------------------------
   output$menu <- renderMenu({
@@ -68,16 +21,10 @@ server <- function(input, output, session) {
                            multiple = TRUE, options = list(maxOptions = length(words_tokens_all))),
             actionButton("sync", "Syncronize artciles and id"),
             actionButton("clear", "Clear featured words"),
-            actionButton("regret", "Regret clear", title="Regret clearing by clear button."),
-            uiOutput("source")
+            actionButton("regret", "Regret clear", title="Regret clearing by clear button.")
           )
         )
   })
-  
-  output$source <- renderUI({
-    HTML(paste("<input type='hiden' name='source', value='", tokens_source(), "'>"))
-  })
-  
 
   updateSelectizeInput(
     session, 'words', choices = words_tokens_all, server = TRUE
