@@ -307,7 +307,7 @@ server <- function(input, output, session) {
     output$topicText <- renderUI({
       sentences <- unlist(thoughts$docs[topic])
       id <- unlist(thoughts$uuid[topic])
-      df <- data.frame(sentences, uuid)
+      df <- data.frame(sentences, id)
       df <- df[sample.int(nrow(df), ifelse(nrow(df)<slide_num, nrow(df), slide_num)),]
       df$sentences <- str_to_sentence(df$sentences)
       name <- article_lib %>% 
@@ -318,7 +318,7 @@ server <- function(input, output, session) {
                title)) %>% 
         .$title
 
-      paste("<ul>", paste0("<li>", df$sentences, ".", " (", name, " | uuid: ", df$uuid, ")", "</li>", collapse = ""), "</ul>") %>%
+      paste("<ul>", paste0("<li>", df$sentences, ".", " (", name, " | uuid: ", df$id, ")", "</li>", collapse = ""), "</ul>") %>%
       # paste("<ul>", paste0("<li>", df$sentences, ".", " (", df$years, ")", "</li>", collapse = ""), "</ul>") %>%
         HTML()
     })
