@@ -25,73 +25,33 @@ tokens$polarity = 0
 tokens$headword = tokens$stemmed
 
 ## Add polarity/sentiment to tokens ----
-### ... Through stemming loop ----
-# Note: Stemming and word mostly finds the same words, but will find cases the
-#       other does not. Sometimes the sentiment are different. The word level is most
-#       correct and is thus ran last.
-for (i_word in unique(tokens$stemmed)) {
-  if(i_word %in% dk_sentiment_headword$headword){
-    tokens <- tokens %>%
-      rowwise() %>% 
-      mutate(polarity = ifelse(stemmed == i_word, dk_sentiment_headword[dk_sentiment_headword$headword == i_word,]$polarity[1], polarity))
-  }
-  if(i_word %in% dk_sentiment_word_form$word_from){
-    tokens <- tokens %>%
-      rowwise() %>% 
-      mutate(polarity = ifelse(stemmed == i_word, dk_sentiment_word_form[dk_sentiment_word_form$word_from == i_word,]$polarity[1], polarity))
-  }
-}
+tokens <- tokens %>%
+  rowwise() %>% 
+  ### ... Through stemmed ----
+  mutate(polarity = ifelse(stemmed  %in% dk_sentiment_word_form$word_from,
+                         dk_sentiment_word_form[dk_sentiment_word_form$word_from == stemmed,]$polarity[1],
+                         ifelse(stemmed %in% dk_sentiment_headword$headword,
+                                dk_sentiment_headword[dk_sentiment_headword$headword == stemmed,]$polarity[1],
+                                ### ... Through lemma ----
+                                ifelse(any(unlist(strsplit(lemma, ",")) %in% dk_sentiment_headword$headword),
+                                       dk_sentiment_headword[dk_sentiment_headword$headword == unlist(strsplit(lemma, ","))[min(which(unlist(strsplit(lemma, ",")) %in% dk_sentiment_headword$headword))],]$polarity[1],
+                                       ifelse(any(unlist(strsplit(lemma, ",")) %in% dk_sentiment_word_form$word_from),
+                                              dk_sentiment_word_form[dk_sentiment_word_form$word_from == unlist(strsplit(lemma, ","))[min(which(unlist(strsplit(lemma, ",")) %in% dk_sentiment_word_form$word_from))],]$polarity[1],
+                                              ### ... Through word ----
+                                              ifelse(word %in% dk_sentiment_headword$headword,
+                                                     dk_sentiment_headword[dk_sentiment_headword$headword == word,]$polarity[1],
+                                                     ifelse(word  %in% dk_sentiment_word_form$word_from,
+                                                            dk_sentiment_word_form[dk_sentiment_word_form$word_from == word,]$polarity[1],
+                                                            polarity
+                                                            )
+                                                     )
+                                              )
+                                       )
+                                )
+                         )
+         )
 
-### ... Through lemma loop ----
-# Note: lemmatized words can contain multiple words and needs to be split
-# Unique instances
-uniqe_lemma <- unique(tokens$lemma)
-# Loop to split
-for(row in uniqe_lemma){
-  # Detect multiple words
-  if(grepl(",", row, fixed = TRUE)){
-    # Split strings
-    row_strings <- strsplit(row, ",")
-    # Add each string as a new word
-    for (string in row_strings) {
-      uniqe_lemma <- c(uniqe_lemma, string)
-    }
-    # Remove instance of multiple words
-    uniqe_lemma <- uniqe_lemma[uniqe_lemma!=row]
-  }
-}
-
-# Filter redundant words
-uniqe_lemma <- unique(uniqe_lemma)
-
-# Loop unique lemmatized words
-for (i_word in uniqe_lemma) {
-  if(i_word %in% dk_sentiment_headword$headword){
-    tokens <- tokens %>%
-      rowwise() %>% 
-      mutate(polarity = ifelse(i_word %in% unlist(strsplit(lemma, ",")), dk_sentiment_headword[dk_sentiment_headword$headword == i_word,]$polarity[1], polarity))
-  }
-  if(i_word %in% dk_sentiment_word_form$word_from){
-    tokens <- tokens %>%
-      rowwise() %>% 
-      mutate(polarity = ifelse(i_word %in% unlist(strsplit(lemma, ",")), dk_sentiment_word_form[dk_sentiment_word_form$word_from == i_word,]$polarity[1], polarity))
-  }
-}
-
-### ... Through word loop ----
-for (i_word in unique(tokens$word)) {
-  if(i_word %in% dk_sentiment_headword$headword){
-    tokens <- tokens %>%
-      rowwise() %>% 
-      mutate(polarity = ifelse(word == i_word, dk_sentiment_headword[dk_sentiment_headword$headword == i_word,]$polarity[1], polarity))
-  }
-  if(i_word %in% dk_sentiment_word_form$word_from){
-    tokens <- tokens %>%
-      rowwise() %>% 
-      mutate(polarity = ifelse(word == i_word, dk_sentiment_word_form[dk_sentiment_word_form$word_from == i_word,]$polarity[1], polarity))
-  }
-}
-
+## Summarise tokens ----
 n_tokens <- tokens %>%
   group_by(stemmed, uuid) %>%
   summarise(n_stem = sum(n_in))
@@ -133,4 +93,3 @@ sentiments <- tokens %>%
 
 ## Save sentiments ----
 saveRDS(sentiments, "data/sentiments.rds")
-
