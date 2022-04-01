@@ -60,8 +60,13 @@ server <- function(input, output, session) {
         menuItem(span("How to operate", class="help-me", title="Help and how to operate dashboard"), tabName = "howto", icon=shiny::icon("question-circle", class="help-me", title="Help and how to operate dashboard")),
         div(id="sidebar-input",
             h3("Filters"),
-            selectizeInput("words", label="Featured words", choices = NULL,
+            selectizeInput("id", label="UUID", choices = c(),
+                           multiple = TRUE, options = list(maxOptions = length(article_lib$uuid))),
+            selectizeInput("docs", label="Article name", choices = c(),
+                           multiple = TRUE, options = list(maxOptions = length(article_lib$uuid))),
+            selectizeInput("words", label="Featured words", choices = c(),
                            multiple = TRUE, options = list(maxOptions = length(words_tokens_all))),
+            actionButton("sync", "Syncronize artciles and id"),
             actionButton("clear", "Clear featured words"),
             actionButton("regret", "Regret clear", title="Regret clearing by clear button."),
             uiOutput("source")
@@ -77,6 +82,33 @@ server <- function(input, output, session) {
   updateSelectizeInput(
     session, 'words', choices = words_tokens_all, server = TRUE
     )
+
+  
+  updateSelectizeInput(
+    session, 'docs', choices = named_id, selected = "", server = TRUE
+  )
+  
+  updateSelectizeInput(
+    session, 'id', choices = article_lib$uuid, selected = "", server = TRUE
+  )
+  
+  observeEvent(input$sync, {
+    val <- unique(c(input$id, input$docs))
+    updateSelectizeInput(
+      session,
+      'docs',
+      choices = named_id,
+      selected = val,
+      server = TRUE
+    )
+    updateSelectizeInput(
+      session,
+      'id',
+      choices = article_lib$uuid,
+      selected = val,
+      server = TRUE
+    )
+  })
   
   observeEvent(input$clear, {
     regrets <<- input$words

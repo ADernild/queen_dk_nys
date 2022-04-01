@@ -41,6 +41,8 @@ words_count_unique <- length(words_all)
 most_common <- max(tokens$n_stem_total)
 most_common_any_year <- max(tokens$n_stem)
 number_of_rarity <- length(unique(arrange(tokens, desc(n_stem_total))$n_stem_total))
+named_id <- article_lib$uuid
+names(named_id) <- article_lib$title
 
 
 # Colors ------------------------------------------------------------------
