@@ -39,8 +39,17 @@ server <- function(input, output, session) {
     session, 'id', choices = article_lib$uuid, selected = "", server = TRUE
   )
   
-  observeEvent(input$sync, {
+  ### Sidebar Menu Functionality ----------------------------------------------
+  id_docs <- reactive({
     val <- unique(c(input$id, input$docs))
+    if(length(val) == 0){
+      val <- article_lib$uuid
+    }
+    return(val)
+  })
+  
+  observeEvent(input$sync, {
+    val <- id_docs()
     updateSelectizeInput(
       session,
       'docs',
