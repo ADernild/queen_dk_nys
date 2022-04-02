@@ -90,7 +90,6 @@ ui <- dashboardPage(
                 # Sidebar with a slider input for number of bins
                 whatViz("Options to set prefference to update featured words from topic model."),
                 whyViz("You can more easily inspect topic in other tabs by quicly obtaining their values."),
-                p(helpText("Topics are automaticaly found during initilization of topics. They are not named, as automatic naming of topics has not been implemented, and no human effort has been allocated to interpret the 100 topics. :-)")),
                 radioButtons ("topic_r",
                               label = "Update featured words with topics content",
                               selected = 1,
@@ -117,6 +116,7 @@ ui <- dashboardPage(
             box(width=10, title = "Topic model",
                 whatViz("Topic model is a tool that maps topics. It does so by analyzing word relations by analyzing all speeches and mapping the relations as word matrixes. Then the model displays the topics to the left, and the words within on the right. Frequency of use is depicted by size for topics, and bar length for words. Topics are named 1:n, where 1 is the largest topic."),
                 whyViz("The topics model can be used to get an understanding of themes present in the speeches throughout the years."),
+                p(helpText("Topics are automaticaly found during initilization of topics. They are not named, as automatic naming of topics has not been implemented, and no human effort has been allocated to interpret the 100 topics. :-)")),
                 visOutput("topicVis"),
                 box(width = 12, class="infoViz", title = "How to use",
                     collapsible = T, collapsed = T,
