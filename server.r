@@ -91,13 +91,13 @@ server <- function(input, output, session) {
       selected = val,
       server = TRUE
     )
-    updateSelectizeInput(
-      session,
-      'docs',
-      choices = named_id,
-      selected = val,
-      server = TRUE
-    )
+    # updateSelectizeInput(
+    #   session,
+    #   'docs',
+    #   choices = named_id,
+    #   selected = val,
+    #   server = TRUE
+    # )
   })
   
   observeEvent(input$clear, {
