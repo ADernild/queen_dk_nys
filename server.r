@@ -165,20 +165,26 @@ server <- function(input, output, session) {
   ## Valuebox --------------------------------------------------------------
   ### Speech ---------------------------------------------------------------
   output$total_covered <- renderValueBox({
-    covered <- 0
+    covered <- length(id_docs())
     valueBox(
-      covered, "Articles covered (todo)", icon = icon("glass-cheers"),
+      covered, "Articles covered", icon = icon("fal fa-newspaper"),
       color = "light-blue"
     )
   })
   
-  # output$total_sentences <- renderValueBox({
-  #   sentences <- length(unique(lemma$sentence))
-  #   valueBox(
-  #     sentences, "Unique sentences said", icon = icon("comments"),
-  #     color = "light-blue"
-  #   )
-  # })
+  output$total_sentences <- renderValueBox({
+    if(input$topic != ""){
+      val <- topic_frame %>% 
+        filter(topic %in% input$topic) %>%
+        .$doc_len
+    } else{
+      val <- n_unique_sentences
+    }
+    valueBox(
+      val, span("Unique sentences", title="In selected topic"), icon = icon("comments"),
+      color = "light-blue"
+    )
+  })
   
   output$total_word <- renderValueBox({
     data <- speech_data_word_filt() %>% 

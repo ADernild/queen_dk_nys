@@ -35,22 +35,25 @@ ui <- dashboardPage(
                 # )
               ),
               fluidRow(
-                box(width = 12, title = "Statistics included",
+                box(width = 12, title = "Summary of Selection",
                     fluidRow(
+                      howViz("Use filter, or update through choosing topic on Topics-tab, to filter data, and the observed data will be updated here."),
                       whatViz("Statistics included displays the aggregated statistics for various covered topics."),
                       whyViz("Total values can give a idea about what is about to be covered.")
                     ),
                     fluidRow(
-                      # valueBoxOutput("total_covered"), # Amount of speeches covered
-                      # valueBoxOutput("total_sentences"), # Amount of words covered
+                      valueBoxOutput("total_covered"), # Amount of content covered
                       valueBoxOutput("total_word"), # Amount of unique words covered
                       valueBoxOutput("total_word_unique") # Amount of unique words covered
                     ),
                     fluidRow(
                       valueBoxOutput("total_amount_of_topics"), # Amount of topics covered
-                      # valueBoxOutput("total_countries_mentioned"), # Amount of countries mentioned
+                      valueBoxOutput("total_sentences"), # Amount of words covered
                       valueBoxOutput("total_featured_words") # Amount of featured words
                     ),
+                    # fluidRow(
+                    #   valueBoxOutput("total_countries_mentioned"), # Amount of countries mentioned
+                    # ),
                     fluidRow(
                       valueBoxOutput("total_sum_sen"), # Amount of total sentiment
                       valueBoxOutput("total_pos_sen"), # Amount of positive sentiment
