@@ -83,7 +83,7 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$topic_id_sync, {
-    val <- unique(c(id_docs(), topic_id()))
+    val <- unique(c(input$input, topic_id()))
     updateSelectizeInput(
       session,
       'id',
