@@ -95,7 +95,7 @@ ui <- dashboardPage(
                               label = "Update featured words with topics content",
                               selected = 1,
                               choiceNames = c(
-                                "Update on topic selection",
+                                "Update on topic selection (also topic filter)",
                                 "Update on word selection", 
                                 "Do not update"),
                               choiceValues = c(

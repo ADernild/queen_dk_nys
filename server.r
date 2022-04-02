@@ -424,18 +424,40 @@ server <- function(input, output, session) {
           ok = "ok"
         )
       )
+      golem::invoke_js(
+        "getTopicsId",
+        list(
+          ok = "ok"
+        )
+      )
       
       topics <- unlist(str_split(input$tippertoppertopicspopper, ","))
       print(topics)
+      
+      topic_id <- as.numeric(input$topic_id)
+      print(topic_id)
+      
       chosen <- c()
       chosen <- c(unique(c(topics[topics %in% tokens$stemmed],
                            unique(tokens$stemmed[tokens$word %in% topics]),
                            unique(tokens$stemmed[tokens$headword %in% topics])))) # Much faster
       
-      updateSelectizeInput(session,
-                           "words",
-                           "Featured words",
-                           selected = chosen)
+      updateSelectizeInput(
+        session,
+        "words",
+        "Featured words",
+        choices = words_tokens_all,
+        selected = chosen,
+        server = TRUE
+      )
+      
+      updateSelectizeInput(
+        session,
+        'topic',
+        choices = topic_frame$topic,
+        selected = paste("Topic", topic_id),
+        server = TRUE
+      )
     }
     
     output$sent_topic <- renderHighchart({

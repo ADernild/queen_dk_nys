@@ -16,15 +16,22 @@ function getTopics() {
   }*/
   return(arr);
 }
-getTopics();
+
+function getTopicsId() {
+  console.log("Ran getTopicsId");
+  let id = document.getElementById("topicVis-topic").value;
+  return(id);
+}
 
 //var myVariable = 1; //do something
 //Shiny.onInputChange("variableNameToWriteInServer.R", myVariable)
 
 Shiny.addCustomMessageHandler('getTopics', function(mess) {
   tops = getTopics();
-  
   Shiny.setInputValue("tippertoppertopicspopper", tops.toString())
-  //alert(tops);
-  //alert(mess.ok)
+})
+
+Shiny.addCustomMessageHandler('getTopicsId', function(mess) {
+  id = getTopicsId();
+  Shiny.setInputValue("topic_id", id.toString())
 })
