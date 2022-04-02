@@ -18,7 +18,7 @@ server <- function(input, output, session) {
             selectizeInput("docs", label="Article name", choices = c(),
                            multiple = TRUE, options = list(maxOptions = length(article_lib$uuid))),
             selectizeInput("topic", label="Topic", choices = c(),
-                           multiple = FALSE, options = list(maxOptions = length(topic_list))),
+                           multiple = FALSE, options = list(maxOptions = length(topic_frame$topic))),
             selectizeInput("words", label="Featured words", choices = c(),
                            multiple = TRUE, options = list(maxOptions = length(words_tokens_all))),
             actionButton("sync", "Syncronize artciles and id"),
