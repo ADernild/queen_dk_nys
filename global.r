@@ -3,7 +3,7 @@ library(shinydashboard) # For dasghboard design and structure - enables tabs and
 library(plyr) # For data manipulation
 library(dplyr) # For data manipulation
 library(tidyr) # For data manipulation
-# library(DT) # For table visualizations
+library(DT) # For table visualizations
 library(plotly) # for interactive plots
 library(LDAvis) # For topic models
 library(stm) # for stm models

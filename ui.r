@@ -444,19 +444,18 @@ ui <- dashboardPage(
                                howViz("Year filter: Setting the year filter will filter for the words used in those years."),
                                howViz("Featured words: Setting featured words will filter for the words set in selection.")
                            )
-                       # ),
-                       # tabPanel("Table",
-                       #          DTOutput("word_ussage_tbl"),
-                       #          box(width = 12, class="infoViz", title = "How to use",
-                       #              collapsible = T, collapsed = T,
-                       #              whatViz(""),
-                       #              whyViz(""),
-                       #              howViz("Interpretation:"),
-                       #              howViz("Tooltip:"),
-                       #              howViz("Top frequent numbers: Top frequent numbers will filter for the most frequent numbers by the specified amount."),
-                       #              howViz("Year filter: Setting the year filter will filter for the words used in those years."),
-                       #              howViz("Featured words: Setting featured words will filter for the words set in selection.")
-                       #          )
+                       ),
+                       tabPanel("Table",
+                                DTOutput("word_ussage_tbl"),
+                                box(width = 12, class="infoViz", title = "How to use",
+                                    collapsible = T, collapsed = T,
+                                    whatViz("A table with the used data."),
+                                    whyViz("To manually inspect it or download it after formatting."),
+                                    howViz("Interpretation: A table."),
+                                    howViz("Top frequent numbers: Top frequent numbers will filter for the most frequent numbers by the specified amount."),
+                                    howViz("UUID filter: Using the uuid-filter, will filter Articles featured."),
+                                    howViz("Featured words: Setting featured words will filter for the words set in selection.")
+                                )
                        )
                 )
               )
