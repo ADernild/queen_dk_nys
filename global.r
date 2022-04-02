@@ -43,7 +43,12 @@ most_common_any_year <- max(tokens$n_stem)
 number_of_rarity <- length(unique(arrange(tokens, desc(n_stem_total))$n_stem_total))
 named_id <- article_lib$uuid
 names(named_id) <- article_lib$title
-
+topic_frame <- data.frame(topic = names(thoughts$index)) %>% 
+  mutate(uuid = thoughts$uuid[topic],
+         docs = thoughts$docs[topic]) %>% 
+  rowwise() %>% 
+  mutate(doc_len = length(docs))
+n_unique_sentences <- sum(topic_frame$doc_len)
 
 # Colors ------------------------------------------------------------------
 # Chosen with https://coolors.co/ using refference picture:
@@ -240,4 +245,3 @@ howViz <- function(text){
     text
   )
 }
-regrets <- list()

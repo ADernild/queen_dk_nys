@@ -17,11 +17,15 @@ server <- function(input, output, session) {
                            multiple = TRUE, options = list(maxOptions = length(article_lib$uuid))),
             selectizeInput("docs", label="Article name", choices = c(),
                            multiple = TRUE, options = list(maxOptions = length(article_lib$uuid))),
+            selectizeInput("topic", label="Topic", choices = c(),
+                           multiple = FALSE, options = list(maxOptions = length(topic_list))),
             selectizeInput("words", label="Featured words", choices = c(),
                            multiple = TRUE, options = list(maxOptions = length(words_tokens_all))),
             actionButton("sync", "Syncronize artciles and id"),
+            actionButton("topic_id_sync", "Add articles covered in topic"),
             actionButton("clear", "Clear featured words"),
-            actionButton("regret", "Regret clear", title="Regret clearing by clear button.")
+            actionButton("clear_id", "Clear id and articles"),
+            actionButton("clear_all", "Clear all")
           )
         )
   })
@@ -31,9 +35,12 @@ server <- function(input, output, session) {
     session, 'words', choices = words_tokens_all, server = TRUE
     )
 
-  
   updateSelectizeInput(
     session, 'docs', choices = named_id, selected = "", server = TRUE
+  )
+
+  updateSelectizeInput(
+    session, 'topic', choices = topic_frame$topic, selected = "", server = TRUE
   )
   
   updateSelectizeInput(
@@ -49,16 +56,16 @@ server <- function(input, output, session) {
     return(val)
   })
   
+  topic_id <- reactive({
+    topic_frame %>% 
+      filter(topic %in% input$topic) %>%
+      .$uuid %>% 
+      unlist()
+  })
+  
   ### Sidebar Menu Events -----------------------------------------------------
   observeEvent(input$sync, {
-    val <- id_docs()
-    updateSelectizeInput(
-      session,
-      'docs',
-      choices = named_id,
-      selected = val,
-      server = TRUE
-    )
+    val <- topic_id()
     updateSelectizeInput(
       session,
       'id',
@@ -66,24 +73,88 @@ server <- function(input, output, session) {
       selected = val,
       server = TRUE
     )
+    updateSelectizeInput(
+      session,
+      'docs',
+      choices = named_id,
+      selected = val,
+      server = TRUE
+    )
+  })
+  
+  observeEvent(input$topic_id_sync, {
+    val <- unique(c(id_docs(), topic_id()))
+    updateSelectizeInput(
+      session,
+      'id',
+      choices = article_lib$uuid,
+      selected = val,
+      server = TRUE
+    )
+    updateSelectizeInput(
+      session,
+      'docs',
+      choices = named_id,
+      selected = val,
+      server = TRUE
+    )
   })
   
   observeEvent(input$clear, {
-    regrets <<- input$words
     updateSelectizeInput(
       session,
       'words',
+      choices = words_tokens_all,
       selected = c(""),
       server = TRUE
     )
   })
   
-  observeEvent(input$regret, {
-    val <- regrets
+  observeEvent(input$clear_id, {
+    updateSelectizeInput(
+      session,
+      'id',
+      choices = article_lib$uuid,
+      selected = c(""),
+      server = TRUE
+    )
+    updateSelectizeInput(
+      session,
+      'docs',
+      choices = named_id,
+      selected = c(""),
+      server = TRUE
+    )
+  })
+  
+  observeEvent(input$clear_all, {
+    updateSelectizeInput(
+      session,
+      'id',
+      choices = article_lib$uuid,
+      selected = c(""),
+      server = TRUE
+    )
+    updateSelectizeInput(
+      session,
+      'docs',
+      choices = named_id,
+      selected = c(""),
+      server = TRUE
+    )
     updateSelectizeInput(
       session,
       'words',
-      selected = val
+      choices = words_tokens_all,
+      selected = c(""),
+      server = TRUE
+    )
+    updateSelectizeInput(
+      session,
+      'topic',
+      choices = topic_frame$topic,
+      selected = c(""),
+      server = TRUE
     )
   })
   
