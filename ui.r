@@ -199,14 +199,14 @@ ui <- dashboardPage(
                                howViz("Year filter: Using the year filter, will filter years featured."),
                                howViz("Featured words: Using featured words will show the sentiment that subset had in each year.")
                            )
-                  # ),
-                  # tabPanel("Average sentiment",
-                  #          highchartOutput("sentiment_of_speech_avg", height="75vh"),
-                  #          whatViz("Average sentiment displays the average sentiment of by year."),
-                  #          whyViz("The average sentiment can be used to observe sentiment of a year better in relation to the words used."),
-                  #          howViz("Interpretation: the size of the bars indicate the size of average sentiment in relation to other years."),
-                  #          howViz("Tooltip: hovering a bar displays the sentiment of the year."),
-                  #          howViz("Year filter: Using the year filter, will filter years featured.")
+                  ),
+                  tabPanel("Average sentiment",
+                           highchartOutput("sentiment_of_speech_avg", height="75vh"),
+                           whatViz("Average sentiment displays the average sentiment of by Article."),
+                           whyViz("The average sentiment can be used to observe sentiment of a Article better in relation to the words used."),
+                           howViz("Interpretation: the size of the bars indicate the size of average sentiment in relation to other Articles."),
+                           howViz("Tooltip: hovering a bar displays the sentiment of the Article."),
+                           howViz("UUID filter: Using the uuid-filter, will filter Articles featured.")
                   )
                 )
               ),
