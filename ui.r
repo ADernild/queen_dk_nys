@@ -404,19 +404,6 @@ ui <- dashboardPage(
                                 ),
                                 helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 30. Any number set above, will result in 30 being featured.")
                        ),
-                       # tabPanel("Columns percent",
-                       #          highchartOutput("word_ussage_col_per", height="50vh"),
-                       #          box(width = 12, class="infoViz", title = "How to use",
-                       #              collapsible = T, collapsed = T,
-                       #              whatViz(""),
-                       #              whyViz(""),
-                       #              howViz("Interpretation:"),
-                       #              howViz("Tooltip:"),
-                       #              howViz("Top frequent numbers: Top frequent numbers will filter for the most frequent numbers by the specified amount."),
-                       #              howViz("Year filter: Setting the year filter will filter for the words used in those years."),
-                       #              howViz("Featured words: Setting featured words will filter for the words set in selection.")
-                       #          )
-                       # ),
                        tabPanel("Word frequency by year (scatterplot)",
                                 whatViz("This model displays words as data point by year and frequency."),
                                 whyViz("The model is useful for determining frequency of words in relation to other years in same year."),
