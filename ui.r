@@ -15,7 +15,7 @@ ui <- dashboardPage(
     conditionalPanel(condition = "$('html').hasClass('shiny-busy')",
                      tags$div(span("Loading..."), id = "loadmessage")
     ),
-    # Index ----
+    # Index/Home ----
     tabItems(
       tabItem(tabName = "index",
               h1("Tool to analyze articles on TV2 Fyn"),
