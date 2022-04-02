@@ -51,22 +51,6 @@ topic_frame <- data.frame(topic = names(thoughts$index)) %>%
 n_unique_sentences <- sum(topic_frame$doc_len)
 
 # Colors ------------------------------------------------------------------
-# Chosen with https://coolors.co/ using refference picture:
-# https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Drottning_Margrethe_av_Danmark_crop.jpg/210px-Drottning_Margrethe_av_Danmark_crop.jpg
-# Note: using our own colorpalette is cool and stuff, but i have not optimized it greatly for colorblindness, so using a standard scheme might be better.
-colors_of_the_queen <- c(
-  "#4D5749", # Falling royal star of the queen / Ebony
-  "#BB3F56", # Her majesty lipstick / English red
-  "#BACFF6", # Her majesty earing  / Light blue steel
-  "#ECC1BE", # Pink queen / Baby pink
-  "#E3BF9D", # Rising royal star of the queen / Desert sand
-  "#9C5C52", # Royal dimple / redwood
-  "#435961", # Royal sweather blue / Deep space sparkle
-  "#9F9080", # Royal hair / Grullo
-  "#321403", # Royal brown button / Black bean
-  "#C0BFBB" # Hair of the majestic / Gray X 11 gray
-)
-
 ## For multiple series points/continuous ----
 col_multi <- c(
   # colorBlindness::paletteMartin[2:(length(colorBlindness::paletteMartin))], # Good palette, but black for the first value is not good.
