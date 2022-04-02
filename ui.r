@@ -9,7 +9,7 @@ ui <- dashboardPage(
       tags$link(rel = "stylesheet", type = "text/css", href = "sizes_n_stuff.css"),
       # tags$link(rel = "stylesheet", type = "text/css", href = "design2.css"),
       # uiOutput("royall_beautyfication"),
-      # tags$link(rel = "shortcut icon", href = "favicon.ico"),
+      tags$link(rel = "shortcut icon", href = "favicon.ico"),
       tags$script(src = "js.js")
     ),
     conditionalPanel(condition = "$('html').hasClass('shiny-busy')",
