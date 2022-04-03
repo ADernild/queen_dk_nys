@@ -63,6 +63,11 @@ server <- function(input, output, session) {
       unlist() %>% 
       return
   })
+  
+  article_lib_filt <- reactive({
+    article_lib %>% 
+      filter(uuid %in% id_docs()) %>% 
+      return
   })
   
   ### Sidebar Menu Events -----------------------------------------------------
