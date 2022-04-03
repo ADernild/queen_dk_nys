@@ -67,7 +67,7 @@ server <- function(input, output, session) {
   
   ### Sidebar Menu Events -----------------------------------------------------
   observeEvent(input$sync, {
-    val <- topic_id()
+    val <- id_docs()
     updateSelectizeInput(
       session,
       'id',
