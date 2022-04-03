@@ -169,8 +169,8 @@ server <- function(input, output, session) {
   output$total_covered <- renderValueBox({
     covered <- length(id_docs())
     valueBox(
-      covered, "Articles covered", icon = icon("fal fa-newspaper"),
-      color = "light-blue"
+      covered, "Articles covered", icon = icon("fal fa-newspaper", verify_fa = FALSE),
+      color = "light-blue",
     )
   })
   
