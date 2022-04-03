@@ -60,7 +60,9 @@ server <- function(input, output, session) {
     topic_frame %>% 
       filter(topic %in% input$topic) %>%
       .$uuid %>% 
-      unlist()
+      unlist() %>% 
+      return
+  })
   })
   
   ### Sidebar Menu Events -----------------------------------------------------
