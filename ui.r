@@ -465,6 +465,10 @@ ui <- dashboardPage(
                 )
               ),
               fluidRow(class="box_align_layout",
+                       # box(width=2,
+                       #     title = "Sorting options?",
+                       #     "Placeholder text for sorting options. Perhaps not."
+                       # ),
                        box(width=12,
                            title = "Articles covered",
                            whatViz("This are the articles that are covered in the dashboard, with your current filter."),

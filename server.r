@@ -559,7 +559,6 @@ server <- function(input, output, session) {
         mutate(fwords = ifelse(uuid %in% token_data, "Yes", "No"))
     }
     return(data)
-    
   })
   
   sentiment_of_words_data <- reactive({
