@@ -1578,18 +1578,27 @@ server <- function(input, output, session) {
   # Data UI ----------------------------------------------------------------
   ## Covered speeches ------------------------------------------------------
   output$Covered <- renderUI({
-    title <- "Name: "
-    source <- source_year
+    test <<-article_lib_filt()
+    id <- article_lib_filt()$uuid
+    title <- article_lib_filt()$title
+    source <- article_lib_filt()$link
 
     validate(
-      need(nrow(source) != 0, "No avilable data")
+      need(nrow(article_lib_filt()) != 0, "No avilable data")
     )
     
     content <- tags$ul(
-      lapply(1:nrow(source), function(i) {
-        tags$li(a(href=source$urls[i],
+      lapply(1:nrow(article_lib_filt()), function(i) {
+        tags$li(a(href=source[i],
                   target = "_blank",
-                  paste(title, source$year[i])))
+                  paste(title[i], 
+                        " ",
+                        source[i],
+                        " (", id[i], ")",
+                        sep=""
+                        )
+                  )
+                )
       })
     )
     return(content)
