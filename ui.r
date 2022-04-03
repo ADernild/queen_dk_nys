@@ -465,7 +465,7 @@ ui <- dashboardPage(
                 )
               ),
               fluidRow(class="box_align_layout",
-                       box(width=6,
+                       box(width=12,
                            title = "Speeches covered",
                            whatViz("This are the articles that are covered in the dashboard, with your current filter."),
                            whyViz("You can use this to see the source from what you filtered."),
