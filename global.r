@@ -25,12 +25,8 @@ sentiment <- readRDS("data/sentiments.rds") # Sentiment for year
 article_lib <- readRDS("data/article_library.rds") # File containing UUID, Article name
 
 # Formatting data ---------------------------------------------------------
-# Nothing yet
-
-# Number of distinct headwords
-n_dist_t_headword <- nrow(distinct(tokens, stemmed))
-
 ## Words ----
+n_dist_t_headword <- nrow(distinct(tokens, stemmed)) # Number of distinct headwords
 words_all <-  unique(lemma$token) %>% sort()
 words_tokens_all <- tokens %>%
   mutate(wordisnum = as.integer(suppressWarnings(ifelse(!is.na(as.numeric(stemmed)),1,0)))) %>% 
