@@ -542,7 +542,7 @@ server <- function(input, output, session) {
              sentiment_pos = round(sentiment_pos),
              sentiment_neg = round(sentiment_neg)) %>% 
       group_by(uuid) %>% 
-      arrange(uuid)
+      arrange(date_updated_at)
     if(length(input$words) > 0){
       token_data <- tokens %>% 
         filter(stemmed %in% input$words) %>% 
@@ -623,7 +623,7 @@ server <- function(input, output, session) {
              sentiment_pos = round(sentiment_pos),
              sentiment_neg = round(sentiment_neg),
              n_words = n_pos+n_neg) %>% 
-      arrange(uuid)
+      arrange(date_updated_at)
     return(data)
   })
 
@@ -641,7 +641,15 @@ server <- function(input, output, session) {
         arrange(fwords)
       hc <- hchart(data,
                    type="bubble",
-                   hcaes(x = sentiment_pos, y = sentiment_neg, z = sentiment, pn = n_words, size = sentiment, l = sentiment_label, name = uuid, group = fwords, fwords = fwords),
+                   hcaes(x = sentiment_pos,
+                         y = sentiment_neg,
+                         z = sentiment,
+                         pn = n_words,
+                         size = sentiment,
+                         l = sentiment_label,
+                         name = title,
+                         group = fwords,
+                         fwords = fwords),
                    showInLegend = F,
                    stickyTracking = F,
                    styledMode = T
@@ -649,7 +657,8 @@ server <- function(input, output, session) {
         hc_tooltip(
           useHTML = T,
           headerFormat = '<table>',
-          pointFormat = paste('<tr><th colspan="2"><b>{point.name}</b></th></tr>',
+          pointFormat = paste('<tr><th colspan="2"><b>{point.title}</b></th></tr>',
+                              '<tr><th>UUID:</th><td>{point.uuid}</td></tr>',
                               '<tr><th>Featured words in article :</th><td>{point.fwords}</td></tr>',
                               '<tr><th>Overall sentiment:</th><td>{point.l}</td></tr>',
                               '<tr><th>Positive sentiment (x):</th><td>{point.x}</td></tr>',
@@ -671,7 +680,14 @@ server <- function(input, output, session) {
     } else{
       hc <- hchart(data,
              type="bubble",
-             hcaes(x = sentiment_pos, y = sentiment_neg, z = sentiment, pn = n_words, size = sentiment, l = sentiment_label, name = uuid, group = uuid),
+             hcaes(x = sentiment_pos,
+                   y = sentiment_neg,
+                   z = sentiment,
+                   pn = n_words,
+                   size = sentiment,
+                   l = sentiment_label,
+                   name = title,
+                   group = uuid),
              showInLegend = F,
              stickyTracking = F,
              styledMode = T
@@ -679,7 +695,8 @@ server <- function(input, output, session) {
         hc_tooltip(
           useHTML = T,
           headerFormat = '<table>',
-          pointFormat = paste('<tr><th colspan="2"><b>{point.name}</b></th></tr>',
+          pointFormat = paste('<tr><th colspan="2"><b>{point.title}</b></th></tr>',
+                              '<tr><th>UUID:</th><td>{point.uuid}</td></tr>',
                               '<tr><th>Overall sentiment:</th><td>{point.l}</td></tr>',
                               '<tr><th>Positive sentiment (x):</th><td>{point.x}</td></tr>',
                               '<tr><th>Negative sentiment (y):</th><td>{point.y}</td></tr>',
@@ -759,21 +776,21 @@ server <- function(input, output, session) {
         stack = 1,
         name="Positive sentiment",
         data = data,
-        hcaes(x = uuid, y = sentiment_pos)
+        hcaes(x = title, y = sentiment_pos)
       ) %>% 
       hc_add_series(
         type = "bar",
         stack = 1,
         name="Negative sentiment",
         data = data,
-        hcaes(x = uuid, y = sentiment_neg)
+        hcaes(x = title, y = sentiment_neg)
       ) %>% 
       hc_add_series(
         type = "bar",
         stack = 2,
         name ="Summed sentiment",
         data = data,
-        hcaes(x = uuid, y = sentiment)
+        hcaes(x = title, y = sentiment)
       ) %>% 
       hc_plotOptions(
         series = list (
@@ -819,7 +836,7 @@ server <- function(input, output, session) {
       selection <-  selection %>%
         group_by(uuid) %>% 
         summarise(sentiment = sum(sentiment)) %>% 
-        arrange(uuid, sentiment)
+        arrange(date_updated_at, sentiment)
       hc <- hc %>%
         hc_add_series(
           type = "bar",
@@ -845,28 +862,28 @@ server <- function(input, output, session) {
         name = "Positive sentiment",
         type = "line",
         data = data,
-        hcaes(x = uuid, y = sentiment_pos)
+        hcaes(x = title, y = sentiment_pos)
         # showInLegend = F
       ) %>% 
       hc_add_series(
         name = "Total sentiment",
         type = "line",
         data = data,
-        hcaes(x = uuid, y = sentiment)
+        hcaes(x = title, y = sentiment)
         # showInLegend = F
       ) %>% 
       hc_add_series(
         name = "Negative sentiment",
         type = "line",
         data = data,
-        hcaes(x = uuid, y = sentiment_neg)
+        hcaes(x = title, y = sentiment_neg)
         # showInLegend = F
       ) %>% 
       hc_add_series(
         name = "Sentiment Range",
         type = "arearange",
         data = data,
-        hcaes(x = uuid, low = sentiment, high = sentiment_pos, neg = sentiment_neg)
+        hcaes(x = title, low = sentiment, high = sentiment_pos, neg = sentiment_neg)
         # enableMouseTracking =F
         # showInLegend = F
       ) %>% 
@@ -889,7 +906,7 @@ server <- function(input, output, session) {
       ) %>% 
       hc_xAxis(
         startOnTick = T,
-        categories = data$uuid,
+        categories = data$title,
         title = list(
           text = "ID"
         )
@@ -908,26 +925,26 @@ server <- function(input, output, session) {
       hc_fivecolsum()
     if(length(input$words)>0){
       selection <- sentiment_of_speech_data_filtered() %>% 
-        select(sentiment, uuid, stemmed) %>% 
+        select(sentiment, uuid, title, stemmed, date_updated_at) %>% 
         ungroup()
       for(word in unique(selection$stemmed)){
         for(uuid in unique(data$uuid)){
           if(!(word %in% selection[selection$uuid == uuid,]$stemmed)){
             selection <-  selection %>%
-              add_row(stemmed = word, uuid=uuid, sentiment=0)
+              add_row(stemmed = word, title = title, uuid=uuid, sentiment=0, date_updated_at=date_updated_at)
           }
         }
       }
       selection <-  selection %>%
         group_by(uuid) %>% 
         summarise(sentiment = sum(sentiment)) %>% 
-        arrange(uuid, sentiment)
+        arrange(date_updated_at, sentiment)
       hc <- hc %>%
         hc_add_series(
           type = "line",
           name= "Sentiment of selection",
           data = selection,
-          hcaes(x = uuid, y = sentiment)
+          hcaes(x = title, y = sentiment)
         )
     }
     return(hc)
@@ -942,7 +959,9 @@ server <- function(input, output, session) {
     )
     
     hchart(data,
-           hcaes(x = uuid, y = round(average_sentiment,2), group = sentiment_label),
+           hcaes(x = title,
+                 y = round(average_sentiment,2),
+                 group = sentiment_label),
            type="column",
            colorByPoint = T,
            styledMode = T
@@ -965,7 +984,9 @@ server <- function(input, output, session) {
       arrange(polarity, n_stem_total)
     
     hc <- hchart(data,
-           hcaes(x = stemmed, y = polarity, group = sentiment_true),
+           hcaes(x = stemmed,
+                 y = polarity,
+                 group = sentiment_true),
            type="column") %>% 
       hc_tooltip(
         shared = TRUE,
@@ -1024,7 +1045,9 @@ server <- function(input, output, session) {
     }
     
     hc <- hchart(data,
-           hcaes(x = stemmed, y = n_stem_total, group = sentiment_true),
+           hcaes(x = stemmed,
+                 y = n_stem_total,
+                 group = sentiment_true),
            type="column") %>% 
       hc_tooltip(
         shared = TRUE,
@@ -1240,10 +1263,10 @@ server <- function(input, output, session) {
   speech_data <- reactive({
     data <- tokens %>%
       filter(uuid %in% id_docs()) %>% 
-      select(uuid, stemmed, n_stem_total, n_stem) %>% 
+      select(uuid, stemmed, n_stem_total, n_stem, title, date_updated_at) %>% 
       distinct() %>% 
       group_by(stemmed, uuid) %>% 
-      arrange(uuid, stemmed)
+      arrange(date_updated_at, stemmed)
     
     return(data)
   })
@@ -1285,7 +1308,8 @@ server <- function(input, output, session) {
     common_opt <- unique(arrange(data, desc(n_stem_total))$n_stem_total)[ifelse(input$slider_word_ussage>20, 20, input$slider_word_ussage)]
     
     if(!is.na(common_opt)){
-      data <- filter(data, n_stem_total >= common_opt)
+      data <- data %>% 
+        filter(n_stem_total >= common_opt)
     }
     
     total <- data %>% 
@@ -1318,24 +1342,31 @@ server <- function(input, output, session) {
     validate(
       need(nrow(data) != 0, "Dataset is empty")
     )
-    
+
     data <-  data %>% 
       ungroup() %>% 
-      select(uuid, n_stem, stemmed)
+      select(uuid, title, n_stem, stemmed, date_updated_at)
 
     for(word in unique(data$stemmed)){
       for(uuid in unique(data$uuid)){
         if(!(word %in% data[data$uuid == uuid,]$stemmed)){
           data <-  data %>%
-            add_row(stemmed = word, uuid=uuid, n_stem=0)
+            add_row(stemmed = word,
+                    uuid=uuid,
+                    date_updated_at=data[data$uuid == uuid,]$date_updated_at[[1]],
+                    title=data[data$uuid == uuid,]$title[[1]],
+                    n_stem=0)
         }
       }
     }
 
     data <- data %>% 
-      arrange(uuid, desc(n_stem), stemmed)
 
-    hchart(data, "streamgraph", hcaes(uuid, n_stem, group = stemmed)) %>% 
+      arrange(date_updated_at, desc(n_stem), stemmed)
+    hchart(data, "streamgraph",
+           hcaes(title,
+                 n_stem,
+                 group = stemmed)) %>% 
       hc_yAxis(
         visible = F
       ) %>% 
@@ -1366,7 +1397,9 @@ server <- function(input, output, session) {
     }
     
     hc <- hchart(data, "column",
-                 hcaes(x=uuid, y=n_stem,group = stemmed)) %>% 
+                 hcaes(x=title,
+                       y=n_stem,
+                       group = stemmed)) %>% 
       hc_plotOptions(
         series = list (
           stacking = 'normal'
@@ -1407,7 +1440,9 @@ server <- function(input, output, session) {
     }
     
     hc <- hchart(data, "column",
-                 hcaes(x=uuid, y=n_stem, group = stemmed)) %>% 
+                 hcaes(x=title,
+                       y=n_stem,
+                       group = stemmed)) %>% 
       hc_plotOptions(
         series = list (
           stacking = 'percent'
@@ -1474,7 +1509,10 @@ server <- function(input, output, session) {
     )
     
     hc <- hchart(data, "scatter",
-                 hcaes(x=uuid, y=n_stem, total = n_stem_total, group = stemmed)) %>% 
+                 hcaes(x=title,
+                       y=n_stem,
+                       total = n_stem_total,
+                       group = stemmed)) %>% 
       hc_norevese() %>% 
       hc_plotOptions(
         scatter = list(
