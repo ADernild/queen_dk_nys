@@ -45,25 +45,61 @@ unnest_sentences <- function(x) {
   y
 }
 
-# Importing data
+# Importing data ----
 df <- readRDS("data/article_library.rds")
+if(file.exists("data/sentences_cleaned.rds")){
+  sentences_cleaned <- readRDS("data/sentences_cleaned.rds")
+}
 
-# Cleaning sentences i.e., leaving in the . (dots) for later separation
-sentences <- data.frame(cbind(df$uuid, clean_sentences(df$content), clean_sentences_less(df$content)))
+if(file.exists("data/article_library.rds")){
+  ## Load senteces if it exists ----
+  old_sentences <- readRDS("data/sentences.rds")
 
-# Grouping speaches by id and separating into sentences by . (dots)
-sentences <- sentences %>% 
-  group_by(X1) %>% 
-  summarize(
-    sentence = strsplit(X2, "[.]"),
-    sentence_full = strsplit(X3, "[.]")
-  )
+  # Cleaning sentences i.e., leaving in the . (dots) for later separation
+  sentences <- data.frame(cbind(df$uuid, clean_sentences(df$content), clean_sentences_less(df$content)))
+  # Grouping speaches by id and separating into sentences by . (dots)
+  sentences <- sentences %>% 
+    filter(!(X1 %in% old_sentences$uuid)) %>% 
+    group_by(X1) %>% 
+    summarize(
+      sentence = strsplit(X2, "[.]"),
+      sentence_full = strsplit(X3, "[.]")
+    )
+  
+  sentences <- unnest_sentences(sentences)
+  sentences$polarity <- 0
+  new_sentences <- sentences %>% 
+    full_join(old_sentences)
+  
+  # Cleaning speech of each year
+  new_df_row <- df %>% 
+    filter(!(uuid %in% sentences_cleaned$uuid)) %>% 
+    rowwise() %>% 
+    mutate(content = clean_speech(content))
+  
+  df <- sentences_cleaned %>% 
+    full_join(new_df_row)
+} else {
+  # Create, if not exists ----
+  # Cleaning sentences i.e., leaving in the . (dots) for later separation
+  sentences <- data.frame(cbind(df$uuid, clean_sentences(df$content), clean_sentences_less(df$content)))
+  # Grouping speaches by id and separating into sentences by . (dots)
+  sentences <- sentences %>% 
+    group_by(X1) %>% 
+    summarize(
+      sentence = strsplit(X2, "[.]"),
+      sentence_full = strsplit(X3, "[.]")
+    )
+  
+  sentences <- unnest_sentences(sentences)
+  
+  # Cleaning speech of each year
+  df$content <- clean_speech(df$content)
+}
 
-sentences <- unnest_sentences(sentences)
+# Save sentences ----
 saveRDS(sentences, "data/sentences.rds")
 write.csv(sentences, "data/sentences.csv", row.names = F, fileEncoding = "UTF-8")
 
-# Cleaning speech of each year
-df$content <- clean_speech(df$content)
 saveRDS(df, "data/sentences_cleaned.rds")
 write.csv(df, "data/sentences_cleaned.csv", row.names = F, fileEncoding = "UTF-8")

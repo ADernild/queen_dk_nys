@@ -7,7 +7,10 @@ library(dplyr)
 library(jsonlite) # API stuff
 library(stringr) # To handle whitespace
 
-# Functions
+# Settings ----
+check_content <- T
+
+# Functions ----
 cleanFun <- function(htmlString) { # Source: https://stackoverflow.com/questions/17227294/removing-html-tags-from-a-string-in-r
   return(gsub("<.*?>", "", htmlString))
 }
@@ -45,6 +48,7 @@ total_articles <- api_json$meta$total
 page_num <- 10
 results <- page_size * page_num
 
+# Call and loop ----
 for(i in 1:page_num){
   library_bf <- nrow(library)
   if(i!=1){
@@ -92,7 +96,6 @@ for(i in 1:page_num){
     )) %>% 
     select(!trumpet)
 
-  
   library <- full_join(library, new_results, by = c("uuid", "title", "date_published_at", "date_updated_at", "link", "content")) # Join article list with existing article list
   library_mid <- nrow(library)
   # Formart library
@@ -106,6 +109,10 @@ for(i in 1:page_num){
   library_dif <- library_af - library_bf
   #library_updated <- page_size-sum(table(api_json$date_updated_at[api_json$date_updated_at %in% tail(library$date_updated_at, page_size)]))
   print(paste(sep="", "Progress: ", i, "/", page_num, ". Articles looped trhough: ", page_size*i, "/", results, "/", total_articles, ". Entries added: ", library_dif, ". Entries updated: ", library_updated, ". Entries in library: ", library_af)) # Print status
+  if(check_content == T && library_dif == 0 && library_updated ==0){
+    print("Terminated prematurely, as no entries were added or updated. To disable check, set check_content to false.")
+    break;
+  }
 }
 
 # Save library ----
