@@ -18,7 +18,7 @@ tokens <- readRDS("data/tokens.rds") # All tokens, filtered
 lda_model <- readRDS("data/lda_model.rds") # LDA model
 stm_model_da <- readRDS("data/stm_model.rds") # STM model
 thoughts <- readRDS("data/thoughts.rds") # sentences belonging to topics (topic proportion 45%)
-lemma <- readRDS("data/lemma.rds") # All lematized values unfiltered
+# lemma <- readRDS("data/lemma.rds") # All lematized values unfiltered
 sentiment <- readRDS("data/sentiments.rds") # Sentiment for year
 # countries <- readRDS("data/country_speech.rds") # Countries, country code, lat, lon and # mentions
 # geojson <- readRDS("data/countries.rds") # Library containing geographic information
@@ -27,7 +27,7 @@ article_lib <- readRDS("data/article_library.rds") # File containing UUID, Artic
 # Formatting data ---------------------------------------------------------
 ## Words ----
 n_dist_t_headword <- nrow(distinct(tokens, stemmed)) # Number of distinct headwords
-words_all <-  unique(lemma$token) %>% sort()
+words_all <-  unique(tokens$word) %>% sort()
 words_tokens_all <- tokens %>%
   mutate(wordisnum = as.integer(suppressWarnings(ifelse(!is.na(as.numeric(stemmed)),1,0)))) %>% 
   arrange(wordisnum, stemmed) %>% 
