@@ -1,4 +1,292 @@
 /* CSS for colors and design */
 /* TV2 Fyn inpired design: design inspiration: https://www.tv2fyn.dk/ */
 
-/*#f4f4f4;*/
+/*Max's interpretation of TV2 color rules*/
+/* Primary text color: #333*/
+/* Primary backgroud: #f4f4f4*/
+/* Secondary background color: #fff*/
+/* Higlighted text: "#d21e1e*/
+
+/* Backbround color */
+body, .content-wrapper, .skin-blue .wrapper{
+  background-color: #f4f4f4 !important; /* dannebrog red - Danish flag red */
+}
+
+/* Text */
+body,
+p, span, a, ul, form, button, input,
+h1, h2, h3, h4, h5, h6,
+.content-wrapper, .skin-blue .wrapper,
+.box-header .box-title, .box-header>.fa, .box-header>.glyphicon, .box-header>.ion,
+.h1, .h2, .h3, .h4, .h5, .h6{
+  color: #333;
+  font-family: "Alright Sans LT", Arial, sans-serif;
+}
+
+h1, h2, h3{
+  margin-bottom: 1rem;
+  font-weight: 800;
+}
+
+h1{
+  font-size: 3rem;
+}
+
+h2{
+  color: #d21e1e;
+}
+
+h2, h3{
+  font-size: 1.5rem;
+}
+
+/* > p/span */
+.bold{
+  font-weight: bold;
+}
+
+.help-me{
+  color: #CCC;
+}
+
+.help-block{
+  color: #d1d1d1;
+}
+
+.whatViz, .whyViz, .howViz{
+  font-weight: bold;
+}
+
+.whatViz{
+  color: #28353a; /* Darker version of marker */
+}
+
+.whyViz{
+  color: #5a4c3e; /* Darker version of marker */
+}
+
+.howViz{
+  color: #5d3731; /* Darker version of marker */
+}
+
+.whatViz>span,
+.whyViz>span,
+.howViz>span{
+  cursor: help;
+}
+
+.whatViz>span{
+  color: #435961; /* Lighter version of parrent */
+}
+
+.whyViz>span{
+  color: #E3BF9D; /* Lighter version of parrent */
+}
+
+.howViz>span{
+  color: #9C5C52; /* Lighter version of parrent */
+}
+
+#loadmessage span{
+  color: #fff;
+}
+
+/* Buttons */
+section.sidebar .shiny-bound-input.action-button,
+section.sidebar .shiny-bound-input.action-link{
+  border: 1px solid #ccc;
+  border-radius: 0.3em;
+  background-color: #fff;
+  color: #333;
+  text-transform: uppercase;
+  margin-top: 1rem;
+  font-size: 11px;
+  padding: 0 1rem;
+  height: 35px;
+  transition: background-color .2s ease-in-out;
+}
+
+section.sidebar .shiny-bound-input.action-button:hover,
+section.sidebar .shiny-bound-input.action-link:hover{
+  background-color: #f6f6f6;
+}
+
+.main-header .sidebar-toggle:before{
+  display: none !important;
+}
+.skin-blue .main-header .navbar .sidebar-toggle,
+.skin-blue .main-header .navbar .sidebar-toggle:hover{
+  background-image: url("favicon.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-origin: content-box;
+  min-height: 52px;
+  padding: 3px 0;
+}
+
+/* Navbar */
+.skin-blue .main-header .navbar,
+.skin-blue .main-header .logo,
+.skin-blue .main-header .logo:hover{
+  color: #fff;
+  background-color: #E31836;
+}
+
+.skin-blue .main-header .navbar .sidebar-toggle,
+.skin-blue .main-header .navbar .sidebar-toggle:hover{
+  border-bottom-color: #000;
+  border-right-color: #000;
+  color: #000;
+}
+
+.skin-blue .main-header .navbar .sidebar-toggle{
+  background-color: #f4f4f4;
+}
+
+.skin-blue .main-header .navbar .sidebar-toggle:hover{
+  background-color: #dbdbdb;
+}
+
+.skin-blue .main-header .navbar .sidebar-toggle:active{
+  background-color: #aaaaaa;
+}
+
+/* Sidebar */
+#sidebarCollapsed{
+  background-color: #fff;
+  border-right-color: #333;
+}
+
+.skin-blue .sidebar a,
+.skin-blue .sidebar a span{
+  color: #333;
+  background-color: #f4f4f4;
+  border-top-color: #ddd;
+  border-bottom-color: #eee;
+}
+
+.skin-blue .sidebar-menu>li:hover>a,
+.skin-blue .sidebar-menu>li:hover>a span{
+    color: #333;
+    background: #f4f4f4;
+    border-left-color: #d21e1e;
+}
+
+.skin-blue .sidebar-menu>li.active>a,
+.skin-blue .sidebar-menu>li.active>a span{
+    color: #d21e1e ;
+    background: #f4f4f4;
+    border-left-color: #d21e1e;
+    font-weight: bold;
+}
+
+.skin-blue .sidebar-menu>li:hover>a .help-me,
+.skin-blue .sidebar-menu>li.active>a .help-me,
+.skin-blue .sidebar-menu>li:hover>a .help-me span,
+.skin-blue .sidebar-menu>li.active>a .help-me span{
+    color: #000;
+}
+
+/* Columns */
+.box .box,
+.tab-content .box {
+  border-top-color: #d21e1e;
+  border-right-color: #ddd;
+  border-left-color: #ddd;
+}
+
+.box-header .box-title{
+  max-width: 100%;
+  height: 18px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* Tabs */
+.nav-tabs-custom {
+  border-color: #000;
+}
+
+.nav-tabs-custom>.nav-tabs{
+  background-color: #eee;
+}
+
+.nav-tabs-custom>.nav-tabs>li:hover{
+  border-top-color: #d21e1e;
+  color: #333;
+}
+
+.nav-tabs-custom>.nav-tabs>li.active{
+  border-top-color: #d21e1e;
+}
+
+.nav-tabs-custom>.nav-tabs>li:hover>a{
+  /*background-color: #F5D9D4;*/
+}
+
+.nav-tabs-custom>.nav-tabs>li.active:hover>a,
+.nav-tabs-custom>.nav-tabs>li.active>a{
+  font-weight: bold;
+}
+
+.nav-tabs-custom {
+  border-radius: 0;
+}
+
+
+/* Valueboxes */
+.small-box .inner h3,
+.small-box .inner p,
+.small-box .inner span{
+  color: #fff;
+}
+.small-box .inner span:after{
+  content: "*";
+}
+
+/* Input */
+.irs--shiny .irs-line{
+  background:linear-gradient(to bottom, #edeeef -50%, #f4f4f4 150%);
+
+}
+
+.irs--shiny .irs-min, .irs--shiny .irs-max {
+  background: #d21e1e;
+  color: #fff;
+}
+
+.irs--shiny .irs-bar{
+  background: #333;
+  border-top-color: #edeeef;
+  border-bottom-color: #f4f4f4;
+}
+
+.irs--shiny .irs-handle{
+  background: #d21e1e;
+}
+
+.irs--shiny .irs-handle:hover{
+  background: #333;
+}
+
+.irs--shiny .irs-from, .irs--shiny .irs-to, .irs--shiny .irs-single{
+  top: -5px;
+  background: #d21e1e;
+}
+
+.irs--shiny .irs-from:after,
+.irs--shiny .irs-to:after,
+.irs--shiny .irs-single:after{
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: calc(50% - 3px);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 3px 0 3px;
+  border-color: #d21e1e transparent transparent transparent;
+}
+
