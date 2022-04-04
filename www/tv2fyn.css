@@ -112,8 +112,18 @@ section.sidebar .shiny-bound-input.action-link:hover{
 }
 
 .main-header .sidebar-toggle:before{
-  display: none !important;
+  padding: 12px 15px;
+  color: rgba(51, 51, 51, 100);
+  transition: transform .3s ease-in-out, width .3s ease-in-out, color .3s ease-in-out !important;
 }
+
+.sidebar-collapse .main-header .sidebar-toggle:before{
+  color: rgba(51, 51, 51, 0);
+}
+.main-header .sidebar-toggle:hover:before{
+  color: rgba(51, 51, 51, 100);
+}
+
 .skin-blue .main-header .navbar .sidebar-toggle,
 .skin-blue .main-header .navbar .sidebar-toggle:hover{
   background-image: url("favicon.png");
