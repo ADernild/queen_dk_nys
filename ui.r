@@ -7,7 +7,7 @@ ui <- dashboardPage(
   dashboardBody(
     tags$head(
       tags$link(rel = "stylesheet", type = "text/css", href = "sizes_n_stuff.css"),
-      # tags$link(rel = "stylesheet", type = "text/css", href = "design2.css"),
+      tags$link(rel = "stylesheet", type = "text/css", href = "tv2fyn.css"),
       # uiOutput("royall_beautyfication"),
       tags$link(rel = "shortcut icon", href = "favicon.ico"),
       tags$script(src = "js.js")
