@@ -45,16 +45,6 @@ topic_frame <- data.frame(topic = names(thoughts$index)) %>%
   rowwise() %>% 
   mutate(doc_len = length(docs))
 n_unique_sentences <- sum(topic_frame$doc_len)
-tokens <- tokens %>% 
-  mutate(title = paste(article_lib$title[min(which(uuid == article_lib$uuid))], " (", uuid, ")", sep = ""),
-         date_updated_at = article_lib$date_updated_at[min(which(uuid == article_lib$uuid))],
-         date_published_at = article_lib$date_published_at[min(which(uuid == article_lib$uuid))]
-         )
-sentiment <- sentiment %>% 
-  mutate(title = paste(article_lib$title[min(which(uuid == article_lib$uuid))], " (", uuid, ")", sep = ""),
-         date_updated_at = article_lib$date_updated_at[min(which(uuid == article_lib$uuid))],
-         date_published_at = article_lib$date_published_at[min(which(uuid == article_lib$uuid))]
-  )
 
 
 # Colors ------------------------------------------------------------------

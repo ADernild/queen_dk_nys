@@ -1,6 +1,8 @@
 library(tidyverse)
 library(tidytext)
 
+article_lib <- readRDS("data/article_library.rds") # File containing UUID, Article name
+
 # Get sentiments from a sentiment library ----
 dk_sentiment <- read.csv("https://raw.githubusercontent.com/dsldk/danish-sentiment-lexicon/main/2a_fullform_headword_polarity.csv", encoding = "UTF-8", header = FALSE, sep = "\t")
 names(dk_sentiment) <- c("word_form", "headword", "homograph_number", "POS", "DDO_headword_ID", "polarity_label_headword")
@@ -90,6 +92,14 @@ sentiments <- tokens %>%
   mutate(n_words = n_pos+n_neg) %>% 
   rowwise() %>% 
   mutate(sentiment_label = ifelse(sentiment>0, "Positive", "Negative"))
+
+# sentiments <- readRDS("data/sentiments.rds") # Sentiment for year
+sentiments <- sentiments %>% 
+  mutate(title = paste(article_lib$title[min(which(uuid == article_lib$uuid))], " (", uuid, ")", sep = ""),
+         date_updated_at = article_lib$date_updated_at[min(which(uuid == article_lib$uuid))],
+         date_published_at = article_lib$date_published_at[min(which(uuid == article_lib$uuid))]
+  )
+
 
 ## Save sentiments ----
 saveRDS(sentiments, "data/sentiments.rds")

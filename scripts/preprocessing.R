@@ -8,6 +8,7 @@ library(udpipe)
 # Importing cleanned speaches ----
 # df <- read.csv("data/sentences_cleaned.csv", encoding = "utf-8")
 df <- readRDS("data/sentences_cleaned.rds")
+article_lib <- readRDS("data/article_library.rds") # File containing UUID, Article name
 
 # Tokenization ----
 # Removing stopwords and stemming
@@ -95,6 +96,12 @@ tokens <- tokens %>%
   left_join(total_tokens, by="lemma") %>% 
   arrange(desc(n_lemma_total), word, desc(n_stem_total), desc(n_total)) # arrange
 
+# tokens <- readRDS("data/tokens.rds") # All tokens, filtered
+tokens <- tokens %>% 
+  mutate(title = paste(article_lib$title[min(which(uuid == article_lib$uuid))], " (", uuid, ")", sep = ""),
+         date_updated_at = article_lib$date_updated_at[min(which(uuid == article_lib$uuid))],
+         date_published_at = article_lib$date_published_at[min(which(uuid == article_lib$uuid))]
+  )
 
 # Save tokens ----
 saveRDS(tokens,"data/tokens.rds")
