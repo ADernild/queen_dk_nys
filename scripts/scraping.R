@@ -38,7 +38,7 @@ if(file.exists("data/article_library.rds")){
 
 # Make call for list of articles ----
 page_size <- 100 # Max 100 in API
-article_list_call <- paste(public, "articles?page[size]=", page_size, "&page[number]=", i, sep="") # Define call
+article_list_call <- paste(public, "articles?page[size]=", page_size, "&page[number]=", 1, sep="") # Define call
 api_json <- fromJSON(article_list_call, flatten = FALSE)
 total_pages <- api_json$meta$last_page
 total_articles <- api_json$meta$total
