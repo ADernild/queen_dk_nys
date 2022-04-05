@@ -61,44 +61,47 @@ unnest_sentences <- function(x) {
   y
 }
 
-# Importing data ----
+# # Importing data ----
 df <- readRDS("data/article_library.rds")
-if(file.exists("data/sentences_cleaned.rds")){
-  sentences_cleaned <- readRDS("data/sentences_cleaned.rds")
-}
-
-if(file.exists("data/article_library.rds")){
-  ## Load senteces if it exists ----
-  old_sentences <- readRDS("data/sentences.rds")
-
-  # Cleaning sentences i.e., leaving in the . (dots) for later separation
-  sentences <- data.frame(cbind(df$uuid, clean_sentences(df$content), clean_sentences_less(df$content)))
-  # Grouping speaches by id and separating into sentences by . (dots)
-  sentences <- sentences %>% 
-    filter(!(X1 %in% old_sentences$uuid)) %>% 
-    group_by(X1) %>% 
-    summarize(
-      sentence = strsplit(X2, "[.]"),
-      sentence_full = strsplit(X3, "[.]")
-    )
-  
-  sentences <- unnest_sentences(sentences)
-  sentences$polarity <- 0
-  new_sentences <- sentences %>% 
-    full_join(old_sentences)
-  
-  # Cleaning speech of each year
-  new_df_row <- df %>% 
-    filter(!(uuid %in% sentences_cleaned$uuid)) %>% 
-    rowwise() %>% 
-    mutate(content = clean_speech(content))
-  
-  df <- sentences_cleaned %>% 
-    full_join(new_df_row)
-} else {
+# if(file.exists("data/sentences_cleaned.rds")){
+#   sentences_cleaned <- readRDS("data/sentences_cleaned.rds")
+#   ## Load senteces if it exists ----
+#   old_sentences <- readRDS("data/sentences.rds")
+#   if(nrow(old_sentences) != nrow(df)){
+#     # Cleaning sentences i.e., leaving in the . (dots) for later separation
+#     sentences <- data.frame(cbind(df$uuid, clean_sentences(df$content), clean_sentences_less(df$content)))
+#     
+#     # Grouping speaches by id and separating into sentences by . (dots)
+#     sentences <- sentences %>% 
+#       filter(!(X1 %in% old_sentences$uuid)) %>% 
+#       group_by(X1) %>% 
+#       summarize(
+#         sentence = strsplit(X2, "[.]"),
+#         sentence_full = strsplit(X3, "[.]")
+#       )
+#     
+#     sentences <- unnest_sentences(sentences)
+#     
+#     sentences$polarity <- 0
+#     sentences <- sentences %>% 
+#       full_join(old_sentences)
+#     
+#     # Cleaning speech of each year
+#     new_df_row <- df %>% 
+#       filter(!(uuid %in% sentences_cleaned$uuid)) %>% 
+#       rowwise() %>% 
+#       mutate(content = clean_speech(content))
+#     
+#     df <- sentences_cleaned %>% 
+#       full_join(new_df_row)
+#   } else{
+#     sentences <- old_sentences
+#   }
+# } else {
   # Create, if not exists ----
   # Cleaning sentences i.e., leaving in the . (dots) for later separation
   sentences <- data.frame(cbind(df$uuid, clean_sentences(df$content), clean_sentences_less(df$content)))
+  
   # Grouping speaches by id and separating into sentences by . (dots)
   sentences <- sentences %>% 
     group_by(X1) %>% 
@@ -111,7 +114,7 @@ if(file.exists("data/article_library.rds")){
   
   # Cleaning speech of each year
   df$content <- clean_speech(df$content)
-}
+# }
 
 # Save sentences ----
 saveRDS(sentences, "data/sentences.rds")
