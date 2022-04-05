@@ -173,6 +173,7 @@ server <- function(input, output, session) {
   ### Speech ---------------------------------------------------------------
   output$total_covered <- renderValueBox({
     covered <- length(id_docs())
+    covered <- prettyNum(covered, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
       covered, "Articles covered", icon = icon("fal fa-newspaper", verify_fa = FALSE),
       color = "light-blue",
@@ -187,6 +188,7 @@ server <- function(input, output, session) {
     } else{
       val <- n_unique_sentences
     }
+    val <- prettyNum(val, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
       val, span("Unique sentences", title="In selected topic"), icon = icon("comments"),
       color = "light-blue"
@@ -199,6 +201,7 @@ server <- function(input, output, session) {
       select(stemmed, n_stem_total) %>% 
       summarise(n = sum(n_stem_total))
     total_words <- sum(data$n)
+    total_words <- prettyNum(total_words, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
       total_words, span("Words analyzed", title="After stopwords are filtered."), icon = icon("hashtag"),
       color = "light-blue"
@@ -209,6 +212,7 @@ server <- function(input, output, session) {
     data <- speech_data_word_filt()$stemmed %>% 
       unique()
     total_unique_words <- length(data)
+    total_unique_words <- prettyNum(total_unique_words, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
       total_unique_words, span("Unique Words analyzed", title="After stopwords are filtered."), icon = icon("hashtag"),
       color = "light-blue"
@@ -217,7 +221,8 @@ server <- function(input, output, session) {
   
   ### Topics ---------------------------------------------------------------
   output$total_amount_of_topics <- renderValueBox({
-      data <- stm_models()$mod$settings$dim$K
+    data <- stm_models()$mod$settings$dim$K
+    data <- prettyNum(data, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
       data, "Topics", icon = icon("comment-dots"),
       color = "yellow"
@@ -235,6 +240,7 @@ server <- function(input, output, session) {
   
   output$total_featured_words <- renderValueBox({
     n_featured_words <- length(input$words)
+    n_featured_words <- prettyNum(n_featured_words, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
       n_featured_words, "Featured words", icon = icon("hashtag"),
       color = "light-blue"
@@ -249,6 +255,7 @@ server <- function(input, output, session) {
       data <- sentiment_of_speech_data()
     }
     total_sum_sen <- sum(data$sentiment)
+    total_sum_sen <- prettyNum(total_sum_sen, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
       total_sum_sen, "Summed sentiment", icon = icon("theater-masks"),
       color = "purple"
@@ -262,6 +269,7 @@ server <- function(input, output, session) {
       data <- sentiment_of_speech_data()
     }
     total_pos_sen <- sum(data$sentiment_pos)
+    total_pos_sen <- prettyNum(total_pos_sen, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
       total_pos_sen, "Summed positive sentiment", icon = icon("smile"),
       color = "green"
@@ -275,6 +283,7 @@ server <- function(input, output, session) {
       data <- sentiment_of_speech_data()
     }
     total_neg_sen <- sum(data$sentiment_neg)
+    total_neg_sen <- prettyNum(total_neg_sen, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
       total_neg_sen, "Summed negative sentiment", icon = icon("frown"),
       color = "red"
@@ -288,6 +297,7 @@ server <- function(input, output, session) {
       data <- sentiment_of_speech_data()
     }
     total_num_wor <- sum(data$n_words)
+    total_num_wor <- prettyNum(total_num_wor, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
       total_num_wor, "Number of words that carried sentiment", icon = icon("equals"),
       color = "purple"
@@ -301,6 +311,7 @@ server <- function(input, output, session) {
       data <- sentiment_of_speech_data()
     }
     num_pos_sen <- sum(data$n_pos)
+    num_pos_sen <- prettyNum(num_pos_sen, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
       num_pos_sen, "Number of words that carried positive sentiment", icon = icon("plus-circle"),
       color = "green"
@@ -314,6 +325,7 @@ server <- function(input, output, session) {
       data <- sentiment_of_speech_data()
     }
     num_neg_sen <- sum(data$n_neg)
+    num_neg_sen <- prettyNum(num_neg_sen, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
       num_neg_sen, "Number of words that had negative sentiment", icon = icon("minus-circle"),
       color = "red"
@@ -328,6 +340,7 @@ server <- function(input, output, session) {
     }
     mean_sum_sen <- round(mean(data$sentiment),2)
     mean_sum_sen <- ifelse(is.nan(mean_sum_sen), 0, mean_sum_sen)
+    mean_sum_sen <- prettyNum(mean_sum_sen, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
       mean_sum_sen, "Average sentiment", icon = icon("equals"),
       color = "purple"
@@ -342,6 +355,7 @@ server <- function(input, output, session) {
     }
     mean_pos_sen <- round(mean(data$sentiment_pos),2)
     mean_pos_sen <- ifelse(is.nan(mean_pos_sen), 0, mean_pos_sen)
+    mean_pos_sen <- prettyNum(mean_pos_sen, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
       mean_pos_sen, "Average positive sentiment", icon = icon("plus"),
       color = "green"
@@ -356,6 +370,7 @@ server <- function(input, output, session) {
     }
     mean_neg_sen <- round(mean(data$sentiment_neg),2)
     mean_neg_sen <- ifelse(is.nan(mean_neg_sen), 0, mean_neg_sen)
+    mean_neg_sen <- prettyNum(mean_neg_sen, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
       mean_neg_sen, "Average negative sentiment", icon = icon("minus"),
       color = "red"
@@ -370,6 +385,7 @@ server <- function(input, output, session) {
     }
     mean_num_wor <- round(mean(data$n_words),2)
     mean_num_wor <- ifelse(is.nan(mean_num_wor), 0, mean_num_wor)
+    mean_num_wor <- prettyNum(mean_num_wor, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
       mean_num_wor, "Average number of words that carried sentiment", icon = icon("hashtag"),
       color = "purple"
