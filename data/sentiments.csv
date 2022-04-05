@@ -1,4 +1,7 @@
 "uuid","sentiment","sentiment_pos","sentiment_neg","average_sentiment","n_pos","n_neg","n_words","sentiment_label","title","date_updated_at","date_published_at"
+"aff8e819-85dc-4969-87a3-c8dea993e141",-22,6,-28,-0.282051282051282,4,14,18,"Negative","19-årig skuddræbt: Fyns Politi efterlyser viden om flugtbil (aff8e819-85dc-4969-87a3-c8dea993e141)",2022-04-05 11:27:49,2022-04-05 11:27:49
+"3f2dc13e-59b3-4e13-be20-2601242ddd83",-5,29,-34,-0.037037037037037,22,19,41,"Negative","Bandemedlemmer undgår kontrol med proforma-flytninger (3f2dc13e-59b3-4e13-be20-2601242ddd83)",2022-04-05 10:59:53,2022-04-05 10:59:53
+"6209007a-e16c-4dcc-bf58-29f212ab05d0",5,7,-2,0.0769230769230769,3,2,5,"Positive","For fjerde år i træk: Årets første bøg er sprunget ud på Fyn (6209007a-e16c-4dcc-bf58-29f212ab05d0)",2022-04-05 07:49:41,2022-04-05 07:49:41
 "0a3d1bf5-494d-40fc-9325-1b1c593b3c8f",12,16,-4,0.0923076923076923,13,4,17,"Positive","Museum finder hemmelige skatte i baghaven (0a3d1bf5-494d-40fc-9325-1b1c593b3c8f)",2022-03-31 13:31:49,2022-03-31 13:31:49
 "2bd64e2b-3e41-4a4c-967b-d89a262aa63f",19,45,-26,0.085972850678733,25,17,42,"Positive","Ny læreruddannelse udfordret: - Når vi får dem indenfor, bliver de (2bd64e2b-3e41-4a4c-967b-d89a262aa63f)",2022-04-05 04:11:19,2022-04-05 04:11:19
 "47e8c20f-29b0-423a-9630-71a8db616044",-6,16,-22,-0.0437956204379562,12,18,30,"Negative","Letbanen i Odense: Støj kan godt påvirke sundheden, vurderer læge (47e8c20f-29b0-423a-9630-71a8db616044)",2022-04-04 18:41:07,2022-04-04 18:41:07
