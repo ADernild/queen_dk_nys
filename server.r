@@ -414,23 +414,30 @@ server <- function(input, output, session) {
     slide_num <- input$topis_sentence_slider
     topic <- input$topicVis_topic_click
     output$topicText <- renderUI({
-      sentences <- unlist(thoughts$docs[topic])
-      id <- unlist(thoughts$uuid[topic])
-      df <- data.frame(sentences, id)
-      df <- df[sample.int(nrow(df), ifelse(nrow(df)<slide_num, nrow(df), slide_num)),]
-      df$sentences <- str_to_sentence(df$sentences)
-      name <- article_lib %>% 
-        filter(uuid %in% id) %>% 
-        rowwise() %>% 
-        mutate(title = ifelse(nchar(title)>50,
-               paste(strtrim(title, 47), "...", sep=""),
-               title)) %>% 
-        .$title
+      if(slide_num>0){
+        sentences <- unlist(thoughts$docs[topic])
+        id <- unlist(thoughts$uuid[topic])
+        df <- data.frame(sentences, id)
+        df <- df[sample.int(nrow(df), ifelse(nrow(df)<slide_num, nrow(df), slide_num)),]
+        df$sentences <- str_to_sentence(df$sentences) %>% 
+          sample(slide_num)
+        name <- article_lib %>% 
+          filter(uuid %in% id) %>% 
+          rowwise() %>% 
+          mutate(title = ifelse(nchar(title)>50,
+                 paste(strtrim(title, 47), "...", sep=""),
+                 title)) %>% 
+          .$title %>% 
+          sample(slide_num)
 
-      paste("<ul>", paste0("<li>", df$sentences, ".", " (", name, " | uuid: ", df$id, ")", "</li>", collapse = ""), "</ul>") %>%
-      # paste("<ul>", paste0("<li>", df$sentences, ".", " (", df$years, ")", "</li>", collapse = ""), "</ul>") %>%
-        HTML()
+        paste("<ul>", paste0("<li>", df$sentences, ".", " (", name, " | uuid: ", df$id, ")", "</li>", collapse = ""), "</ul>") %>%
+        # paste("<ul>", paste0("<li>", df$sentences, ".", " (", df$years, ")", "</li>", collapse = ""), "</ul>") %>%
+          HTML()
+      } else{
+        HTML("No senteces allowed")
+      }
     })
+      
     
     output$topics_sentce_title <-  renderText({
       paste("Sentences belonging to topic", topic)
