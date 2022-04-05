@@ -291,6 +291,40 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
   border-radius: 0;
 }
 
+.nav-tabs-custom .tab-pane.active,
+.tab-content .box>.box-body {
+  display: flex;
+  height: calc(100% - 43px);
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-content: flex-start;
+}
+
+.nav-tabs-custom .tab-pane.active .box>.box-body,
+.tab-content .box>.box-body .box>.box-body {
+  display: none;
+  height: auto;
+  flex-direction: initial;
+  flex-wrap: initial;
+}
+
+.nav-tabs-custom .tab-pane.active>*,
+.tab-content .box>.box-body>* {
+  display: inline-block;
+  align-self: normal;
+  align-self: flex-end;
+  width: 100%;
+}
+
+.nav-tabs-custom .tab-pane.active .box>.box-body>div.col-sm-12:last-child,
+.tab-content .box>.box-body>div.col-sm-12:last-child {
+  display: inline-block;
+  align-self: flex-end;
+  margin-top: auto;
+}
+
 .box .box .box-tools.pull-right,
 .box .box .box-tools.pull-right .btn-box-tool,
 .tab-content .box .box-tools.pull-right,
