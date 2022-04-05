@@ -362,10 +362,11 @@ ui <- dashboardPage(
                     )
                 ),
                 tabBox(width=10, id = "word_ussage", title="Most used words",
-                       tabPanel("Aggregated word frequency",
+                       tabPanel("Aggregated word freq.",
                                 whatViz("Aggregated word frequency is a pie-chart displaying aggregated frequency of words."),
                                 whyViz("Frequency is a major factor for determining topics."),
                                 highchartOutput("word_ussage_pie", height="50vh"),
+                                helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 40. Any number set above, will result in 40 being featured."),
                                 box(width = 12, class="infoViz", title = "How to use",
                                     collapsible = T, collapsed = T,
                                     howViz("Interpretation: Frequency can be read from the labels."),
@@ -373,27 +374,27 @@ ui <- dashboardPage(
                                     howViz("Top frequent numbers: Top frequent numbers will filter for the most frequent numbers by the specified amount."),
                                     howViz("UUID filter: Using the uuid-filter, will filter Articles featured."),
                                     howViz("Featured words: Setting featured words will filter for the words set in selection.")
-                                ),
-                                helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 40. Any number set above, will result in 40 being featured.")
+                                )
                        ),
-                       tabPanel("Word frequency by Article (Stream graph)",
+                       tabPanel("Word freq. by Article (Stream graph)",
                                 collapsible = T, collapsed = T,
                                 whatViz("This shows the frequency of words by Article with a stream."),
                                 whyViz("The model is useful for determining frequency of words and the relation with other words, especially overviewing changing frequency between Articles."),
                                 highchartOutput("word_ussage_streamgraph", height="50vh"),
+                                helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 20. Any number set above, will result in 20 being featured."),
                                 box(width = 12, class="infoViz", title = "How to use",
                                     howViz("Interpretation: Words are represented by streams, and the width represents the frequency in a data-point of a selection of words."),
                                     howViz("Tooltip: Hovering above a data-point displays a tooltip for the data-point. It will display the frequency of each word in that data-point."),
                                     howViz("Top frequent numbers: Top frequent numbers will filter for the most frequent numbers by the specified amount."),
                                     howViz("UUID filter: Using the uuid-filter, will filter Articles featured."),
                                     howViz("Featured words: Setting featured words will filter for the words set in selection.")
-                                ),
-                                helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 20. Any number set above, will result in 20 being featured.")
+                                )
                        ),
-                       tabPanel("Word frequency by Article (Columns)",
+                       tabPanel("Word freq. by A. (Columns)",
                                 whatViz("This shows the frequency of words by Article with stacked columns."),
                                 whyViz("The model is useful for determining frequency of words and the relation with other words of a selection of words."),
                                 highchartOutput("word_ussage_col", height="50vh"),
+                                helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 30. Any number set above, will result in 30 being featured."),
                                 box(width = 12, class="infoViz", title = "How to use",
                                     collapsible = T, collapsed = T,
                                     howViz("Interpretation: Each Article has a bar. The height of a bar is the total frequency of word selection. Each bar-part represents a word, and the height, the frequency of the word."),
@@ -401,14 +402,14 @@ ui <- dashboardPage(
                                     howViz("Top frequent numbers: Top frequent numbers will filter for the most frequent numbers by the specified amount."),
                                     howViz("UUID filter: Using the uuid-filter, will filter Articles featured."),
                                     howViz("Featured words: Setting featured words will filter for the words set in selection.")
-                                ),
-                                helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 30. Any number set above, will result in 30 being featured.")
+                                )
                        ),
-                       tabPanel("Word frequency by Article (scatterplot)",
+                       tabPanel("Word freq. by A. (scatterplot)",
                                 whatViz("This model displays words as data point by Article and frequency."),
                                 whyViz("The model is useful for determining frequency of words in relation to other Articles."),
                                 whyViz("The model is useful for detecting large values,  big influencers, and potential outliers."),
                                 highchartOutput("word_ussage_scatter", height="50vh"),
+                                helpText("Notice: Due to performance issues, scatterplot is limited to a maximum frequency of 20. Any number set above, will result in 20 being featured."),
                                 box(width = 12, class="infoViz", title = "How to use",
                                     collapsible = T, collapsed = T,
                                     howViz("Interpretation: Each Article, each word is represented by a datapoint in relation to its frequency."),
@@ -416,8 +417,7 @@ ui <- dashboardPage(
                                     howViz("Top frequent numbers: Top frequent numbers will filter for the most frequent numbers by the specified amount."),
                                     howViz("UUID filter: Using the uuid-filter, will filter Articles featured."),
                                     howViz("Featured words: Setting featured words will filter for the words set in selection.")
-                                ),
-                                helpText("Notice: Due to performance issues, scatterplot is limited to a maximum frequency of 20. Any number set above, will result in 20 being featured.")
+                                )
                        ),
                        tabPanel("Wordcloud",
                            whatViz("Words in the wordcloud is randomly selected from available words."),
