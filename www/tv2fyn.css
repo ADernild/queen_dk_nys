@@ -209,9 +209,17 @@ section.sidebar .shiny-bound-input.action-link:hover{
 /* Columns */
 .box .box,
 .tab-content .box {
-  border-top-color: #d21e1e;
   border-right-color: #ddd;
   border-left-color: #ddd;
+}
+
+.tab-content .box {
+  border-top-color: #d21e1e;
+}
+
+.nav-tabs-custom .box,
+.box .box {
+  border-top-color: #162c40;
 }
 
 .box-header .box-title{
@@ -228,16 +236,31 @@ section.sidebar .shiny-bound-input.action-link:hover{
 }
 
 .nav-tabs-custom>.nav-tabs{
-  background-color: #eee;
+  background-color: #162c40;
+  color: #fff;
+}
+
+.nav-tabs-custom>.nav-tabs>li.header{
+  color: #fff;
+}
+
+.nav-tabs-custom>.nav-tabs>li,
+.nav-tabs-custom>.nav-tabs>li>a{
+  color: #fff;
+  font-weight: bold;
 }
 
 .nav-tabs-custom>.nav-tabs>li:hover{
   border-top-color: #d21e1e;
-  color: #333;
+}
+
+.nav-tabs-custom>.nav-tabs>li:hover>a{
+  color: #fff;
 }
 
 .nav-tabs-custom>.nav-tabs>li.active{
   border-top-color: #d21e1e;
+  color: #333;
 }
 
 .nav-tabs-custom>.nav-tabs>li:hover>a{
@@ -282,11 +305,11 @@ section.sidebar .shiny-bound-input.action-link:hover{
 }
 
 .irs--shiny .irs-handle{
-  background: #d21e1e;
+  background: #162c40;
 }
 
 .irs--shiny .irs-handle:hover{
-  background: #333;
+  background: #d21e1e;
 }
 
 .irs--shiny .irs-from, .irs--shiny .irs-to, .irs--shiny .irs-single{
