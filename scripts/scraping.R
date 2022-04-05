@@ -2,6 +2,8 @@
 # Documentation: https://developer.bazo.dk/
 # API: public.fyn.bazo.dk
 
+print("scrabing.R")
+
 # Libraries ----
 library(dplyr)
 library(jsonlite) # API stuff
@@ -9,6 +11,7 @@ library(stringr) # To handle whitespace
 
 # Settings ----
 check_content <- T
+new_entries <- 0
 
 # Functions ----
 cleanFun <- function(htmlString) { # Source: https://stackoverflow.com/questions/17227294/removing-html-tags-from-a-string-in-r
@@ -109,8 +112,11 @@ for(i in 1:page_num){
   library_dif <- library_af - library_bf
   #library_updated <- page_size-sum(table(api_json$date_updated_at[api_json$date_updated_at %in% tail(library$date_updated_at, page_size)]))
   print(paste(sep="", "Progress: ", i, "/", page_num, ". Articles looped trhough: ", page_size*i, "/", results, "/", total_articles, ". Entries added: ", library_dif, ". Entries updated: ", library_updated, ". Entries in library: ", library_af)) # Print status
-  if(check_content == T && library_dif == 0 && library_updated ==0){
-    print("Terminated prematurely, as no entries were added or updated. To disable check, set check_content to false.")
+  # if(check_content == T && library_dif == 0 && library_updated ==0){
+  new_entries <- new_entries + library_dif
+  if(check_content == T && library_dif == 0){
+    # print("Terminated loop prematurely, as no entries were added or updated. To disable check, set check_content to false.")
+    print("Terminated loop prematurely, as no entries were added. To disable check, set check_content to false.")
     break;
   }
 }
@@ -118,6 +124,7 @@ for(i in 1:page_num){
 # Save library ----
 # > Save library as rds ----
 saveRDS(library, "data/article_library.rds")
+saveRDS(new_entries , "data/new_entries.rds")
 
 # > Save library as csv ----
 library %>% 
