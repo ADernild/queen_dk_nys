@@ -70,7 +70,7 @@ if(nrow(tokens)>0){
   if(exists("old_tokens")){
     new_tokens <- tokens
     tokens <- tokens %>%
-      left_join(old_tokens) %>% 
+      full_join(old_tokens) %>% 
       select(!n_stem)
   }
   
