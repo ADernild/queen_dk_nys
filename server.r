@@ -1091,7 +1091,7 @@ server <- function(input, output, session) {
       hc_tooltip(
         shared = TRUE,
         headerFormat = "<b>{point.key}</b><br>",
-        pointFormat = "<span style=\"color: {point.color} \">\u25CF</span> {point.series.name}: {point.y}"
+        pointFormat = "<span style=\"color: {point.color} \">\u25CF</span> Frequency: {point.y} - Total polarity: {point.polarity}."
       ) %>% 
       hc_norevese() %>% 
       hc_legend(
