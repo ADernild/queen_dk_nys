@@ -47,9 +47,9 @@ ui <- dashboardPage(
                       valueBoxOutput("total_word_unique") # Amount of unique words covered
                     ),
                     fluidRow(
-                      valueBoxOutput("total_amount_of_topics"), # Amount of topics covered
-                      valueBoxOutput("total_sentences"), # Amount of words covered
-                      valueBoxOutput("total_featured_words") # Amount of featured words
+                      valueBoxOutput("total_amount_of_topics", width = 6), # Amount of topics covered
+                      valueBoxOutput("total_sentences", width = 6) # Amount of words covered
+                      # valueBoxOutput("total_featured_words") # Amount of featured words
                     ),
                     # fluidRow(
                     #   valueBoxOutput("total_countries_mentioned"), # Amount of countries mentioned

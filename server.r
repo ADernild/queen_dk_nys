@@ -19,8 +19,8 @@ server <- function(input, output, session) {
                            multiple = TRUE, options = list(maxOptions = length(article_lib$uuid))),
             selectizeInput("topic", label="Topic", choices = c(),
                            multiple = FALSE, options = list(maxOptions = length(topic_frame$topic))),
-            selectizeInput("words", label="Featured words", choices = c(),
-                           multiple = TRUE, options = list(maxOptions = length(words_tokens_all))),
+            # selectizeInput("words", label="Featured words", choices = c(),
+            #                multiple = TRUE, options = list(maxOptions = length(words_tokens_all))),
             actionButton("sync", "Syncronize artciles and id"),
             actionButton("topic_id_sync", "Add articles covered in topic"),
             actionButton("clear", "Clear featured words"),
@@ -238,22 +238,22 @@ server <- function(input, output, session) {
   #   )
   # })
   
-  output$total_featured_words <- renderValueBox({
-    n_featured_words <- length(input$words)
-    n_featured_words <- prettyNum(n_featured_words, big.mark=".", scientific=FALSE, decimal.mark= ",")
-    valueBox(
-      n_featured_words, "Featured words", icon = icon("hashtag"),
-      color = "light-blue"
-    )
-  })
+  # output$total_featured_words <- renderValueBox({
+  #   n_featured_words <- length(input$words)
+  #   n_featured_words <- prettyNum(n_featured_words, big.mark=".", scientific=FALSE, decimal.mark= ",")
+  #   valueBox(
+  #     n_featured_words, "Featured words", icon = icon("hashtag"),
+  #     color = "light-blue"
+  #   )
+  # })
   
   ### Sentiment ------------------------------------------------------------
   output$total_sum_sen <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
+    # if(length(input$words) > 0){
+    #   data <- sentiment_of_speech_data_filtered()
+    # } else{
       data <- sentiment_of_speech_data()
-    }
+    # }
     total_sum_sen <- sum(data$sentiment)
     total_sum_sen <- prettyNum(total_sum_sen, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
@@ -263,11 +263,11 @@ server <- function(input, output, session) {
   })
   
   output$total_pos_sen <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
+    # if(length(input$words) > 0){
+    #   data <- sentiment_of_speech_data_filtered()
+    # } else{
       data <- sentiment_of_speech_data()
-    }
+    # }
     total_pos_sen <- sum(data$sentiment_pos)
     total_pos_sen <- prettyNum(total_pos_sen, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
@@ -277,11 +277,11 @@ server <- function(input, output, session) {
   })
   
   output$total_neg_sen <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
+    # if(length(input$words) > 0){
+    #   data <- sentiment_of_speech_data_filtered()
+    # } else{
       data <- sentiment_of_speech_data()
-    }
+    # }
     total_neg_sen <- sum(data$sentiment_neg)
     total_neg_sen <- prettyNum(total_neg_sen, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
@@ -291,11 +291,11 @@ server <- function(input, output, session) {
   })
   
   output$total_num_wor <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
+    # if(length(input$words) > 0){
+    #   data <- sentiment_of_speech_data_filtered()
+    # } else{
       data <- sentiment_of_speech_data()
-    }
+    # }
     total_num_wor <- sum(data$n_words)
     total_num_wor <- prettyNum(total_num_wor, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
@@ -305,11 +305,11 @@ server <- function(input, output, session) {
   })
   
   output$num_pos_sen <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
+    # if(length(input$words) > 0){
+    #   data <- sentiment_of_speech_data_filtered()
+    # } else{
       data <- sentiment_of_speech_data()
-    }
+    # }
     num_pos_sen <- sum(data$n_pos)
     num_pos_sen <- prettyNum(num_pos_sen, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
@@ -319,11 +319,11 @@ server <- function(input, output, session) {
   })
   
   output$num_neg_sen <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
+    # if(length(input$words) > 0){
+    #   data <- sentiment_of_speech_data_filtered()
+    # } else{
       data <- sentiment_of_speech_data()
-    }
+    # }
     num_neg_sen <- sum(data$n_neg)
     num_neg_sen <- prettyNum(num_neg_sen, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
@@ -333,11 +333,11 @@ server <- function(input, output, session) {
   })
   
   output$mean_sum_sen <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
+    # if(length(input$words) > 0){
+    #   data <- sentiment_of_speech_data_filtered()
+    # } else{
       data <- sentiment_of_speech_data()
-    }
+    # }
     mean_sum_sen <- round(mean(data$sentiment),2)
     mean_sum_sen <- ifelse(is.nan(mean_sum_sen), 0, mean_sum_sen)
     mean_sum_sen <- prettyNum(mean_sum_sen, big.mark=".", scientific=FALSE, decimal.mark= ",")
@@ -348,11 +348,11 @@ server <- function(input, output, session) {
   })
   
   output$mean_pos_sen <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
+    # if(length(input$words) > 0){
+    #   data <- sentiment_of_speech_data_filtered()
+    # } else{
       data <- sentiment_of_speech_data()
-    }
+    # }
     mean_pos_sen <- round(mean(data$sentiment_pos),2)
     mean_pos_sen <- ifelse(is.nan(mean_pos_sen), 0, mean_pos_sen)
     mean_pos_sen <- prettyNum(mean_pos_sen, big.mark=".", scientific=FALSE, decimal.mark= ",")
@@ -363,11 +363,11 @@ server <- function(input, output, session) {
   })
   
   output$mean_neg_sen <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
+    # if(length(input$words) > 0){
+    #   data <- sentiment_of_speech_data_filtered()
+    # } else{
       data <- sentiment_of_speech_data()
-    }
+    # }
     mean_neg_sen <- round(mean(data$sentiment_neg),2)
     mean_neg_sen <- ifelse(is.nan(mean_neg_sen), 0, mean_neg_sen)
     mean_neg_sen <- prettyNum(mean_neg_sen, big.mark=".", scientific=FALSE, decimal.mark= ",")
@@ -378,11 +378,11 @@ server <- function(input, output, session) {
   })
   
   output$mean_num_wor <- renderValueBox({
-    if(length(input$words) > 0){
-      data <- sentiment_of_speech_data_filtered()
-    } else{
+    # if(length(input$words) > 0){
+    #   data <- sentiment_of_speech_data_filtered()
+    # } else{
       data <- sentiment_of_speech_data()
-    }
+    # }
     mean_num_wor <- round(mean(data$n_words),2)
     mean_num_wor <- ifelse(is.nan(mean_num_wor), 0, mean_num_wor)
     mean_num_wor <- prettyNum(mean_num_wor, big.mark=".", scientific=FALSE, decimal.mark= ",")
@@ -532,26 +532,26 @@ server <- function(input, output, session) {
       hc_multicol()
   })
   
-  observeEvent(input$topicVis_term_click, {
-    req(input$topic_r)
-    if(input$topic_r == 2){
-      chosen <- input$words
-      if(input$topicVis_term_click %in% tokens$stemmed){
-        chosen <- c(chosen, input$topicVis_term_click)
-      } else if(input$topicVis_term_click %in% tokens$word){
-        word <- tokens[tokens$word == input$topicVis_term_click,]$stemmed[1]
-        chosen <- c(chosen, word)
-      } else if(input$topicVis_term_click %in% tokens$headword){
-        word <- tokens[tokens$headword == input$topicVis_term_click,]$stemmed[1]
-        chosen <- c(chosen, word)
-      }
-    
-      updateSelectizeInput(session,
-                           "words",
-                           "Featured words",
-                           selected = chosen)
-    }
-  })
+  # observeEvent(input$topicVis_term_click, {
+  #   req(input$topic_r)
+  #   if(input$topic_r == 2){
+  #     chosen <- input$words
+  #     if(input$topicVis_term_click %in% tokens$stemmed){
+  #       chosen <- c(chosen, input$topicVis_term_click)
+  #     } else if(input$topicVis_term_click %in% tokens$word){
+  #       word <- tokens[tokens$word == input$topicVis_term_click,]$stemmed[1]
+  #       chosen <- c(chosen, word)
+  #     } else if(input$topicVis_term_click %in% tokens$headword){
+  #       word <- tokens[tokens$headword == input$topicVis_term_click,]$stemmed[1]
+  #       chosen <- c(chosen, word)
+  #     }
+  #   
+  #     updateSelectizeInput(session,
+  #                          "words",
+  #                          "Featured words",
+  #                          selected = chosen)
+  #   }
+  # })
   
   output$topics_sentce_title <-  renderText({
     "Sentences belonging to topics"
@@ -571,16 +571,16 @@ server <- function(input, output, session) {
              sentiment_neg = round(sentiment_neg)) %>% 
       group_by(uuid) %>% 
       arrange(date_updated_at)
-    if(length(input$words) > 0){
-      token_data <- tokens %>% 
-        filter(stemmed %in% input$words) %>% 
-        .$uuid %>% 
-        unique() %>% 
-        sort()
-      data <- data %>% 
-        rowwise() %>% 
-        mutate(fwords = ifelse(uuid %in% token_data, "Yes", "No"))
-    }
+    # if(length(input$words) > 0){
+    #   token_data <- tokens %>% 
+    #     filter(stemmed %in% input$words) %>% 
+    #     .$uuid %>% 
+    #     unique() %>% 
+    #     sort()
+    #   data <- data %>% 
+    #     rowwise() %>% 
+    #     mutate(fwords = ifelse(uuid %in% token_data, "Yes", "No"))
+    # }
     return(data)
   })
   
@@ -592,12 +592,12 @@ server <- function(input, output, session) {
       group_by(stemmed) %>% 
       distinct(uuid, stemmed, .keep_all = TRUE)
     
-    if(length(input$words) > 0 && cmatch(data$stemmed, input$words)){
-      data <- data %>%
-        # filter(stemmed %in% input$words) %>% 
-        mutate(fwords = ifelse(stemmed %in% input$words, "featured word", "")) %>% 
-        mutate(sentiment_true = ifelse(stemmed %in% input$words, paste(sentiment_true, fwords, sep=" | "), sentiment_true))
-    }
+    # if(length(input$words) > 0 && cmatch(data$stemmed, input$words)){
+    #   data <- data %>%
+    #     # filter(stemmed %in% input$words) %>% 
+    #     mutate(fwords = ifelse(stemmed %in% input$words, "featured word", "")) %>% 
+    #     mutate(sentiment_true = ifelse(stemmed %in% input$words, paste(sentiment_true, fwords, sep=" | "), sentiment_true))
+    # }
     
     if("fwords" %in% colnames(data)){
       data <- data %>% 
@@ -621,38 +621,38 @@ server <- function(input, output, session) {
     return(data)
   })
   
-  sentiment_of_speech_data_filtered <- reactive({
-    req(input$words)
-    
-    data <- tokens %>%
-      rowwise() %>% 
-      filter(uuid %in% id_docs()) %>% 
-      mutate(polarity_pos = as.numeric(ifelse(polarity > 0, polarity, 0)),
-             polarity_neg = as.numeric(ifelse(polarity < 0, polarity, 0)),
-             n_in_pos = as.numeric(ifelse(polarity > 0, n_in, 0)),
-             n_in_neg = as.numeric(ifelse(polarity < 0, n_in, 0))) %>% 
-      group_by(uuid, stemmed)
-    
-    if(length(input$words) > 0 && cmatch(data$stemmed, input$words)){
-      data <- data %>%
-        filter(stemmed %in% input$words)
-    }
-
-    data <- data %>%
-      summarise(sentiment = sum(n_in*polarity),
-                sentiment_pos = sum(n_in*polarity_pos),
-                sentiment_neg = sum(n_in*polarity_neg),
-                average_sentiment = mean(n_in*polarity),
-                n_pos = sum(n_in_pos),
-                n_neg = sum(n_in_neg)
-      ) %>% 
-      mutate(sentiment = round(sentiment),
-             sentiment_pos = round(sentiment_pos),
-             sentiment_neg = round(sentiment_neg),
-             n_words = n_pos+n_neg) %>% 
-      arrange(date_updated_at)
-    return(data)
-  })
+  # sentiment_of_speech_data_filtered <- reactive({
+  #   req(input$words)
+  #   
+  #   data <- tokens %>%
+  #     rowwise() %>% 
+  #     filter(uuid %in% id_docs()) %>% 
+  #     mutate(polarity_pos = as.numeric(ifelse(polarity > 0, polarity, 0)),
+  #            polarity_neg = as.numeric(ifelse(polarity < 0, polarity, 0)),
+  #            n_in_pos = as.numeric(ifelse(polarity > 0, n_in, 0)),
+  #            n_in_neg = as.numeric(ifelse(polarity < 0, n_in, 0))) %>% 
+  #     group_by(uuid, stemmed)
+  #   
+  #   if(length(input$words) > 0 && cmatch(data$stemmed, input$words)){
+  #     data <- data %>%
+  #       filter(stemmed %in% input$words)
+  #   }
+  # 
+  #   data <- data %>%
+  #     summarise(sentiment = sum(n_in*polarity),
+  #               sentiment_pos = sum(n_in*polarity_pos),
+  #               sentiment_neg = sum(n_in*polarity_neg),
+  #               average_sentiment = mean(n_in*polarity),
+  #               n_pos = sum(n_in_pos),
+  #               n_neg = sum(n_in_neg)
+  #     ) %>% 
+  #     mutate(sentiment = round(sentiment),
+  #            sentiment_pos = round(sentiment_pos),
+  #            sentiment_neg = round(sentiment_neg),
+  #            n_words = n_pos+n_neg) %>% 
+  #     arrange(date_updated_at)
+  #   return(data)
+  # })
 
   ## sentiment of speeches -------------------------------------------------
   ### Bubles ---------------------------------------------------------------
@@ -848,31 +848,31 @@ server <- function(input, output, session) {
         shared = T
       ) %>% 
       hc_quadcolsum()
-    if(length(input$words)>0){
-      selection <- sentiment_of_speech_data_filtered() %>% 
-        select(sentiment, uuid, stemmed) %>% 
-        ungroup()
-      for(word in unique(selection$stemmed)){
-        for(uuid in unique(data$uuid)){
-          if(!(word %in% selection[selection$uuid == uuid,]$stemmed)){
-            selection <-  selection %>%
-              add_row(stemmed = word, uuid=uuid, sentiment=0)
-          }
-        }
-      }
-      selection <-  selection %>%
-        group_by(uuid) %>% 
-        summarise(sentiment = sum(sentiment)) %>% 
-        arrange(date_updated_at, sentiment)
-      hc <- hc %>%
-        hc_add_series(
-          type = "bar",
-          stack = 3,
-          name= "Sentiment of selection",
-          data = selection,
-          hcaes(x = uuid, y = sentiment)
-        )
-    }
+    # if(length(input$words)>0){
+    #   selection <- sentiment_of_speech_data_filtered() %>%
+    #     select(sentiment, uuid, stemmed) %>%
+    #     ungroup()
+    #   for(word in unique(selection$stemmed)){
+    #     for(uuid in unique(data$uuid)){
+    #       if(!(word %in% selection[selection$uuid == uuid,]$stemmed)){
+    #         selection <-  selection %>%
+    #           add_row(stemmed = word, uuid=uuid, sentiment=0)
+    #       }
+    #     }
+    #   }
+    #   selection <-  selection %>%
+    #     group_by(uuid) %>% 
+    #     summarise(sentiment = sum(sentiment)) %>% 
+    #     arrange(date_updated_at, sentiment)
+    #   hc <- hc %>%
+    #     hc_add_series(
+    #       type = "bar",
+    #       stack = 3,
+    #       name= "Sentiment of selection",
+    #       data = selection,
+    #       hcaes(x = uuid, y = sentiment)
+    #     )
+    # }
     return(hc)
   })
   
@@ -950,30 +950,30 @@ server <- function(input, output, session) {
         )
       ) %>% 
       hc_fivecolsum()
-    if(length(input$words)>0){
-      selection <- sentiment_of_speech_data_filtered() %>% 
-        select(sentiment, uuid, title, stemmed, date_updated_at) %>% 
-        ungroup()
-      for(word in unique(selection$stemmed)){
-        for(uuid in unique(data$uuid)){
-          if(!(word %in% selection[selection$uuid == uuid,]$stemmed)){
-            selection <-  selection %>%
-              add_row(stemmed = word, title = title, uuid=uuid, sentiment=0, date_updated_at=date_updated_at)
-          }
-        }
-      }
-      selection <-  selection %>%
-        group_by(uuid) %>% 
-        summarise(sentiment = sum(sentiment)) %>% 
-        arrange(date_updated_at, sentiment)
-      hc <- hc %>%
-        hc_add_series(
-          type = "line",
-          name= "Sentiment of selection",
-          data = selection,
-          hcaes(x = title, y = sentiment)
-        )
-    }
+    # if(length(input$words)>0){
+    #   selection <- sentiment_of_speech_data_filtered() %>% 
+    #     select(sentiment, uuid, title, stemmed, date_updated_at) %>% 
+    #     ungroup()
+    #   for(word in unique(selection$stemmed)){
+    #     for(uuid in unique(data$uuid)){
+    #       if(!(word %in% selection[selection$uuid == uuid,]$stemmed)){
+    #         selection <-  selection %>%
+    #           add_row(stemmed = word, title = title, uuid=uuid, sentiment=0, date_updated_at=date_updated_at)
+    #       }
+    #     }
+    #   }
+    #   selection <-  selection %>%
+    #     group_by(uuid) %>% 
+    #     summarise(sentiment = sum(sentiment)) %>% 
+    #     arrange(date_updated_at, sentiment)
+    #   hc <- hc %>%
+    #     hc_add_series(
+    #       type = "line",
+    #       name= "Sentiment of selection",
+    #       data = selection,
+    #       hcaes(x = title, y = sentiment)
+    #     )
+    # }
     return(hc)
   })
   
@@ -1184,16 +1184,16 @@ server <- function(input, output, session) {
       unique() %>% 
       select(sentence, uuid)
     sentences <- data[sample.int(nrow(data), size = 5),]
-    if(!is.null(input$words)){
-           words <- str_split(sentences$sentence, " ")
-           featured_word <- paste0("\\b", input$words, "\\b")
-           test <- sapply(featured_word, function(x) paste0("<b>", str_sub(x, 3, -3), "</b>"), USE.NAMES = T)
-           words <- lapply(words, function(x) str_replace_all(x, test))
-           sentences$sentence <- lapply(words, function(x) paste(x, collapse=" "))
-           sentences$sentence <- str_to_sentence(sentences$sentence)
-    }else{
+    # if(!is.null(input$words)){
+    #        words <- str_split(sentences$sentence, " ")
+    #        featured_word <- paste0("\\b", input$words, "\\b")
+    #        test <- sapply(featured_word, function(x) paste0("<b>", str_sub(x, 3, -3), "</b>"), USE.NAMES = T)
+    #        words <- lapply(words, function(x) str_replace_all(x, test))
+    #        sentences$sentence <- lapply(words, function(x) paste(x, collapse=" "))
+    #        sentences$sentence <- str_to_sentence(sentences$sentence)
+    # }else{
       sentences$sentence <- str_to_sentence(sentences$sentence)
-           }
+           # }
     paste("<ul>", paste0("<li>", sentences$sentence, ".", " (", sentences$uuid, ")", "</li>", collapse=""),"</ul>") %>% 
       HTML()
   })
@@ -1263,17 +1263,17 @@ server <- function(input, output, session) {
           select(sentence, uuid)
         slide_num <- input$map_sentence_slider
         sentences <- data[sample.int(nrow(data), size = ifelse(nrow(data) < slide_num, nrow(data), slide_num)),]
-        if(!is.null(input$words)){
-          words <- str_split(sentences$sentence, " ")
-          featured_word <- paste0("\\b", input$words, "\\b")
-          test <- sapply(featured_word, function(x) paste0("<b>",str_sub(x, 3, -3), "</b>"), USE.NAMES = T)
-          words <- lapply(words, function(x) str_replace_all(x, test))
-          sentences$sentence <- lapply(words, function(x) paste(x, collapse=" "))
+        # if(!is.null(input$words)){
+        #   words <- str_split(sentences$sentence, " ")
+        #   featured_word <- paste0("\\b", input$words, "\\b")
+        #   test <- sapply(featured_word, function(x) paste0("<b>",str_sub(x, 3, -3), "</b>"), USE.NAMES = T)
+        #   words <- lapply(words, function(x) str_replace_all(x, test))
+        #   sentences$sentence <- lapply(words, function(x) paste(x, collapse=" "))
+        #   sentences$sentence <- str_to_sentence(sentences$sentence)
+        #   print(sentences$sentence)
+        # }else{
           sentences$sentence <- str_to_sentence(sentences$sentence)
-          print(sentences$sentence)
-        }else{
-          sentences$sentence <- str_to_sentence(sentences$sentence)
-        }
+        # }
         
         paste("<ul>", paste0("<li>", sentences$sentence, ".", " (", sentences$uuid, ")", "</li>", collapse=""),"</ul>") %>% 
           HTML()
@@ -1301,10 +1301,10 @@ server <- function(input, output, session) {
   speech_data_word_filt <- reactive({
     data <- speech_data()
     
-    if(length(input$words) > 0){
-      data <- data %>% 
-        filter(stemmed %in% input$words)
-    }
+    # if(length(input$words) > 0){
+    #   data <- data %>% 
+    #     filter(stemmed %in% input$words)
+    # }
     
     return(data)
   })
