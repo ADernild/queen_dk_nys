@@ -1059,8 +1059,20 @@ server <- function(input, output, session) {
       need(nrow(data) != 0, "Dataset is empty")
     )
     
+    # data <- data %>%
+    #   select(!n_stem_total)
+    if(length(input$id)>0 || length(input$article)>0){
+      total_stem <- data %>%
+        group_by(stemmed) %>%
+        summarise(n_stem_total = sum(n_stem))
+      
+      data <- data %>% 
+        mutate(n_stem_total = total_stem[min(which(stemmed == total_stem$stemmed)),]$n_stem_total)
+    }
+    
     data <- data %>% 
       distinct(stemmed, .keep_all = TRUE) %>% 
+      mutate(polarity = as.numeric(polarity)*n_stem_total) %>% 
       arrange(n_stem_total, polarity)
     
     if("fwords" %in% colnames(data)){
