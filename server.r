@@ -23,17 +23,21 @@ server <- function(input, output, session) {
             #                multiple = TRUE, options = list(maxOptions = length(words_tokens_all))),
             actionButton("sync", "Syncronize artciles and id"),
             actionButton("topic_id_sync", "Add articles covered in topic"),
-            actionButton("clear", "Clear featured words"),
             actionButton("clear_id", "Clear id and articles"),
+            # actionButton("clear", "Clear featured words"),
             actionButton("clear_all", "Clear all")
           )
         )
   })
 
   ### Sidebar Menu Updates ----------------------------------------------------
+  # updateSelectizeInput(
+  #   session, 'words', choices = words_tokens_all, server = TRUE
+  #   )
+  
   updateSelectizeInput(
-    session, 'words', choices = words_tokens_all, server = TRUE
-    )
+    session, 'id', choices = article_lib$uuid, selected = "", server = TRUE
+  )
 
   updateSelectizeInput(
     session, 'docs', choices = named_id, selected = "", server = TRUE
@@ -42,10 +46,8 @@ server <- function(input, output, session) {
   updateSelectizeInput(
     session, 'topic', choices = topic_frame$topic, selected = "", server = TRUE
   )
-  
-  updateSelectizeInput(
-    session, 'id', choices = article_lib$uuid, selected = "", server = TRUE
-  )
+
+
   
   ### Sidebar Menu Functionality ----------------------------------------------
   id_docs <- reactive({

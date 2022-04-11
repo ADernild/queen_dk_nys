@@ -75,8 +75,8 @@ ui <- dashboardPage(
                     fluidRow(
                       box(width = 12, class="infoViz", title = "How to use",
                           collapsible = T, collapsed = T,
-                          howViz("Interpretation: Values are summed for different categories."),
-                          howViz("Featured words: Setting featured words will filter for the words used in that selection.")
+                          howViz("Interpretation: Values are summed for different categories.")
+                          # howViz("Featured words: Setting featured words will filter for the words used in that selection.")
                       )
                     )
                 )
@@ -88,28 +88,30 @@ ui <- dashboardPage(
           fluidRow(class="box_align_layout",
             box(width=2, title = "Topic model parameters",
                 # Sidebar with a slider input for number of bins
-                whatViz("Options to set prefference to update featured words from topic model."),
+                # whatViz("Options to set prefference to update featured words from topic model."),
+                whatViz("Options to set prefference to update topic in filter."),
                 whyViz("You can more easily inspect topic in other tabs by quicly obtaining their values."),
                 radioButtons ("topic_r",
-                              label = "Update featured words with topics content",
+                              # label = "Update featured words with topics content",
+                              label = "Update filter topic with topic model selection",
                               selected = 1,
                               choiceNames = c(
-                                "Update on topic selection (also topic filter)",
-                                "Update on word selection", 
+                                "Update on topic selection",
+                                # "Update on word selection", 
                                 "Do not update"),
                               choiceValues = c(
                                 1,
-                                2,
+                                # 2,
                                 F
                                 )
                 ),
-                p(helpText("Notice: \"Update on topic selection\" will clear previous selections.")),
+                p(helpText("Notice: \"Update on topic selection\" will clear previous selection(s).")),
                 whatViz("Number of terms to display sets the number of terms used in the topic model, by size of topic."),
                 whyViz("Limiting the number of terms makes the topic model easier to interpret. Adding more, gives more information."),
                 fluidRow(sliderInput("nTerms", "Number of terms to display", min = 10, max = 100, value = 50, sep="")),
                 box(width = 12, class="infoViz", title = "How to use",
                     collapsible = T, collapsed = T,
-                    howViz("Setting featured words update prefferece: Click a a setting that fits your needs the most."),
+                    howViz("Setting update prefferece: Click a a setting that fits your needs the most."),
                     howViz("Choose terms to display: Use the slider to select a number by dragging the dot to any number.")
                 )
             ),
@@ -171,8 +173,8 @@ ui <- dashboardPage(
                                collapsible = T, collapsed = T,
                                howViz("Interpretation: Positive sentiment, Summed sentiment and negative sentiment is displayed. The range between positive and summed sentiment is highlighted. The difference between postive- and summed sentiment is the same value as the is the negative sentiment. Looking at the size of the changing sizes of the range can be used to observe changes in sentiment by Article."),
                                howViz("Tooltip: Hovering a data-point will display a tooltip that shows the sentiment values of the Article."),
-                               howViz("UUID filter: Using the uuid-filter, will filter Articles featured."),
-                               howViz("Featured words: Using featured words will show the sentiment that subset had in each Article.")
+                               howViz("UUID filter: Using the uuid-filter, will filter Articles featured.")
+                               # howViz("Featured words: Using featured words will show the sentiment that subset had in each Article.")
                            )
                   ),
                   tabPanel("Sentiment relationship (Bubles)",
@@ -183,8 +185,8 @@ ui <- dashboardPage(
                                collapsible = T, collapsed = T,
                                howViz("Interpretation: The center position of a circle indicates it's sentiment. X-axis indicates positive sentiment from low (left) to high (right). Y-axis indicates negative sentiment from high (bottom) to low (top)."),
                                howViz("Tooltip: Hovering a circle shows its positive sentiment, negative sentiment, summed sentiment, sentiment label and words with polarity in a tooltip."),
-                               howViz("UUID filter: Using the uuid-filter, will filter Articles featured."),
-                               howViz("Featured words: Using the featured words, will group the Articles into Articles that include words in the filter, and Articles that do not. This will be displayed in the tooltip.")
+                               howViz("UUID filter: Using the uuid-filter, will filter Articles featured.")
+                               # howViz("Featured words: Using the featured words, will group the Articles into Articles that include words in the filter, and Articles that do not. This will be displayed in the tooltip.")
                            )
                   ),
                   tabPanel("Sentiment by Article (Columns)",
@@ -196,8 +198,8 @@ ui <- dashboardPage(
                                howViz("Interpretation: Negatives are displayed left and positives right. The Sum shows their aggregated value. Observe the size difference."),
                                howViz("Series filter: By clicking on a series name, it can be disabled until clicked again, or updated by a filter."),
                                howViz("Tooltip: Hovering the values of a data-point will show the sentiment of enabled series."),
-                               howViz("UUID filter: Using the uuid-filter, will filter Articles featured."),
-                               howViz("Featured words: Using featured words will show the sentiment that subset had in each Article.")
+                               howViz("UUID filter: Using the uuid-filter, will filter Articles featured.")
+                               # howViz("Featured words: Using featured words will show the sentiment that subset had in each Article.")
                            )
                   ),
                   tabPanel("Average sentiment",
@@ -222,7 +224,7 @@ ui <- dashboardPage(
                         howViz("Tooltip: hovering a word will display the polarity of the word, and the sentiment category."),
                         howViz("Series filter: Click on a series name to disable it. Click again or set a new filter that affects the visualization to enable it again."),
                         howViz("UUID filter: Using the uuid-filter, will filter Articles featured."),
-                        howViz("Featured words: Setting featured words that have sentient will make them be included before other words (otherwise words are included by frequency). If at least one word with sentiment is present, the series will be names after both if they are positive/negative and if they are included or not."),
+                        # howViz("Featured words: Setting featured words that have sentient will make them be included before other words (otherwise words are included by frequency). If at least one word with sentiment is present, the series will be names after both if they are positive/negative and if they are included or not."),
                         howViz("Number of words: Number of words filters words included, from most to least frequent.")
                     ),
                     helpText("Notice: Words with a polarity of 0 is filtered.")
@@ -236,7 +238,7 @@ ui <- dashboardPage(
                         howViz("Interpretation: Larger bars have higher frequency."),
                         howViz("Series filter: Click on a series name to disable it. Click again or set a new filter that affects the visualization to enable it again."),
                         howViz("UUID filter: Using the uuid-filter, will filter Articles featured."),
-                        howViz("Featured words: Setting featured words that have sentient will make them be included before other words (otherwise words are included by frequency). If at least one word with sentiment is present, the series will be names after both if they are positive/negative and if they are included or not."),
+                        # howViz("Featured words: Setting featured words that have sentient will make them be included before other words (otherwise words are included by frequency). If at least one word with sentiment is present, the series will be names after both if they are positive/negative and if they are included or not."),
                         howViz("Number of words: Number of words filters words included, from most to least frequent.")
                     ),
                     helpText("Notice: Words with a polarity of 0 is filtered.")
@@ -372,8 +374,8 @@ ui <- dashboardPage(
                                     howViz("Interpretation: Frequency can be read from the labels."),
                                     howViz("Tooltip: Hovering a word will display a tooltip showing the frequency of the word, and frequency in percentage in relation to selection. Clicking a word will highlight it."),
                                     howViz("Top frequent numbers: Top frequent numbers will filter for the most frequent numbers by the specified amount."),
-                                    howViz("UUID filter: Using the uuid-filter, will filter Articles featured."),
-                                    howViz("Featured words: Setting featured words will filter for the words set in selection.")
+                                    howViz("UUID filter: Using the uuid-filter, will filter Articles featured.")
+                                    # howViz("Featured words: Setting featured words will filter for the words set in selection.")
                                 )
                        ),
                        tabPanel("Word freq. by Article (Stream graph)",
@@ -383,16 +385,16 @@ ui <- dashboardPage(
                                 highchartOutput("word_ussage_streamgraph", height="50vh"),
                                 helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 20. Any number set above, will result in 20 being featured."),
                                 box(width = 12, class="infoViz", title = "How to use",
-                                    howViz("Interpretation: Words are represented by streams, and the width represents the frequency in a data-point of a selection of words."),
+                                    howViz("Interpretation: Words are represented by streams, and the width represents the frequency in a data-points."),
                                     howViz("Tooltip: Hovering above a data-point displays a tooltip for the data-point. It will display the frequency of each word in that data-point."),
                                     howViz("Top frequent numbers: Top frequent numbers will filter for the most frequent numbers by the specified amount."),
-                                    howViz("UUID filter: Using the uuid-filter, will filter Articles featured."),
-                                    howViz("Featured words: Setting featured words will filter for the words set in selection.")
+                                    howViz("UUID filter: Using the uuid-filter, will filter Articles featured.")
+                                    # howViz("Featured words: Setting featured words will filter for the words set in selection.")
                                 )
                        ),
                        tabPanel("Word freq. by A. (Columns)",
                                 whatViz("This shows the frequency of words by Article with stacked columns."),
-                                whyViz("The model is useful for determining frequency of words and the relation with other words of a selection of words."),
+                                whyViz("The model is useful for determining frequency of words and the relation between articles."),
                                 highchartOutput("word_ussage_col", height="50vh"),
                                 helpText("Notice: Due to performance issues, stream graph is limited to a maximum frequency of 30. Any number set above, will result in 30 being featured."),
                                 box(width = 12, class="infoViz", title = "How to use",
@@ -400,8 +402,8 @@ ui <- dashboardPage(
                                     howViz("Interpretation: Each Article has a bar. The height of a bar is the total frequency of word selection. Each bar-part represents a word, and the height, the frequency of the word."),
                                     howViz("Tooltip: Hovering a data-point will display a tooltip. The tooltip will list the data-point, the total frequency, and the frequency of each data-point."),
                                     howViz("Top frequent numbers: Top frequent numbers will filter for the most frequent numbers by the specified amount."),
-                                    howViz("UUID filter: Using the uuid-filter, will filter Articles featured."),
-                                    howViz("Featured words: Setting featured words will filter for the words set in selection.")
+                                    howViz("UUID filter: Using the uuid-filter, will filter Articles featured.")
+                                    # howViz("Featured words: Setting featured words will filter for the words set in selection.")
                                 )
                        ),
                        tabPanel("Word freq. by A. (scatterplot)",
@@ -428,8 +430,8 @@ ui <- dashboardPage(
                                howViz("Interpretation: There are words. Size represents frequency."),
                                howViz("Tooltip: Hovering the filling of a word displays a tooltip. The tooltip displays the frequency of the word."),
                                howViz("Top frequent numbers: Top frequent numbers will filter for the most frequent numbers by the specified amount."),
-                               howViz("UUID filter: Using the uuid-filter, will filter Articles featured."),
-                               howViz("Featured words: Setting featured words will filter for the words set in selection.")
+                               howViz("UUID filter: Using the uuid-filter, will filter Articles featured.")
+                               # howViz("Featured words: Setting featured words will filter for the words set in selection.")
                            )
                        ),
                        tabPanel("Table",
@@ -440,8 +442,8 @@ ui <- dashboardPage(
                                     whyViz("To manually inspect it or download it after formatting."),
                                     howViz("Interpretation: A table."),
                                     howViz("Top frequent numbers: Top frequent numbers will filter for the most frequent numbers by the specified amount."),
-                                    howViz("UUID filter: Using the uuid-filter, will filter Articles featured."),
-                                    howViz("Featured words: Setting featured words will filter for the words set in selection.")
+                                    howViz("UUID filter: Using the uuid-filter, will filter Articles featured.")
+                                    # howViz("Featured words: Setting featured words will filter for the words set in selection.")
                                 )
                        )
                 )
@@ -506,7 +508,7 @@ ui <- dashboardPage(
                 )
               ),
               fluidRow(class="box_align_layout",
-                       box(width=6, title="Article filters",
+                       box(width=12, title="Article filters",
                            whatViz("Article filter refers to the group of filters affecting Article. These are: UUID, Article name and Topic."),
                            whyViz("Filtering Articles can help you limit the data relevant to the topic you are researching."),
                            howViz("UUID: Write the UUID of a article or find uuid articles by using the other Article filters or topic-tab."),
@@ -517,18 +519,17 @@ ui <- dashboardPage(
                            howViz("Topic - remove Topic: click on a Topic name and press Backspace-key or Delete-key to remove a Topic. Or use clear buttons."),
                            howViz("Topic - apply: Click 'Add articles covered in topic'-button."),
                            p(helpText("Notice: Some visualizations will use the whole dataset as a reference regardless of your set filter."))
-                       ),
-                       box(width=6, title="Featured words",
-                           whatViz("Featured words is a selection of words from words featured in the articles, that is used to filter or feature words in different kinds of ways."),
-                           whyViz("When you are inspecting a topic, some words might seem important. So, you can filter for these words using the filter."),
-                           howViz("Select word: Type word and press enter when done or click suggestion pop up."),
-                           howViz("Remove word(s): click on a word and press Backspace-key or Delete-key to remove word Hold down Ctrl to select multiple. Alternatively, select input-field (e.g. by clicking or using tab button), and navigate the cursor with the arrow keys, and use Backspace-key or Delete-key to remove words."),
-                           howViz("Remove words by filter: Click button labled: \"Clear words\""),
-                           howViz("Regret removal by clear words: Click button labled: \"Regret clear\". It only works for last clearning.")
                        )
+                       # box(width=6, title="Featured words",
+                       #     whatViz("Featured words is a selection of words from words featured in the articles, that is used to filter or feature words in different kinds of ways."),
+                       #     whyViz("When you are inspecting a topic, some words might seem important. So, you can filter for these words using the filter."),
+                       #     howViz("Select word: Type word and press enter when done or click suggestion pop up."),
+                       #     howViz("Remove word(s): click on a word and press Backspace-key or Delete-key to remove word Hold down Ctrl to select multiple. Alternatively, select input-field (e.g. by clicking or using tab button), and navigate the cursor with the arrow keys, and use Backspace-key or Delete-key to remove words."),
+                       #     howViz("Remove words by filter: Click button labled: \"Clear words\""),
+                       #     howViz("Regret removal by clear words: Click button labled: \"Regret clear\". It only works for last clearning.")
+                       # )
               )
       )
     )
-              
   )
 )
