@@ -1,9 +1,9 @@
 source("scripts/scraping.R")
 source("scripts/cleaning.R")
-source("scripts/sentiment_analysis.R")
 source("scripts/preprocessing.R")
 source("scripts/sentiment_analysis.R")
 # source("scripts/sentiment_sentences.R")
+# source("scripts/stm.R")
 
 detachAllPackages <- function() {
   
