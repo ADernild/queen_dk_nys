@@ -256,6 +256,22 @@ ui <- dashboardPage(
                 )
               )
       ),
+      # Fyn Map ----
+      tabItem(tabName = "fyn",
+              h2("Locations"),
+              fluidRow(class="box_align_layout",
+                box(width=12,  
+                    whatViz("A map of Denmark, with locations set in articles."),
+                    whyViz("To know where locations are, and how often they are mentioned."),
+                    plotOutput("mapfyn", height = 740),
+                    box(width = 12, class="infoViz", title = "How to use",
+                        collapsible = T, collapsed = T,
+                        howViz("Interpretation: Highlighted locations are locations used. Darker colors represent more ussage."),
+                        howViz("Tooltip: hovering or clicking brings up a tooltip, showing total features.")
+                    )
+                )
+              )
+      ),
       # Map ----
       tabItem(tabName = "map",
               h2("Countries"),

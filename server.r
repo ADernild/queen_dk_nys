@@ -7,6 +7,7 @@ server <- function(input, output, session) {
         menuItem(span("Home", title="Start page"), tabName = "index", icon = shiny::icon("home", title="Start page"), selected = T),
         menuItem(span("Topics", title="Topics found, ready yo be analyzed"), tabName = "tm", icon = shiny::icon("comment-dots", title="Topics found, ready yo be analyzed")),
         menuItem(span("Sentiment", title="Sentiment analysis for speeches and word selections"), tabName = "sentiment", icon = shiny::icon("theater-masks", title="Sentiment analysis for speeches and word selections")),
+        menuItem(span("Fyn", title="Map of locations"), tabName = "fyn", icon = shiny::icon("map", title="Map of locations")),
         # menuItem(span("Countries", title="Map of cointries mentioned during speeches"), tabName = "map", icon = shiny::icon("globe-europe", title="Map of cointries mentioned during speeches")),
         menuItem(span("Word statistics", title="Statistics for all words"), tabName = "stats", icon = shiny::icon("chart-pie", title="Statistics for all words")),
         menuItem(span("Data", title="Information about data sources and data subject"), tabName = "data", icon=shiny::icon("database", title="Information about data sources and data subject")),
@@ -1426,6 +1427,15 @@ server <- function(input, output, session) {
   output$map_sentce_title <-  renderText({
     "Sentence(s) mentioning a country"
   })
+  
+
+  # Fyn Map -----------------------------------------------------------------
+  output$mapfyn <- renderPlot({
+    id <- location_id()
+    id <- article_lib$uuid
+    mapDK()
+  })
+  
   
   # Word statistics ---------------------------------------------------------
   ## Word data --------------------------------------------------------------

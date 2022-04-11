@@ -33,6 +33,7 @@ library(leaflet)
 library(stringr)
 library(wordcloud2) # Two create wordclouds
 library(colorBlindness) # For colors
+library(mapDK) # For map of Denmark - Intall with devtools - devtools::install_github("sebastianbarfort/mapDK")
 
 # Load data ---------------------------------------------------------------
 tokens <- readRDS("data/tokens.rds") # All tokens, filtered
