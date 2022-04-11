@@ -67,6 +67,19 @@ topic_frame <- data.frame(topic = names(thoughts$index)) %>%
   rowwise() %>% 
   mutate(doc_len = length(docs))
 n_unique_sentences <- sum(topic_frame$doc_len)
+sections <- article_lib$section %>% 
+  unique() %>% 
+  sort()
+authors <- article_lib$authors %>% 
+  str_split(", ") %>% 
+  unlist() %>% 
+  unique() %>% 
+  .[. != ""] %>% 
+  sort()
+authors <-  c("Not set", authors)
+locations <- article_lib$location %>% 
+  unique() %>% 
+  sort()
 
 
 # Colors ------------------------------------------------------------------

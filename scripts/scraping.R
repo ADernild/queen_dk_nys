@@ -29,7 +29,7 @@ if(file.exists("data/article_library.rds")){
   library <- readRDS("data/article_library.rds")
 } else {
   # Create library if it doesn't exist
-  columns= c("uuid", "title", "date_published_at", "date_updated_at", "link", "content") # Define names
+  columns= c("uuid", "title", "date_published_at", "date_updated_at", "section", "authors", "link", "location", "content") # Define names
   library <- data.frame(matrix(nrow = 0, ncol = length(columns))) # Create dataframe
   colnames(library) = columns # Set names
   library <- library %>% # Define types
@@ -37,35 +37,69 @@ if(file.exists("data/article_library.rds")){
            title = as.character(title),
            date_published_at = as.Date(date_published_at),
            date_updated_at = as.Date(date_updated_at),
+           section = as.character(section),
+           authors = as.character(authors),
            link = as.character(link),
+           location = as.character(location),
            content = as.character(content)
     )
 }
 
 # Make call for list of articles ----
 page_size <- 100 # Max 100 in API
-article_list_call <- paste(public, "articles?page[size]=", page_size, "&page[number]=", 1, sep="") # Define call
+article_list_call <- paste(public, "articles?page[size]=", page_size, "&page[number]=", 1,
+                           "&include[0]=activeContentRevision.publishedPrimaryLocation",
+                           "&include[1]=activeContentRevision.authors",
+                           "&include[2]=activeContentRevision.publishedPrimarySection",
+                           sep="") # Define call
 api_json <- fromJSON(article_list_call, flatten = FALSE)
+# article_call <- paste(public, "articles/96f37867-5ffb-46b1-830e-5074b0f84e64",
+#                            sep="") # Define call
+# api_single <- fromJSON(article_call, flatten = FALSE)
 total_pages <- api_json$meta$last_page
 total_articles <- api_json$meta$total
-page_num <- 10
+page_num <- 13
 results <- page_size * page_num
 
 # Call and loop ----
 for(i in 1:page_num){
   library_bf <- nrow(library)
   if(i!=1){
-    article_list_call <- paste(public, "articles?page[size]=", page_size, "&page[number]=", i, sep="") # Define call
+    article_list_call <- paste(public, "articles?page[size]=", page_size, "&page[number]=", i, 
+                               "&include[0]=activeContentRevision.publishedPrimaryLocation",
+                               "&include[1]=activeContentRevision.authors",
+                               "&include[2]=activeContentRevision.publishedPrimarySection",
+                               sep="") # Define call
     api_json <- fromJSON(article_list_call, flatten = FALSE)
   }
   uuid <- api_json$data$uuid
   trumpet <- api_json$data$trumpet
   title <- api_json$data$title
+  loc <- api_json$data$primary_location$name
   date_published_at <- api_json$data$date_published_at %>% 
     as.POSIXct(format = "%Y-%m-%dT%H:%M:%S.000000Z") # Format time as time
   date_updated_at <- api_json$data$date_updated_at %>% 
     as.POSIXct(format = "%Y-%m-%dT%H:%M:%S.000000Z") # Format time as time
   link <- api_json$data$canonical
+  section <- api_json$data$primary_section$name
+  
+  # Get authors
+  authors <- api_json$data$authors
+  # Format authors as string with text only
+  for(j in 1:length(authors)){
+    if(nrow(authors[j][[1]])>0){
+      authors_elem <- authors[j]
+      authors_elem <- authors_elem %>% 
+        as.data.frame()
+        # filter(type == "Text") # Filter for text in authors (images and readmore might be interesting too)
+      authors_elem <- authors_elem$name %>% # Get text
+        paste(sep=", ", collapse=", ") # Format as single string
+      authors[j] <- authors_elem
+    } else{
+      authors[j] <- ""
+    }
+  }
+  authors <- unlist(authors)
   
   # Get content
   content <- api_json$data$content
@@ -91,15 +125,17 @@ for(i in 1:page_num){
                    title = title,
                    date_published_at = date_published_at,
                    date_updated_at = date_updated_at,
+                   section = section,
+                   authors = authors,
                    link = link,
+                   location = loc,
                    content = unlist(content)
                    ) %>% 
     mutate(title = str_trim(
       ifelse(is.na(trumpet), title, paste(trumpet, title))
     )) %>% 
     select(!trumpet)
-
-  library <- full_join(library, new_results, by = c("uuid", "title", "date_published_at", "date_updated_at", "link", "content")) # Join article list with existing article list
+  library <- full_join(library, new_results, by = c("uuid", "title", "date_published_at", "date_updated_at", "section", "authors", "link", "location", "content")) # Join article list with existing article list
   library_mid <- nrow(library)
   # Formart library
   library <- library %>% 

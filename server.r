@@ -12,19 +12,27 @@ server <- function(input, output, session) {
         menuItem(span("Data", title="Information about data sources and data subject"), tabName = "data", icon=shiny::icon("database", title="Information about data sources and data subject")),
         menuItem(span("How to operate", class="help-me", title="Help and how to operate dashboard"), tabName = "howto", icon=shiny::icon("question-circle", class="help-me", title="Help and how to operate dashboard")),
         div(id="sidebar-input",
-            h3("Filters"),
+            h3("Selection"),
             selectizeInput("id", label="UUID", choices = c(),
                            multiple = TRUE, options = list(maxOptions = length(article_lib$uuid))),
             selectizeInput("docs", label="Article name", choices = c(),
                            multiple = TRUE, options = list(maxOptions = length(article_lib$uuid))),
+            actionButton("sync", "Sync selection", title="Syncronize Artcile-names and UUID"),
+            actionButton("clear_id", "Clear selection"),
+            h3("Filters"),
             selectizeInput("topic", label="Topic", choices = c(),
                            multiple = FALSE, options = list(maxOptions = length(topic_frame$topic))),
+            selectizeInput("section", label="Section", choices = c(),
+                           multiple = TRUE, options = list(maxOptions = length(sections))),
+            selectizeInput("authors", label="Authors", choices = c(),
+                           multiple = TRUE, options = list(maxOptions = length(authors))),
+            selectizeInput("location", label="location", choices = c(),
+                           multiple = TRUE, options = list(maxOptions = length(authors))),
             # selectizeInput("words", label="Featured words", choices = c(),
             #                multiple = TRUE, options = list(maxOptions = length(words_tokens_all))),
-            actionButton("sync", "Syncronize artciles and id"),
-            actionButton("topic_id_sync", "Add articles covered in topic"),
-            actionButton("clear_id", "Clear id and articles"),
             # actionButton("clear", "Clear featured words"),
+            actionButton("topic_id_sync", "Apply filters", title="Update UUID filtered by set topic, section and authors"),
+            actionButton("clear_filter", "Clear filters"),
             actionButton("clear_all", "Clear all")
           )
         )
@@ -47,7 +55,17 @@ server <- function(input, output, session) {
     session, 'topic', choices = topic_frame$topic, selected = "", server = TRUE
   )
 
+  updateSelectizeInput(
+    session, 'section', choices = sections, selected = "", server = TRUE
+  )
 
+  updateSelectizeInput(
+    session, 'authors', choices = authors, selected = "", server = TRUE
+  )
+
+  updateSelectizeInput(
+    session, 'location', choices = locations, selected = "", server = TRUE
+  )
   
   ### Sidebar Menu Functionality ----------------------------------------------
   id_docs <- reactive({
@@ -66,6 +84,35 @@ server <- function(input, output, session) {
       return
   })
   
+  section_id <- reactive({
+    article_lib %>% 
+      filter(section %in% input$section) %>%
+      .$uuid %>% 
+      return
+  })
+  
+  authors_id <- reactive({
+    if("Not set" %in% input$authors){
+      val <- input$authors %>% 
+        .[. != "Not set"] %>% 
+        c("")
+      
+    } else{
+      val <- input$authors
+    }
+    dis <- article_lib %>% 
+      filter(any(match(str_split(authors, ", "), val))) %>%
+      .$uuid %>% 
+      return
+  })
+  
+  location_id <- reactive({
+    article_lib %>% 
+      filter(location %in% input$location) %>%
+      .$uuid %>% 
+      return
+  })
+
   article_lib_filt <- reactive({
     article_lib %>% 
       filter(uuid %in% id_docs()) %>% 
@@ -92,7 +139,36 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$topic_id_sync, {
-    val <- unique(c(input$input, topic_id()))
+    topics <- unique(topic_id())
+    section <- unique(section_id())
+    authors <- unique(authors_id())
+    locations <- unique(location_id())
+    topics_dis <<- unique(topic_id())
+    section_dis <<- unique(section_id())
+    authors_dis <<- unique(authors_id())
+    locations_dis <<- unique(location_id())
+    topics <- topics_dis
+    section <- section_dis
+    authors <- authors_dis
+    locations <- locations_dis
+    if(length(topics)>0 || length(section)>0 || length(authors)>0 || length(locations)>0){
+      val <- article_lib$uuid
+      if(length(topics)>0){
+        val <- val[val %in% topics]
+      }
+      if(length(section)>0){
+        val <- val[val %in% section]
+      }
+      if(length(authors)>0){
+        val <- val[val %in% authors]
+      }
+      if(length(locations)>0){
+        val <- val[val %in% locations]
+      }
+    } else{
+      # No selection
+      val <- input$id # Keep current selection
+    }
     updateSelectizeInput(
       session,
       'id',
@@ -100,13 +176,6 @@ server <- function(input, output, session) {
       selected = val,
       server = TRUE
     )
-    # updateSelectizeInput(
-    #   session,
-    #   'docs',
-    #   choices = named_id,
-    #   selected = val,
-    #   server = TRUE
-    # )
   })
   
   # observeEvent(input$clear, {
@@ -118,14 +187,6 @@ server <- function(input, output, session) {
   #     server = TRUE
   #   )
   # })
-    updateSelectizeInput(
-      session,
-      'words',
-      choices = words_tokens_all,
-      selected = c(""),
-      server = TRUE
-    )
-  })
   
   observeEvent(input$clear_id, {
     updateSelectizeInput(
@@ -139,6 +200,33 @@ server <- function(input, output, session) {
       session,
       'docs',
       choices = named_id,
+      selected = c(""),
+      server = TRUE
+    )
+  })
+  
+  observeEvent(input$clear_filter, {
+    updateSelectizeInput(
+      session,
+      'section',
+      choices = section,
+      selected = c(""),
+      server = TRUE
+    )
+    updateSelectizeInput(
+      session,
+      'authors',
+      choices = authors,
+      selected = c(""),
+      server = TRUE
+    )
+    updateSelectizeInput(
+      session,
+      'location',
+      choices = locations,
+      selected = c(""),
+      server = TRUE
+    )
     # updateSelectizeInput(
     #   session,
     #   'words',
@@ -146,6 +234,10 @@ server <- function(input, output, session) {
     #   selected = c(""),
     #   server = TRUE
     # )
+    updateSelectizeInput(
+      session,
+      'topic',
+      choices = topic_frame$topic,
       selected = c(""),
       server = TRUE
     )
@@ -168,11 +260,32 @@ server <- function(input, output, session) {
     )
     updateSelectizeInput(
       session,
-      'words',
-      choices = words_tokens_all,
+      'section',
+      choices = section,
       selected = c(""),
       server = TRUE
     )
+    updateSelectizeInput(
+      session,
+      'authors',
+      choices = authors,
+      selected = c(""),
+      server = TRUE
+    )
+    updateSelectizeInput(
+      session,
+      'location',
+      choices = locations,
+      selected = c(""),
+      server = TRUE
+    )
+    # updateSelectizeInput(
+    #   session,
+    #   'words',
+    #   choices = words_tokens_all,
+    #   selected = c(""),
+    #   server = TRUE
+    # )
     updateSelectizeInput(
       session,
       'topic',
