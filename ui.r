@@ -292,7 +292,7 @@ ui <- dashboardPage(
                             uiOutput("sentences"),
                            box(width = 12, class="infoViz", title = "How to use",
                                collapsible = T, collapsed = T,
-                               howViz("Click on a country in the map above."),
+                               howViz("Click on a country in the map above.")
                            )
                         ),
                 box(width = 4, id="map_sentece_slider_wrapper", title = "Sentence options",
@@ -301,7 +301,7 @@ ui <- dashboardPage(
                     sliderInput("map_sentence_slider", label = "Senteces allowed", min=1, max=149, value=5, step=1, sep=""),
                     box(width = 12, class="infoViz", title = "How to use",
                         collapsible = T, collapsed = T,
-                        howViz("Drag the cirkle on the slider to any number."),
+                        howViz("Drag the cirkle on the slider to any number.")
                     )
                 )
               )
@@ -463,7 +463,7 @@ ui <- dashboardPage(
                     p("The covariates used for estimating topic distributions and average sentiment is done on sentence level.")
                 ),
                 box(width=4, title="Sentiment analysis",
-                  p("Sentiment analysis is done by getting sentiment values from \"Det Danske Sprog- og Litteraturselskab (DSL, Society for Danish Language and Literature) and Center for Sprogteknologi, Københavns Universitet (CST, Centre for Language Technology, University of Copenhagen)\", and adding the the values to the words we collected on word level, stem level and lemmatized values."), 
+                  p("Sentiment analysis is done by getting sentiment values from \"Det Danske Sprog- og Litteraturselskab (DSL, Society for Danish Language and Literature) and Center for Sprogteknologi, Københavns Universitet (CST, Centre for Language Technology, University of Copenhagen)\", and adding the the values to the words we collected on word level, stem level and lemmatized values.")
                 )
               ),
               fluidRow(class="box_align_layout",
@@ -496,7 +496,7 @@ ui <- dashboardPage(
                     whyViz("Why marking: A Yellow circle with dark-yellow bold text indicates why and when to use you could use the visualization/information you can observe."),
                     box(width = 12, class="infoViz", title = "How to use",
                         collapsible = T, collapsed = F,
-                        howViz("How marking: A light-brown triangle with brown bold text indicates how you can interpret information in the visualization."),
+                        howViz("How marking: A light-brown triangle with brown bold text indicates how you can interpret information in the visualization.")
                     ),
                     p(helpText("Grey italic/slanted text indicates other kinds of help text. This could be descriptions on how operate inputs, information about limitations and bugs.")),
                     p("Black text is other kinds of information. It would usually be practical information.")
@@ -504,7 +504,7 @@ ui <- dashboardPage(
                 box(width=6, title="Filters",
                     whatViz("This dashboard utilizes filtering systems. The main filters are in the sidebar when expanded. Some visualizations have custom filters. They are documented when needed."),
                     whyViz("The filters can be used to filter the data you see. You can do this to inspect a certain subset of data. E.g., to look data relevant to you."),
-                    howViz("To expand the sidebar, press the expand button in the top left corner."),
+                    howViz("To expand the sidebar, press the expand button in the top left corner.")
                 )
               ),
               fluidRow(class="box_align_layout",
@@ -528,7 +528,7 @@ ui <- dashboardPage(
                        #     howViz("Remove words by filter: Click button labled: \"Clear words\""),
                        #     howViz("Regret removal by clear words: Click button labled: \"Regret clear\". It only works for last clearning.")
                        # )
-              )
+             )
       )
     )
   )
