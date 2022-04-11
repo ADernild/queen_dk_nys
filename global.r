@@ -45,6 +45,7 @@ sentiment <- readRDS("data/sentiments.rds") # Sentiment for year
 # geojson <- readRDS("data/countries.rds") # Library containing geographic information
 article_lib <- readRDS("data/article_library.rds") # File containing UUID, Article name
 
+
 # Formatting data ---------------------------------------------------------
 ## Words ----
 n_dist_t_headword <- nrow(distinct(tokens, stemmed)) # Number of distinct headwords
