@@ -1,5 +1,5 @@
 ui <- dashboardPage(
-  dashboardHeader(title = "Tool to analyze articles on TV2 Fyn"
+  dashboardHeader(title = "TV2 Fyn Topic Tool"
   ),
   dashboardSidebar(
     sidebarMenuOutput("menu")
@@ -18,13 +18,13 @@ ui <- dashboardPage(
     # Index/Home ----
     tabItems(
       tabItem(tabName = "index",
-              h1("Tool to analyze articles on TV2 Fyn"),
+              h1("TV2 Fyn Topic Tool"),
               h2("Home"),
               fluidRow(class="box_align_layout",
                 box(width=12,
-                    title = "Tool to analyze articles on TV2 Fyn",
+                    title = "TV2 Fyn Topic Tool - A Dashboard Tool to Analyze Articles from TV2 Fyn",
                     div(id = "intoduction",
-                        p(class="what", "This is a tool to analyze articles on TV2 Fyn, with emphasis on unseen categories (LDA), sentiment, words and positional data."),
+                        p(class="what", "This is a tool to analyze articles from TV2 Fyn, with emphasis on unseen categories (LDA), sentiment, words and positional data."),
                         p(class="why", "The tool can be used to analyze articles and detect patterns."),
                         p(class="how", "This is an interactive dashboard. You can select tabs in the sidebar on the left to navigate to different sections. When sidebar is expanded (see toggle button in top left corner), you can apply filters and settings for your liking."),
                         p(class="bold", "Together we make Funen better - Esben Seerup.")
