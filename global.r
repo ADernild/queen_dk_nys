@@ -33,7 +33,6 @@ library(leaflet)
 library(stringr)
 library(wordcloud2) # Two create wordclouds
 library(colorBlindness) # For colors
-library(mapDK) # For map of Denmark - Intall with devtools - devtools::install_github("sebastianbarfort/mapDK")
 
 # Load data ---------------------------------------------------------------
 tokens <- readRDS("data/tokens.rds") # All tokens, filtered
@@ -217,33 +216,26 @@ cmatch <- function(needle, haistack){ # faster solution
 }
 
 # Map ----------------------------------------------------------------------
+# Denmark -----------------------------------------------------------------
+geofile_denmark = "utils/geofile_southjutland"
+geodata_denmark <- rgdal::readOGR(geofile_denmark, use_iconv = TRUE, encoding = "UTF-8") # Read geojson contents
 
-## Function for sorting geojson ----
-poly_prep <- function(polygons, countries, years) {
-  countries <- countries %>% 
-    dplyr::filter(year %in% years) %>% 
-    dplyr::select(year, n, code, countries, sentiment, sentence_full) %>% 
-    dplyr::group_by(code) %>% 
-    dplyr::summarise(
-      countries = str_to_title(unique(countries)),
-      year = list(year),
-      n_year = list(n),
-      sentence = list(sentence_full),
-      sentiment_year = list(sentiment),
-      sentiment = mean(sentiment),
-      n = sum(n)
-    )
-  countries
-  poly <- subset(polygons, ISO_A2 %in% unique(countries$code))
-  poly@data <- poly@data %>%
-    dplyr::left_join(countries, by = c("ISO_A2" = "code"))
-  poly
-}
+# Southern Denmark ---------------------------------------------------------
+geofile_southjutland = "utils/geofile_southjutland"
+geodata_southjutland <- rgdal::readOGR(geofile_southjutland, use_iconv = TRUE, encoding = "UTF-8") # Read geojson contents
 
-pal <- colorNumeric(rev(col_red_gradient), NULL)
+# Fyn ----------------------------------------------------------------------
+geofile_fyn = "utils/geofile_fyn"
+geodata_fyn <- rgdal::readOGR(geofile_fyn, use_iconv = TRUE, encoding = "UTF-8") # Read geojson contents
+
+# Komunes ------------------------------------------------------------------
+geofile_komunes = "utils/geofile_komunes"
+geodata_komunes <- rgdal::readOGR(geofile_komunes, use_iconv = TRUE, encoding = "UTF-8") # Read geojson contents
+
+# geodata_frame <- geodata@data %>% as_tibble()  # For observing data
 
 
-# Text --------------------------------------------------------------------
+# Text ---------------------------------------------------------------------
 whatViz <- function(text){
   p(class="whatViz",
     span("\u25CF", title="What"),

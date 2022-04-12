@@ -1430,10 +1430,54 @@ server <- function(input, output, session) {
   
 
   # Fyn Map -----------------------------------------------------------------
-  output$mapfyn <- renderPlot({
-    id <- location_id()
-    id <- article_lib$uuid
-    mapDK()
+  output$mapfyn <- renderLeaflet({
+    # id <- location_id()
+    # id <- article_lib$uuid
+    # 
+    # locations
+    
+    geodata <- geodata_komunes
+    
+      # addPolygons(stroke = T, weight=0.2, color="black", smoothFactor = 0.3, fillOpacity = 1,
+      #             fillColor=~pal(n), popup = ~paste("<b>", ADMIN, "</b>", "was said:", n, "times in total", "<br/>",
+      #                                               sapply(1:length(n_), function(i) ifelse(length(n_[[i]])>10,
+      #                                                                                       paste(n_[[i]], "t. in:", uuid[[i]], collapse=", "),
+      #                                                                                       paste(n_[[i]], "times in:", uuid[[i]], collapse="<br/>")),
+      #                                                      simplify=T)),
+      #             popupOptions = labelOptions(textsize = "8px"),
+      #             highlightOptions = list(weight = 0.7, fillOpacity = 0.9),
+      #             layerId = data@data$ADMIN) %>% 
+      # setView(0, 20, 1.8) %>% 
+      # addLegend(pal = pal, values = ~n, title="Mentions")
+    leaf_options <- leafletOptions(zoomControl = FALSE,
+                              worldCopyJump = F,
+                              minZoom = 8,
+                              maxZoom = 10,
+                              zoomSnap = 0.4,
+                              dragging = FALSE
+    )
+    leaflet(geodata,
+            options = leaf_options
+            ) %>%
+      addTiles(options = leaf_options) %>%
+      addPolygons(stroke = T,
+                  weight=0.2,
+                  color="black",
+                  smoothFactor = 0.3,
+                  fillOpacity = 1,
+                  # fillColor=~pal(n),
+                  # fillColor=~pal(n),
+                  # popup = ~paste("<b>", ADMIN, "</b>", "was said:", n, "times in total", "<br/>",
+                  #                sapply(1:length(n_), function(i) ifelse(length(n_[[i]])>10,
+                  #                                                        paste(n_[[i]], "t. in:", uuid[[i]], collapse=", "),
+                  #                                                        paste(n_[[i]], "times in:", uuid[[i]], collapse="<br/>")),
+                  #                       simplify=T)),
+                  popupOptions = labelOptions(textsize = "8px"),
+                  highlightOptions = list(weight = 0.7, fillOpacity = 0.9)#,
+                  # layerId = data@data$ADMIN
+                  ) #%>% 
+      # setView(0, 20, 1.8) %>% 
+      # addLegend(pal = pal, values = ~n, title="Mentions")
   })
   
   

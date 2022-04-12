@@ -263,7 +263,7 @@ ui <- dashboardPage(
                 box(width=12,  
                     whatViz("A map of Denmark, with locations set in articles."),
                     whyViz("To know where locations are, and how often they are mentioned."),
-                    plotOutput("mapfyn", height = 740),
+                    leafletOutput("mapfyn", height = 740),
                     box(width = 12, class="infoViz", title = "How to use",
                         collapsible = T, collapsed = T,
                         howViz("Interpretation: Highlighted locations are locations used. Darker colors represent more ussage."),

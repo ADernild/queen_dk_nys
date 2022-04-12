@@ -5,3 +5,7 @@
 queen_dk_nys.Rproj
 *.udpipe
 www/favicon.pdn
+utils/denmark.geo.json
+utils/geofile_fyn
+utils/geofile_komunes
+utils/geofile_southjutland
