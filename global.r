@@ -221,7 +221,8 @@ cmatch <- function(needle, haistack){ # faster solution
 
 # Map ----------------------------------------------------------------------
 # Denmark -----------------------------------------------------------------
-geofile_denmark = "utils/geofile_southjutland"
+# geofile_denmark = "utils/geofile_denmark" # Too slow
+geofile_denmark = "utils/denmark.geo.json"
 geodata_denmark <- rgdal::readOGR(geofile_denmark, use_iconv = TRUE, encoding = "UTF-8") # Read geojson contents
 
 # Southern Denmark ---------------------------------------------------------
