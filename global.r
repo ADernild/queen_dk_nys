@@ -93,9 +93,13 @@ col_multi <- c(
   as.character
 
 ## Two types ----
-col_dual <- c( # Based on colorBlindness::paletteMartin
-  "#00CCCC", # Light blue
-  "#A50021" # red
+col_single <- c( # Based on tv2fyn colors
+  "#d21e1e" # red
+)
+
+col_dual <- c( # Based on tv2fyn colors
+  "#162c40", #  blue
+  "#d21e1e" # red
 )
 
 ## For 2 or 4 series ----
