@@ -135,7 +135,28 @@ for(i in 1:page_num){
       ifelse(is.na(trumpet), title, paste(trumpet, title))
     )) %>% 
     select(!trumpet)
-  library <- full_join(library, new_results, by = c("uuid", "title", "date_published_at", "date_updated_at", "section", "authors", "link", "location", "content")) # Join article list with existing article list
+  
+  ## Add relevant geocodes ----
+  new_results <- new_results %>% 
+    rowwise() %>% 
+    mutate(geocode = ifelse(location == "Middelfart","0410",
+                            ifelse(location == "Assens","0420",
+                                   ifelse(location == "Faaborg-Midtfyn","0430",
+                                          ifelse(location == "Kerteminde","0440",
+                                                 ifelse(location == "Nyborg","0450",
+                                                        ifelse(location == "Odense","0461",
+                                                               ifelse(location == "Svendborg","0479",
+                                                                      ifelse(location == "Nordfyn","0480",
+                                                                             ifelse(location == "Langeland","0482",
+                                                                                    ifelse(location == "Ærø","0492",
+                                                                                           ifelse(location == "Danmark","+45",
+                                                                                                  ifelse(location == "Region Syddanmark","1083",
+                                                                                                         ifelse(location == "Fyn","DK031",
+                                                                                                                "Unknown"
+                                                                                                         )))))))))))))) %>% 
+    ungroup()
+  
+  library <- full_join(library, new_results, by = c("uuid", "title", "date_published_at", "date_updated_at", "section", "authors", "link", "location", "geocode", "content")) # Join article list with existing article list
   library_mid <- nrow(library)
   # Formart library
   library <- library %>% 
