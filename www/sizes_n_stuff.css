@@ -228,6 +228,10 @@ section.sidebar .shiny-bound-input.action-link{
   padding-top: 0;
 }
 
+.leaflet{
+  margin-bottom: 15px;
+}
+
 /* > less */
 .row{
   margin-left: 0;

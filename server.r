@@ -1429,55 +1429,253 @@ server <- function(input, output, session) {
   })
   
 
-  # Fyn Map -----------------------------------------------------------------
-  output$mapfyn <- renderLeaflet({
-    # id <- location_id()
-    # id <- article_lib$uuid
-    # 
-    # locations
+  # Fyn Maps ----------------------------------------------------------------
+  ## Fyn Maps data ----------------------------------------------------------
+  fyn_map_data <- reactive({
+    data <- article_lib %>%
+      filter(uuid %in% id_docs()) %>%
+      group_by(geocode, location) %>% 
+      summarise(n = n()) %>%
+      mutate(freq = round((n/sum(.$n))*100, 2)) %>% 
+      ungroup()
     
+    for(geocode_val in unique(article_lib$geocode)){
+      if(!(geocode_val %in% data$geocode)){
+        data <-  data %>%
+          tibble::add_row(geocode = geocode_val,
+                  location = article_lib[article_lib$geocode == geocode_val,]$location[1],
+                  n = 0,
+                  freq = 0)
+      }
+    }
+    
+    data <- data %>% 
+      group_by(geocode, location) %>% 
+      arrange(geocode)
+    
+    return(data)
+  })
+  
+  ## Fyn Maps creation -----------------------------------------------------
+  output$map_fyn_komunes <- renderLeaflet({
+    # map_data <- data %>%
+    map_data <- fyn_map_data() %>%
+      filter(geocode %in% geodata_komunes$kode) %>%
+      mutate(freq_fyn = round((n/sum(.$n))*100, 2),
+             map_title = HTML(paste("<b>", location, "</b>","<br/>Articles: ", n, sep="")))
+    
+    # Get and set data
     geodata <- geodata_komunes
+    geodata$n <- map_data$n
+    geodata$freq <- map_data$freq
+    geodata$freq_fyn <- map_data$freq_fyn
     
-      # addPolygons(stroke = T, weight=0.2, color="black", smoothFactor = 0.3, fillOpacity = 1,
-      #             fillColor=~pal(n), popup = ~paste("<b>", ADMIN, "</b>", "was said:", n, "times in total", "<br/>",
-      #                                               sapply(1:length(n_), function(i) ifelse(length(n_[[i]])>10,
-      #                                                                                       paste(n_[[i]], "t. in:", uuid[[i]], collapse=", "),
-      #                                                                                       paste(n_[[i]], "times in:", uuid[[i]], collapse="<br/>")),
-      #                                                      simplify=T)),
-      #             popupOptions = labelOptions(textsize = "8px"),
-      #             highlightOptions = list(weight = 0.7, fillOpacity = 0.9),
-      #             layerId = data@data$ADMIN) %>% 
-      # setView(0, 20, 1.8) %>% 
-      # addLegend(pal = pal, values = ~n, title="Mentions")
+    crd <- data.frame(x = geodata$visueltcenter_x,
+                      y = geodata$visueltcenter_y)
+    
+    # Set map options
     leaf_options <- leafletOptions(zoomControl = FALSE,
-                              worldCopyJump = F,
-                              minZoom = 8,
-                              maxZoom = 10,
-                              zoomSnap = 0.4,
-                              dragging = FALSE
+                                   worldCopyJump = F,
+                                   minZoom = 8,
+                                   maxZoom = 10,
+                                   zoomSnap = 0.4
     )
+    pal <- colorNumeric(
+      palette = col_dual,
+      domain = fyn_map_data()$n
+    )
+    
+    # Create map
     leaflet(geodata,
             options = leaf_options
             ) %>%
       addTiles(options = leaf_options) %>%
       addPolygons(stroke = T,
-                  weight=0.2,
-                  color="black",
+                  weight=1,
+                  color="#fff",
                   smoothFactor = 0.3,
                   fillOpacity = 1,
-                  # fillColor=~pal(n),
-                  # fillColor=~pal(n),
-                  # popup = ~paste("<b>", ADMIN, "</b>", "was said:", n, "times in total", "<br/>",
-                  #                sapply(1:length(n_), function(i) ifelse(length(n_[[i]])>10,
-                  #                                                        paste(n_[[i]], "t. in:", uuid[[i]], collapse=", "),
-                  #                                                        paste(n_[[i]], "times in:", uuid[[i]], collapse="<br/>")),
-                  #                       simplify=T)),
+                  fillColor=~pal(n),
+                  popup = ~paste("<b>", navn, "-komune</b>", " has: ", n, " articles - ", freq, "% of total - ", freq_fyn, "% on fyn", "<br/>", sep=""),
                   popupOptions = labelOptions(textsize = "8px"),
-                  highlightOptions = list(weight = 0.7, fillOpacity = 0.9)#,
-                  # layerId = data@data$ADMIN
-                  ) #%>% 
-      # setView(0, 20, 1.8) %>% 
-      # addLegend(pal = pal, values = ~n, title="Mentions")
+                  highlightOptions = list(weight = 0.7, fillOpacity = 0.9),
+                  layerId = geodata_komunes$kode
+                  ) %>%
+      addLabelOnlyMarkers(lng = ~x, lat = ~y, data = crd,
+                          label = map_data$map_title,
+                          labelOptions = labelOptions(noHide = TRUE,
+                                                      direction = 'center',
+                                                      style = list(
+                                                        "color" = "#fff",
+                                                        "border" = "0",
+                                                        "box-shadow" = "0",
+                                                        "background-color" = "transparent",
+                                                        "text-align" = "center",
+                                                        "text-shaddow" = "-1px -1px 0 rgb(0 0 0 / 50%), 1px -1px 0 rgb(0 0 0 / 50%), -1px 1px 0 rgb(0 0 0 / 50%), 1px 1px 0 rgb(0 0 0 / 50%)"
+                                                      ))
+                          ) %>%
+      # # setView(0, 20, 1.8) %>%
+      addLegend(pal = pal, values = fyn_map_data()$n, title="#Articles") %>%
+      addControl(paste("Articles with Fyn-komune", sep = ": ", sum(geodata$n)))
+  })
+  
+  output$map_fyn_danmark <- renderLeaflet({
+    # map_data <- data %>%
+    map_data <- fyn_map_data() %>%
+      filter(geocode == "+45")
+    
+    # Get and set data
+    geodata <- geodata_denmark
+    geodata$n <- map_data$n
+    geodata$freq <- map_data$freq
+
+    # Set map options
+    leaf_options <- leafletOptions(zoomControl = FALSE,
+                                   worldCopyJump = F,
+                                   minZoom = 6,
+                                   maxZoom = 8,
+                                   zoomSnap = 0.4
+    )
+    pal <- colorNumeric(
+      palette = col_dual,
+      domain = fyn_map_data()$n
+    )
+    
+    # Create map
+    leaflet(geodata,
+            options = leaf_options
+            ) %>%
+      addTiles(options = leaf_options) %>%
+      addPolygons(stroke = T,
+                  weight=1,
+                  color="#fff",
+                  smoothFactor = 0.3,
+                  fillOpacity = 1,
+                  fillColor=~pal(n),
+                  label = ~HTML(paste("<b>Danmark</b>", " has: ", n, " articles - ", freq, "% of total", "<br/>", sep="")),
+                  labelOptions = labelOptions(noHide = TRUE,
+                                              direction = 'center',
+                                              style = list(
+                                                "color" = "#fff",
+                                                "border" = "0",
+                                                "box-shadow" = "0",
+                                                "background-color" = "transparent",
+                                                "text-align" = "center",
+                                                "text-shaddow" = "-1px -1px 0 rgb(0 0 0 / 50%), 1px -1px 0 rgb(0 0 0 / 50%), -1px 1px 0 rgb(0 0 0 / 50%), 1px 1px 0 rgb(0 0 0 / 50%)"
+                                              )),
+                  popup = ~paste("<b>Danmark</b>", " has: ", n, " articles - ", freq, "% of total", "<br/>", sep=""),
+                  popupOptions = labelOptions(textsize = "8px"),
+                  highlightOptions = list(weight = 0.7, fillOpacity = 0.9),
+                  layerId = geodata@data$name
+                  ) %>%  
+      # setView(0, 20, 1.8) %>%
+      addControl(paste("Articles with Denmark", sep = ": ", geodata$n))
+  })
+  
+  output$map_fyn_southjutland <- renderLeaflet({
+    # map_data <- data %>%
+    map_data <- fyn_map_data() %>%
+      filter(geocode == "1083")
+    
+    # Get and set data
+    geodata <- geodata_southjutland
+    geodata$n <- map_data$n
+    geodata$freq <- map_data$freq
+
+    # Set map options
+    leaf_options <- leafletOptions(zoomControl = FALSE,
+                                   worldCopyJump = F,
+                                   minZoom = 7,
+                                   maxZoom = 9,
+                                   zoomSnap = 0.4
+    )
+    pal <- colorNumeric(
+      palette = col_dual,
+      domain = fyn_map_data()$n
+    )
+    
+    # Create map
+    leaflet(geodata,
+            options = leaf_options
+            ) %>%
+      addTiles(options = leaf_options) %>%
+      addPolygons(stroke = T,
+                  weight=1,
+                  color="#fff",
+                  smoothFactor = 0.3,
+                  fillOpacity = 1,
+                  fillColor=~pal(n),
+                  label = ~HTML(paste("<b>", navn, "</b>", " has: ", n, " articles - ", freq, "% of total", "<br/>", sep="")),
+                  labelOptions = labelOptions(noHide = TRUE,
+                                              direction = 'center',
+                                              style = list(
+                                                "color" = "#fff",
+                                                "border" = "0",
+                                                "box-shadow" = "0",
+                                                "background-color" = "transparent",
+                                                "text-align" = "center",
+                                                "text-shaddow" = "-1px -1px 0 rgb(0 0 0 / 50%), 1px -1px 0 rgb(0 0 0 / 50%), -1px 1px 0 rgb(0 0 0 / 50%), 1px 1px 0 rgb(0 0 0 / 50%)"
+                                              )),
+                  popup = ~paste("<b>", navn, "</b>", " has: ", n, " articles - ", freq, "% of total", "<br/>", sep=""),
+                  popupOptions = labelOptions(textsize = "8px"),
+                  highlightOptions = list(weight = 0.7, fillOpacity = 0.9),
+                  layerId = geodata@data$name
+                  ) %>% 
+      # setView(0, 20, 1.8) %>%
+      addControl(paste("Articles with Southern Jutland", sep = ": ", geodata$n))
+  })
+  
+  output$map_fyn_fyn <- renderLeaflet({
+    # map_data <- data %>%
+    map_data <- fyn_map_data() %>%
+      filter(geocode == "DK031")
+    
+    # Get and set data
+    geodata <- geodata_fyn
+    geodata$n <- map_data$n
+    geodata$freq <- map_data$freq
+
+    # Set map options
+    leaf_options <- leafletOptions(zoomControl = FALSE,
+                                   worldCopyJump = F,
+                                   minZoom = 8,
+                                   maxZoom = 10,
+                                   zoomSnap = 0.4
+    )
+    pal <- colorNumeric(
+      palette = col_dual,
+      domain = fyn_map_data()$n
+    )
+    
+    # Create map
+    leaflet(geodata,
+            options = leaf_options
+            ) %>%
+      addTiles(options = leaf_options) %>%
+      addPolygons(stroke = T,
+                  weight=1,
+                  color="#fff",
+                  smoothFactor = 0.3,
+                  fillOpacity = 1,
+                  fillColor=~pal(n),
+                  label = ~HTML(paste("<b>", navn, "</b>", " has: ", n, " articles - ", freq, "% of total", "<br/>", sep="")),
+                  labelOptions = labelOptions(noHide = TRUE,
+                                              direction = 'center',
+                                              style = list(
+                                                "color" = "#fff",
+                                                "border" = "0",
+                                                "box-shadow" = "0",
+                                                "background-color" = "transparent",
+                                                "text-align" = "center",
+                                                "text-shaddow" = "-1px -1px 0 rgb(0 0 0 / 50%), 1px -1px 0 rgb(0 0 0 / 50%), -1px 1px 0 rgb(0 0 0 / 50%), 1px 1px 0 rgb(0 0 0 / 50%)"
+                                              )),
+                  popup = ~paste("<b>", navn, "</b>", " has: ", n, " articles - ", freq, "% of total", "<br/>", sep=""),
+                  popupOptions = labelOptions(textsize = "8px"),
+                  highlightOptions = list(weight = 0.7, fillOpacity = 0.9),
+                  layerId = geodata@data$name
+                  ) %>% 
+      # setView(0, 20, 1.8) %>%
+      addControl(paste("Articles with Fyn", sep = ": ", geodata$n))
   })
   
   

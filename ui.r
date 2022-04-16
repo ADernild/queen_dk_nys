@@ -260,10 +260,20 @@ ui <- dashboardPage(
       tabItem(tabName = "fyn",
               h2("Locations"),
               fluidRow(class="box_align_layout",
-                box(width=12,  
-                    whatViz("A map of Denmark, with locations set in articles."),
+                box(width=8, title = "Fyn komunes", # Fyn comunes
+                    whatViz("A map of Fyn, with locations set in articles."),
                     whyViz("To know where locations are, and how often they are mentioned."),
-                    leafletOutput("mapfyn", height = 740),
+                    leafletOutput("map_fyn_komunes", height = 740),
+                    box(width = 12, class="infoViz", title = "How to use",
+                        collapsible = T, collapsed = T,
+                        howViz("Interpretation: Highlighted locations are locations used. Darker colors represent more ussage."),
+                        howViz("Tooltip: hovering or clicking brings up a tooltip, showing total features.")
+                    )
+                ),
+                box(width = 4, title = "Other zones", # Denmark
+                    leafletOutput("map_fyn_danmark", height = 246),
+                    leafletOutput("map_fyn_southjutland", height = 246),
+                    leafletOutput("map_fyn_fyn", height = 246),
                     box(width = 12, class="infoViz", title = "How to use",
                         collapsible = T, collapsed = T,
                         howViz("Interpretation: Highlighted locations are locations used. Darker colors represent more ussage."),
