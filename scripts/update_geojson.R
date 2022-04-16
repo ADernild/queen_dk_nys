@@ -11,7 +11,7 @@ library(rgdal)
 # Denmark -----------------------------------------------------------------
 
 geojson_url_denmark = "https://api.dataforsyningen.dk/regioner?format=geojson" # DAWA API Link for geojson map of southern jutland
-geofile_denmark = "utils/geofile_southjutland"
+geofile_denmark = "utils/geofile_denmark"
 download.file(URLencode(geojson_url_denmark), geofile_denmark) # Download contents to temp file
 # geodata_denmark <- rgdal::readOGR(geofile_denmark, use_iconv = TRUE, encoding = "UTF-8") # Read geojson contents
 
