@@ -208,21 +208,16 @@ cmatch <- function(needle, haistack){ # faster solution
 
 # Map ----------------------------------------------------------------------
 # Denmark -----------------------------------------------------------------
-# geofile_denmark = "utils/geofile_denmark" # Too slow
-geofile_denmark = "utils/denmark.geo.json"
-geodata_denmark <- rgdal::readOGR(geofile_denmark, use_iconv = TRUE, encoding = "UTF-8") # Read geojson contents
+geodata_denmark <- readRDS("utils/denmark.geo.rds") # Read geojson contents
 
 # Southern Denmark ---------------------------------------------------------
-geofile_southjutland = "utils/geofile_southjutland"
-geodata_southjutland <- rgdal::readOGR(geofile_southjutland, use_iconv = TRUE, encoding = "UTF-8") # Read geojson contents
+geodata_southjutland <- readRDS("utils/geofile_southjutland.rds") # Read geojson contents
 
 # Fyn ----------------------------------------------------------------------
-geofile_fyn = "utils/geofile_fyn"
-geodata_fyn <- rgdal::readOGR(geofile_fyn, use_iconv = TRUE, encoding = "UTF-8") # Read geojson contents
+geodata_fyn <- readRDS("utils/geofile_fyn.rds") # Read geojson contents
 
 # Komunes ------------------------------------------------------------------
-geofile_komunes = "utils/geofile_komunes"
-geodata_komunes <- rgdal::readOGR(geofile_komunes, use_iconv = TRUE, encoding = "UTF-8") # Read geojson contents
+geodata_komunes <- readRDS("utils/geofile_komunes.rds") # Read geojson contents
 
 # geodata_frame <- geodata@data %>% as_tibble()  # For observing data
 
