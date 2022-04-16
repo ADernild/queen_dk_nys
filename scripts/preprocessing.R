@@ -139,3 +139,11 @@ if(nrow(tokens)>0){
   saveRDS(tokens,"data/tokens.rds")
   write.csv(tokens, "data/tokens.csv", row.names = F, fileEncoding = "UTF-8")
 }
+
+# Unsetting ----
+rm(list=ls())
+detach("package:tidyverse", unload=TRUE)
+detach("package:stopwords", unload=TRUE)
+# detach("package:SnowballC", unload=TRUE)
+detach("package:tidytext", unload=TRUE)
+detach("package:udpipe", unload=TRUE)

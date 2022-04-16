@@ -158,3 +158,8 @@ if(nrow(tokens)>0){
   saveRDS(sentiments, "data/sentiments.rds")
   write.csv(sentiments, "data/sentiments.csv", row.names = F, fileEncoding = "UTF-8")
 }
+
+# Unsetting ----
+rm(list=ls())
+detach("package:tidyverse", unload=TRUE)
+detach("package:tidytext", unload=TRUE)

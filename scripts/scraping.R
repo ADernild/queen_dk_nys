@@ -186,3 +186,9 @@ saveRDS(new_entries , "data/new_entries.rds")
 # > Save library as csv ----
 library %>% 
   write.csv("data/article_library.csv", row.names = F, fileEncoding = "UTF-8")
+
+# Unsetting ----
+rm(list=ls())
+detach("package:dplyr", unload=TRUE)
+detach("package:jsonlite", unload=TRUE)
+detach("package:stringr", unload=TRUE)
