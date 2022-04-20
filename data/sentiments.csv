@@ -1,4 +1,6 @@
 "uuid","sentiment","sentiment_pos","sentiment_neg","average_sentiment","n_pos","n_neg","n_words","sentiment_label","title","date_updated_at","date_published_at"
+"a96ecb3f-2639-43c0-9a02-8b1b72d68c7e",4,7,-3,0.0727272727272727,4,2,6,"Positive","Video: Se hele letbaneruten fra Tarup til Hjallese (a96ecb3f-2639-43c0-9a02-8b1b72d68c7e)",2022-04-20 09:54:22,2022-04-20 09:54:22
+"ccd29a4d-60c5-4e8f-a941-50ba682777d5",4,15,-11,0.0470588235294118,9,6,15,"Positive","Italienere protesterer ved Nyt OUH: - Vi har ikke fået vores løn (ccd29a4d-60c5-4e8f-a941-50ba682777d5)",2022-04-20 10:13:57,2022-04-20 10:13:57
 "0d2ed821-7e80-4b38-a2b7-9a02f9b2026d",8,12,-4,0.0909090909090909,7,4,11,"Positive","Nu kan du købe Lars Høghs guitar og bas (0d2ed821-7e80-4b38-a2b7-9a02f9b2026d)",2022-04-19 12:26:40,2022-04-19 12:26:40
 "1845ffce-99ec-4888-9c97-a2f289403247",-6,21,-27,-0.0487804878048781,17,15,32,"Negative","Mangel på personale: Overlæge på OUH er bekymret for fremtiden (1845ffce-99ec-4888-9c97-a2f289403247)",2022-04-19 16:46:29,2022-04-19 16:46:29
 "2665c861-5f63-4e25-b261-d674bb37c2ad",12,21,-9,0.117647058823529,16,5,21,"Positive","Langt til fjernvarme: - Vi er jo lost, for vi kan jo ikke slippe fri af gas (2665c861-5f63-4e25-b261-d674bb37c2ad)",2022-04-20 01:23:19,2022-04-20 01:23:19
