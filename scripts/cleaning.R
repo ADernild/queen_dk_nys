@@ -97,7 +97,8 @@ df <- readRDS("data/article_library.rds")
       sentence_full = strsplit(X3, "[.]")
     )
   
-  sentences <- unnest_sentences(sentences)
+  sentences <- unnest_sentences(sentences) %>% 
+    mutate(polarity = NULL)
   
   # Cleaning speech of each year
   df$content <- clean_speech(df$content)
