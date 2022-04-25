@@ -1,4 +1,3 @@
-
 # Libraries
 library(stringr)
 library(dplyr)
@@ -50,10 +49,10 @@ unnest_sentences <- function(x) {
 
 # # Importing data ----
 df <- readRDS("data/article_library.rds")
-# if(file.exists("data/sentences_cleaned.rds")){
+if(file.exists("data/sentences_cleaned.rds")){
 #   sentences_cleaned <- readRDS("data/sentences_cleaned.rds")
 #   ## Load senteces if it exists ----
-#   old_sentences <- readRDS("data/sentences.rds")
+  old_sentences <- readRDS("data/sentences.rds")
 #   if(nrow(old_sentences) != nrow(df)){
 #     # Cleaning sentences i.e., leaving in the . (dots) for later separation
 #     sentences <- data.frame(cbind(df$uuid, clean_sentences(df$content), clean_sentences_less(df$content)))
@@ -84,8 +83,6 @@ df <- readRDS("data/article_library.rds")
 #   } else{
 #     sentences <- old_sentences
 #   }
-# } else {
-  # Create, if not exists ----
   # Cleaning sentences i.e., leaving in the . (dots) for later separation
   sentences <- data.frame(cbind(df$uuid, clean_sentences(df$content), clean_sentences_less(df$content)))
   
@@ -98,11 +95,36 @@ df <- readRDS("data/article_library.rds")
     )
   
   sentences <- unnest_sentences(sentences) %>% 
-    mutate(polarity = NULL)
+    mutate(polarity = NA,
+           sentences_sentiment = "")
+  
+  sentencess <- sentences %>% 
+    group_by(uuid, sentences, sentences_full) %>% 
+    right_join(old_sentences)
+
+  # Cleaning speech of each year
+  df$content <- clean_speech(df$content)
+} else {
+  # Create, if not exists ----
+  # Cleaning sentences i.e., leaving in the . (dots) for later separation
+  sentences <- data.frame(cbind(df$uuid, clean_sentences(df$content), clean_sentences_less(df$content)))
+  
+  # Grouping speaches by id and separating into sentences by . (dots)
+  sentences <- sentences %>% 
+    group_by(X1) %>% 
+    summarize(
+      sentence = strsplit(X2, "[.]"),
+      sentence_full = strsplit(X3, "[.]")
+    )
+  
+  sentences <- unnest_sentences(sentences) %>%
+  # sentences <- sentences %>% 
+    mutate(polarity = NA,
+           sentences_sentiment = "")
   
   # Cleaning speech of each year
   df$content <- clean_speech(df$content)
-# }
+}
 
 # Save sentences ----
 saveRDS(sentences, "data/sentences.rds")

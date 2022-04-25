@@ -3,13 +3,14 @@ library(udpipe)
 library(tidytext)
 library(stringr)
 library(dplyr)
+library(stringi)
 
 print("sentiment_sentences.R")
 
 # Validate if update is needed ----
 new_entries <- readRDS("data/new_entries.rds")
 
-if(new_entries>0){
+# if(new_entries>0){
   # sentences
   # df <- read.csv("data/sentences.csv")
   df <- readRDS("data/sentences.rds")
@@ -17,57 +18,86 @@ if(new_entries>0){
   tokens <- readRDS("data/tokens.rds") %>%  # All tokens, filtered
     filter(polarity != 0)
   
+  # Functions
+  firstup <- function(x) { # Source: https://stackoverflow.com/questions/18509527/first-letter-to-upper-case
+    if(is.null(x) || x==F && !is.numeric(x)){
+      return("")
+    } else if(is.numeric(x)){
+      return(x)
+    }
+    substr(x, 1, 1) <- toupper(substr(x, 1, 1))
+    x
+  }
   
-  # Check if sentiment exists ----
-  # if(!is.null(df$polarity)){
-  #   old_df <- df
-  #   df_da <- df %>% 
-  #     filter(is.null(polarity)) %>% 
-  #     rowwise() %>% 
-  #     mutate(polarity = sum(tokens[tokens$uuid %in% uuid,][tokens[tokens$uuid %in% uuid,]$word %in% str_split(sentences, " ")[[1]],]$polarity)) %>% 
-  #     group_by(uuid, sentences, sentences_full, polarity) %>% 
-  #     full_join(old_df)
-  # } else{
-    df_da <- df %>% 
-      rowwise() %>% 
-      mutate(polarity = sum(tokens[tokens$uuid %in% uuid,][tokens[tokens$uuid %in% uuid,]$word %in% str_split(sentences, " ")[[1]],]$polarity))
-  # }
+  add_sentiment_labels <- function(word_list, word_list_comma, uuid){
+    # Function to
+    #   1. Add sentiment labels as html
+    #   2. Add commas at specific positions, after text has been wrapped by HTML
+    #   3. Add with polarity by word
+    
+    # Do stuff
+    # Get tokens
+    tokens <- tokens[tokens$uuid == uuid,][tokens[tokens$uuid == uuid,]$word %in% word_list,]
+    for (i in 1:length(word_list)) {
+      org_word <- word_list[i]
+      if(word_list[i] %in% tokens$word){
+        tokens_istance <- tokens[tokens$word == word_list[i],][1,]
+        if(tokens_istance$polarity>0){
+          word_list[i] <- paste("<div class='sentiment_pos pol", tokens_istance$polarity, "' title='Polarity of: \"", tokens_istance$polarity, "\"'>", word_list[i], "</div>", sep="")
+        }
+        else{
+          word_list[i] <- paste("<div class='sentiment_neg pol", tokens_istance$polarity, "' title='Polarity of: \"", tokens_istance$polarity, "\"'>", word_list[i], "</div>", sep="")
+        }
+      }
+      if(!is.na(org_word) && !is.na(word_list_comma[i]) && nchar(org_word) != nchar(word_list_comma[i])){
+        word_list[i] <- paste(word_list[i], ",", sep="")
+      }
+    }
+    return(word_list)
+  }
   
-    # mutate(sentiment = sum(tokens[tokens$uuid %in% "00b26860-e4ce-4f5c-a728-830bf8a4c056",][tokens[tokens$uuid %in% "00b26860-e4ce-4f5c-a728-830bf8a4c056",]$word %in% str_split(" når jeg laver fejl på mine heste så lærer jeg af det så jeg ikke laver dem i næste runde siger hun", " ")[[1]],]$polarity))
+  df_da <- df %>%
+  # df_da <- df[1:3,] %>% 
+    mutate(sentences = str_trim(sentences),
+           sentences_full = str_trim(sentences_full)) %>% 
+    mutate(word_list = str_split(sentences, " "),
+           word_list_comma = str_split(sentences_full, " ")) %>% 
+    rowwise() %>% 
+    mutate(polarity = as.numeric(
+      ifelse(is.na(polarity),
+             sum(tokens[tokens$uuid %in% uuid,][tokens[tokens$uuid %in% uuid,]$word %in% word_list,]$polarity),
+             polarity))) %>% 
+    mutate(`sentences_sentiment` = as.character(
+    ifelse(sentences_sentiment == "",
+    # mutate(`sentences_sentiment` = as.character(
+      firstup(
+        paste0(collapse = " ",
+          unlist(
+            add_sentiment_labels(word_list, word_list_comma, uuid)
+    # ))))) %>% 
+    ))), sentences_sentiment))) %>%
+    select(!c(word_list, word_list_comma))
 
-  # # Lemmatizing sentences
-  # df_lemmatized <- udpipe(df$sentences, "danish")
-  # 
-  # # Correcting sentence_id to match rownumber for sentences in df
-  # df_lemmatized$sentence_id <- as.numeric(str_replace(df_lemmatized$doc_id, "doc", ""))
-  # 
-  # sentence_sentiment <- function(df, df_lemmatized){
-  #   dk_sentiment <- read.csv("https://raw.githubusercontent.com/dsldk/danish-sentiment-lexicon/main/2a_fullform_headword_polarity.csv", encoding = "UTF-8", header = FALSE, sep = "\t")
-  #   names(dk_sentiment) <- c("word_form", "headword", "homograph_number", "POS", "DDO_headword_ID", "polarity")
-  #   dk_sentiment <- dk_sentiment %>% 
-  #     select(headword, word_form, polarity) %>% 
-  #     unique()
-  #   df_match <- df_lemmatized %>% 
-  #     inner_join(dk_sentiment, by=c("lemma" = "headword")) %>% 
-  #     inner_join(dk_sentiment, by=c("lemma" = "word_form")) %>% 
-  #     inner_join(dk_sentiment, by=c("token" = "headword")) %>% 
-  #     inner_join(dk_sentiment, by=c("token" = "word_form")) %>% 
-  #     summarise(
-  #       sentence_id = sentence_id,
-  #       value = (polarity.x + polarity.y + polarity.x.x + polarity.y.y)/4
-  #     ) %>% 
-  #     group_by(sentence_id) %>% 
-  #     summarise(
-  #       sentence_id = sentence_id,
-  #       polarity = mean(value)
-  #     )
-  #   df$polarity <- 0
-  #   df$polarity[df_match$sentence_id] <- df_match$polarity
-  #   return(df)
-  # }
-  # 
-  # df_da <- sentence_sentiment(df, df_lemmatized)
-  
   write.csv(df_da, "data/sentences.csv", row.names = F, fileEncoding = "UTF-8")
   saveRDS(df_da, "data/sentences.rds")
-}
+  
+  # Cleaned sentences ----
+  cleaned_sentences <- readRDS("data/sentences_cleaned.rds")
+  cleaned_sentences <- cleaned_sentences %>% 
+    mutate(polarity = as.numeric(
+      ifelse("polarity" %in% names(cleaned_sentences),
+             polarity,
+             ""))) %>% 
+    mutate(polarity = as.numeric(
+      ifelse(is.na(polarity),
+             sum(df_da[df_da$uuid %in% uuid,]$polarity),
+             polarity)),
+      content = paste0(collapse = ". ",
+                       unlist(df_da[df_da$uuid %in% uuid,]$sentences_sentiment)
+      ))
+  
+  # Save Cleaned sentences ----
+  saveRDS(cleaned_sentences, "data/sentences_cleaned.rds")
+  write.csv(cleaned_sentences, "data/sentences_cleaned.csv", row.names = F, fileEncoding = "UTF-8")
+# }
+
