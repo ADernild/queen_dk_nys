@@ -101,3 +101,11 @@ new_entries <- readRDS("data/new_entries.rds")
   write.csv(cleaned_sentences, "data/sentences_cleaned.csv", row.names = F, fileEncoding = "UTF-8")
 # }
 
+
+# Unsetting ----
+rm(list=ls())
+detach("package:udpipe", unload=TRUE)
+detach("package:tidytext", unload=TRUE)
+detach("package:stringr", unload=TRUE)
+detach("package:dplyr", unload=TRUE)
+detach("package:stringi", unload=TRUE)
