@@ -2,7 +2,7 @@ source("scripts/scraping.R")
 source("scripts/cleaning.R")
 source("scripts/preprocessing.R")
 source("scripts/sentiment_analysis.R")
-# source("scripts/sentiment_sentences.R")
+source("scripts/sentiment_sentences.R")
 # source("scripts/stm.R")
 
 
@@ -21,6 +21,7 @@ library(stringr)
 library(wordcloud2) # Two create wordclouds
 library(colorBlindness) # For colors
 
+
 # Load data ---------------------------------------------------------------
 tokens <- readRDS("data/tokens.rds") # All tokens, filtered
 lda_model <- readRDS("data/lda_model.rds") # LDA model
@@ -31,6 +32,7 @@ sentiment <- readRDS("data/sentiments.rds") # Sentiment for year
 # countries <- readRDS("data/country_speech.rds") # Countries, country code, lat, lon and # mentions
 # geojson <- readRDS("data/countries.rds") # Library containing geographic information
 article_lib <- readRDS("data/article_library.rds") # File containing UUID, Article name
+cleaned_sentences <- readRDS("data/sentences_cleaned.rds")
 
 
 # Formatting data ---------------------------------------------------------
