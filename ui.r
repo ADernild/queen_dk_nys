@@ -165,14 +165,15 @@ ui <- dashboardPage(
               fluidRow(class="box_align_layout",
                 tabBox(width=12, id = "speeches",
                        title="Sentiment of articles",
-                  tabPanel("Sentiment by Article (Range and lines)",
-                           whatViz("Sentiment by Article shows the positive-, negative- and summed sentiment by Articles. This model does so in ranges."),
-                           whyViz("Displaying sentiment in connected ranges, makes it easy to interpret the relation of sentiment between them."),
-                           highchartOutput("sentiment_of_speech_sha_compare", height="75vh"),
+                  tabPanel("Sentiment by Article (Columns)",
+                           whatViz("Sentiment by Article shows the positive-, negative- and summed sentiment by Article. This model does so in columns."),
+                           whyViz("Displaying sentiment in columns like this makes it easy to interpret sentiment sizes in relation between positive-, negative- and summed sentiment and difference between Articles."),
+                           highchartOutput("sentiment_of_speech_col_compare", height="75vh"),
                            box(width = 12, class="infoViz", title = "How to use",
                                collapsible = T, collapsed = T,
-                               howViz("Interpretation: Positive sentiment, Summed sentiment and negative sentiment is displayed. The range between positive and summed sentiment is highlighted. The difference between postive- and summed sentiment is the same value as the is the negative sentiment. Looking at the size of the changing sizes of the range can be used to observe changes in sentiment by Article."),
-                               howViz("Tooltip: Hovering a data-point will display a tooltip that shows the sentiment values of the Article."),
+                               howViz("Interpretation: Negatives are displayed left and positives right. The Sum shows their aggregated value. Observe the size difference."),
+                               howViz("Series filter: By clicking on a series name, it can be disabled until clicked again, or updated by a filter."),
+                               howViz("Tooltip: Hovering the values of a data-point will show the sentiment of enabled series."),
                                howViz("UUID filter: Using the uuid-filter, will filter Articles featured.")
                                # howViz("Featured words: Using featured words will show the sentiment that subset had in each Article.")
                            )
@@ -189,15 +190,14 @@ ui <- dashboardPage(
                                # howViz("Featured words: Using the featured words, will group the Articles into Articles that include words in the filter, and Articles that do not. This will be displayed in the tooltip.")
                            )
                   ),
-                  tabPanel("Sentiment by Article (Columns)",
-                           whatViz("Sentiment by Article shows the positive-, negative- and summed sentiment by Article. This model does so in columns."),
-                           whyViz("Displaying sentiment in columns like this makes it easy to interpret sentiment sizes in relation between positive-, negative- and summed sentiment and difference between Articles."),
-                           highchartOutput("sentiment_of_speech_col_compare", height="75vh"),
+                  tabPanel("Sentiment by Article (Range and lines)",
+                           whatViz("Sentiment by Article shows the positive-, negative- and summed sentiment by Articles. This model does so in ranges."),
+                           whyViz("Displaying sentiment in connected ranges, makes it easy to interpret the relation of sentiment between them."),
+                           highchartOutput("sentiment_of_speech_sha_compare", height="75vh"),
                            box(width = 12, class="infoViz", title = "How to use",
                                collapsible = T, collapsed = T,
-                               howViz("Interpretation: Negatives are displayed left and positives right. The Sum shows their aggregated value. Observe the size difference."),
-                               howViz("Series filter: By clicking on a series name, it can be disabled until clicked again, or updated by a filter."),
-                               howViz("Tooltip: Hovering the values of a data-point will show the sentiment of enabled series."),
+                               howViz("Interpretation: Positive sentiment, Summed sentiment and negative sentiment is displayed. The range between positive and summed sentiment is highlighted. The difference between postive- and summed sentiment is the same value as the is the negative sentiment. Looking at the size of the changing sizes of the range can be used to observe changes in sentiment by Article."),
+                               howViz("Tooltip: Hovering a data-point will display a tooltip that shows the sentiment values of the Article."),
                                howViz("UUID filter: Using the uuid-filter, will filter Articles featured.")
                                # howViz("Featured words: Using featured words will show the sentiment that subset had in each Article.")
                            )
