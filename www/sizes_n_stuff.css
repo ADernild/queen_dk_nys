@@ -49,6 +49,12 @@ h2, h3{
   cursor: help;
 }
 
+.sentiment_pos,
+.sentiment_neg {
+  display: inline;
+  font-weight: bold;
+}
+
 /* Buttons */
 section.sidebar .shiny-bound-input.action-button,
 section.sidebar .shiny-bound-input.action-link{
@@ -64,6 +70,7 @@ section.sidebar .shiny-bound-input.action-link{
   left: 0;
   max-width: 230px;
 }
+
 /* > Wrapper */
 .sidebar-collapse .content-wrapper, .sidebar-collapse .main-footer,
 .sidebar-collapse .right-side{
@@ -390,6 +397,13 @@ div .col-sm-10:last-child, div .col-sm-11:last-child {
   height: 0;
   clear: both;
 }
+
+/* Shiny content */
+.box .shiny-html-output,
+.box .shiny-output-error{
+  margin: 15px 0;
+}
+
 
 /* > Plots */
 .shiny-plot-output{

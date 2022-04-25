@@ -254,6 +254,18 @@ ui <- dashboardPage(
                         howViz("Set a number by using the slider.")
                     )
                 )
+              ),
+              fluidRow(class="box_align_layout",
+                box(width = 12, title = "Article sentiment inspection",
+                    whatViz("A inpection tool for observing what words create polarity."),
+                    whyViz("Inspecting an article might be pratical to find what exactly adds polarity."),
+                    helpText("This is not meant for acctually reading articles.For optimization and easy polarity inspection, special characters, text formatting, images, whitespace and numbers have been removed."),
+                    uiOutput("single_article_inspecter"),
+                    box(width = 12, class="infoViz", title = "How to use",
+                        collapsible = T, collapsed = T,
+                        howViz("Select only a single article to display article.")
+                    )
+                )
               )
       ),
       # Fyn Map ----

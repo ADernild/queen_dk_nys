@@ -96,6 +96,30 @@ a:hover{
   color: #9C5C52; /* Lighter version of parrent */
 }
 
+.pol1{
+  color: #445666;
+}
+
+.pol2{
+  color: #162c40;
+}
+
+.pol3{
+  color: #112333;
+}
+
+.pol-1{
+  color: #db4a4a;
+}
+
+.pol-2{
+  color: #D21E1E;
+}
+
+.pol-3{
+  color: #861313;
+}
+
 #loadmessage span{
   color: #fff;
 }

@@ -1255,6 +1255,17 @@ server <- function(input, output, session) {
     return(hc)
   })
   
+  ## Aricle inspecter -------------------------------------------------------
+  output$single_article_inspecter <- renderUI({
+    validate(
+      need(length(id_docs()) == 1, "No, or more than 1, article selected.")
+    )
+    val <- cleaned_sentences %>% 
+      filter(uuid == id_docs()) %>% 
+      .$content
+    # print(val)
+    return(HTML(val))
+  })
 
   # Map ---------------------------------------------------------------------
   ## Map data ---------------------------------------------------------------
