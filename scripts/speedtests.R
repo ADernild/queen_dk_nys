@@ -33,7 +33,7 @@ for(i in 1:5){
 ## rbenchmark library ----
 rbench.time.sleep <- benchmark(Sys.sleep(0.5), replications = 5)
 
-## rbenchmark library ----
+## microbenchmark library ----
 mbench.time.sleep <- microbenchmark(Sys.sleep(0.5), times = 5)
 
 
@@ -82,8 +82,8 @@ summary(sys.time.sleep*-1)
 # 0.5098  0.5119    0.5137    0.5129  0.5144    0.5147
 sys.time.sleep.diff <- summary(sys.time.sleep*-1)[6]-summary(sys.time.sleep*-1)[1]
 #0.004931688 
-sys.time.sleep.var <- var(sys.time.sleep)
-# [1] 4.264989e-06
+sys.time.sleep.var <- var(sys.time.sleep*100)
+# [1] 0.04264989
 
 summary(system.time.sleep)
 # > summary(system.time.sleep)
@@ -91,8 +91,8 @@ summary(system.time.sleep)
 # 0.500   0.500     0.500     0.506   0.510     0.520 
 system.time.sleep.diff <- summary(system.time.sleep)[6]-summary(system.time.sleep)[1]
 # 0.02
-system.time.sleep.var <- var(system.time.sleep)
-# [1] 8e-05
+system.time.sleep.var <- var(system.time.sleep*100)
+# [1] 0.8
 
 summary(tictoc.time.sleep*-1)
 # > summary(tictoc.time.sleep*-1)
@@ -100,14 +100,16 @@ summary(tictoc.time.sleep*-1)
 # 0.510   0.510     0.520     0.516   0.520     0.520
 tictoc.time.sleep.diff <- summary(tictoc.time.sleep*-1)[6]-summary(tictoc.time.sleep*-1)[1]
 # 0.01
-tictoc.time.sleep.var <- var(tictoc.time.sleep)
-# [1] 3e-05
+tictoc.time.sleep.var <- var(tictoc.time.sleep*100)
+# [1] 0.3
 
 rbench.time.sleep
 # > rbench.time.sleep
 #   test            replications  elapsed   relative  user.self sys.self  user.child  sys.child
 # 1 Sys.sleep(0.5)  5             2.55      1         0         0         NA          NA
-# Cannot evaluate span or variance
+# Cannot evaluate most of summary, span or variance
+rbench.time.sleep$elapsed/5
+# [1] 0.51
 
 mbench.time.sleep
 # > mbench.time.sleep
@@ -116,8 +118,9 @@ mbench.time.sleep
 # Sys.sleep(0.5)  503.2135  507.2081  510.2063  511.8606  513.6046  515.1445  5
 mbench.time.sleep.diff <- (summary(mbench.time.sleep)[7]-summary(mbench.time.sleep)[2])/100
 # 0.11931
-mbench.time.sleep.var <- var(mbench.time.sleep$time)
+mbench.time.sleep.var <- var(mbench.time.sleep$time/1000000000)
 # [1] 2.413986e+13
+
 
 ## API ----
 summary(sys.time.json*-1)
@@ -151,6 +154,7 @@ rbench.time.json
 #   test                                            replications  elapsed relative  user.self   sys.self    user.child  sys.child
 # 1 fromJSON(article_list_call, flatten = FALSE)    5             13.93   1         5.3         0.11        NA          NA
 # Cannot evaluate span
+rbench.time.json$elapsed/5
 
 mbench.time.json
 # > mbench.time.json
@@ -159,5 +163,5 @@ mbench.time.json
 # fromJSON(article_list_call, flatten = FALSE) 1.502663   1.55201 1.595491  1.559459    1.64915   1.714172  5
 mbench.time.json.diff <- (summary(mbench.time.json)[7]-summary(mbench.time.json)[2])
 # 0.2115083
-mbench.time.json.var <- var(mbench.time.json$time)
+mbench.time.json.var <- var(mbench.time.json$time/100000000000)
 # [1] 7.192563e+15
