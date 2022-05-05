@@ -50,7 +50,7 @@ h2, h3{
 }
 
 .sentiment_pos,
-.sentiment_neg {
+.sentiment_neg{
   display: inline;
   font-weight: bold;
 }

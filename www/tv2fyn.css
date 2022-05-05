@@ -120,6 +120,10 @@ a:hover{
   color: #861313;
 }
 
+.stopword{
+  color: #ccc;
+}
+
 #loadmessage span{
   color: #fff;
 }
