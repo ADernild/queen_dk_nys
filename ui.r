@@ -217,6 +217,7 @@ ui <- dashboardPage(
                 box(width=5, title = "Sentiment of words",
                     whatViz("Sentiment of words displays words by sentiment."),
                     whyViz("Sentiment of words can help you identify what words influenced the sentiment."),
+                    helpText("Notice: Words with a polarity of 0 is filtered."),
                     highchartOutput("sentiment_of_words", height="35vh"),
                     box(width = 12, class="infoViz", title = "How to use",
                         collapsible = T, collapsed = T,
@@ -226,12 +227,12 @@ ui <- dashboardPage(
                         howViz("UUID filter: Using the uuid-filter, will filter Articles featured."),
                         # howViz("Featured words: Setting featured words that have sentient will make them be included before other words (otherwise words are included by frequency). If at least one word with sentiment is present, the series will be names after both if they are positive/negative and if they are included or not."),
                         howViz("Number of words: Number of words filters words included, from most to least frequent.")
-                    ),
-                    helpText("Notice: Words with a polarity of 0 is filtered.")
+                    )
                 ),
                 box(width=5, title = "Frequency used (n uses in total)",
                     whatViz("Frequency used displays words by frequency."),
                     whyViz("Frequency used can help you identify what words influenced the sentiment."),
+                    helpText("Notice: Words with a polarity of 0 is filtered."),
                     highchartOutput("sentiment_of_words_freq", height="35vh"),
                     box(width = 12, class="infoViz", title = "How to use",
                         collapsible = T, collapsed = T,
@@ -240,8 +241,7 @@ ui <- dashboardPage(
                         howViz("UUID filter: Using the uuid-filter, will filter Articles featured."),
                         # howViz("Featured words: Setting featured words that have sentient will make them be included before other words (otherwise words are included by frequency). If at least one word with sentiment is present, the series will be names after both if they are positive/negative and if they are included or not."),
                         howViz("Number of words: Number of words filters words included, from most to least frequent.")
-                    ),
-                    helpText("Notice: Words with a polarity of 0 is filtered.")
+                    )
                 ),
                 box(width = 2, title = "Number of words",
                     whatViz("Number of words is a slider to set the number of featured words."),
@@ -263,7 +263,10 @@ ui <- dashboardPage(
                     uiOutput("single_article_inspecter"),
                     box(width = 12, class="infoViz", title = "How to use",
                         collapsible = T, collapsed = T,
-                        howViz("Select only a single article to display article.")
+                        howViz("Select only a single article to display article."),
+                        whatViz("Words with positive polarity have a shade of blue."),
+                        whatViz("Words with negative polarity have a shade of red."),
+                        whatViz("Stopwords, words that are ignored, have a grey shade.")
                     )
                 )
               )
