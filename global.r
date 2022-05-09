@@ -1,10 +1,4 @@
-source("scripts/scraping.R")
-source("scripts/cleaning.R")
-source("scripts/preprocessing.R")
-source("scripts/sentiment_analysis.R")
-source("scripts/sentiment_sentences.R")
-# source("scripts/stm.R")
-
+source("scripts/update_core_data.R")
 
 library(shiny) # For interactive interface
 library(shinydashboard) # For dasghboard design and structure - enables tabs and various html elements
