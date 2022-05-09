@@ -2050,7 +2050,7 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$update_non_stm_data, {
-    source("scripts/update_non_stm_data.R")
+    source("scripts/update_non_topic_data.R")
     source("scripts/load_article_data.R")
     file.create("restart.txt")
   })
