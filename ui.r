@@ -535,6 +535,7 @@ ui <- dashboardPage(
                     p("Click the icon in the top right cornor to hide/expand section."),
                     whatViz("What marking: A blue dot with bold dark-blue text indicates what kind of visualization/information is depicted."),
                     whyViz("Why marking: A Yellow circle with dark-yellow bold text indicates why and when to use you could use the visualization/information you can observe."),
+                    whyViz("How marking: A brown triangle with dark-brown bold text indicates how to use content."),
                     box(width = 12, class="infoViz", title = "How to use",
                         collapsible = T, collapsed = F,
                         howViz("How marking: A light-brown triangle with brown bold text indicates how you can interpret information in the visualization.")
