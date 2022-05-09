@@ -1,5 +1,6 @@
 server <- function(input, output, session) {
 
+  is_local <<- Sys.getenv('SHINY_PORT') == ""
   # UI output -----------------------------------------------------------------
   ## Sidebar Menu -------------------------------------------------------------
   output$menu <- renderMenu({
