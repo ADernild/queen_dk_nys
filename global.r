@@ -7,7 +7,7 @@ source("scripts/update_core_data.R")
 
 
 ## Load data  -------------------------------------------------------------
-source("scripts/load_article_data.R") # Map data
+source("scripts/load_article_data.R") # Article data
 source("scripts/load_map_data.R") # Map data
 
 # Colors ------------------------------------------------------------------
