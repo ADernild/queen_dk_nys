@@ -359,3 +359,9 @@ section.sidebar .shiny-bound-input.action-link:hover{
   border-width: 5px 3px 0 3px;
   border-color: #d21e1e transparent transparent transparent;
 }
+
+/* Data tab */
+.update_dashboard{
+  font-weight: bold;
+}
+

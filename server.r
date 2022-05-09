@@ -1,5 +1,6 @@
 server <- function(input, output, session) {
 
+  is_local <<- Sys.getenv('SHINY_PORT') == ""
   # UI output -----------------------------------------------------------------
   ## Sidebar Menu -------------------------------------------------------------
   output$menu <- renderMenu({
@@ -2029,6 +2030,29 @@ server <- function(input, output, session) {
       })
     )
     return(content)
+  })
+  
+  output$update_data_local_warning <- renderUI({
+    if(is_local){
+      p("Notice: In local version, forced reset is not applied. Reload page by yourself.")
+    }
+  })
+  
+  observeEvent(input$refresh_data, {
+    source("scripts/load_article_data.R")
+    file.create("restart.txt")
+  })
+  
+  observeEvent(input$update_core_data, {
+    source("scripts/update_core_data.R")
+    source("scripts/load_article_data.R")
+    file.create("restart.txt")
+  })
+  
+  observeEvent(input$update_non_stm_data, {
+    source("scripts/update_non_topic_data.R")
+    source("scripts/load_article_data.R")
+    file.create("restart.txt")
   })
 
 }
