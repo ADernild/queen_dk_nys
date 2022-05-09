@@ -1,9 +1,14 @@
-# Base image https://hub.docker.com/u/rocker/
-FROM rocker/shiny:latest
+FROM rocker/r-ver:3.6.3
 
-# system libraries of general use
-## install debian packages
-RUN apt-get update -qq && apt-get -y --no-install-recommends install \
+RUN apt-get update && apt-get install -y \
+    sudo \
+    gdebi-core \
+    pandoc \
+    pandoc-citeproc \
+    libcairo2-dev \
+    libxt-dev \
+    xtail \
+    wget \
     libpng-dev \
     libxml2-dev \
     libgsl0-dev \
@@ -11,7 +16,6 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
     libcurl4-openssl-dev \
     libssl-dev \
     zlib1g-dev \
-    pandoc \
     libgmp3-dev \
     libmpfr-dev \
     libgit2-dev \
@@ -22,25 +26,24 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
     libproj-dev \
     libicu-dev \
     libglpk-dev
-    
-## update system libraries
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get clean
 
-# copy necessary files
-## app folder
-COPY / ./app
-## renv.lock file
 COPY /renv.lock ./renv.lock
 
-# install renv & restore packages
-RUN Rscript -e 'install.packages("renv")'
-RUN Rscript -e 'renv::consent(provided = TRUE)'
-RUN Rscript -e 'renv::restore()'
+# Download and install shiny server
+RUN wget --no-verbose https://download3.rstudio.org/ubuntu-14.04/x86_64/VERSION -O "version.txt" && \
+    VERSION=$(cat version.txt)  && \
+    wget --no-verbose "https://download3.rstudio.org/ubuntu-14.04/x86_64/shiny-server-$VERSION-amd64.deb" -O ss-latest.deb && \
+    gdebi -n ss-latest.deb && \
+    rm -f version.txt ss-latest.deb && \
+    . /etc/environment && \
+    R -e "install.packages(c('shiny', 'rmarkdown', 'renv'), repos='$MRAN')" && \
+    R -e "renv::consent(provided = TRUE)" && \
+    R -e "renv::restore()" && \
+    cp -R /usr/local/lib/R/site-library/shiny/examples/* /srv/shiny-server/ && \
+    chown shiny:shiny /var/lib/shiny-server
 
-# expose port
 EXPOSE 3838
 
-# run app on container start
-CMD ["R", "-e", "shiny::runApp('/app', host = '0.0.0.0', port = 3838)"]
+COPY shiny-server.sh /usr/bin/shiny-server.sh
+
+CMD ["/usr/bin/shiny-server.sh"]

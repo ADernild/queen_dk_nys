@@ -3,7 +3,7 @@ library(shinydashboard) # For dasghboard design and structure - enables tabs and
 
 # Data handling -----------------------------------------------------------
 ## Update data ------------------------------------------------------------
-source("scripts/update_core_data.R")
+# source("scripts/update_core_data.R") # Execution halts when this is run in docker image for shiny server
 
 
 ## Load data  -------------------------------------------------------------
