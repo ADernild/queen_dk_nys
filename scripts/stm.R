@@ -5,6 +5,7 @@ library(stringr)
 library(stm)
 library(stopwords)
 library(SnowballC)
+library(tm)
 
 # Reading data
 df <- read.csv("data/sentences.csv", encoding = "utf-8")
