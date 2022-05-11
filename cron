@@ -1,0 +1,3 @@
+# Cron script for updating data
+* 23 * * * /usr/local/bin/Rscript "/usr/local/src/scripts/update_all_data.R" 
+# New line needed
