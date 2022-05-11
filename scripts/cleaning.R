@@ -12,7 +12,7 @@ clean_speech <- function(x) {
     str_replace_all("[^[:alnum:]]", " ") %>% # removes special characters
     str_to_lower() %>% # Converts to lower case
     gsub(pattern = '[[:digit:]]+', replacement =  '') %>%  # removes numbers
-    # gsub(pattern = "\\W*\\b\\w\\b\\W*", replacement = "") %>%  # Remove single character 
+    # gsub(pattern = "\\W*\\b\\w\\b\\W*", replacement = "") %>%  # Remove single character
     str_squish() # Removes leading, trailing and middle whitespace
 }
 
@@ -22,7 +22,7 @@ clean_sentences <- function(x) {
     str_replace_all("\\\n", " ") %>% # removes linebreaks
     str_replace_all("[^[:alnum:].']", " ") %>% # removes special characters except .,
     gsub(pattern = '[[:digit:]]+', replacement =  '') %>%  # removes numbers
-    # gsub(pattern = "\\W*\\b\\w\\b\\W*", replacement = "") %>%  # Remove single character 
+    # gsub(pattern = "\\W*\\b\\w\\b\\W*", replacement = "") %>%  # Remove single character
     str_to_lower() %>% # Converts to lower case
     str_squish() # Removes leading, trailing and middle whitespace
 }
@@ -33,7 +33,7 @@ clean_sentences_less <- function(x) {
     str_replace_all("\\\n", " ") %>% # removes linebreaks
     str_replace_all("[^[:alnum:].,']", " ") %>% # removes special characters except .,
     gsub(pattern = '[[:digit:]]+', replacement =  '') %>%  # removes numbers
-    # gsub(pattern = "\\W*\\b\\w\\b\\W*", replacement = "") %>%  # Remove single character 
+    # gsub(pattern = "\\W*\\b\\w\\b\\W*", replacement = "") %>%  # Remove single character
     str_to_lower() %>% # Converts to lower case
     str_squish() # Removes leading, trailing and middle whitespace
 }
@@ -56,50 +56,50 @@ if(file.exists("data/sentences_cleaned.rds")){
 #   if(nrow(old_sentences) != nrow(df)){
 #     # Cleaning sentences i.e., leaving in the . (dots) for later separation
 #     sentences <- data.frame(cbind(df$uuid, clean_sentences(df$content), clean_sentences_less(df$content)))
-#     
+#
 #     # Grouping speaches by id and separating into sentences by . (dots)
-#     sentences <- sentences %>% 
-#       filter(!(X1 %in% old_sentences$uuid)) %>% 
-#       group_by(X1) %>% 
+#     sentences <- sentences %>%
+#       filter(!(X1 %in% old_sentences$uuid)) %>%
+#       group_by(X1) %>%
 #       summarize(
 #         sentence = strsplit(X2, "[.]"),
 #         sentence_full = strsplit(X3, "[.]")
 #       )
-#     
+#
 #     sentences <- unnest_sentences(sentences)
-#     
+#
 #     sentences$polarity <- 0
-#     sentences <- sentences %>% 
+#     sentences <- sentences %>%
 #       full_join(old_sentences)
-#     
+#
 #     # Cleaning speech of each year
-#     new_df_row <- df %>% 
-#       filter(!(uuid %in% sentences_cleaned$uuid)) %>% 
-#       rowwise() %>% 
+#     new_df_row <- df %>%
+#       filter(!(uuid %in% sentences_cleaned$uuid)) %>%
+#       rowwise() %>%
 #       mutate(content = clean_speech(content))
-#     
-#     df <- sentences_cleaned %>% 
+#
+#     df <- sentences_cleaned %>%
 #       full_join(new_df_row)
 #   } else{
 #     sentences <- old_sentences
 #   }
   # Cleaning sentences i.e., leaving in the . (dots) for later separation
   sentences <- data.frame(cbind(df$uuid, clean_sentences(df$content), clean_sentences_less(df$content)))
-  
+
   # Grouping speaches by id and separating into sentences by . (dots)
-  sentences <- sentences %>% 
-    group_by(X1) %>% 
+  sentences <- sentences %>%
+    group_by(X1) %>%
     summarize(
-      sentence = strsplit(X2, "[.]"),
-      sentence_full = strsplit(X3, "[.]")
+      sentence = strsplit(toString(X2), "[.]"),
+      sentence_full = strsplit(toString(X3), "[.]")
     )
-  
-  sentences <- unnest_sentences(sentences) %>% 
+
+  sentences <- unnest_sentences(sentences) %>%
     mutate(polarity = NA,
            sentences_sentiment = "")
-  
-  sentencess <- sentences %>% 
-    group_by(uuid, sentences, sentences_full) %>% 
+
+  sentencess <- sentences %>%
+    group_by(uuid, sentences, sentences_full) %>%
     right_join(old_sentences)
 
   # Cleaning speech of each year
@@ -108,20 +108,20 @@ if(file.exists("data/sentences_cleaned.rds")){
   # Create, if not exists ----
   # Cleaning sentences i.e., leaving in the . (dots) for later separation
   sentences <- data.frame(cbind(df$uuid, clean_sentences(df$content), clean_sentences_less(df$content)))
-  
+
   # Grouping speaches by id and separating into sentences by . (dots)
-  sentences <- sentences %>% 
-    group_by(X1) %>% 
+  sentences <- sentences %>%
+    group_by(X1) %>%
     summarize(
-      sentence = strsplit(X2, "[.]"),
-      sentence_full = strsplit(X3, "[.]")
+      sentence = strsplit(toString(X2), "[.]"),
+      sentence_full = strsplit(toString(X3), "[.]")
     )
-  
+
   sentences <- unnest_sentences(sentences) %>%
-  # sentences <- sentences %>% 
+  # sentences <- sentences %>%
     mutate(polarity = NA,
            sentences_sentiment = "")
-  
+
   # Cleaning speech of each year
   df$content <- clean_speech(df$content)
 }
