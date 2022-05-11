@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  shiny:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./data/:/srv/shiny-server/topictool/data/
+      - ./global.r:/srv/shiny-server/topictool/global.r
+      - ./server.r:/srv/shiny-server/topictool/server.r
+      - ./ui.r:/srv/shiny-server/topictool/ui.r
+      - ./scripts/:/srv/shiny-server/topictool/scripts/
+    ports:
+      - '3838:3838'
+    networks: 
+      - dash
+  updater:
+    build: 
+      context: .
+      dockerfile: Dockerfile_R
+    volumes:
+      - ./data/:/usr/local/src/data/:rw
+    networks:
+      - dash
+
+networks: 
+  dash:
+    driver: bridge
+    name: dash
