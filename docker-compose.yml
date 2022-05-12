@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: topictool_shiny
     volumes:
       - ./data/:/srv/shiny-server/topictool/data/
       - ./global.r:/srv/shiny-server/topictool/global.r
@@ -13,18 +14,20 @@ services:
       - ./scripts/:/srv/shiny-server/topictool/scripts/
     ports:
       - '3838:3838'
-    networks: 
+    networks:
       - dash
   updater:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile_R
+    container_name: topictool_data_updater
     volumes:
       - ./data/:/usr/local/src/data/:rw
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - dash
 
-networks: 
+networks:
   dash:
     driver: bridge
     name: dash
