@@ -1,0 +1,4 @@
+# Cron script for updating data
+* 23 * * * /usr/local/bin/Rscript "/usr/local/src/scripts/update_all_data.R" && docker restart topictool_shiny
+# New line needed
+
