@@ -7,11 +7,13 @@ services:
       dockerfile: Dockerfile
     container_name: topictool_shiny
     volumes:
-      - ./data/:/srv/shiny-server/topictool/data/
-      - ./global.r:/srv/shiny-server/topictool/global.r
-      - ./server.r:/srv/shiny-server/topictool/server.r
-      - ./ui.r:/srv/shiny-server/topictool/ui.r
-      - ./scripts/:/srv/shiny-server/topictool/scripts/
+      - ./data/:/srv/shiny-server/data/
+      - ./global.r:/srv/shiny-server/global.r
+      - ./server.r:/srv/shiny-server/server.r
+      - ./ui.r:/srv/shiny-server/ui.r
+      - ./scripts/:/srv/shiny-server/scripts/
+      - ./www/:/srv/shiny-server/www/
+      - ./utils/:/srv/shiny-server/utils/
     ports:
       - '3838:3838'
     networks:

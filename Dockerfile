@@ -39,7 +39,7 @@ RUN wget --no-verbose https://download3.rstudio.org/ubuntu-14.04/x86_64/VERSION 
     R -e "install.packages(c('shiny', 'rmarkdown', 'renv'), repos='$MRAN')" && \
     R -e "renv::consent(provided = TRUE)" && \
     R -e "renv::restore()" && \
-    cp -R /usr/local/lib/R/site-library/shiny/examples/* /srv/shiny-server/ && \
+    rm -rf /srv/shiny-server/* && \
     chown shiny:shiny /var/lib/shiny-server
 
 EXPOSE 3838
