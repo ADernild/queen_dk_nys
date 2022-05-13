@@ -98,7 +98,7 @@ if(file.exists("data/sentences_cleaned.rds")){
     mutate(polarity = NA,
            sentences_sentiment = "")
 
-  sentencess <- sentences %>%
+  sentences <- sentences %>%
     group_by(uuid, sentences, sentences_full) %>%
     right_join(old_sentences)
 
