@@ -13,9 +13,9 @@ library(stringr)
 library(wordcloud2) # Two create wordclouds
 library(colorBlindness) # For colors
 
+# Load and format article data ---------------------------------------------
 print("Loading article data...")
 
-# Load and format article data ---------------------------------------------
 ## Load data ---------------------------------------------------------------
 tokens <<- readRDS("data/tokens.rds") # All tokens, filtered
 lda_model <<- readRDS("data/lda_model.rds") # LDA model
@@ -68,6 +68,8 @@ authors <<-  c("Not set", authors)
 locations <<- article_lib$location %>% 
   unique() %>% 
   sort()
+
+print("Applying settings...")
 
 # Colors ------------------------------------------------------------------
 ## For multiple series points/continuous ----
