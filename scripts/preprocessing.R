@@ -127,5 +127,6 @@ if(nrow(tokens)>0){
 # Unsetting ----
 rm(list=ls())
 detach("package:dplyr", unload=TRUE)
+detach("package:SnowballC", unload=TRUE)
 detach("package:tidytext", unload=TRUE)
 detach("package:udpipe", unload=TRUE)
