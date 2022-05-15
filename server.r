@@ -211,7 +211,7 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'section',
-      choices = section,
+      choices = sections,
       selected = c(""),
       server = TRUE
     )
@@ -263,7 +263,7 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'section',
-      choices = section,
+      choices = sections,
       selected = c(""),
       server = TRUE
     )
