@@ -4,6 +4,7 @@ library(tidytext)
 library(stringr)
 library(dplyr)
 library(stringi)
+library(SnowballC)
 
 print("sentiment_sentences.R")
 
@@ -42,7 +43,15 @@ stop_words <- readRDS("utils/stopwords.rds")$word
     for (i in 1:length(word_list)) {
       org_word <- word_list[i]
       if(org_word %in% tokens$word){
-        tokens_istance <- tokens[tokens$word == word_list[i],][1,]
+        tokens_istance <- tokens[tokens$word == org_word,][1,]
+        if(tokens_istance$polarity>0){
+          word_list[i] <- paste("<span class='sentiment_pos pol", tokens_istance$polarity, "' title='Polarity of: \"", tokens_istance$polarity, "\"'>", ifelse(i==1,firstup(org_word),org_word), "</span>", sep="")
+        }
+        else{
+          word_list[i] <- paste("<span class='sentiment_neg pol", tokens_istance$polarity, "' title='Polarity of: \"", tokens_istance$polarity, "\"'>", ifelse(i==1,firstup(org_word),org_word), "</span>", sep="")
+        }
+      } else if(wordStem(org_word, language = "danish") %in% tokens$stemmed){
+        tokens_istance <- tokens[tokens$stemmed == wordStem(org_word, language = "danish"),][1,]
         if(tokens_istance$polarity>0){
           word_list[i] <- paste("<span class='sentiment_pos pol", tokens_istance$polarity, "' title='Polarity of: \"", tokens_istance$polarity, "\"'>", ifelse(i==1,firstup(org_word),org_word), "</span>", sep="")
         }
@@ -52,6 +61,7 @@ stop_words <- readRDS("utils/stopwords.rds")$word
       } else if(org_word %in% stop_words){
         word_list[i] <- paste("<span class='stopword' title='Stopword'>", ifelse(i==1,firstup(org_word),org_word), "</span>", sep="")
       }
+      
       if(!is.na(org_word) && !is.na(word_list_comma[i]) && nchar(org_word) != nchar(word_list_comma[i])){
         word_list[i] <- paste(word_list[i], ",", sep="")
       }
@@ -112,3 +122,4 @@ detach("package:tidytext", unload=TRUE)
 detach("package:stringr", unload=TRUE)
 detach("package:dplyr", unload=TRUE)
 detach("package:stringi", unload=TRUE)
+detach("package:SnowballC", unload=TRUE)
