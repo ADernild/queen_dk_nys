@@ -141,14 +141,10 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$topic_id_sync, {
-    topics <- unique(topic_id())
-    section <- unique(section_id())
-    authors <- unique(authors_id())
-    locations <- unique(location_id())
-    topics_dis <<- unique(topic_id())
-    section_dis <<- unique(section_id())
-    authors_dis <<- unique(authors_id())
-    locations_dis <<- unique(location_id())
+    topics_dis <- unique(topic_id())
+    section_dis <- unique(section_id())
+    authors_dis <- unique(authors_id())
+    locations_dis <- unique(location_id())
     topics <- topics_dis
     section <- section_dis
     authors <- authors_dis
@@ -171,6 +167,7 @@ server <- function(input, output, session) {
       # No selection
       val <- input$id # Keep current selection
     }
+    
     updateSelectizeInput(
       session,
       'id',
