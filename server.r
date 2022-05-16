@@ -19,9 +19,15 @@ server <- function(input, output, session) {
                            multiple = TRUE, options = list(maxOptions = length(article_lib$uuid))),
             selectizeInput("docs", label="Article name", choices = c(),
                            multiple = TRUE, options = list(maxOptions = length(article_lib$uuid))),
+            div(class="hidden",
+                numericInput("n_recent", "Hidden numeric input to filter articles", value = 200)),
             actionButton("sync", "Sync selection", title="Syncronize Artcile-names and UUID"),
             actionButton("clear_id", "Clear selection"),
             h3("Filters"),
+            div(sliderInput("n_recent_filter", "N recent articles",
+                         as.numeric(ifelse(length(article_lib$uuid)>200, 200, length(article_lib$uuid))),
+                         min = 10, max = round_any(length(article_lib$uuid), 10, f = ceiling), step = 10, round = 10),
+                         title = "Limit for how many articles to load at the same time."),
             selectizeInput("topic", label="Topic", choices = c(),
                            multiple = FALSE, options = list(maxOptions = length(topic_frame$topic))),
             selectizeInput("section", label="Section", choices = c(),
@@ -73,7 +79,7 @@ server <- function(input, output, session) {
   id_docs <- reactive({
     val <- unique(c(input$id, input$docs))
     if(length(val) == 0){
-      val <- article_lib$uuid
+      val <- article_lib$uuid[1:as.numeric(ifelse(input$n_recent>length(article_lib$uuid), length(article_lib$uuid), input$n_recent))]
     }
     return(val)
   })
@@ -175,6 +181,12 @@ server <- function(input, output, session) {
       selected = val,
       server = TRUE
     )
+    updateNumericInput(
+      session,
+      "n_recent",
+      "Updated",
+      input$n_recent_filter
+    )
   })
   
   # observeEvent(input$clear, {
@@ -202,9 +214,23 @@ server <- function(input, output, session) {
       selected = c(""),
       server = TRUE
     )
+    updateNumericInput(
+      session,
+      "n_recent",
+      "Updated",
+      200
+    )
   })
   
   observeEvent(input$clear_filter, {
+    updateSliderInput(
+      session,
+      "n_recent_filter",
+      value = as.numeric(ifelse(length(article_lib$uuid)>200, 200, length(article_lib$uuid))),
+      min = 10,
+      max = round_any(length(article_lib$uuid), 10, f = ceiling),
+      step = 10
+    )
     updateSelectizeInput(
       session,
       'section',
@@ -256,6 +282,20 @@ server <- function(input, output, session) {
       choices = named_id,
       selected = c(""),
       server = TRUE
+    )
+    updateNumericInput(
+      session,
+      "n_recent",
+      "Updated",
+      200
+    )
+    updateSliderInput(
+      session,
+      "n_recent_filter",
+      value = as.numeric(ifelse(length(article_lib$uuid)>200, 200, length(article_lib$uuid))),
+      min = 10,
+      max = round_any(length(article_lib$uuid), 10, f = ceiling),
+      step = 10
     )
     updateSelectizeInput(
       session,
