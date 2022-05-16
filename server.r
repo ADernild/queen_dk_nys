@@ -34,7 +34,7 @@ server <- function(input, output, session) {
                            multiple = TRUE, options = list(maxOptions = length(sections))),
             selectizeInput("authors", label="Authors", choices = c(),
                            multiple = TRUE, options = list(maxOptions = length(authors))),
-            selectizeInput("location", label="location", choices = c(),
+            selectizeInput("location", label="Location", choices = c(),
                            multiple = TRUE, options = list(maxOptions = length(authors))),
             # selectizeInput("words", label="Featured words", choices = c(),
             #                multiple = TRUE, options = list(maxOptions = length(words_tokens_all))),
