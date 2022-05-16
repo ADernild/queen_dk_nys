@@ -56,3 +56,10 @@ stm_da <- make_stm_model(df$sentences, df, covariates=formula(~uuid + polarity),
 
 saveRDS(stm_da$stm_model, file="data/stm_model.rds")
 saveRDS(stm_da$thoughts, file="data/thoughts.rds")
+
+detach("package:dplyr", unload=TRUE)
+detach("package:stringr", unload=TRUE)
+detach("package:stm", unload=TRUE)
+detach("package:stopwords", unload=TRUE)
+detach("package:SnowballC", unload=TRUE)
+detach("package:tm", unload=TRUE)
