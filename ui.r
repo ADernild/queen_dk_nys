@@ -508,20 +508,20 @@ ui <- dashboardPage(
                   p("Sentiment analysis is done by getting sentiment values from \"Det Danske Sprog- og Litteraturselskab (DSL, Society for Danish Language and Literature) and Center for Sprogteknologi, Københavns Universitet (CST, Centre for Language Technology, University of Copenhagen)\", and adding the the values to the words we collected on word level, stem level and lemmatized values.")
                 )
               ),
-              fluidRow(class="box_align_layout",
-                box(width=12, title = "Update data",
-                    whatViz("Refresh or update data that is used in Topic Tool and restart session."),
-                    whatViz("The data is updated at night at xx a'clock."),
-                    whyViz("The updated data is not automatically loaded into Topic Tool if your session was active during update, or you just want to get new data."),
-                    howViz("Click a button bellow to refresh or update the specified data and restart the session. Any set filter needs to be applied again."),
-                    p(helpText("Notice: Using any of theese buttons will reset the server, and any selection or filter will be reset. Use with caution.")),
-                    uiOutput("update_data_local_warning"),
-                    actionButton("refresh_data", "Refresh data (fast ~1 min)", class="btn-success update_dashboard", title="Updates article library, statistics and sentiment"),
-                    actionButton("update_core_data", "Update core data (slow ~2 min)", class="btn-warning update_dashboard", title="Updates article library, statistics and sentiment"),
-                    actionButton("update_non_stm_data", "Update all data (very slow +6 min)", class="btn-danger update_dashboard", title="Updates article library, statistics, sentiment and article sentiment")
-                    # actionButton("update_all_data", "Update all data 4real (supper slow +20 min)", class="update_dashboard", title="Updates article library, statistics, sentiment, article sentiment and topics")
-                )
-              ),
+              # fluidRow(class="box_align_layout",
+              #   box(width=12, title = "Update data",
+              #       whatViz("Refresh or update data that is used in Topic Tool and restart session."),
+              #       whatViz("The data is updated at night at xx a'clock."),
+              #       whyViz("The updated data is not automatically loaded into Topic Tool if your session was active during update, or you just want to get new data."),
+              #       howViz("Click a button bellow to refresh or update the specified data and restart the session. Any set filter needs to be applied again."),
+              #       p(helpText("Notice: Using any of theese buttons will reset the server, and any selection or filter will be reset. Use with caution.")),
+              #       uiOutput("update_data_local_warning"),
+              #       actionButton("refresh_data", "Refresh data (fast ~1 min)", class="btn-success update_dashboard", title="Updates article library, statistics and sentiment"),
+              #       actionButton("update_core_data", "Update core data (slow ~2 min)", class="btn-warning update_dashboard", title="Updates article library, statistics and sentiment"),
+              #       actionButton("update_non_stm_data", "Update all data (very slow +6 min)", class="btn-danger update_dashboard", title="Updates article library, statistics, sentiment and article sentiment")
+              #       # actionButton("update_all_data", "Update all data 4real (supper slow +20 min)", class="update_dashboard", title="Updates article library, statistics, sentiment, article sentiment and topics")
+              #   )
+              # ),
               fluidRow(class="box_align_layout",
                        # box(width=2,
                        #     title = "Sorting options?",
