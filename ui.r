@@ -585,13 +585,12 @@ ui <- dashboardPage(
                            p(helpText("Notice: Some visualizations will use the whole dataset as a reference regardless of your set selection"))
                        ),
                        box(width=12, title="Filtering: Filters",
-                           whatViz("Filter refers to the group of filters that do not dirrectly affect inspected articles. These are: N recent articles, Topic, Selection, Authors and Location."),
+                           whatViz("Filter refers to the group of filters that do not dirrectly affect inspected articles. These are: N recent articles, Topic, Selection, Authors, Location and User-id."),
                            whyViz("Filtering articles can let you inspect a specific subset of data within your set parameters."),
                            howViz("Apply filters: Use 'APPLY FILTERS'-button bellow the filters. You might have to scroll within the sidebar to see it."),
                            howViz("Remove any selection in filters: click on a value you want to remove and press Backspace-key or Delete-key to remove it. Hold down Ctrl to select multiple. Alternatively, select input-field (e.g. by clicking or using tab button), and navigate the cursor with the arrow keys, and use Backspace-key or Delete-key to remove Articles. Or use clear buttons"),
                            howViz("Clear filters: use 'CLEAR FILTERS'-button to clear filters."),
                            howViz("Clear all: use 'CLEAR ALL'-button to clear selection and filters."),
-                           span(helpText("It's recomended to use filters first, before manually adjusting selection.")),
                            br(),
                            whatViz("N recent articles."),
                            whyViz("Limits how many articles to observe at the same time."),
@@ -602,9 +601,13 @@ ui <- dashboardPage(
                            howViz("Select input-field (e.g. by clicking or using tab button) and type the name of an Topic. Press enter to add or select suggestion by clicking on it. Using the topic tab, can also set topic. See description on topic tab."),
                            br(),
                            whatViz("Selection, Author and Location"),
-                           whyViz("To filter by article variables"),
+                           whyViz("To filter by article variables."),
                            howViz("Select input-field (e.g. by clicking or using tab button) and type for the variable you want to filter by. Press enter to add or select suggestion by clicking on it. "),
-                           p(helpText("Notice: Some visualizations will use the whole dataset as a reference regardless of your set filter."))
+                           br(),
+                           whatViz("User-id"),
+                           whyViz("To filter by recommendations from the recommendations API."),
+                           howViz("Finding your user-id: Visit tv2fyn.dk, and inspect your cookies. The user id is stored in value of the cookie \"user-id\". If you don't know how to inspect your cookies, do a websearch to fint a guide for your browser. Tip: use EditThisCookie-web extension for Google Chrome for easy access to cookie information."),
+                           howViz("Setting value: Select input-field (e.g. by clicking or using tab button) and type of a user-id.")
                        )
                        # box(width=6, title="Featured words",
                        #     whatViz("Featured words is a selection of words from words featured in the articles, that is used to filter or feature words in different kinds of ways."),

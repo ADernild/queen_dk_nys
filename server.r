@@ -36,6 +36,7 @@ server <- function(input, output, session) {
                            multiple = TRUE, options = list(maxOptions = length(authors))),
             selectizeInput("location", label="Location", choices = c(),
                            multiple = TRUE, options = list(maxOptions = length(authors))),
+            textInput("user_id", label="User-id", placeholder = "Eg. 1234567891234-123"),
             # selectizeInput("words", label="Featured words", choices = c(),
             #                multiple = TRUE, options = list(maxOptions = length(words_tokens_all))),
             # actionButton("clear", "Clear featured words"),
@@ -155,7 +156,9 @@ server <- function(input, output, session) {
     section <- section_dis
     authors <- authors_dis
     locations <- locations_dis
-    if(length(topics)>0 || length(section)>0 || length(authors)>0 || length(locations)>0){
+    user_id <- input$user_id
+    
+    if(length(topics)>0 || length(section)>0 || length(authors)>0 || length(locations)>0||user_id!=""){
       val <- article_lib$uuid
       if(length(topics)>0){
         val <- val[val %in% topics]
@@ -168,6 +171,28 @@ server <- function(input, output, session) {
       }
       if(length(locations)>0){
         val <- val[val %in% locations]
+      }
+      if(user_id!=""){
+        api_articles <- F
+        tryCatch({
+          api_articles <- get_article(user_id)
+        }, error=function(e) {
+          showNotification("Could not connect to api - Filter will not be applied.",
+                           id="user_id_api_err",
+                           type="warning",
+                           duration=NULL,
+                           closeButton=T,
+                           session = session)
+          cat(paste("During sync: API error:\n",e))
+        }, warning=function(w) {
+          cat(paste("During sync: API warning:\n",w))
+        })
+        if(api_articles != F){
+          val <- val[val %in% api_articles]
+        }
+      }
+      if(match(val, article_lib$uuid)){
+        val <- input$id # Keep current selection
       }
     } else{
       # No selection
@@ -252,6 +277,11 @@ server <- function(input, output, session) {
       selected = c(""),
       server = TRUE
     )
+    updateTextInput(
+      session,
+      "user_id",
+      value = ""
+    )
     # updateSelectizeInput(
     #   session,
     #   'words',
@@ -317,6 +347,11 @@ server <- function(input, output, session) {
       choices = locations,
       selected = c(""),
       server = TRUE
+    )
+    updateTextInput(
+      session,
+      "user_id",
+      value = ""
     )
     # updateSelectizeInput(
     #   session,

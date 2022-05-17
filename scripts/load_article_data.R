@@ -8,10 +8,11 @@ library(plotly) # for interactive plots
 library(LDAvis) # For topic models
 library(stm) # for stm models
 library(highcharter) # for plot display
-library(leaflet)
-library(stringr)
+library(leaflet) # For maps
+library(stringr) # For string manipulation
 library(wordcloud2) # Two create wordclouds
 library(colorBlindness) # For colors
+library(jsonlite) # For API calls
 
 # Load and format article data ---------------------------------------------
 print("Loading article data...")
@@ -228,3 +229,21 @@ howViz <- function(text){
     text
   )
 }
+
+
+# Recommendations ---------------------------------------------------------
+# Not run:
+# Structure: paste(sep="/", rec_url, "123") - Where 123 is any user id or numeric character combination
+# The api will return recomendations regardless if the user exists or not
+rec_url <- 'http://192.168.152.10:8080/api/DCN/'
+
+get_article <- function(query) {
+  url <- paste(sep="/", rec_url, query)
+  
+  fromJSON(url, flatten = T) %>% data.frame() %>% 
+    return()
+}
+
+# Consider setting high timeout
+# options(timeout= 4000000)
+
