@@ -13,6 +13,7 @@ library(stringr) # For string manipulation
 library(wordcloud2) # Two create wordclouds
 library(colorBlindness) # For colors
 library(jsonlite) # For API calls
+# library(DBI) # For MySQL connection and calls
 
 # Load and format article data ---------------------------------------------
 print("Loading article data...")
@@ -246,4 +247,9 @@ get_article <- function(query) {
 
 # Consider setting high timeout
 # options(timeout= 4000000)
+
+
+# MySQL -------------------------------------------------------------------
+# print("Connecting to database...")
+# source("utils/mysql.R") # Article data
 
