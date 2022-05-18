@@ -31,6 +31,29 @@ html, body {
   padding-top: calc(50vh - 1em);
 }
 
+/* Notifications */
+#shiny-notification-panel{
+  bottom: calc(50% - 25vh);
+  right: calc(50% - 25vw);
+  width: 50vw;
+  height: 50vh;
+}
+
+.shiny-notification{
+  opacity: 100;
+  height: 100%;
+}
+
+.shiny-notification-close{
+  cursor: pointer;
+}
+
+.shiny-notification-content{
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 /* Text */
 /* > Titles */
 h2, h3{
