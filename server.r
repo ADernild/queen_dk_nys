@@ -863,7 +863,7 @@ server <- function(input, output, session) {
   output$sentiment_of_speech_bubles <- renderHighchart({
     data <- sentiment_of_speech_data()
     
-    validate(
+    shiny::validate(
       need(nrow(data) != 0, "Dataset is empty")
     )
     
@@ -997,8 +997,8 @@ server <- function(input, output, session) {
   output$sentiment_of_speech_col_compare <- renderHighchart({
     data <- sentiment_of_speech_data() 
     
-    validate(
-      need(nrow(data) != 0, "Dataset is empty")
+    shiny::validate(
+      need(try(nrow(data) != 0), message = "Dataset is empty")
     )
     
     hc <- highchart() %>% 
@@ -1084,7 +1084,7 @@ server <- function(input, output, session) {
   output$sentiment_of_speech_sha_compare <- renderHighchart({
     data <- sentiment_of_speech_data()
     
-    validate(
+    shiny::validate(
       need(nrow(data) != 0, "Dataset is empty")
     )
     
@@ -1185,7 +1185,7 @@ server <- function(input, output, session) {
   output$sentiment_of_speech_avg <- renderHighchart({
     data <- sentiment_of_speech_data()
     
-    validate(
+    shiny::validate(
       need(nrow(data) != 0, "Dataset is empty")
     )
     
@@ -1206,7 +1206,7 @@ server <- function(input, output, session) {
   output$sentiment_of_words <- renderHighchart({
     data <- sentiment_of_words_data()
     
-    validate(
+    shiny::validate(
       need(nrow(data) != 0, "Dataset is empty")
     )
     
@@ -1259,7 +1259,7 @@ server <- function(input, output, session) {
   output$sentiment_of_words_freq <- renderHighchart({
     data <- sentiment_of_words_data() 
     
-    validate(
+    shiny::validate(
       need(nrow(data) != 0, "Dataset is empty")
     )
     
@@ -1330,7 +1330,7 @@ server <- function(input, output, session) {
   
   ## Aricle inspecter -------------------------------------------------------
   output$single_article_inspecter <- renderUI({
-    validate(
+    shiny::validate(
       need(length(id_docs()) == 1, "No, or more than 1, article selected.")
     )
     val <- cleaned_sentences %>% 
@@ -1350,7 +1350,7 @@ server <- function(input, output, session) {
   ## Creating a map ---------------------------------------------------------
   output$map <- renderLeaflet({
     data <- mapData()
-    validate(
+    shiny::validate(
       need(nrow(data) != 0, "Dataset is empty")
     )
     leaflet(data,
@@ -1382,7 +1382,7 @@ server <- function(input, output, session) {
   output$n_hist <- renderHighchart({
     data <- mapData()
     
-    validate(
+    shiny::validate(
       need(nrow(data) != 0, "Dataset is empty")
     )
     
@@ -1829,7 +1829,7 @@ server <- function(input, output, session) {
   ## Word cloud ------------------------------------------------------------
   output$wordcloud <- renderWordcloud2({
     data <- speech_data_como_filt() 
-    validate(
+    shiny::validate(
       need(nrow(data) != 0, "Dataset is empty")
     )
     data <- data %>% 
@@ -1844,7 +1844,7 @@ server <- function(input, output, session) {
   ## Stream Graph ----------------------------------------------------------
   output$word_ussage_streamgraph <- renderHighchart({
     data <-  speech_data_como_filt_max()
-    validate(
+    shiny::validate(
       need(nrow(data) != 0, "Dataset is empty")
     )
 
@@ -1891,7 +1891,7 @@ server <- function(input, output, session) {
   ## Columns ---------------------------------------------------------------
   output$word_ussage_col <- renderHighchart({
     data <-  speech_data_como_filt()
-    validate(
+    shiny::validate(
       need(nrow(data) != 0, "Dataset is empty")
     )
     
@@ -1934,7 +1934,7 @@ server <- function(input, output, session) {
   ## Columns percent ------------------------------------------------------
   output$word_ussage_col_per <- renderHighchart({
     data <-  speech_data_como_filt()
-    validate(
+    shiny::validate(
       need(nrow(data) != 0, "Dataset is empty")
     )
     
@@ -1964,7 +1964,7 @@ server <- function(input, output, session) {
   ## Pie ------------------------------------------------------------------
   output$word_ussage_pie <- renderHighchart({
     data <-  speech_data_como_filt()
-    validate(
+    shiny::validate(
       need(nrow(data) != 0, "Dataset is empty")
     )
     
@@ -2009,7 +2009,7 @@ server <- function(input, output, session) {
   ## Scatter --------------------------------------------------------------
   output$word_ussage_scatter <- renderHighchart({
     data <-  speech_data_como_filt_max()
-    validate(
+    shiny::validate(
       need(nrow(data) != 0, "Dataset is empty")
     )
     
@@ -2083,7 +2083,7 @@ server <- function(input, output, session) {
     title <- article_lib_filt()$title
     source <- article_lib_filt()$link
 
-    validate(
+    shiny::validate(
       need(nrow(article_lib_filt()) != 0, "No avilable data")
     )
     
