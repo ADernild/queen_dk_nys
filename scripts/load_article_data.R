@@ -245,6 +245,26 @@ get_article <- function(query) {
     return()
 }
 
+find_articles <- function(user_id) {
+  new.value <-tryCatch({
+    api_articles <- get_article(user_id)
+    return(api_articles$top_10)
+  }, error=function(e) {
+    showNotification("Could not connect to api - Filter will not be applied.",
+                     id="user_id_api_err",
+                     type="warning",
+                     duration=NULL,
+                     closeButton=T,
+                     session = session)
+    cat(paste("During sync: API error:\n",e))
+    return(NA)
+  }, warning=function(w) {
+    cat(paste("During sync: API warning:\n",w))
+    return(NA)
+  })
+  return(new.value)
+}
+
 # Consider setting high timeout
 # options(timeout= 4000000)
 

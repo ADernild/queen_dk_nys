@@ -173,29 +173,29 @@ server <- function(input, output, session) {
         val <- val[val %in% locations]
       }
       if(user_id!=""){
-        api_articles <- F
-        tryCatch({
-          api_articles <- get_article(user_id)
-        }, error=function(e) {
-          showNotification("Could not connect to api - Filter will not be applied.",
-                           id="user_id_api_err",
-                           type="warning",
-                           duration=NULL,
-                           closeButton=T,
-                           session = session)
-          cat(paste("During sync: API error:\n",e))
-        }, warning=function(w) {
-          cat(paste("During sync: API warning:\n",w))
-        })
-        if(api_articles != F){
+        api_articles <- find_articles(user_id)
+        # api_articles <- find_articles("1652689900547-757")
+        if(is.atomic(api_articles) && !is.na(api_articles)){
           val <- val[val %in% api_articles]
         }
       }
-      if(match(val, article_lib$uuid)){
+      if(length(val)==0 || !match(val, article_lib$uuid)){
+        showNotification("Your selection had no results.",
+                         id="no_results_in_filter",
+                         type="message",
+                         duration=7,
+                         closeButton=T,
+                         session = session)
         val <- input$id # Keep current selection
       }
     } else{
       # No selection
+      showNotification("No selection detected.",
+                       id="no_filter_selection",
+                       type="message",
+                       duration=7,
+                       closeButton=T,
+                       session = session)
       val <- input$id # Keep current selection
     }
     

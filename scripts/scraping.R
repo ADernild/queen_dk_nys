@@ -52,6 +52,7 @@ article_list_call <- paste(public, "articles?page[size]=", page_size, "&page[num
                            "&include[1]=activeContentRevision.authors",
                            "&include[2]=activeContentRevision.publishedPrimarySection",
                            sep="") # Define call
+# article_list_call <- paste(public, "articles/", "08488ce7-18da-4516-8bd1-5bca6d24d4ed", "",  sep="")
 api_json <- fromJSON(article_list_call, flatten = FALSE)
 # article_call <- paste(public, "articles/96f37867-5ffb-46b1-830e-5074b0f84e64",
 #                            sep="") # Define call
@@ -59,6 +60,7 @@ api_json <- fromJSON(article_list_call, flatten = FALSE)
 total_pages <- api_json$meta$last_page
 total_articles <- api_json$meta$total
 page_num <- 13
+
 results <- page_size * page_num
 
 # Call and loop ----
@@ -103,6 +105,7 @@ for(i in 1:page_num){
   
   # Get content
   content <- api_json$data$content
+  # content <- api_json$data$content$content
   # Format content as string with text only
   for(j in 1:length(content)){
     if(nrow(content[j][[1]])>0){
