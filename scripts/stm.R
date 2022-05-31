@@ -6,8 +6,6 @@ library(stm)
 library(stopwords)
 library(SnowballC)
 library(tm)
-library(tictoc)
-tic()
 
 # Reading data
 df <- read.csv("data/sentences.csv", encoding = "utf-8")
@@ -65,6 +63,6 @@ detach("package:stm", unload=TRUE)
 detach("package:stopwords", unload=TRUE)
 detach("package:SnowballC", unload=TRUE)
 detach("package:tm", unload=TRUE)
-time <- toc()
+
 saveRDS(time, "data/stm_time.rds")
 write.csv(time, "data/stm_time.csv", row.names = F, fileEncoding = "UTF-8")
