@@ -173,8 +173,8 @@ server <- function(input, output, session) {
         val <- val[val %in% locations]
       }
       if(user_id!=""){
-        api_articles <- find_articles(user_id)
-        # api_articles <- find_articles("1652689900547-757")
+        api_articles <- find_articles(user_id, session)
+        # api_articles <- find_articles("1652689900547-757", session)
         if(is.atomic(api_articles) && !is.na(api_articles)){
           val <- val[val %in% api_articles]
         }
