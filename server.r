@@ -1768,7 +1768,7 @@ server <- function(input, output, session) {
   speech_data <- reactive({
     data <- tokens %>%
       filter(uuid %in% id_docs()) %>% 
-      select(uuid, word, n_total, n_in, title, date_updated_at) %>% 
+      select(uuid, word, n_total, n_in, n_stem, n_stem_total, title, date_updated_at) %>% 
       distinct() %>% 
       group_by(word, uuid) %>% 
       arrange(date_updated_at, word)
