@@ -402,7 +402,7 @@ server <- function(input, output, session) {
   output$total_word <- renderValueBox({
     data <- speech_data_word_filt() %>% 
       ungroup() %>% 
-      select(stemmed, n_stem_total) %>% 
+      select(word, n_stem_total) %>% 
       summarise(n = sum(n_stem_total))
     total_words <- sum(data$n)
     total_words <- prettyNum(total_words, big.mark=".", scientific=FALSE, decimal.mark= ",")
@@ -413,7 +413,7 @@ server <- function(input, output, session) {
   })
   
   output$total_word_unique <- renderValueBox({
-    data <- speech_data_word_filt()$stemmed %>% 
+    data <- speech_data_word_filt()$word %>% 
       unique()
     total_unique_words <- length(data)
     total_unique_words <- prettyNum(total_unique_words, big.mark=".", scientific=FALSE, decimal.mark= ",")
