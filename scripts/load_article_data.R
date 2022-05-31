@@ -245,7 +245,7 @@ get_article <- function(query) {
     return()
 }
 
-find_articles <- function(user_id) {
+find_articles <- function(user_id, session) {
   new.value <-tryCatch({
     api_articles <- get_article(user_id)
     return(api_articles$top_10)
