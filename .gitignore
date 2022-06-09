@@ -11,3 +11,4 @@ utils/geofile_komunes
 utils/geofile_southjutland
 utils/geofile_denmark
 utils/mysql.R
+data/
