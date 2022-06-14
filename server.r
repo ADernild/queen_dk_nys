@@ -683,14 +683,14 @@ server <- function(input, output, session) {
                            unique(tokens_data()$stemmed[tokens_data()$word %in% topics]),
                            unique(tokens_data()$stemmed[tokens_data()$headword %in% topics])))) # Much faster
       
-      updateSelectizeInput(
-        session,
-        "words",
-        "Featured words",
-        choices = words_tokens_all,
-        selected = chosen,
-        server = TRUE
-      )
+      # updateSelectizeInput(
+      #   session,
+      #   "words",
+      #   "Featured words",
+      #   choices = words_tokens_all,
+      #   selected = chosen,
+      #   server = TRUE
+      # )
       
       updateSelectizeInput(
         session,
@@ -782,16 +782,6 @@ server <- function(input, output, session) {
              sentiment_neg = round(sentiment_neg)) %>% 
       group_by(uuid) %>% 
       arrange(date_updated_at)
-    # if(length(input$words) > 0){
-    #   token_data <- tokens %>% 
-    #     filter(stemmed %in% input$words) %>% 
-    #     .$uuid %>% 
-    #     unique() %>% 
-    #     sort()
-    #   data <- data %>% 
-    #     rowwise() %>% 
-    #     mutate(fwords = ifelse(uuid %in% token_data, "Yes", "No"))
-    # }
     return(data)
   })
   
@@ -802,13 +792,6 @@ server <- function(input, output, session) {
       filter(uuid %in% id_docs()) %>% 
       group_by(stemmed) %>% 
       distinct(uuid, stemmed, .keep_all = TRUE)
-    
-    # if(length(input$words) > 0 && cmatch(data$stemmed, input$words)){
-    #   data <- data %>%
-    #     # filter(stemmed %in% input$words) %>% 
-    #     mutate(fwords = ifelse(stemmed %in% input$words, "featured word", "")) %>% 
-    #     mutate(sentiment_true = ifelse(stemmed %in% input$words, paste(sentiment_true, fwords, sep=" | "), sentiment_true))
-    # }
     
     if("fwords" %in% colnames(data)){
       data <- data %>% 
