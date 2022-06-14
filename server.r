@@ -16,6 +16,11 @@ server <- function(input, output, session) {
   
   
   ## reactive data ----------------------------------------------------------
+  named_id <- reactive({
+    data <- article_lib_data()$uuid
+    names(data) <- article_lib_data()$title
+    return(data)
+  })
   
   topic_frame <- reactive({
     data.frame(topic = names(thoughts_data()$index)) %>% 
@@ -23,6 +28,35 @@ server <- function(input, output, session) {
              docs = thoughts_data()$docs[topic]) %>% 
       rowwise() %>% 
       mutate(doc_len = length(docs)) %>% 
+      return()
+  })
+  
+  n_unique_sentences <- reactive({
+    sum(topic_frame()$doc_len)
+  })
+  
+  sections <- reactive({
+    article_lib_data()$section %>% 
+      unique() %>% 
+      sort() %>% 
+      return()
+  })
+  
+  authors <- reactive({
+    data <- article_lib_data()$authors %>% 
+      str_split(", ") %>% 
+      unlist() %>% 
+      unique() %>% 
+      .[. != ""] %>% 
+      sort()
+    data <- c("Not set", data)
+    return(data)
+  })
+  
+  locations <- reactive({
+    article_lib_data()$location %>% 
+      unique() %>% 
+      sort() %>% 
       return()
   })
 
@@ -56,11 +90,11 @@ server <- function(input, output, session) {
             selectizeInput("topic", label="Topic", choices = c(),
                            multiple = FALSE, options = list(maxOptions = length(topic_frame()$topic))),
             selectizeInput("section", label="Section", choices = c(),
-                           multiple = TRUE, options = list(maxOptions = length(sections))),
+                           multiple = TRUE, options = list(maxOptions = length(sections()))),
             selectizeInput("authors", label="Authors", choices = c(),
-                           multiple = TRUE, options = list(maxOptions = length(authors))),
+                           multiple = TRUE, options = list(maxOptions = length(authors()))),
             selectizeInput("location", label="Location", choices = c(),
-                           multiple = TRUE, options = list(maxOptions = length(authors))),
+                           multiple = TRUE, options = list(maxOptions = length(authors()))),
             textInput("user_id", label="User-id", placeholder = "Eg. 1234567891234-123"),
             # selectizeInput("words", label="Featured words", choices = c(),
             #                multiple = TRUE, options = list(maxOptions = length(words_tokens_all))),
@@ -82,7 +116,7 @@ server <- function(input, output, session) {
   )
 
   updateSelectizeInput(
-    session, 'docs', choices = named_id, selected = "", server = TRUE
+    session, 'docs', choices = named_id(), selected = "", server = TRUE
   )
 
   updateSelectizeInput(
@@ -90,15 +124,15 @@ server <- function(input, output, session) {
   )
 
   updateSelectizeInput(
-    session, 'section', choices = sections, selected = "", server = TRUE
+    session, 'section', choices = sections(), selected = "", server = TRUE
   )
 
   updateSelectizeInput(
-    session, 'authors', choices = authors, selected = "", server = TRUE
+    session, 'authors', choices = authors(), selected = "", server = TRUE
   )
 
   updateSelectizeInput(
-    session, 'location', choices = locations, selected = "", server = TRUE
+    session, 'location', choices = locations(), selected = "", server = TRUE
   )
   
   ### Sidebar Menu Functionality ----------------------------------------------
@@ -134,8 +168,8 @@ server <- function(input, output, session) {
     } else{
       val <- input$authors
     }
-    dis <- article_lib %>% 
-      filter(any(match(str_split(authors, ", "), val))) %>%
+    article_lib_data() %>% 
+      filter(any(match(str_split(authors(), ", "), val))) %>%
       .$uuid %>% 
       return
   })
@@ -166,7 +200,7 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'docs',
-      choices = named_id,
+      choices = named_id(),
       selected = val,
       server = TRUE
     )
@@ -260,7 +294,7 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'docs',
-      choices = named_id,
+      choices = named_id(),
       selected = c(""),
       server = TRUE
     )
@@ -284,21 +318,21 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'section',
-      choices = sections,
+      choices = sections(),
       selected = c(""),
       server = TRUE
     )
     updateSelectizeInput(
       session,
       'authors',
-      choices = authors,
+      choices = authors(),
       selected = c(""),
       server = TRUE
     )
     updateSelectizeInput(
       session,
       'location',
-      choices = locations,
+      choices = locations(),
       selected = c(""),
       server = TRUE
     )
@@ -334,7 +368,7 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'docs',
-      choices = named_id,
+      choices = named_id(),
       selected = c(""),
       server = TRUE
     )
@@ -355,21 +389,21 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'section',
-      choices = sections,
+      choices = sections(),
       selected = c(""),
       server = TRUE
     )
     updateSelectizeInput(
       session,
       'authors',
-      choices = authors,
+      choices = authors(),
       selected = c(""),
       server = TRUE
     )
     updateSelectizeInput(
       session,
       'location',
-      choices = locations,
+      choices = locations(),
       selected = c(""),
       server = TRUE
     )
@@ -415,7 +449,7 @@ server <- function(input, output, session) {
         filter(topic %in% input$topic) %>%
         .$doc_len
     } else{
-      val <- n_unique_sentences
+      val <- n_unique_sentences()
     }
     val <- prettyNum(val, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
@@ -784,6 +818,7 @@ server <- function(input, output, session) {
   output$topics_means_title <-  renderText({
     "Average sentiment in topics"
   })
+
   
   # Sentiment ---------------------------------------------------------------
   ## sentiment data ---------------------------------------------------------
