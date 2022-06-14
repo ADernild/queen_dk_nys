@@ -1513,11 +1513,11 @@ server <- function(input, output, session) {
       mutate(freq = round((n/sum(.$n))*100, 2)) %>% 
       ungroup()
     
-    for(geocode_val in unique(article_lib$geocode)){
+    for(geocode_val in unique(c(article_lib_data()$geocode, geodata_komunes$kode))){
       if(!(geocode_val %in% data$geocode)){
         data <-  data %>%
           tibble::add_row(geocode = geocode_val,
-                  location = article_lib[article_lib$geocode == geocode_val,]$location[1],
+                  location = geodata_komunes[geodata_komunes$kode == geocode_val,]$navn[1],
                   n = 0,
                   freq = 0)
       }
