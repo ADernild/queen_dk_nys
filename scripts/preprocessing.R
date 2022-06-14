@@ -84,6 +84,11 @@ if(nrow(tokens)>0){
       left_join(old_tokens)
   }
   
+  # Add polarity column if missing
+  if(!("polarity" %in% colnames(tokens))){
+    tokens$polarity <- NA
+  }
+  
   # Save tokens ----
   saveRDS(tokens,"data/tokens.rds")
   write.csv(tokens, "data/tokens.csv", row.names = F, fileEncoding = "UTF-8")
