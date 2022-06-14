@@ -312,7 +312,7 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'topic',
-      choices = topic_frame$topic,
+      choices = topic_frame()$topic,
       selected = c(""),
       server = TRUE
     )
@@ -383,7 +383,7 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'topic',
-      choices = topic_frame$topic,
+      choices = topic_frame()$topic,
       selected = c(""),
       server = TRUE
     )
