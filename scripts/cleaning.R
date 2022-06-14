@@ -52,11 +52,14 @@ df <- readRDS("data/article_library.rds")
 if(file.exists("data/sentences_cleaned.rds")){
 #   sentences_cleaned <- readRDS("data/sentences_cleaned.rds")
 #   ## Load senteces if it exists ----
-  old_sentences <- readRDS("data/sentences.rds")
+  old_sentences <- readRDS("data/sentences.rds") %>% 
+    filter(uuid %in% df$uuid)
+
   # Cleaning sentences i.e., leaving in the . (dots) for later separation
   sentences <- data.frame(cbind(df$uuid, clean_sentences(df$content), clean_sentences_less(df$content)))
+  sentences <- filter(sentences, !(X1 %in% old_sentences$uuid))
 
-  # Grouping speaches by id and separating into sentences by . (dots)
+  # Grouping by id and separating into sentences by . (dots)
   sentences <- sentences %>%
     group_by(X1) %>%
     summarize(
