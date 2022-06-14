@@ -409,8 +409,8 @@ server <- function(input, output, session) {
   output$total_word <- renderValueBox({
     data <- speech_data_word_filt() %>% 
       ungroup() %>% 
-      select(word, n_stem_total) %>% 
-      summarise(n = sum(n_stem_total))
+      select(word, n_in) %>% 
+      summarise(n = sum(n_in))
     total_words <- sum(data$n)
     total_words <- prettyNum(total_words, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
@@ -1758,7 +1758,7 @@ server <- function(input, output, session) {
   speech_data <- reactive({
     data <- tokens_data() %>%
       filter(uuid %in% id_docs()) %>% 
-      select(uuid, word, n_total, n_in, n_stem, n_stem_total, title, date_updated_at) %>% 
+      select(uuid, word, n_total, n_in, n_stem_total, title, date_updated_at) %>% 
       distinct() %>% 
       group_by(word, uuid) %>% 
       arrange(date_updated_at, word)
@@ -1824,10 +1824,11 @@ server <- function(input, output, session) {
     )
     data <- data %>% 
       ungroup() %>% 
-      select(word, n_total) %>% 
-      distinct() %>% 
+      select(word, n_in) %>% 
+      group_by(word) %>% 
+      summarise(n = sum(n_in)) %>% 
       arrange(word) %>% 
-      rename(word = word, freq = n_total)
+      rename(word = word, freq = n)
     wordcloud2(data=data, size=1.6, color='random-dark')
   })
   
