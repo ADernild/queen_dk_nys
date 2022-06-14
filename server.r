@@ -12,6 +12,7 @@ server <- function(input, output, session) {
   
   article_lib_data <- reactiveFileReader(100000, session, "data/article_library.rds", readRDS) # Library of primary content (articles)
   
+  cleaned_sentences_data <- reactiveFileReader(100000, session, "data/sentences_cleaned.rds", readRDS) # Cleaned sentences
   
   
   ## reactive data ----------------------------------------------------------
@@ -1335,7 +1336,7 @@ server <- function(input, output, session) {
     shiny::validate(
       need(length(id_docs()) == 1, "No, or more than 1, article selected.")
     )
-    val <- cleaned_sentences %>% 
+    val <- cleaned_sentences_data() %>% 
       filter(uuid == id_docs()) %>% 
       .$content
     # print(val)

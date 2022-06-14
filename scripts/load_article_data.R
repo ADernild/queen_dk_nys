@@ -30,7 +30,7 @@ print("Loading article data...")
 # article_lib <<- readRDS("data/article_library.rds") # Library of primary content (articles)
 # article_lib <<- readRDS("data/article_library.rds") %>%
 #   .[1,]
-cleaned_sentences <<- readRDS("data/sentences_cleaned.rds")
+# cleaned_sentences <<- readRDS("data/sentences_cleaned.rds") # Cleaned sentences
 
 
 ## Formatting data ---------------------------------------------------------
