@@ -2,6 +2,8 @@ server <- function(input, output, session) {
 
   is_local <<- Sys.getenv('SHINY_PORT') == ""
   # Data --------------------------------------------------------------------
+  tokens_data <- reactiveFileReader(100000, session, "data/tokens.rds", readRDS) # All tokens, filtered
+  
   
   
   ## reactive data ----------------------------------------------------------
@@ -677,9 +679,9 @@ server <- function(input, output, session) {
       print(topic_id)
       
       chosen <- c()
-      chosen <- c(unique(c(topics[topics %in% tokens$stemmed],
-                           unique(tokens$stemmed[tokens$word %in% topics]),
-                           unique(tokens$stemmed[tokens$headword %in% topics])))) # Much faster
+      chosen <- c(unique(c(topics[topics %in% tokens_data()$stemmed],
+                           unique(tokens_data()$stemmed[tokens_data()$word %in% topics]),
+                           unique(tokens_data()$stemmed[tokens_data()$headword %in% topics])))) # Much faster
       
       updateSelectizeInput(
         session,
@@ -745,13 +747,13 @@ server <- function(input, output, session) {
   #   req(input$topic_r)
   #   if(input$topic_r == 2){
   #     chosen <- input$words
-  #     if(input$topicVis_term_click %in% tokens$stemmed){
+  #     if(input$topicVis_term_click %in% tokens_data()$stemmed){
   #       chosen <- c(chosen, input$topicVis_term_click)
-  #     } else if(input$topicVis_term_click %in% tokens$word){
-  #       word <- tokens[tokens$word == input$topicVis_term_click,]$stemmed[1]
+  #     } else if(input$topicVis_term_click %in% tokens_data()$word){
+  #       word <- tokens_data()[tokens_data()$word == input$topicVis_term_click,]$stemmed[1]
   #       chosen <- c(chosen, word)
-  #     } else if(input$topicVis_term_click %in% tokens$headword){
-  #       word <- tokens[tokens$headword == input$topicVis_term_click,]$stemmed[1]
+  #     } else if(input$topicVis_term_click %in% tokens_data()$headword){
+  #       word <- tokens_data()[tokens_data()$headword == input$topicVis_term_click,]$stemmed[1]
   #       chosen <- c(chosen, word)
   #     }
   #   
@@ -795,7 +797,7 @@ server <- function(input, output, session) {
   
   sentiment_of_words_data <- reactive({
     req(input$slider_sentiment_of_words_n_words)
-    data <- tokens %>%
+    data <- tokens_data() %>%
       filter(polarity != 0) %>% 
       filter(uuid %in% id_docs()) %>% 
       group_by(stemmed) %>% 
@@ -833,7 +835,7 @@ server <- function(input, output, session) {
   # sentiment_of_speech_data_filtered <- reactive({
   #   req(input$words)
   #   
-  #   data <- tokens %>%
+  #   data <- tokens_data() %>%
   #     rowwise() %>% 
   #     filter(uuid %in% id_docs()) %>% 
   #     mutate(polarity_pos = as.numeric(ifelse(polarity > 0, polarity, 0)),
@@ -1771,7 +1773,7 @@ server <- function(input, output, session) {
   # Word statistics ---------------------------------------------------------
   ## Word data --------------------------------------------------------------
   speech_data <- reactive({
-    data <- tokens %>%
+    data <- tokens_data() %>%
       filter(uuid %in% id_docs()) %>% 
       select(uuid, word, n_total, n_in, n_stem, n_stem_total, title, date_updated_at) %>% 
       distinct() %>% 
