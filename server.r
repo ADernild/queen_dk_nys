@@ -49,7 +49,7 @@ server <- function(input, output, session) {
                          min = 10, max = round_any(length(article_lib$uuid), 10, f = ceiling), step = 10, round = 10),
                          title = "Limit for how many articles to load at the same time."),
             selectizeInput("topic", label="Topic", choices = c(),
-                           multiple = FALSE, options = list(maxOptions = length(topic_frame$topic))),
+                           multiple = FALSE, options = list(maxOptions = length(topic_frame()$topic))),
             selectizeInput("section", label="Section", choices = c(),
                            multiple = TRUE, options = list(maxOptions = length(sections))),
             selectizeInput("authors", label="Authors", choices = c(),
@@ -81,7 +81,7 @@ server <- function(input, output, session) {
   )
 
   updateSelectizeInput(
-    session, 'topic', choices = topic_frame$topic, selected = "", server = TRUE
+    session, 'topic', choices = topic_frame()$topic, selected = "", server = TRUE
   )
 
   updateSelectizeInput(
@@ -106,7 +106,7 @@ server <- function(input, output, session) {
   })
   
   topic_id <- reactive({
-    topic_frame %>% 
+    topic_frame() %>% 
       filter(topic %in% input$topic) %>%
       .$uuid %>% 
       unlist() %>% 
@@ -406,7 +406,7 @@ server <- function(input, output, session) {
   
   output$total_sentences <- renderValueBox({
     if(input$topic != ""){
-      val <- topic_frame %>% 
+      val <- topic_frame() %>% 
         filter(topic %in% input$topic) %>%
         .$doc_len
     } else{
@@ -703,7 +703,7 @@ server <- function(input, output, session) {
       updateSelectizeInput(
         session,
         'topic',
-        choices = topic_frame$topic,
+        choices = topic_frame()$topic,
         selected = paste("Topic", topic_id),
         server = TRUE
       )
