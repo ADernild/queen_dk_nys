@@ -8,6 +8,8 @@ server <- function(input, output, session) {
   
   thoughts_data <- reactiveFileReader(100000, session, "data/thoughts.rds", readRDS) # sentences belonging to topics (topic proportion 45%)
   
+  sentiment_data <- reactiveFileReader(100000, session, "data/sentiments.rds", readRDS) # Sentiment for articles
+  
   article_lib_data <- reactiveFileReader(100000, session, "data/article_library.rds", readRDS) # Library of primary content (articles)
   
   

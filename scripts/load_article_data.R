@@ -24,7 +24,7 @@ print("Loading article data...")
 # stm_model_da <<- readRDS("data/stm_model.rds") # STM model
 # thoughts <<- readRDS("data/thoughts.rds") # sentences belonging to topics (topic proportion 45%)
 # lemma <- readRDS("data/lemma.rds") # All lematized values unfiltered
-sentiment <<- readRDS("data/sentiments.rds") # Sentiment for year
+# sentiment <<- readRDS("data/sentiments.rds") # Sentiment for articles
 # countries <- readRDS("data/country_speech.rds") # Countries, country code, lat, lon and # mentions
 # geojson <- readRDS("data/countries.rds") # Library containing geographic information
 # article_lib <<- readRDS("data/article_library.rds") # Library of primary content (articles)
