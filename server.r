@@ -4,6 +4,8 @@ server <- function(input, output, session) {
   # Data --------------------------------------------------------------------
   tokens_data <- reactiveFileReader(100000, session, "data/tokens.rds", readRDS) # All tokens, filtered
   
+  stm_models <- reactiveFileReader(100000, session, "data/stm_model.rds", readRDS) # STM model
+  
   
   
   ## reactive data ----------------------------------------------------------
@@ -605,11 +607,6 @@ server <- function(input, output, session) {
   
   
   # topicVis ----------------------------------------------------------------
-  stm_models <- reactive({
-    data <- stm_model_da
-    return(data)
-  })
-  
   output$topicVis <- renderVis({
              if(!is.null(input$nTerms)){
               with(stm_models(),
@@ -775,7 +772,7 @@ server <- function(input, output, session) {
   # Sentiment ---------------------------------------------------------------
   ## sentiment data ---------------------------------------------------------
   sentiment_of_speech_data <- reactive({
-    data <- sentiment %>%
+    data <- sentiment_data() %>%
       filter(uuid %in% id_docs()) %>% 
       mutate(sentiment = round(sentiment),
              sentiment_pos = round(sentiment_pos),
