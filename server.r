@@ -1271,7 +1271,7 @@ server <- function(input, output, session) {
     if(length(input$id)>0 || length(input$article)>0){
       total_stem <- data %>%
         group_by(stemmed) %>%
-        summarise(n_stem_total = sum(n_stem))
+        summarise(n_stem_total = sum(n_in))
       
       data <- data %>% 
         mutate(n_stem_total = total_stem[min(which(stemmed == total_stem$stemmed)),]$n_stem_total)
