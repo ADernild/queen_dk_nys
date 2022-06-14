@@ -6,9 +6,20 @@ server <- function(input, output, session) {
   
   stm_models <- reactiveFileReader(100000, session, "data/stm_model.rds", readRDS) # STM model
   
+  thoughts_data <- reactiveFileReader(100000, session, "data/thoughts.rds", readRDS) # sentences belonging to topics (topic proportion 45%)
+  
   
   
   ## reactive data ----------------------------------------------------------
+  
+  topic_frame <- reactive({
+    data.frame(topic = names(thoughts_data()$index)) %>% 
+      mutate(uuid = thoughts_data()$uuid[topic],
+             docs = thoughts_data()$docs[topic]) %>% 
+      rowwise() %>% 
+      mutate(doc_len = length(docs)) %>% 
+      return()
+  })
 
   # UI output -----------------------------------------------------------------
   ## Sidebar Menu -------------------------------------------------------------
@@ -623,8 +634,8 @@ server <- function(input, output, session) {
     topic <- input$topicVis_topic_click
     output$topicText <- renderUI({
       if(slide_num>0){
-        sentences <- unlist(thoughts$docs[topic])
-        id <- unlist(thoughts$uuid[topic])
+        sentences <- unlist(thoughts_data()$docs[topic])
+        id <- unlist(thoughts_data()$uuid[topic])
         df <- data.frame(sentences, id)
         df <- df[sample.int(nrow(df), ifelse(nrow(df)<slide_num, nrow(df), slide_num)),]
         df$sentences <- str_to_sentence(df$sentences) %>% 
@@ -699,7 +710,7 @@ server <- function(input, output, session) {
     }
     
     output$sent_topic <- renderHighchart({
-      df <- thoughts
+      df <- thoughts_data()
       polarity_topic <- as.numeric(unlist(df$polarity[topic]))
       polarity_rest <- as.numeric(unlist(df$polarity[-topic]))
       topic_ <- as.numeric(unlist(df$uuid[topic]))
@@ -723,7 +734,7 @@ server <- function(input, output, session) {
   })
   
   output$sent_topic <- renderHighchart({
-    df <- thoughts
+    df <- thoughts_data()
     polarity_list <- df$polarity
     polarity <- unnest(data.frame(t(rbind(paste("Topic", 1:length(polarity_list)), data.frame(t(sapply(1:length(polarity_list), function(i) polarity_list[i][1])))))), cols=c(X1, X2))
     polarity$X1 <- factor(polarity$X1, levels = c(paste("Topic", 1:length(polarity_list))))
