@@ -19,7 +19,9 @@ stop_words <- readRDS("utils/stopwords.rds")
 
 ## Load and tokens ----
 if(file.exists("data/tokens.rds")){
-  old_tokens <- readRDS("data/tokens.rds")
+  old_tokens <- readRDS("data/tokens.rds") %>% 
+    filter(uuid %in% df$uuid)
+  
   
   tokens <- tibble(df) %>% 
     filter(!(uuid %in% unique(old_tokens$uuid)))
