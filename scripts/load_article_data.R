@@ -27,7 +27,7 @@ print("Loading article data...")
 sentiment <<- readRDS("data/sentiments.rds") # Sentiment for year
 # countries <- readRDS("data/country_speech.rds") # Countries, country code, lat, lon and # mentions
 # geojson <- readRDS("data/countries.rds") # Library containing geographic information
-article_lib <<- readRDS("data/article_library.rds")
+# article_lib <<- readRDS("data/article_library.rds") # Library of primary content (articles)
 # article_lib <<- readRDS("data/article_library.rds") %>%
 #   .[1,]
 cleaned_sentences <<- readRDS("data/sentences_cleaned.rds")

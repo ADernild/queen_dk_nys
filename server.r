@@ -8,6 +8,8 @@ server <- function(input, output, session) {
   
   thoughts_data <- reactiveFileReader(100000, session, "data/thoughts.rds", readRDS) # sentences belonging to topics (topic proportion 45%)
   
+  article_lib_data <- reactiveFileReader(100000, session, "data/article_library.rds", readRDS) # Library of primary content (articles)
+  
   
   
   ## reactive data ----------------------------------------------------------
@@ -36,17 +38,17 @@ server <- function(input, output, session) {
         div(id="sidebar-input",
             h3("Selection"),
             selectizeInput("id", label="UUID", choices = c(),
-                           multiple = TRUE, options = list(maxOptions = length(article_lib$uuid))),
+                           multiple = TRUE, options = list(maxOptions = length(article_lib_data()$uuid))),
             selectizeInput("docs", label="Article name", choices = c(),
-                           multiple = TRUE, options = list(maxOptions = length(article_lib$uuid))),
+                           multiple = TRUE, options = list(maxOptions = length(article_lib_data()$uuid))),
             div(class="hidden",
                 numericInput("n_recent", "Hidden numeric input to filter articles", value = 200)),
             actionButton("sync", "Sync selection", title="Syncronize Artcile-names and UUID"),
             actionButton("clear_id", "Clear selection"),
             h3("Filters"),
             div(sliderInput("n_recent_filter", "N recent articles",
-                         as.numeric(ifelse(length(article_lib$uuid)>200, 200, length(article_lib$uuid))),
-                         min = 10, max = round_any(length(article_lib$uuid), 10, f = ceiling), step = 10, round = 10),
+                         as.numeric(ifelse(length(article_lib_data()$uuid)>200, 200, length(article_lib_data()$uuid))),
+                         min = 10, max = round_any(length(article_lib_data()$uuid), 10, f = ceiling), step = 10, round = 10),
                          title = "Limit for how many articles to load at the same time."),
             selectizeInput("topic", label="Topic", choices = c(),
                            multiple = FALSE, options = list(maxOptions = length(topic_frame()$topic))),
@@ -73,7 +75,7 @@ server <- function(input, output, session) {
   #   )
   
   updateSelectizeInput(
-    session, 'id', choices = article_lib$uuid, selected = "", server = TRUE
+    session, 'id', choices = article_lib_data()$uuid, selected = "", server = TRUE
   )
 
   updateSelectizeInput(
@@ -100,7 +102,7 @@ server <- function(input, output, session) {
   id_docs <- reactive({
     val <- unique(c(input$id, input$docs))
     if(length(val) == 0){
-      val <- article_lib$uuid[1:as.numeric(ifelse(input$n_recent>length(article_lib$uuid), length(article_lib$uuid), input$n_recent))]
+      val <- article_lib_data()$uuid[1:as.numeric(ifelse(input$n_recent>length(article_lib_data()$uuid), length(article_lib_data()$uuid), input$n_recent))]
     }
     return(val)
   })
@@ -114,7 +116,7 @@ server <- function(input, output, session) {
   })
   
   section_id <- reactive({
-    article_lib %>% 
+    article_lib_data() %>% 
       filter(section %in% input$section) %>%
       .$uuid %>% 
       return
@@ -136,14 +138,14 @@ server <- function(input, output, session) {
   })
   
   location_id <- reactive({
-    article_lib %>% 
+    article_lib_data() %>% 
       filter(location %in% input$location) %>%
       .$uuid %>% 
       return
   })
 
   article_lib_filt <- reactive({
-    article_lib %>% 
+    article_lib_data() %>% 
       filter(uuid %in% id_docs()) %>% 
       return
   })
@@ -154,7 +156,7 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'id',
-      choices = article_lib$uuid,
+      choices = article_lib_data()$uuid,
       selected = val,
       server = TRUE
     )
@@ -179,7 +181,7 @@ server <- function(input, output, session) {
     user_id <- input$user_id
     
     if(length(topics)>0 || length(section)>0 || length(authors)>0 || length(locations)>0||user_id!=""){
-      val <- article_lib$uuid
+      val <- article_lib_data()$uuid
       if(length(topics)>0){
         val <- val[val %in% topics]
       }
@@ -199,7 +201,7 @@ server <- function(input, output, session) {
           val <- val[val %in% api_articles]
         }
       }
-      if(length(val)==0 || !match(val, article_lib$uuid)){
+      if(length(val)==0 || !match(val, article_lib_data()$uuid)){
         showNotification("Your selection had no results.",
                          id="no_results_in_filter",
                          type="message",
@@ -222,7 +224,7 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'id',
-      choices = article_lib$uuid,
+      choices = article_lib_data()$uuid,
       selected = val,
       server = TRUE
     )
@@ -248,7 +250,7 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'id',
-      choices = article_lib$uuid,
+      choices = article_lib_data()$uuid,
       selected = c(""),
       server = TRUE
     )
@@ -271,9 +273,9 @@ server <- function(input, output, session) {
     updateSliderInput(
       session,
       "n_recent_filter",
-      value = as.numeric(ifelse(length(article_lib$uuid)>200, 200, length(article_lib$uuid))),
+      value = as.numeric(ifelse(length(article_lib_data()$uuid)>200, 200, length(article_lib_data()$uuid))),
       min = 10,
-      max = round_any(length(article_lib$uuid), 10, f = ceiling),
+      max = round_any(length(article_lib_data()$uuid), 10, f = ceiling),
       step = 10
     )
     updateSelectizeInput(
@@ -322,7 +324,7 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'id',
-      choices = article_lib$uuid,
+      choices = article_lib_data()$uuid,
       selected = c(""),
       server = TRUE
     )
@@ -342,9 +344,9 @@ server <- function(input, output, session) {
     updateSliderInput(
       session,
       "n_recent_filter",
-      value = as.numeric(ifelse(length(article_lib$uuid)>200, 200, length(article_lib$uuid))),
+      value = as.numeric(ifelse(length(article_lib_data()$uuid)>200, 200, length(article_lib_data()$uuid))),
       min = 10,
-      max = round_any(length(article_lib$uuid), 10, f = ceiling),
+      max = round_any(length(article_lib_data()$uuid), 10, f = ceiling),
       step = 10
     )
     updateSelectizeInput(
@@ -640,7 +642,7 @@ server <- function(input, output, session) {
         df <- df[sample.int(nrow(df), ifelse(nrow(df)<slide_num, nrow(df), slide_num)),]
         df$sentences <- str_to_sentence(df$sentences) %>% 
           sample(slide_num)
-        name <- article_lib %>% 
+        name <- article_lib_data() %>% 
           filter(uuid %in% id) %>% 
           rowwise() %>% 
           mutate(title = ifelse(nchar(title)>50,
@@ -1514,7 +1516,7 @@ server <- function(input, output, session) {
   # Fyn Maps ----------------------------------------------------------------
   ## Fyn Maps data ----------------------------------------------------------
   fyn_map_data <- reactive({
-    data <- article_lib %>%
+    data <- article_lib_data() %>%
       filter(uuid %in% id_docs()) %>%
       group_by(geocode, location) %>% 
       summarise(n = n()) %>%
