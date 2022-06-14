@@ -181,6 +181,18 @@ for(i in 1:page_num){
   }
 }
 
+
+# Reducing data -----------------------------------------------------------
+tonight <- paste(Sys.Date(), "23:59:59")
+now <- as.POSIXct(tonight, format = "%Y-%m-%d %H:%M:%S")
+past <- seq(now, length = 2, by = "-3 months")[2]
+# now>past
+# library$date_updated_at[[1]]>past
+# library$date_updated_at[[1]]>now
+
+library <- library %>% 
+  filter(date_updated_at>=past)
+
 # Save library ----
 # > Save library as rds ----
 saveRDS(library, "data/article_library.rds")
