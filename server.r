@@ -3,47 +3,51 @@ server <- function(input, output, session) {
   is_local <<- Sys.getenv('SHINY_PORT') == ""
   # Data --------------------------------------------------------------------
   tokens_data <- reactiveFileReader(100000, session, "data/tokens.rds", readRDS) # All tokens, filtered
-  
-  stm_models <- reactiveFileReader(100000, session, "data/stm_model.rds", readRDS) # STM model
-  
-  thoughts_data <- reactiveFileReader(100000, session, "data/thoughts.rds", readRDS) # sentences belonging to topics (topic proportion 45%)
-  
-  sentiment_data <- reactiveFileReader(100000, session, "data/sentiments.rds", readRDS) # Sentiment for articles
-  
-  article_lib_data <- reactiveFileReader(100000, session, "data/article_library.rds", readRDS) # Library of primary content (articles)
-  
-  cleaned_sentences_data <- reactiveFileReader(100000, session, "data/sentences_cleaned.rds", readRDS) # Cleaned sentences
-  
+
+  stm_models <-  reactiveFileReader(100000, session, "data/stm_model.rds", readRDS) # STM model
+
+  thoughts_data <-  reactiveFileReader(100000, session, "data/thoughts.rds", readRDS) # sentences belonging to topics (topic proportion 45%)
+
+  sentiment_data <-  reactiveFileReader(100000, session, "data/sentiments.rds", readRDS) # Sentiment for articles
+
+  article_lib_data <-  reactiveFileReader(100000, session, "data/article_library.rds", readRDS) # Library of primary content (articles)
+
+  cleaned_sentences_data <-  reactiveFileReader(100000, session, "data/sentences_cleaned.rds", readRDS) # Cleaned sentences
+
   
   ## reactive data ----------------------------------------------------------
-  named_id <- reactive({
-    data <- article_lib_data()$uuid
-    names(data) <- article_lib_data()$title
+  named_id_data <- reactive({
+    article_lib_data <- article_lib_data()
+    data <- article_lib_data$uuid
+    names(data) <- article_lib_data$title
     return(data)
   })
   
-  topic_frame <- reactive({
-    data.frame(topic = names(thoughts_data()$index)) %>% 
-      mutate(uuid = thoughts_data()$uuid[topic],
-             docs = thoughts_data()$docs[topic]) %>% 
+  topic_frame_data <- reactive({
+    thoughts_data <- thoughts_data()
+    data.frame(topic = names(thoughts_data$index)) %>% 
+      mutate(uuid = thoughts_data$uuid[topic],
+             docs = thoughts_data$docs[topic]) %>% 
       rowwise() %>% 
       mutate(doc_len = length(docs)) %>% 
       return()
   })
   
-  n_unique_sentences <- reactive({
-    sum(topic_frame()$doc_len)
+  n_unique_sentences_data <- reactive({
+    sum(topic_frame_data()$doc_len)
   })
   
-  sections <- reactive({
-    article_lib_data()$section %>% 
+  sections_data <- reactive({
+    article_lib_data <- article_lib_data()
+    article_lib_data$section %>% 
       unique() %>% 
       sort() %>% 
       return()
   })
   
-  authors <- reactive({
-    data <- article_lib_data()$authors %>% 
+  authors_data <- reactive({
+    article_lib_data <- article_lib_data()
+    data <- article_lib_data$authors %>% 
       str_split(", ") %>% 
       unlist() %>% 
       unique() %>% 
@@ -53,8 +57,9 @@ server <- function(input, output, session) {
     return(data)
   })
   
-  locations <- reactive({
-    article_lib_data()$location %>% 
+  locations_data <- reactive({
+    article_lib_data <- article_lib_data()
+    article_lib_data$location %>% 
       unique() %>% 
       sort() %>% 
       return()
@@ -63,47 +68,47 @@ server <- function(input, output, session) {
   # UI output -----------------------------------------------------------------
   ## Sidebar Menu -------------------------------------------------------------
   output$menu <- renderMenu({
-      sidebarMenu(
-        menuItem(span("Home", title="Start page"), tabName = "index", icon = shiny::icon("home", title="Start page"), selected = T),
-        menuItem(span("Topics", title="Topics found, ready yo be analyzed"), tabName = "tm", icon = shiny::icon("comment-dots", title="Topics found, ready yo be analyzed")),
-        menuItem(span("Sentiment", title="Sentiment analysis for speeches and word selections"), tabName = "sentiment", icon = shiny::icon("theater-masks", title="Sentiment analysis for speeches and word selections")),
-        menuItem(span("Fyn", title="Map of locations"), tabName = "fyn", icon = shiny::icon("map", title="Map of locations")),
-        # menuItem(span("Countries", title="Map of cointries mentioned during speeches"), tabName = "map", icon = shiny::icon("globe-europe", title="Map of cointries mentioned during speeches")),
-        menuItem(span("Word statistics", title="Statistics for all words"), tabName = "stats", icon = shiny::icon("chart-pie", title="Statistics for all words")),
-        menuItem(span("Data", title="Information about data sources and data subject"), tabName = "data", icon=shiny::icon("database", title="Information about data sources and data subject")),
-        menuItem(span("How to operate", class="help-me", title="Help and how to operate dashboard"), tabName = "howto", icon=shiny::icon("question-circle", class="help-me", title="Help and how to operate dashboard")),
-        div(id="sidebar-input",
-            h3("Selection"),
-            selectizeInput("id", label="UUID", choices = c(),
-                           multiple = TRUE, options = list(maxOptions = length(article_lib_data()$uuid))),
-            selectizeInput("docs", label="Article name", choices = c(),
-                           multiple = TRUE, options = list(maxOptions = length(article_lib_data()$uuid))),
-            div(class="hidden",
-                numericInput("n_recent", "Hidden numeric input to filter articles", value = 200)),
-            actionButton("sync", "Sync selection", title="Syncronize Artcile-names and UUID"),
-            actionButton("clear_id", "Clear selection"),
-            h3("Filters"),
-            div(sliderInput("n_recent_filter", "N recent articles",
-                         as.numeric(ifelse(length(article_lib_data()$uuid)>200, 200, length(article_lib_data()$uuid))),
-                         min = 10, max = round_any(length(article_lib_data()$uuid), 10, f = ceiling), step = 10, round = 10),
-                         title = "Limit for how many articles to load at the same time."),
-            selectizeInput("topic", label="Topic", choices = c(),
-                           multiple = FALSE, options = list(maxOptions = length(topic_frame()$topic))),
-            selectizeInput("section", label="Section", choices = c(),
-                           multiple = TRUE, options = list(maxOptions = length(sections()))),
-            selectizeInput("authors", label="Authors", choices = c(),
-                           multiple = TRUE, options = list(maxOptions = length(authors()))),
-            selectizeInput("location", label="Location", choices = c(),
-                           multiple = TRUE, options = list(maxOptions = length(authors()))),
-            textInput("user_id", label="User-id", placeholder = "Eg. 1234567891234-123"),
-            # selectizeInput("words", label="Featured words", choices = c(),
-            #                multiple = TRUE, options = list(maxOptions = length(words_tokens_all))),
-            # actionButton("clear", "Clear featured words"),
-            actionButton("topic_id_sync", "Apply filters", title="Update UUID filtered by set topic, section and authors"),
-            actionButton("clear_filter", "Clear filters"),
-            actionButton("clear_all", "Clear all")
-          )
+    sidebarMenu(
+      menuItem(span("Home", title="Start page"), tabName = "index", icon = shiny::icon("home", title="Start page"), selected = T),
+      menuItem(span("Topics", title="Topics found, ready yo be analyzed"), tabName = "tm", icon = shiny::icon("comment-dots", title="Topics found, ready yo be analyzed")),
+      menuItem(span("Sentiment", title="Sentiment analysis for speeches and word selections"), tabName = "sentiment", icon = shiny::icon("theater-masks", title="Sentiment analysis for speeches and word selections")),
+      menuItem(span("Fyn", title="Map of locations"), tabName = "fyn", icon = shiny::icon("map", title="Map of locations")),
+      # menuItem(span("Countries", title="Map of cointries mentioned during speeches"), tabName = "map", icon = shiny::icon("globe-europe", title="Map of cointries mentioned during speeches")),
+      menuItem(span("Word statistics", title="Statistics for all words"), tabName = "stats", icon = shiny::icon("chart-pie", title="Statistics for all words")),
+      menuItem(span("Data", title="Information about data sources and data subject"), tabName = "data", icon=shiny::icon("database", title="Information about data sources and data subject")),
+      menuItem(span("How to operate", class="help-me", title="Help and how to operate dashboard"), tabName = "howto", icon=shiny::icon("question-circle", class="help-me", title="Help and how to operate dashboard")),
+      div(id="sidebar-input",
+          h3("Selection"),
+          selectizeInput("id", label="UUID", choices = c(),
+                         multiple = TRUE, options = list(maxOptions = length(article_lib_data()$uuid))),
+          selectizeInput("docs", label="Article name", choices = c(),
+                         multiple = TRUE, options = list(maxOptions = length(article_lib_data()$uuid))),
+          div(class="hidden",
+              numericInput("n_recent", "Hidden numeric input to filter articles", value = 200)),
+          actionButton("sync", "Sync selection", title="Syncronize Artcile-names and UUID"),
+          actionButton("clear_id", "Clear selection"),
+          h3("Filters"),
+          div(sliderInput("n_recent_filter", "N recent articles",
+                       as.numeric(ifelse(length(article_lib_data()$uuid)>200, 200, length(article_lib_data()$uuid))),
+                       min = 10, max = round_any(length(article_lib_data()$uuid), 10, f = ceiling), step = 10, round = 10),
+                       title = "Limit for how many articles to load at the same time."),
+          selectizeInput("topic", label="Topic", choices = c(),
+                         multiple = FALSE, options = list(maxOptions = length(topic_frame_data()$topic))),
+          selectizeInput("section", label="Section", choices = c(),
+                         multiple = TRUE, options = list(maxOptions = length(sections_data()))),
+          selectizeInput("authors", label="Authors", choices = c(),
+                         multiple = TRUE, options = list(maxOptions = length(authors_data()))),
+          selectizeInput("location", label="Location", choices = c(),
+                         multiple = TRUE, options = list(maxOptions = length(authors_data()))),
+          textInput("user_id", label="User-id", placeholder = "Eg. 1234567891234-123"),
+          # selectizeInput("words", label="Featured words", choices = c(),
+          #                multiple = TRUE, options = list(maxOptions = length(words_tokens_all))),
+          # actionButton("clear", "Clear featured words"),
+          actionButton("topic_id_sync", "Apply filters", title="Update UUID filtered by set topic, section and authors"),
+          actionButton("clear_filter", "Clear filters"),
+          actionButton("clear_all", "Clear all")
         )
+      )
   })
 
   ### Sidebar Menu Updates ----------------------------------------------------
@@ -112,40 +117,41 @@ server <- function(input, output, session) {
   #   )
   
   updateSelectizeInput(
-    session, 'id', choices = article_lib_data()$uuid, selected = "", server = TRUE
+    session, 'id', choices = article_lib$uuid, selected = "", server = TRUE
   )
 
   updateSelectizeInput(
-    session, 'docs', choices = named_id(), selected = "", server = TRUE
+    session, 'docs', choices = named_id, selected = "", server = TRUE
   )
 
   updateSelectizeInput(
-    session, 'topic', choices = topic_frame()$topic, selected = "", server = TRUE
+    session, 'topic', choices = topic_frame$topic, selected = "", server = TRUE
   )
 
   updateSelectizeInput(
-    session, 'section', choices = sections(), selected = "", server = TRUE
+    session, 'section', choices = sections, selected = "", server = TRUE
   )
 
   updateSelectizeInput(
-    session, 'authors', choices = authors(), selected = "", server = TRUE
+    session, 'authors', choices = authors, selected = "", server = TRUE
   )
 
   updateSelectizeInput(
-    session, 'location', choices = locations(), selected = "", server = TRUE
+    session, 'location', choices = locations, selected = "", server = TRUE
   )
   
   ### Sidebar Menu Functionality ----------------------------------------------
   id_docs <- reactive({
     val <- unique(c(input$id, input$docs))
     if(length(val) == 0){
-      val <- article_lib_data()$uuid[1:as.numeric(ifelse(input$n_recent>length(article_lib_data()$uuid), length(article_lib_data()$uuid), input$n_recent))]
+      article_lib_data <- article_lib_data()
+      val <- article_lib_data$uuid[1:as.numeric(ifelse(input$n_recent>length(article_lib_data$uuid), length(article_lib_data$uuid), input$n_recent))]
     }
     return(val)
   })
   
   topic_id <- reactive({
-    topic_frame() %>% 
+    topic_frame_data() %>% 
       filter(topic %in% input$topic) %>%
       .$uuid %>% 
       unlist() %>% 
@@ -169,7 +175,7 @@ server <- function(input, output, session) {
       val <- input$authors
     }
     article_lib_data() %>% 
-      filter(any(match(str_split(authors(), ", "), val))) %>%
+      filter(any(match(str_split(authors_data(), ", "), val))) %>%
       .$uuid %>% 
       return
   })
@@ -190,17 +196,18 @@ server <- function(input, output, session) {
   ### Sidebar Menu Events -----------------------------------------------------
   observeEvent(input$sync, {
     val <- id_docs()
+    article_lib_data <- article_lib_data()
     updateSelectizeInput(
       session,
       'id',
-      choices = article_lib_data()$uuid,
+      choices = article_lib_data$uuid,
       selected = val,
       server = TRUE
     )
     updateSelectizeInput(
       session,
       'docs',
-      choices = named_id(),
+      choices = named_id_data(),
       selected = val,
       server = TRUE
     )
@@ -294,7 +301,7 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'docs',
-      choices = named_id(),
+      choices = named_id_data(),
       selected = c(""),
       server = TRUE
     )
@@ -318,21 +325,21 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'section',
-      choices = sections(),
+      choices = sections_data(),
       selected = c(""),
       server = TRUE
     )
     updateSelectizeInput(
       session,
       'authors',
-      choices = authors(),
+      choices = authors_data(),
       selected = c(""),
       server = TRUE
     )
     updateSelectizeInput(
       session,
       'location',
-      choices = locations(),
+      choices = locations_data(),
       selected = c(""),
       server = TRUE
     )
@@ -351,7 +358,7 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'topic',
-      choices = topic_frame()$topic,
+      choices = topic_frame_data()$topic,
       selected = c(""),
       server = TRUE
     )
@@ -368,7 +375,7 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'docs',
-      choices = named_id(),
+      choices = named_id_data(),
       selected = c(""),
       server = TRUE
     )
@@ -389,21 +396,21 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'section',
-      choices = sections(),
+      choices = sections_data(),
       selected = c(""),
       server = TRUE
     )
     updateSelectizeInput(
       session,
       'authors',
-      choices = authors(),
+      choices = authors_data(),
       selected = c(""),
       server = TRUE
     )
     updateSelectizeInput(
       session,
       'location',
-      choices = locations(),
+      choices = locations_data(),
       selected = c(""),
       server = TRUE
     )
@@ -422,7 +429,7 @@ server <- function(input, output, session) {
     updateSelectizeInput(
       session,
       'topic',
-      choices = topic_frame()$topic,
+      choices = topic_frame_data()$topic,
       selected = c(""),
       server = TRUE
     )
@@ -445,11 +452,11 @@ server <- function(input, output, session) {
   
   output$total_sentences <- renderValueBox({
     if(input$topic != ""){
-      val <- topic_frame() %>% 
+      val <- topic_frame_data() %>% 
         filter(topic %in% input$topic) %>%
         .$doc_len
     } else{
-      val <- n_unique_sentences()
+      val <- n_unique_sentences_data()
     }
     val <- prettyNum(val, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
@@ -484,7 +491,8 @@ server <- function(input, output, session) {
   
   ### Topics ---------------------------------------------------------------
   output$total_amount_of_topics <- renderValueBox({
-    data <- stm_models()$mod$settings$dim$K
+    stm_models <- stm_models()
+    data <- stm_models$mod$settings$dim$K
     data <- prettyNum(data, big.mark=".", scientific=FALSE, decimal.mark= ",")
     valueBox(
       data, "Topics", icon = icon("comment-dots"),
@@ -658,10 +666,11 @@ server <- function(input, output, session) {
   
   # topicVis ----------------------------------------------------------------
   output$topicVis <- renderVis({
-             if(!is.null(input$nTerms)){
-              with(stm_models(),
-                    toLDAvisJson(mod, docs, R = input$nTerms))}
-    })
+    if(!is.null(input$nTerms)){
+      stm_models <- stm_models()
+      with(stm_models(), toLDAvisJson(mod, docs, R = input$nTerms))
+      }
+  })
   
   ## Show sentences based on topic clicked ----------------------------------
   
@@ -673,8 +682,9 @@ server <- function(input, output, session) {
     topic <- input$topicVis_topic_click
     output$topicText <- renderUI({
       if(slide_num>0){
-        sentences <- unlist(thoughts_data()$docs[topic])
-        id <- unlist(thoughts_data()$uuid[topic])
+        thoughts_data <- thoughts_data()
+        sentences <- unlist(thoughts_data$docs[topic])
+        id <- unlist(thoughts_data$uuid[topic])
         df <- data.frame(sentences, id)
         df <- df[sample.int(nrow(df), ifelse(nrow(df)<slide_num, nrow(df), slide_num)),]
         df$sentences <- str_to_sentence(df$sentences) %>% 
@@ -720,15 +730,16 @@ server <- function(input, output, session) {
       )
       
       topics <- unlist(str_split(input$tippertoppertopicspopper, ","))
-      print(topics)
+      # print(topics)
       
       topic_id <- as.numeric(input$topic_id)
-      print(topic_id)
+      # print(topic_id)
       
+      tokens_data <- tokens_data()
       chosen <- c()
-      chosen <- c(unique(c(topics[topics %in% tokens_data()$stemmed],
-                           unique(tokens_data()$stemmed[tokens_data()$word %in% topics]),
-                           unique(tokens_data()$stemmed[tokens_data()$headword %in% topics])))) # Much faster
+      chosen <- c(unique(c(topics[topics %in% tokens_data$stemmed],
+                           unique(tokens_data$stemmed[tokens_data$word %in% topics]),
+                           unique(tokens_data$stemmed[tokens_data$headword %in% topics])))) # Much faster
       
       # updateSelectizeInput(
       #   session,
@@ -742,7 +753,7 @@ server <- function(input, output, session) {
       updateSelectizeInput(
         session,
         'topic',
-        choices = topic_frame()$topic,
+        choices = topic_frame_data()$topic,
         selected = paste("Topic", topic_id),
         server = TRUE
       )
@@ -792,15 +803,16 @@ server <- function(input, output, session) {
   
   # observeEvent(input$topicVis_term_click, {
   #   req(input$topic_r)
+  # tokens_data <- tokens_data()
   #   if(input$topic_r == 2){
   #     chosen <- input$words
-  #     if(input$topicVis_term_click %in% tokens_data()$stemmed){
+  #     if(input$topicVis_term_click %in% tokens_data$stemmed){
   #       chosen <- c(chosen, input$topicVis_term_click)
-  #     } else if(input$topicVis_term_click %in% tokens_data()$word){
-  #       word <- tokens_data()[tokens_data()$word == input$topicVis_term_click,]$stemmed[1]
+  #     } else if(input$topicVis_term_click %in% tokens_data$word){
+  #       word <- tokens_data[tokens_data$word == input$topicVis_term_click,]$stemmed[1]
   #       chosen <- c(chosen, word)
-  #     } else if(input$topicVis_term_click %in% tokens_data()$headword){
-  #       word <- tokens_data()[tokens_data()$headword == input$topicVis_term_click,]$stemmed[1]
+  #     } else if(input$topicVis_term_click %in% tokens_data$headword){
+  #       word <- tokens_data[tokens_data$headword == input$topicVis_term_click,]$stemmed[1]
   #       chosen <- c(chosen, word)
   #     }
   #   
@@ -823,7 +835,8 @@ server <- function(input, output, session) {
   # Sentiment ---------------------------------------------------------------
   ## sentiment data ---------------------------------------------------------
   sentiment_of_speech_data <- reactive({
-    data <- sentiment_data() %>%
+    sentiment_data <- sentiment_data()
+    data <- sentiment_data %>%
       filter(uuid %in% id_docs()) %>% 
       mutate(sentiment = round(sentiment),
              sentiment_pos = round(sentiment_pos),
@@ -835,7 +848,8 @@ server <- function(input, output, session) {
   
   sentiment_of_words_data <- reactive({
     req(input$slider_sentiment_of_words_n_words)
-    data <- tokens_data() %>%
+    tokens_data <- tokens_data()
+    data <- tokens_data %>%
       filter(polarity != 0) %>% 
       filter(uuid %in% id_docs()) %>% 
       group_by(stemmed) %>% 
@@ -866,7 +880,8 @@ server <- function(input, output, session) {
   # sentiment_of_speech_data_filtered <- reactive({
   #   req(input$words)
   #   
-  #   data <- tokens_data() %>%
+  # tokens_data <- tokens_data()
+  #   data <- tokens_data %>%
   #     rowwise() %>% 
   #     filter(uuid %in% id_docs()) %>% 
   #     mutate(polarity_pos = as.numeric(ifelse(polarity > 0, polarity, 0)),
@@ -1804,7 +1819,8 @@ server <- function(input, output, session) {
   # Word statistics ---------------------------------------------------------
   ## Word data --------------------------------------------------------------
   speech_data <- reactive({
-    data <- tokens_data() %>%
+    tokens_data <- tokens_data()
+    data <- tokens_data %>%
       filter(uuid %in% id_docs()) %>% 
       select(uuid, word, n_total, n_in, n_stem_total, title, date_updated_at) %>% 
       distinct() %>% 
