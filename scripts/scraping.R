@@ -11,7 +11,6 @@ library(stringr) # To handle whitespace
 
 # Settings ----
 check_content <- T
-new_entries <- 0
 
 # Functions ----
 cleanFun <- function(htmlString) { # Source: https://stackoverflow.com/questions/17227294/removing-html-tags-from-a-string-in-r
@@ -196,7 +195,6 @@ library <- library %>%
 # Save library ----
 # > Save library as rds ----
 saveRDS(library, "data/article_library.rds")
-saveRDS(new_entries , "data/new_entries.rds")
 
 # > Save library as csv ----
 library %>% 
