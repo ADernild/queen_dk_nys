@@ -48,19 +48,12 @@ if(nrow(tokens)>0){
                            dk_sentiment_word_form[dk_sentiment_word_form$word_from == stemmed,]$polarity[1],
                            ifelse(stemmed %in% dk_sentiment_headword$headword,
                                   dk_sentiment_headword[dk_sentiment_headword$headword == stemmed,]$polarity[1],
-                                  ### ... Through lemma ----
-                                  ifelse(any(unlist(strsplit(lemma, ",")) %in% dk_sentiment_headword$headword),
-                                         dk_sentiment_headword[dk_sentiment_headword$headword == unlist(strsplit(lemma, ","))[min(which(unlist(strsplit(lemma, ",")) %in% dk_sentiment_headword$headword))],]$polarity[1],
-                                         ifelse(any(unlist(strsplit(lemma, ",")) %in% dk_sentiment_word_form$word_from),
-                                                dk_sentiment_word_form[dk_sentiment_word_form$word_from == unlist(strsplit(lemma, ","))[min(which(unlist(strsplit(lemma, ",")) %in% dk_sentiment_word_form$word_from))],]$polarity[1],
-                                                ### ... Through word ----
-                                                ifelse(word %in% dk_sentiment_headword$headword,
-                                                       dk_sentiment_headword[dk_sentiment_headword$headword == word,]$polarity[1],
-                                                       ifelse(word  %in% dk_sentiment_word_form$word_from,
-                                                              dk_sentiment_word_form[dk_sentiment_word_form$word_from == word,]$polarity[1],
-                                                              polarity
-                                                              )
-                                                       )
+                                  ### ... Through word ----
+                                  ifelse(word %in% dk_sentiment_headword$headword,
+                                         dk_sentiment_headword[dk_sentiment_headword$headword == word,]$polarity[1],
+                                         ifelse(word  %in% dk_sentiment_word_form$word_from,
+                                                dk_sentiment_word_form[dk_sentiment_word_form$word_from == word,]$polarity[1],
+                                                polarity
                                                 )
                                          )
                                   )
@@ -82,7 +75,7 @@ if(nrow(tokens)>0){
   
   tokens <- tokens %>%
     left_join(n_tokens, by=c("uuid", "stemmed")) %>% 
-    arrange(desc(n_stem_total), word, desc(n_lemma_total),
+    arrange(desc(n_stem_total), word,
             desc(n_total), desc(uuid),
             desc(n_in)) # arrange by largest n_hword_total
   
