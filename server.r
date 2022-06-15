@@ -1105,31 +1105,7 @@ server <- function(input, output, session) {
         shared = T
       ) %>% 
       hc_quadcolsum()
-    # if(length(input$words)>0){
-    #   selection <- sentiment_of_speech_data_filtered() %>%
-    #     select(sentiment, uuid, stemmed) %>%
-    #     ungroup()
-    #   for(word in unique(selection$stemmed)){
-    #     for(uuid in unique(data$uuid)){
-    #       if(!(word %in% selection[selection$uuid == uuid,]$stemmed)){
-    #         selection <-  selection %>%
-    #           add_row(stemmed = word, uuid=uuid, sentiment=0)
-    #       }
-    #     }
-    #   }
-    #   selection <-  selection %>%
-    #     group_by(uuid) %>% 
-    #     summarise(sentiment = sum(sentiment)) %>% 
-    #     arrange(date_updated_at, sentiment)
-    #   hc <- hc %>%
-    #     hc_add_series(
-    #       type = "bar",
-    #       stack = 3,
-    #       name= "Sentiment of selection",
-    #       data = selection,
-    #       hcaes(x = uuid, y = sentiment)
-    #     )
-    # }
+    
     return(hc)
   })
   
