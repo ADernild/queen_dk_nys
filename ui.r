@@ -348,6 +348,58 @@ ui <- dashboardPage(
                 )
               )
       ),
+      # Creators ----
+      tabItem(tabName = "creators",
+              h2("Secret creator page"),
+              fluidRow(class="box_align_layout",
+                       box(width = 12,
+                           p("Thank you for using our tools, and good job finding the hidden creator section."),
+                           p("We enjoyed working with TV2 Fyn, at the newly created R&D department."),
+                           p("No animals were hurt during the development of the tools."),
+                           p("Special thanks to our advisors, Michael Jensen & Edward Abel, the R&D department, the IT department, all who create articles at TV2 Fyn and the Bazo API. Without You the project would not have been possible.")
+                        )
+              ),
+              fluidRow(class="box_align_layout",
+                 box(width = 6,
+                     h3("Max Festersen Hansen"),
+                     p("Big wide fellar, Data Scientist, Full stack web developer, BI-specialist, Nerd and videogame connoisseur."),
+                     p("The brain and muscle behind the Topic Tool."),
+                     hr(),
+                     img(src = "2018_gamescom_profile.jpg", class="c-profile", width = "460px", height = "460px"),
+                     hr(),
+                     h4("Social links:"),
+                     tags$ul(class="socials",
+                       tags$li(a(href="mailto:minmailmax@gmail.com", "Personal e-mail:"), span("minmailmax@gmail.com")), 
+                       tags$li(a(href="tel:+4529631232", "Personal phone number:"), span("29 63 12 32")), 
+                       tags$li(a(href="https://maxfest.dk/", "Personal webpage")), 
+                       tags$li(a(href="http://smokingpenguin.dk/", "Other personal webpage", title="... for some reason")), 
+                       tags$li(a(href="https://www.linkedin.com/in/max-festersen-hansen/", "LinkedIn")), 
+                       tags$li(a(href="https://www.facebook.com/max.f.hansen", "Facebook")), 
+                       tags$li(a(href="https://twitter.com/MaxDeadCheese", "Twitter")), 
+                       tags$li(a(href="https://github.com/MaxFestersen", "GitHub"))
+                     )
+                 ),
+                 box(width = 6,
+                     h3("Alexander Ibsen Dernild"),
+                     p("Big tall fellar, Data Scientist, Sales-consultant, Socialist/Human-expert, Botanist & Word expert."),
+                     p("The brain and master of the Recommendation System."),
+                     hr(),
+                     img(src = "46223274.jpg", class="c-profile", width = "460px", height = "460px"),
+                     hr(),
+                     h4("Social links:"),
+                     tags$ul(class="socials",
+                       tags$li(a(href="mailto:alex@dernild.dk", "Personal e-mail:"), span("alex@dernild.dk")), 
+                       tags$li(a(href="tel:+4561805898", "Personal phone number:"), span("61 80 58 98")),
+                       tags$li(a(href="https://dsn.dk/kontakt-os/medarbejdere/alexander-ibsen-dernild/", "DSN profile")), 
+                       tags$li(a(href="https://dernild.com/", "Personal webpage")), 
+                       tags$li(a(href="https://www.linkedin.com/in/alexander-dernild/", "LinkedIn")), 
+                       tags$li(a(href="https://www.facebook.com/DetErHeinz", "Facebook")), 
+                       tags$li(a(href="https://twitter.com/adernild", "Twitter")), 
+                       tags$li(a(href="https://github.com/ADernild", "GitHub"))
+                     )
+                 )
+              )
+      ),
       # Stats ----
       tabItem(tabName = "stats",
               h2("Word statistics"),

@@ -205,6 +205,10 @@ section.sidebar .shiny-bound-input.action-link:hover{
   border-right-color: #333;
 }
 
+.sidebar-collapse #hiddenMenu{
+  border-top-color: #eee;
+}
+
 .skin-blue .sidebar a,
 .skin-blue .sidebar a span{
   color: #333;
@@ -214,14 +218,18 @@ section.sidebar .shiny-bound-input.action-link:hover{
 }
 
 .skin-blue .sidebar-menu>li:hover>a,
-.skin-blue .sidebar-menu>li:hover>a span{
+.skin-blue .sidebar-menu>li:hover>a span,
+.skin-blue #hiddenMenu>li:hover>a,
+.skin-blue #hiddenMenu>li:hover>a span{
     color: #333;
     background: #f4f4f4;
     border-left-color: #d21e1e;
 }
 
 .skin-blue .sidebar-menu>li.active>a,
-.skin-blue .sidebar-menu>li.active>a span{
+.skin-blue .sidebar-menu>li.active>a span,
+.skin-blue #hiddenMenu>li.active>a,
+.skin-blue #hiddenMenu>li.active>a span{
     color: #d21e1e ;
     background: #f4f4f4;
     border-left-color: #d21e1e;
@@ -231,7 +239,11 @@ section.sidebar .shiny-bound-input.action-link:hover{
 .skin-blue .sidebar-menu>li:hover>a .help-me,
 .skin-blue .sidebar-menu>li.active>a .help-me,
 .skin-blue .sidebar-menu>li:hover>a .help-me span,
-.skin-blue .sidebar-menu>li.active>a .help-me span{
+.skin-blue .sidebar-menu>li.active>a .help-me span,
+.skin-blue #hiddenMenu>li:hover>a .help-me,
+.skin-blue #hiddenMenu>li.active>a .help-me,
+.skin-blue #hiddenMenu>li:hover>a .help-me span,
+.skin-blue #hiddenMenu>li.active>a .help-me span{
     color: #000;
 }
 

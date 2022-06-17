@@ -35,3 +35,21 @@ Shiny.addCustomMessageHandler('getTopicsId', function(mess) {
   id = getTopicsId();
   Shiny.setInputValue("topic_id", id.toString())
 })
+
+let loadclciks = 0;
+
+window.onload = function(){
+    //time is set in milliseconds
+    setTimeout(function(){
+      let loadMessage = document.getElementById("loadmessage");
+      loadMessage.addEventListener("click", hiddenMenuCondition);
+    }, 200)
+};
+
+
+function hiddenMenuCondition() {
+  loadclciks = loadclciks + 1;
+  if(loadclciks >= 3){
+    document.getElementById("hiddenMenu").classList.add("condition");
+  }
+}

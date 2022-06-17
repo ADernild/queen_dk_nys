@@ -107,6 +107,9 @@ server <- function(input, output, session) {
           actionButton("topic_id_sync", "Apply filters", title="Update UUID filtered by set topic, section and authors"),
           actionButton("clear_filter", "Clear filters"),
           actionButton("clear_all", "Clear all")
+        ),
+        tags$ul(id="hiddenMenu",
+          menuItem(span("Creators", title="Learn more about who created the this tool, and recommendation system"), tabName = "creators", icon=shiny::icon("user-ninja", title="Shh, this is the easter egg.")),
         )
       )
   })
