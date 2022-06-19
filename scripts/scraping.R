@@ -158,7 +158,9 @@ for(i in 1:page_num){
                       )))))))))))))) %>% 
     ungroup()
   
-  library <- full_join(library, new_results, by = c("uuid", "title", "date_published_at", "date_updated_at", "section", "authors", "link", "location", "geocode", "content")) # Join article list with existing article list
+  library <- library %>%
+    filter(!(uuid %in% new_results$uuid))
+  library <- full_join(new_results, library, by = c("uuid", "title", "date_published_at", "date_updated_at", "section", "authors", "link", "location", "geocode", "content")) # Join article list with existing article list
   library_mid <- nrow(library)
   # Formart library
   library <- library %>% 
