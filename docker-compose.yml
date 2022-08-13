@@ -1,0 +1,38 @@
+version: '3.1'
+
+services:
+  queen_dk_nys:
+    build:
+      context: .
+      dockerfile: Dockerfile_shiny
+    container_name: queen_dk_nys
+    restart: always
+    environment: 
+      - "VIRTUAL_HOST=app.dernild.com, www.app.dernild.com"
+      - "LETSENCRYPT_HOST=app.dernild.com, www.app.dernild.com"
+    volumes:
+      - ./data/:/srv/shiny-server/data/
+      - ./global.r:/srv/shiny-server/global.r
+      - ./server.r:/srv/shiny-server/server.r
+      - ./ui.r:/srv/shiny-server/ui.r
+      - ./www/:/srv/shiny-sever/www/
+    ports:
+      - '3838:3838'
+    networks:
+      - bridge
+  scraper:
+    build:
+      context: .
+      dockerfile: Dockerfile_scraper
+    container_name: queen_dk_nys_scraper
+    volumes:
+      - ./data/:usr/local/src/data/:rw
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - bridge
+
+networks:
+  bridge:
+    name: bridge
+    external: true
+     
